@@ -95,7 +95,17 @@ module ibex_decoder #(
 
   // jump/branches
   output logic                 jump_in_dec_o,         // jump is being calculated in ALU
-  output logic                 branch_in_dec_o
+  output logic                 branch_in_dec_o,
+
+  // MHX ternary extensions
+  output logic                 ternary_en_o,          // ternary operation enable
+  output logic                 neural_en_o,           // neural operation enable
+  output ibex_pkg::ternary_op_e ternary_op_o,         // ternary operation selection
+  output ibex_pkg::neural_op_e  neural_op_o,          // neural operation selection
+  output logic [3:0]           ternary_raddr_a_o,     // ternary register read address A
+  output logic [3:0]           ternary_raddr_b_o,     // ternary register read address B
+  output logic [3:0]           ternary_waddr_o,       // ternary register write address
+  output logic                 ternary_we_o           // ternary register write enable
 );
 
   import ibex_pkg::*;
@@ -234,6 +244,16 @@ module ibex_decoder #(
     dret_insn_o           = 1'b0;
     ecall_insn_o          = 1'b0;
     wfi_insn_o            = 1'b0;
+
+    // MHX ternary extension signals initialization
+    ternary_en_o          = 1'b0;
+    neural_en_o           = 1'b0;
+    ternary_op_o          = TERNARY_ADD;
+    neural_op_o           = NEURAL_MULTIPLY;
+    ternary_raddr_a_o     = 4'b0;
+    ternary_raddr_b_o     = 4'b0;
+    ternary_waddr_o       = 4'b0;
+    ternary_we_o          = 1'b0;
 
     opcode                = opcode_e'(instr[6:0]);
 
@@ -640,6 +660,66 @@ module ibex_decoder #(
         end
 
       end
+
+      ////////////////////////////////////////
+      // MHX Ternary Extension Instructions //
+      ////////////////////////////////////////
+
+      OPCODE_TERNARY: begin // Ternary arithmetic operations
+        ternary_en_o = 1'b1;
+        neural_en_o  = 1'b0;
+        rf_we        = 1'b0;  // Disable regular register file write
+        ternary_we_o = 1'b1;  // Enable ternary register file write
+
+        // Decode ternary operation from funct3
+        unique case (instr[14:12])
+          3'b000: ternary_op_o = TERNARY_ADD;
+          3'b001: ternary_op_o = TERNARY_SUB;
+          3'b010: ternary_op_o = TERNARY_MUL;
+          3'b011: ternary_op_o = TERNARY_AND;
+          3'b100: ternary_op_o = TERNARY_OR;
+          3'b101: ternary_op_o = TERNARY_XOR;
+          3'b110: ternary_op_o = TERNARY_NOT;
+          default: illegal_insn = 1'b1;
+        endcase
+
+        // Extract ternary register addresses (4 bits each for 16 registers)
+        ternary_raddr_a_o = instr[19:16];  // rs1 (ternary source 1)
+        ternary_raddr_b_o = instr[23:20];  // rs2 (ternary source 2)
+        ternary_waddr_o   = instr[11:8];   // rd (ternary destination)
+
+        // Check for valid ternary register addresses
+        if (ternary_raddr_a_o >= 16 || ternary_raddr_b_o >= 16 || ternary_waddr_o >= 16) begin
+          illegal_insn = 1'b1;
+        end
+      end
+
+      OPCODE_NEURAL: begin // Neural processing operations
+        ternary_en_o = 1'b0;
+        neural_en_o  = 1'b1;
+        rf_we        = 1'b0;  // Disable regular register file write
+        ternary_we_o = 1'b1;  // Enable ternary register file write (for result)
+
+        // Decode neural operation from funct3
+        unique case (instr[14:12])
+          3'b000: neural_op_o = NEURAL_MULTIPLY;
+          3'b001: neural_op_o = NEURAL_ACCUMULATE;
+          3'b010: neural_op_o = NEURAL_ACTIVATE;
+          3'b011: neural_op_o = NEURAL_LEARN;
+          default: illegal_insn = 1'b1;
+        endcase
+
+        // Extract ternary register addresses for neural operations
+        ternary_raddr_a_o = instr[19:16];  // weights register
+        ternary_raddr_b_o = instr[23:20];  // inputs register
+        ternary_waddr_o   = instr[11:8];   // result register
+
+        // Check for valid ternary register addresses
+        if (ternary_raddr_a_o >= 16 || ternary_raddr_b_o >= 16 || ternary_waddr_o >= 16) begin
+          illegal_insn = 1'b1;
+        end
+      end
+
       default: begin
         illegal_insn = 1'b1;
       end
@@ -1184,6 +1264,37 @@ module ibex_decoder #(
         end
 
       end
+
+      ////////////////////////////////////////
+      // MHX Ternary Extension ALU Control  //
+      ////////////////////////////////////////
+
+      OPCODE_TERNARY: begin // Ternary arithmetic operations ALU control
+        // For ternary operations, we just need to set appropriate ALU operation
+        // The actual ternary computation is handled by the separate ternary ALU
+        unique case (instr_alu[14:12])
+          3'b000: alu_operator_o = ALU_TERNARY_ADD;
+          3'b001: alu_operator_o = ALU_TERNARY_SUB;
+          3'b010: alu_operator_o = ALU_TERNARY_MUL;
+          3'b011: alu_operator_o = ALU_TERNARY_AND;
+          3'b100: alu_operator_o = ALU_TERNARY_OR;
+          3'b101: alu_operator_o = ALU_TERNARY_XOR;
+          3'b110: alu_operator_o = ALU_TERNARY_NOT;
+          default: ; // Error handling done in main decoder
+        endcase
+        
+        // Set operand mux selections to bypass (not used for ternary)
+        alu_op_a_mux_sel_o = OP_A_REG_A;
+        alu_op_b_mux_sel_o = OP_B_REG_B;
+      end
+
+      OPCODE_NEURAL: begin // Neural processing operations ALU control
+        // Neural operations don't use the regular ALU, just set defaults
+        alu_operator_o     = ALU_ADD;
+        alu_op_a_mux_sel_o = OP_A_REG_A;
+        alu_op_b_mux_sel_o = OP_B_REG_B;
+      end
+
       default: ;
     endcase
   end
