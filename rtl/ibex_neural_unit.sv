@@ -15,13 +15,12 @@
 `include "prim_assert.sv"
 
 module ibex_neural_unit import ibex_pkg::*; (
-  input  logic        clk_i,
-  input  logic        rst_ni,
+  // Note: No clock/reset needed for pure combinational logic
 
   // Operands
   input  logic [31:0] weights_i,    // 16 ternary weights
   input  logic [31:0] inputs_i,     // 16 ternary inputs
-  input  logic [31:0] bias_i,       // Bias value (encoded as immediate)
+  input  logic [31:0] bias_i,       // Bias value (only bits [1:0] used for ternary)
   input  neural_op_e  operation_i,
 
   // Results
@@ -31,7 +30,6 @@ module ibex_neural_unit import ibex_pkg::*; (
 
   // Internal accumulator for neural computations
   // Can hold sum of 16 trits: range [-16, +16] → needs 6 bits signed
-  logic signed [7:0] accumulator;
   logic signed [7:0] next_accumulator;
 
   // Convert trit encoding to signed integer
@@ -64,21 +62,26 @@ module ibex_neural_unit import ibex_pkg::*; (
       logic [1:0] input_val;
       logic signed [1:0] weight_int;
       logic signed [1:0] input_int;
-      logic signed [3:0] product;
+      logic signed [7:0] product;  // Match accumulator width
+      
+      logic signed [3:0] product_temp;
       
       weight = weights_i[i*2 +: 2];
       input_val = inputs_i[i*2 +: 2];
       weight_int = trit_to_int(weight);
       input_int = trit_to_int(input_val);
-      product = weight_int * input_int;
+      product_temp = $signed(weight_int) * $signed(input_int);
+      product = {{4{product_temp[3]}}, product_temp};  // Sign extend to 8 bits
       next_accumulator += product;
     end
     // Add bias (extract from immediate, assuming first trit is bias)
     begin
       logic [1:0] bias_trit;
-      logic signed [1:0] bias_int;
+      logic signed [1:0] bias_2bit;
+      logic signed [7:0] bias_int;  // Match accumulator width
       bias_trit = bias_i[1:0];
-      bias_int = trit_to_int(bias_trit);
+      bias_2bit = trit_to_int(bias_trit);
+      bias_int = {{6{bias_2bit[1]}}, bias_2bit};  // Sign extend to 8 bits
       next_accumulator += bias_int;
     end
   end
@@ -124,9 +127,8 @@ module ibex_neural_unit import ibex_pkg::*; (
     endcase
   end
 
-  // Assertions for debugging
-  `ASSERT(NeuralValidOp, operation_i >= NEURAL_MULTIPLY && operation_i <= NEURAL_LEARN,
-          clk_i, !rst_ni)
-  `ASSERT(AccumulatorRange, next_accumulator >= -16 && next_accumulator <= 16, clk_i, !rst_ni)
+  // Assertions for debugging (immediate assertions for combinational logic)
+  `ASSERT_INIT(NeuralValidOp, operation_i >= NEURAL_MULTIPLY && operation_i <= NEURAL_LEARN)
+  `ASSERT_INIT(AccumulatorRange, next_accumulator >= -16 && next_accumulator <= 16)
 
 endmodule

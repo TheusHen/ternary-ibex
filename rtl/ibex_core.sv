@@ -987,8 +987,6 @@ module ibex_core import ibex_pkg::*; #(
   ////////////////////////////////////////////////
 
   ibex_neural_unit neural_unit_i (
-    .clk_i       (clk_i),
-    .rst_ni      (rst_ni),
     .weights_i   (ternary_rdata_a),  // Weights from ternary register A
     .inputs_i    (ternary_rdata_b),  // Inputs from ternary register B  
     .bias_i      (instr_rdata_id),   // Bias from immediate field

@@ -72,8 +72,6 @@ module mhx_ternary_test;
   );
 
   ibex_neural_unit dut_neural (
-    .clk_i       (clk),
-    .rst_ni      (rst_n),
     .weights_i   (neural_weights),
     .inputs_i    (neural_inputs),
     .bias_i      (neural_bias),
