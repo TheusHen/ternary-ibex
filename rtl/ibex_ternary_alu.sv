@@ -139,56 +139,69 @@ module ibex_ternary_alu import ibex_pkg::*; (
     case (operator_i)
       TERNARY_ADD: begin
         for (int i = 0; i < 16; i++) begin
-          logic [1:0] trit_a = operand_a_i[i*2+1:i*2];
-          logic [1:0] trit_b = operand_b_i[i*2+1:i*2];
-          result_o[i*2+1:i*2] = trit_add(trit_a, trit_b);
+          logic [1:0] trit_a;
+          logic [1:0] trit_b;
+          trit_a = operand_a_i[i*2 +: 2];
+          trit_b = operand_b_i[i*2 +: 2];
+          result_o[i*2 +: 2] = trit_add(trit_a, trit_b);
         end
       end
 
       TERNARY_SUB: begin
         for (int i = 0; i < 16; i++) begin
-          logic [1:0] trit_a = operand_a_i[i*2+1:i*2];
-          logic [1:0] trit_b = operand_b_i[i*2+1:i*2];
-          result_o[i*2+1:i*2] = trit_sub(trit_a, trit_b);
+          logic [1:0] trit_a;
+          logic [1:0] trit_b;
+          trit_a = operand_a_i[i*2 +: 2];
+          trit_b = operand_b_i[i*2 +: 2];
+          result_o[i*2 +: 2] = trit_sub(trit_a, trit_b);
         end
       end
 
       TERNARY_MUL: begin
         for (int i = 0; i < 16; i++) begin
-          logic [1:0] trit_a = operand_a_i[i*2+1:i*2];
-          logic [1:0] trit_b = operand_b_i[i*2+1:i*2];
-          result_o[i*2+1:i*2] = trit_mul(trit_a, trit_b);
+          logic [1:0] trit_a;
+          logic [1:0] trit_b;
+          trit_a = operand_a_i[i*2 +: 2];
+          trit_b = operand_b_i[i*2 +: 2];
+          result_o[i*2 +: 2] = trit_mul(trit_a, trit_b);
         end
       end
 
       TERNARY_AND: begin
         for (int i = 0; i < 16; i++) begin
-          logic [1:0] trit_a = operand_a_i[i*2+1:i*2];
-          logic [1:0] trit_b = operand_b_i[i*2+1:i*2];
-          result_o[i*2+1:i*2] = trit_and(trit_a, trit_b);
+          logic [1:0] trit_a;
+          logic [1:0] trit_b;
+          trit_a = operand_a_i[i*2 +: 2];
+          trit_b = operand_b_i[i*2 +: 2];
+          result_o[i*2 +: 2] = trit_and(trit_a, trit_b);
         end
       end
 
       TERNARY_OR: begin
         for (int i = 0; i < 16; i++) begin
-          logic [1:0] trit_a = operand_a_i[i*2+1:i*2];
-          logic [1:0] trit_b = operand_b_i[i*2+1:i*2];
-          result_o[i*2+1:i*2] = trit_or(trit_a, trit_b);
+          logic [1:0] trit_a;
+          logic [1:0] trit_b;
+          trit_a = operand_a_i[i*2 +: 2];
+          trit_b = operand_b_i[i*2 +: 2];
+          result_o[i*2 +: 2] = trit_or(trit_a, trit_b);
         end
       end
 
       TERNARY_XOR: begin
         for (int i = 0; i < 16; i++) begin
-          logic [1:0] trit_a = operand_a_i[i*2+1:i*2];
-          logic [1:0] trit_b = operand_b_i[i*2+1:i*2];
-          result_o[i*2+1:i*2] = trit_xor(trit_a, trit_b);
+          logic [1:0] trit_a;
+          logic [1:0] trit_b;
+          trit_a = operand_a_i[i*2 +: 2];
+          trit_b = operand_b_i[i*2 +: 2];
+          result_o[i*2 +: 2] = trit_xor(trit_a, trit_b);
         end
       end
 
       TERNARY_NOT: begin
         for (int i = 0; i < 16; i++) begin
-          logic [1:0] trit_a = operand_a_i[i*2+1:i*2];
-          result_o[i*2+1:i*2] = trit_not(trit_a);
+          logic [1:0] trit_a;
+          trit_a = operand_a_i[i*2 +: 2];
+          result_o[i*2 +: 2] = trit_not(trit_a);
         end
       end
 

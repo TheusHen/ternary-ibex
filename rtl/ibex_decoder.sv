@@ -95,7 +95,17 @@ module ibex_decoder #(
 
   // jump/branches
   output logic                 jump_in_dec_o,         // jump is being calculated in ALU
-  output logic                 branch_in_dec_o
+  output logic                 branch_in_dec_o,
+
+  // MHX Ternary Operations
+  output logic                 ternary_en_o,          // enable ternary operation
+  output logic                 neural_en_o,           // enable neural operation
+  output ibex_pkg::ternary_op_e ternary_op_o,         // ternary operation selection
+  output ibex_pkg::neural_op_e neural_op_o,           // neural operation selection
+  output logic [3:0]           ternary_raddr_a_o,     // ternary register file read address A
+  output logic [3:0]           ternary_raddr_b_o,     // ternary register file read address B
+  output logic [3:0]           ternary_waddr_o,       // ternary register file write address
+  output logic                 ternary_we_o           // ternary register file write enable
 );
 
   import ibex_pkg::*;

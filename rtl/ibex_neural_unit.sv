@@ -66,8 +66,8 @@ module ibex_neural_unit import ibex_pkg::*; (
       logic signed [1:0] input_int;
       logic signed [3:0] product;
       
-      weight = weights_i[i*2+1:i*2];
-      input_val = inputs_i[i*2+1:i*2];
+      weight = weights_i[i*2 +: 2];
+      input_val = inputs_i[i*2 +: 2];
       weight_int = trit_to_int(weight);
       input_int = trit_to_int(input_val);
       product = weight_int * input_int;
@@ -88,25 +88,21 @@ module ibex_neural_unit import ibex_pkg::*; (
     case (operation_i)
       NEURAL_MULTIPLY: begin
         // Store accumulated result for next stage
-        accumulator = next_accumulator;
-        result_o = {24'h0, accumulator};  // Return raw accumulator value
+        result_o = {24'h0, next_accumulator};  // Return raw accumulator value
         valid_o = 1'b1;
       end
 
       NEURAL_ACCUMULATE: begin
         // Return accumulated value as ternary (keep raw for now)
-        accumulator = next_accumulator;
-        result_o = {24'h0, accumulator};
+        result_o = {24'h0, next_accumulator};
         valid_o = 1'b1;
       end
 
       NEURAL_ACTIVATE: begin
         // Ternary activation function: sign(accumulator)
-        accumulator = next_accumulator;
-
-        if (accumulator > 1) begin
+        if (next_accumulator > 1) begin
           result_o = {30'h0, TRIT_POS}; // +1 in ternary encoding
-        end else if (accumulator < -1) begin
+        end else if (next_accumulator < -1) begin
           result_o = {30'h0, TRIT_NEG}; // -1 in ternary encoding
         end else begin
           result_o = {30'h0, TRIT_ZERO}; // 0 in ternary encoding
@@ -128,21 +124,9 @@ module ibex_neural_unit import ibex_pkg::*; (
     endcase
   end
 
-  // Saturation logic for accumulator overflow
-  always_comb begin
-    // Clamp accumulator to valid range [-16, +16]
-    if (next_accumulator > 16) begin
-      accumulator = 16;
-    end else if (next_accumulator < -16) begin
-      accumulator = -16;
-    end else begin
-      accumulator = next_accumulator;
-    end
-  end
-
   // Assertions for debugging
   `ASSERT(NeuralValidOp, operation_i >= NEURAL_MULTIPLY && operation_i <= NEURAL_LEARN,
           clk_i, !rst_ni)
-  `ASSERT(AccumulatorRange, accumulator >= -16 && accumulator <= 16, clk_i, !rst_ni)
+  `ASSERT(AccumulatorRange, next_accumulator >= -16 && next_accumulator <= 16, clk_i, !rst_ni)
 
 endmodule
