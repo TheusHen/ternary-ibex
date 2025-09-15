@@ -68,11 +68,11 @@ module ibex_neural_unit import ibex_pkg::*; (
       logic signed [1:0] weight_int = trit_to_int(weight);
       logic signed [1:0] input_int = trit_to_int(input_val);
       logic signed [3:0] product = weight_int * input_int;
-      
+
       // Accumulate the product
       next_accumulator += product;
     end
-    
+
     // Add bias (extract from immediate, assuming first trit is bias)
     logic [1:0] bias_trit = bias_i[1:0];
     logic signed [1:0] bias_int = trit_to_int(bias_trit);
@@ -88,18 +88,18 @@ module ibex_neural_unit import ibex_pkg::*; (
         result_o = {24'h0, accumulator};  // Return raw accumulator value
         valid_o = 1'b1;
       end
-      
+
       NEURAL_ACCUMULATE: begin
         // Return accumulated value as ternary (keep raw for now)
         accumulator = next_accumulator;
         result_o = {24'h0, accumulator};
         valid_o = 1'b1;
       end
-      
+
       NEURAL_ACTIVATE: begin
         // Ternary activation function: sign(accumulator)
         accumulator = next_accumulator;
-        
+
         if (accumulator > 1) begin
           result_o = {30'h0, TRIT_POS}; // +1 in ternary encoding
         end else if (accumulator < -1) begin
@@ -109,14 +109,14 @@ module ibex_neural_unit import ibex_pkg::*; (
         end
         valid_o = 1'b1;
       end
-      
+
       NEURAL_LEARN: begin
         // Placeholder for future learning algorithms
         // For now, just pass through the weights unchanged
         result_o = weights_i;
         valid_o = 1'b1;
       end
-      
+
       default: begin
         result_o = 32'h0;
         valid_o = 1'b0;
@@ -137,7 +137,8 @@ module ibex_neural_unit import ibex_pkg::*; (
   end
 
   // Assertions for debugging
-  `ASSERT(NeuralValidOp, operation_i >= NEURAL_MULTIPLY && operation_i <= NEURAL_LEARN, clk_i, !rst_ni)
+  `ASSERT(NeuralValidOp, operation_i >= NEURAL_MULTIPLY && operation_i <= NEURAL_LEARN,
+          clk_i, !rst_ni)
   `ASSERT(AccumulatorRange, accumulator >= -16 && accumulator <= 16, clk_i, !rst_ni)
 
 endmodule
