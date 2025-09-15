@@ -62,8 +62,6 @@ module mhx_ternary_test;
   );
 
   ibex_ternary_alu dut_alu (
-    .clk_i       (clk),
-    .rst_ni      (rst_n),
     .operand_a_i (trf_rdata_a),
     .operand_b_i (trf_rdata_b),
     .operator_i  (talu_op),
