@@ -58,54 +58,19 @@ module ibex_neural_unit import ibex_pkg::*; (
   // Ternary multiply-accumulate for neural computation
   always_comb begin
     next_accumulator = 0;
-    
     // Multiply all weight-input pairs and accumulate
-<<<<<<< HEAD
-      logic [1:0] weight;
-      logic [1:0] input_val;
-      logic signed [1:0] weight_int;
-      logic signed [1:0] input_int;
-      logic signed [3:0] product;
-      logic [1:0] bias_trit;
-      logic signed [1:0] bias_int;
-
-      // Multiply all weight-input pairs and accumulate
-      for (int i = 0; i < 16; i++) begin
-        weight = weights_i[i*2+1:i*2];
-        input_val = inputs_i[i*2+1:i*2];
-
-        // Multiply weight × input (both ternary)
-        weight_int = trit_to_int(weight);
-        input_int = trit_to_int(input_val);
-        product = weight_int * input_int;
-
-        // Accumulate the product
-        next_accumulator += product;
-      end
-
-      // Add bias (extract from immediate, assuming first trit is bias)
-      bias_trit = bias_i[1:0];
-      bias_int = trit_to_int(bias_trit);
-      next_accumulator += bias_int;
-=======
     for (int i = 0; i < 16; i++) begin
       logic [1:0] weight = weights_i[i*2+1:i*2];
       logic [1:0] input_val = inputs_i[i*2+1:i*2];
-      
-      // Multiply weight × input (both ternary)
       logic signed [1:0] weight_int = trit_to_int(weight);
       logic signed [1:0] input_int = trit_to_int(input_val);
       logic signed [3:0] product = weight_int * input_int;
-
-      // Accumulate the product
       next_accumulator += product;
     end
-
     // Add bias (extract from immediate, assuming first trit is bias)
     logic [1:0] bias_trit = bias_i[1:0];
     logic signed [1:0] bias_int = trit_to_int(bias_trit);
     next_accumulator += bias_int;
->>>>>>> 42e7307cf401a9ec90d3e28e6c8664917f9a7330
   end
 
   // Main neural processing logic
