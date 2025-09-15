@@ -31,7 +31,7 @@ module ibex_ternary_regfile import ibex_pkg::*; (
 );
 
   // 16 ternary registers, each storing 16 trits (32 bits)
-  logic [31:0] ternary_regs [0:15];
+  logic [31:0] ternary_regs [16];
 
   // Read logic (asynchronous)
   assign rdata_a_o = ternary_regs[raddr_a_i];
