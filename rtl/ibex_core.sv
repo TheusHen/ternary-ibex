@@ -904,7 +904,7 @@ module ibex_core import ibex_pkg::*; #(
       case (current_opcode)
         OPCODE_TERNARY: begin
           ternary_en_id = 1'b1;
-          
+
           // Decode ternary operation from funct3
           case (instr_rdata_id[14:12])
             3'b000: ternary_op_id = TERNARY_ADD;
@@ -925,7 +925,7 @@ module ibex_core import ibex_pkg::*; #(
 
         OPCODE_NEURAL: begin
           neural_en_id = 1'b1;
-          
+
           // Decode neural operation from funct3
           case (instr_rdata_id[14:12])
             3'b000: neural_op_id = NEURAL_MULTIPLY;
@@ -982,7 +982,7 @@ module ibex_core import ibex_pkg::*; #(
 
   ibex_neural_unit neural_unit_i (
     .weights_i   (ternary_rdata_a),  // Weights from ternary register A
-    .inputs_i    (ternary_rdata_b),  // Inputs from ternary register B  
+    .inputs_i    (ternary_rdata_b),  // Inputs from ternary register B
     .bias_i      (instr_rdata_id),   // Bias from immediate field
     .operation_i (neural_op_id),
     .result_o    (neural_result),

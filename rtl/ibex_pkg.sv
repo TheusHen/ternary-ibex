@@ -31,7 +31,7 @@ package ibex_pkg;
   typedef struct packed {
     logic [3:0]  raddr_a;      // ternary register read address A (16 registers)
     logic [3:0]  raddr_b;      // ternary register read address B
-    logic [3:0]  waddr;        // ternary register write address  
+    logic [3:0]  waddr;        // ternary register write address
     logic        we;           // ternary register write enable
     logic [31:0] wdata;        // ternary register write data (16 trits * 2 bits)
   } core2trf_t;

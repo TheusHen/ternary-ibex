@@ -65,9 +65,9 @@ module ibex_neural_unit import ibex_pkg::*; (
       logic signed [1:0] weight_int;
       logic signed [1:0] input_int;
       logic signed [7:0] product;  // Match accumulator width
-      
+
       logic signed [3:0] product_temp;
-      
+
       weight = weights_i[i*2 +: 2];
       input_val = inputs_i[i*2 +: 2];
       weight_int = trit_to_int(weight);
