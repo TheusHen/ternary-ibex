@@ -28,6 +28,14 @@ package ibex_pkg;
     logic [4:0]  raddr_b;
   } core2rf_t;
 
+  typedef struct packed {
+    logic [3:0]  raddr_a;      // ternary register read address A (16 registers)
+    logic [3:0]  raddr_b;      // ternary register read address B
+    logic [3:0]  waddr;        // ternary register write address  
+    logic        we;           // ternary register write enable
+    logic [31:0] wdata;        // ternary register write data (16 trits * 2 bits)
+  } core2trf_t;
+
   /////////////////////
   // Parameter Enums //
   /////////////////////
@@ -67,7 +75,10 @@ package ibex_pkg;
     OPCODE_BRANCH   = 7'h63,
     OPCODE_JALR     = 7'h67,
     OPCODE_JAL      = 7'h6f,
-    OPCODE_SYSTEM   = 7'h73
+    OPCODE_SYSTEM   = 7'h73,
+    // MHX Ternary Extensions
+    OPCODE_TERNARY  = 7'h0b,  // Custom-0 opcode for ternary operations
+    OPCODE_NEURAL   = 7'h2b   // Custom-1 opcode for neural operations
   } opcode_e;
 
 
@@ -181,7 +192,16 @@ package ibex_pkg;
     ALU_CRC32_H,
     ALU_CRC32C_H,
     ALU_CRC32_W,
-    ALU_CRC32C_W
+    ALU_CRC32C_W,
+
+    // MHX Ternary Operations
+    ALU_TERNARY_ADD,
+    ALU_TERNARY_SUB,
+    ALU_TERNARY_MUL,
+    ALU_TERNARY_AND,
+    ALU_TERNARY_OR,
+    ALU_TERNARY_XOR,
+    ALU_TERNARY_NOT
   } alu_op_e;
 
   typedef enum logic [1:0] {
@@ -191,6 +211,39 @@ package ibex_pkg;
     MD_OP_DIV,
     MD_OP_REM
   } md_op_e;
+
+  ////////////////////////////
+  // MHX Ternary Operations //
+  ////////////////////////////
+
+  typedef enum logic [2:0] {
+    TERNARY_ADD = 3'b000,  // tadd
+    TERNARY_SUB = 3'b001,  // tsub
+    TERNARY_MUL = 3'b010,  // tmul
+    TERNARY_AND = 3'b011,  // tand
+    TERNARY_OR  = 3'b100,  // tor
+    TERNARY_XOR = 3'b101,  // txor
+    TERNARY_NOT = 3'b110   // tnot
+  } ternary_op_e;
+
+  typedef enum logic [1:0] {
+    NEURAL_MULTIPLY   = 2'b00,  // Multiply weights × inputs
+    NEURAL_ACCUMULATE = 2'b01,  // Sum products
+    NEURAL_ACTIVATE   = 2'b10,  // Apply activation function
+    NEURAL_LEARN      = 2'b11   // Update weights (learning)
+  } neural_op_e;
+
+  // Ternary encoding: each trit uses 2 bits
+  // 2'b00 = -1 (negative)
+  // 2'b01 = 0  (zero)
+  // 2'b10 = +1 (positive)
+  // 2'b11 = invalid
+  typedef enum logic [1:0] {
+    TRIT_NEG = 2'b00,  // -1
+    TRIT_ZERO = 2'b01, // 0
+    TRIT_POS = 2'b10,  // +1
+    TRIT_INVALID = 2'b11
+  } trit_e;
 
 
   //////////////////////////////////
