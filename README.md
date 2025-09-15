@@ -1,8 +1,3 @@
-[Ibex OpenTitan configuration Nightly Regression](https://ibex.reports.lowrisc.org/opentitan/latest/report.html)
-<a href="https://ibex.reports.lowrisc.org/opentitan/latest/report.html">
-  <img src="https://ibex.reports.lowrisc.org/opentitan/latest/summary.svg">
-</a>
-
 # Ibex RISC-V Core
 
 Ibex is a production-quality open source 32-bit RISC-V CPU core written in
@@ -12,7 +7,7 @@ seen multiple tape-outs. Ibex supports the Integer (I) or Embedded (E),
 Integer Multiplication and Division (M), Compressed (C), and B (Bit
 Manipulation) extensions.
 
-## 🚀 MHX Core: Ternary Extensions
+## MHX Core: Ternary Extensions
 
 This repository now includes the **MHX Core**, an enhanced version of Ibex with native ternary (base-3) processing capabilities for accelerated AI workloads. The MHX Core provides:
 
@@ -23,8 +18,6 @@ This repository now includes the **MHX Core**, an enhanced version of Ibex with 
 - **Full Backward Compatibility** with existing RISC-V RV32IMC code
 
 For complete documentation, see [MHX_README.md](MHX_README.md).
-
-<p align="center"><img src="doc/03_reference/images/blockdiagram.svg" width="650"></p>
 
 Ibex was initially developed as part of the [PULP platform](https://www.pulp-platform.org)
 under the name ["Zero-riscy"](https://doi.org/10.1109/PATMOS.2017.8106976), and has been
@@ -110,11 +103,6 @@ To get started, please check out the ["Good First Issue"
 If you find any problems or issues with Ibex or the documentation, please check out the [issue
  tracker](https://github.com/lowrisc/ibex/issues) and create a new issue if your problem is
 not yet tracked.
-
-## Questions?
-
-Do not hesitate to contact us, e.g., on our public [Ibex channel on
-Zulip](https://lowrisc.zulipchat.com/#narrow/stream/198227-ibex)!
 
 ## License
 
