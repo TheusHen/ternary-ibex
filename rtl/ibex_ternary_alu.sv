@@ -16,9 +16,6 @@
 `include "prim_assert.sv"
 
 module ibex_ternary_alu import ibex_pkg::*; (
-  input  logic              clk_i,
-  input  logic              rst_ni,
-
   input  logic [31:0]       operand_a_i,  // 16 trits * 2 bits
   input  logic [31:0]       operand_b_i,  // 16 trits * 2 bits
   input  ternary_op_e       operator_i,
@@ -139,77 +136,48 @@ module ibex_ternary_alu import ibex_pkg::*; (
     case (operator_i)
       TERNARY_ADD: begin
         for (int i = 0; i < 16; i++) begin
-          logic [1:0] trit_a;
-          logic [1:0] trit_b;
-          trit_a = operand_a_i[i*2 +: 2];
-          trit_b = operand_b_i[i*2 +: 2];
-          result_o[i*2 +: 2] = trit_add(trit_a, trit_b);
+          result_o[i*2 +: 2] = trit_add(operand_a_i[i*2 +: 2], operand_b_i[i*2 +: 2]);
         end
       end
 
       TERNARY_SUB: begin
         for (int i = 0; i < 16; i++) begin
-          logic [1:0] trit_a;
-          logic [1:0] trit_b;
-          trit_a = operand_a_i[i*2 +: 2];
-          trit_b = operand_b_i[i*2 +: 2];
-          result_o[i*2 +: 2] = trit_sub(trit_a, trit_b);
+          result_o[i*2 +: 2] = trit_sub(operand_a_i[i*2 +: 2], operand_b_i[i*2 +: 2]);
         end
       end
 
       TERNARY_MUL: begin
         for (int i = 0; i < 16; i++) begin
-          logic [1:0] trit_a;
-          logic [1:0] trit_b;
-          trit_a = operand_a_i[i*2 +: 2];
-          trit_b = operand_b_i[i*2 +: 2];
-          result_o[i*2 +: 2] = trit_mul(trit_a, trit_b);
+          result_o[i*2 +: 2] = trit_mul(operand_a_i[i*2 +: 2], operand_b_i[i*2 +: 2]);
         end
       end
 
       TERNARY_AND: begin
         for (int i = 0; i < 16; i++) begin
-          logic [1:0] trit_a;
-          logic [1:0] trit_b;
-          trit_a = operand_a_i[i*2 +: 2];
-          trit_b = operand_b_i[i*2 +: 2];
-          result_o[i*2 +: 2] = trit_and(trit_a, trit_b);
+          result_o[i*2 +: 2] = trit_and(operand_a_i[i*2 +: 2], operand_b_i[i*2 +: 2]);
         end
       end
 
       TERNARY_OR: begin
         for (int i = 0; i < 16; i++) begin
-          logic [1:0] trit_a;
-          logic [1:0] trit_b;
-          trit_a = operand_a_i[i*2 +: 2];
-          trit_b = operand_b_i[i*2 +: 2];
-          result_o[i*2 +: 2] = trit_or(trit_a, trit_b);
+          result_o[i*2 +: 2] = trit_or(operand_a_i[i*2 +: 2], operand_b_i[i*2 +: 2]);
         end
       end
 
       TERNARY_XOR: begin
         for (int i = 0; i < 16; i++) begin
-          logic [1:0] trit_a;
-          logic [1:0] trit_b;
-          trit_a = operand_a_i[i*2 +: 2];
-          trit_b = operand_b_i[i*2 +: 2];
-          result_o[i*2 +: 2] = trit_xor(trit_a, trit_b);
+          result_o[i*2 +: 2] = trit_xor(operand_a_i[i*2 +: 2], operand_b_i[i*2 +: 2]);
         end
       end
 
       TERNARY_NOT: begin
         for (int i = 0; i < 16; i++) begin
-          logic [1:0] trit_a;
-          trit_a = operand_a_i[i*2 +: 2];
-          result_o[i*2 +: 2] = trit_not(trit_a);
+          result_o[i*2 +: 2] = trit_not(operand_a_i[i*2 +: 2]);
         end
       end
 
       default: result_o = 32'h55555555; // All zeros in ternary
     endcase
   end
-
-  // Assertions for debugging
-  `ASSERT(TernaryAluValidOp, operator_i >= TERNARY_ADD && operator_i <= TERNARY_NOT, clk_i, !rst_ni)
 
 endmodule

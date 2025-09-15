@@ -280,7 +280,6 @@ module ibex_core import ibex_pkg::*; #(
   logic [3:0]  ternary_raddr_a_id;
   logic [3:0]  ternary_raddr_b_id;
   logic [3:0]  ternary_waddr_id;
-  logic        ternary_we_id;
 
   // Ternary Register File Signals
   logic [31:0] ternary_rdata_a;
@@ -900,13 +899,11 @@ module ibex_core import ibex_pkg::*; #(
     ternary_raddr_a_id = 4'b0;
     ternary_raddr_b_id = 4'b0;
     ternary_waddr_id   = 4'b0;
-    ternary_we_id      = 1'b0;
 
     if (instr_valid_id) begin
       case (current_opcode)
         OPCODE_TERNARY: begin
           ternary_en_id = 1'b1;
-          ternary_we_id = 1'b1;
           
           // Decode ternary operation from funct3
           case (instr_rdata_id[14:12])
@@ -928,7 +925,6 @@ module ibex_core import ibex_pkg::*; #(
 
         OPCODE_NEURAL: begin
           neural_en_id = 1'b1;
-          ternary_we_id = 1'b1;  // Neural results go to ternary registers
           
           // Decode neural operation from funct3
           case (instr_rdata_id[14:12])
@@ -973,8 +969,6 @@ module ibex_core import ibex_pkg::*; #(
   ////////////////////////////////////////////////
 
   ibex_ternary_alu ternary_alu_i (
-    .clk_i       (clk_i),
-    .rst_ni      (rst_ni),
     .operand_a_i (ternary_rdata_a),
     .operand_b_i (ternary_rdata_b),
     .operator_i  (ternary_op_id),
