@@ -6,6 +6,7 @@
 #define REGISTER_MODEL_H_
 
 #include <stdint.h>
+
 #include <memory>
 #include <vector>
 

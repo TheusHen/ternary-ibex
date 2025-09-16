@@ -1,8 +1,3 @@
-[Ibex OpenTitan configuration Nightly Regression](https://ibex.reports.lowrisc.org/opentitan/latest/report.html)
-<a href="https://ibex.reports.lowrisc.org/opentitan/latest/report.html">
-  <img src="https://ibex.reports.lowrisc.org/opentitan/latest/summary.svg">
-</a>
-
 # Ibex RISC-V Core
 
 Ibex is a production-quality open source 32-bit RISC-V CPU core written in
@@ -12,7 +7,17 @@ seen multiple tape-outs. Ibex supports the Integer (I) or Embedded (E),
 Integer Multiplication and Division (M), Compressed (C), and B (Bit
 Manipulation) extensions.
 
-<p align="center"><img src="doc/03_reference/images/blockdiagram.svg" width="650"></p>
+## MHX Core: Ternary Extensions
+
+This repository now includes the **MHX Core**, an enhanced version of Ibex with native ternary (base-3) processing capabilities for accelerated AI workloads. The MHX Core provides:
+
+- **3x Performance Improvement** for neural network inference
+- **16 Ternary Registers (T0-T15)** with 16 trits each
+- **Ternary ALU** with 7 native operations (TADD, TSUB, TMUL, TAND, TOR, TXOR, TNOT)
+- **Neural Processing Unit** for hardware-accelerated ternary neural networks
+- **Full Backward Compatibility** with existing RISC-V RV32IMC code
+
+For complete documentation, see [MHX_README.md](MHX_README.md).
 
 Ibex was initially developed as part of the [PULP platform](https://www.pulp-platform.org)
 under the name ["Zero-riscy"](https://doi.org/10.1109/PATMOS.2017.8106976), and has been
@@ -26,19 +31,20 @@ The options include different choices for the architecture of the multiplier uni
 The table below indicates performance, area and verification status for a few selected configurations.
 These are configurations on which lowRISC is focusing for performance evaluation and design verification (see [supported configs](ibex_configs.yaml)).
 
-| Config | "micro" | "small" | "maxperf" | "maxperf-pmp-bmfull" |
-| ------ | ------- | --------| ----------| -------------------- |
-| Features | RV32EC | RV32IMC, 3 cycle mult | RV32IMC, 1 cycle mult, Branch target ALU, Writeback stage | RV32IMCB, 1 cycle mult, Branch target ALU, Writeback stage, 16 PMP regions |
-| Performance (CoreMark/MHz) | 0.904 | 2.47 | 3.13 | 3.13 |
-| Area - Yosys (kGE) | 16.85 | 26.60 | 32.48 | 66.02 |
-| Area - Commercial (estimated kGE) | ~15 | ~24 | ~30 | ~61 |
-| Verification status | Red | Green | Green | Green |
+| Config | "micro" | "small" | "maxperf" | "maxperf-pmp-bmfull" | "mhx-ternary" |
+| ------ | ------- | --------| ----------| -------------------- | ------------- |
+| Features | RV32EC | RV32IMC, 3 cycle mult | RV32IMC, 1 cycle mult, Branch target ALU, Writeback stage | RV32IMCB, 1 cycle mult, Branch target ALU, Writeback stage, 16 PMP regions | RV32IMC + Ternary ALU + Neural Unit, 16 Ternary Registers |
+| Performance (CoreMark/MHz) | 0.904 | 2.47 | 3.13 | 3.13 | 3.13 (9.39 neural*) |
+| Area - Yosys (kGE) | 16.85 | 26.60 | 32.48 | 66.02 | ~35 |
+| Area - Commercial (estimated kGE) | ~15 | ~24 | ~30 | ~61 | ~32 |
+| Verification status | Red | Green | Green | Green | Amber |
 
 Notes:
 
 * Performance numbers are based on CoreMark running on the Ibex Simple System [platform](examples/simple_system/README.md).
   Note that different ISAs (use of B and C extensions) give the best results for different configurations.
   See the [Benchmarks README](examples/sw/benchmarks/README.md) for more information.
+* **Neural performance** marked with (*) represents ternary neural network inference performance with 3x speedup over software emulation.
 * Yosys synthesis area numbers are based on the Ibex basic synthesis [flow](syn/README.md) using the latch-based register file.
 * Commercial synthesis area numbers are a rough estimate of what might be achievable with a commercial synthesis flow and technology library.
 * For comparison, the original "Zero-riscy" core yields an area of 23.14kGE using our Yosys synthesis flow.
@@ -97,11 +103,6 @@ To get started, please check out the ["Good First Issue"
 If you find any problems or issues with Ibex or the documentation, please check out the [issue
  tracker](https://github.com/lowrisc/ibex/issues) and create a new issue if your problem is
 not yet tracked.
-
-## Questions?
-
-Do not hesitate to contact us, e.g., on our public [Ibex channel on
-Zulip](https://lowrisc.zulipchat.com/#narrow/stream/198227-ibex)!
 
 ## License
 

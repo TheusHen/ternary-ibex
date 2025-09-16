@@ -509,7 +509,17 @@ module ibex_id_stage #(
 
     // jump/branches
     .jump_in_dec_o  (jump_in_dec),
-    .branch_in_dec_o(branch_in_dec)
+    .branch_in_dec_o(branch_in_dec),
+
+    // MHX Ternary Operations
+    .ternary_en_o      (/* unused */),
+    .neural_en_o       (/* unused */),
+    .ternary_op_o      (/* unused */),
+    .neural_op_o       (/* unused */),
+    .ternary_raddr_a_o (/* unused */),
+    .ternary_raddr_b_o (/* unused */),
+    .ternary_waddr_o   (/* unused */),
+    .ternary_we_o      (/* unused */)
   );
 
   // Flush pipe on most CSR modification. Some CSR modifications alter how instructions execute

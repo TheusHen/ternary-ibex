@@ -5,12 +5,12 @@
 #ifndef REGISTER_DRIVER_H_
 #define REGISTER_DRIVER_H_
 
+#include <random>
+#include <string>
+
 #include "register_model.h"
 #include "register_transaction.h"
 #include "simctrl.h"
-
-#include <random>
-#include <string>
 
 /**
  * Class to randomize and drive CS register reads/writes

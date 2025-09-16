@@ -1,0 +1,85 @@
+CAPI=2:
+
+# Copyright lowRISC contributors.
+# Licensed under the Apache License, Version 2.0, see LICENSE for details.
+# SPDX-License-Identifier: Apache-2.0
+
+name: lowrisc:ibex:mhx_ternary_test:0.1
+description: MHX Ternary Extension Testbench
+
+filesets:
+  files_rtl:
+    depend:
+      - lowrisc:prim:assert
+      - lowrisc:ibex:ibex_pkg
+    files:
+      - rtl/ibex_ternary_regfile.sv
+      - rtl/ibex_ternary_alu.sv
+      - rtl/ibex_neural_unit.sv
+      - dv/mhx_ternary_test.sv
+    file_type: systemVerilogSource
+
+  files_verilator_cpp:
+    files:
+      - dv/mhx_ternary_test_main.cpp
+    file_type: cppSource
+
+  files_verilator_waiver:
+    depend:
+      # common waivers
+      - lowrisc:lint:common
+    files:
+      - lint/mhx_ternary_test.vlt
+    file_type: vlt
+
+  files_ascentlint_waiver:
+    depend:
+      - lowrisc:lint:common
+    files:
+      - lint/mhx_ternary_test.waiver
+    file_type: waiver
+
+  files_veriblelint_waiver:
+    depend:
+      - lowrisc:lint:common
+
+targets:
+  default: &default_target
+    filesets:
+      - tool_verilator ? (files_verilator_waiver)
+      - tool_ascentlint ? (files_ascentlint_waiver)
+      - tool_veriblelint ? (files_veriblelint_waiver)
+      - files_rtl
+    toplevel: mhx_ternary_test
+
+  sim:
+    <<: *default_target
+    filesets:
+      - tool_verilator ? (files_verilator_waiver)
+      - tool_ascentlint ? (files_ascentlint_waiver)
+      - tool_veriblelint ? (files_veriblelint_waiver)
+      - files_rtl
+      - tool_verilator ? (files_verilator_cpp)
+    default_tool: verilator
+    tools:
+      verilator:
+        mode: cc
+        verilator_options:
+          - '--trace'
+          - '-CFLAGS "-std=c++11"'
+
+  lint:
+    <<: *default_target
+    default_tool: verilator
+    tools:
+      verilator:
+        mode: lint-only
+        verilator_options:
+          - "-Wall"
+      veriblelint:
+        rules:
+          - "-line-length"
+          - "-parameter-name-style"
+      ascentlint:
+        ascentlint_options:
+          - "-wait_for_license"

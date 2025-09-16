@@ -5,11 +5,12 @@
 #ifndef BASE_REGISTER_H_
 #define BASE_REGISTER_H_
 
-#include "register_transaction.h"
-
 #include <stdint.h>
+
 #include <memory>
 #include <vector>
+
+#include "register_transaction.h"
 
 /**
  * Base register class, can be specialized to add advanced functionality

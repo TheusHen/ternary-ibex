@@ -10,6 +10,7 @@ git+https://github.com/lowRISC/fusesoc.git@ot
 
 packaging
 pyyaml
+anytree
 mako
 junit-xml
 # dataclass  # needed for backports?

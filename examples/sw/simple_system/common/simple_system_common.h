@@ -96,6 +96,16 @@ void timer_disable(void);
 uint64_t get_elapsed_time(void);
 
 /**
+ * Returns current mcycle counter value
+ */
+uint64_t get_mcycle(void);
+
+/**
+ * Copy memory areas
+ */
+void *memcpy(void *dest, const void *src, uint32_t n);
+
+/**
  * Enables/disables the instruction cache. This has no effect on Ibex
  * configurations that do not have an instruction cache and in particular is
  * safe to execute on those configurations.

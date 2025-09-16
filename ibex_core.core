@@ -35,6 +35,9 @@ filesets:
       - rtl/ibex_pmp.sv
       - rtl/ibex_wb_stage.sv
       - rtl/ibex_dummy_instr.sv
+      - rtl/ibex_ternary_regfile.sv
+      - rtl/ibex_ternary_alu.sv
+      - rtl/ibex_neural_unit.sv
       - rtl/ibex_core.sv
     file_type: systemVerilogSource
 

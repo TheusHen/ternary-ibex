@@ -9,7 +9,7 @@ ibex:
     rtl/ibex_compressed_decoder.sv,
     rtl/ibex_controller.sv,
     rtl/ibex_cs_registers.sv,
-    rtl/ibex_counters.sv,
+    rtl/ibex_counter.sv,
     rtl/ibex_decoder.sv,
     rtl/ibex_ex_block.sv,
     rtl/ibex_id_stage.sv,
@@ -21,6 +21,9 @@ ibex:
     rtl/ibex_prefetch_buffer.sv,
     rtl/ibex_fetch_fifo.sv,
     rtl/ibex_pmp.sv,
+    rtl/ibex_ternary_regfile.sv,
+    rtl/ibex_ternary_alu.sv,
+    rtl/ibex_neural_unit.sv,
     rtl/ibex_core.sv,
     shared/rtl/prim_assert.sv,
   ]
