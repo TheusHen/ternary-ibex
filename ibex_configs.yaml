@@ -173,6 +173,26 @@ maxperf-pmp-bmfull-icache:
 # Configurations using experimental features that aren't yet verified and/or
 # known to have issues.
 
+# MHX Core configuration with ternary extensions for neural processing
+mhx:
+  RV32E                    : 0
+  RV32M                    : "ibex_pkg::RV32MFast"
+  RV32B                    : "ibex_pkg::RV32BNone"
+  RegFile                  : "ibex_pkg::RegFileFF"
+  BranchTargetALU          : 1
+  WritebackStage           : 1
+  ICache                   : 0
+  ICacheECC                : 0
+  ICacheScramble           : 0
+  BranchPredictor          : 0
+  DbgTriggerEn             : 0
+  SecureIbex               : 0
+  PMPEnable                : 0
+  PMPGranularity           : 0
+  PMPNumRegions            : 4
+  MHPMCounterNum           : 0
+  MHPMCounterWidth         : 40
+
 experimental-branch-predictor:
   RV32E                    : 0
   RV32M                    : "ibex_pkg::RV32MSingleCycle"

@@ -11,7 +11,7 @@ help:
 	@echo "or how to set-up the different environments."
 
 # Use a parallel run (make -j N) for a faster build
-build-all: build-riscv-compliance build-simple-system \
+build-all: build-riscv-compliance build-simple-system build-mhx-system \
       build-csr-test
 
 
@@ -50,6 +50,31 @@ $(Vibex_simple_system):
 run-simple-system: sw-simple-hello | $(Vibex_simple_system)
 	build/lowrisc_ibex_ibex_simple_system_0/sim-verilator/Vibex_simple_system \
 		--raminit=$(simple-system-program)
+
+
+# MHX Simple System
+# Use the following targets:
+# - "build-mhx-system"
+# - "run-mhx-system"
+.PHONY: build-mhx-system
+build-mhx-system:
+	fusesoc --cores-root=. run --target=sim --setup --build \
+		lowrisc:mhx:mhx_simple_system \
+		$(FUSESOC_CONFIG_OPTS)
+
+mhx-system-program = examples/sw/simple_system/hello_test/hello_test.vmem
+sw-mhx-hello: $(mhx-system-program)
+
+Vmhx_simple_system = \
+      build/lowrisc_mhx_mhx_simple_system_0/sim-verilator/Vmhx_simple_system
+$(Vmhx_simple_system):
+	@echo "$@ not found"
+	@echo "Run \"make build-mhx-system\" to create the dependency"
+	@false
+
+run-mhx-system: sw-mhx-hello | $(Vmhx_simple_system)
+	build/lowrisc_mhx_mhx_simple_system_0/sim-verilator/Vmhx_simple_system \
+		--raminit=$(mhx-system-program)
 
 
 # Lint check
