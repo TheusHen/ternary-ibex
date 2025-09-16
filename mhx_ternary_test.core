@@ -75,6 +75,7 @@ targets:
         verilator_options:
           - "--top-module mhx_ternary_test"
           - "-Wall"
+          - "--no-timing"
       veriblelint:
         rules:
           - "-line-length"
