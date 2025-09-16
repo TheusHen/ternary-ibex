@@ -1,0 +1,58 @@
+CAPI=2:
+# Copyright lowRISC contributors.
+# Copyright 2025 MHX Neural.
+# Licensed under the Apache License, Version 2.0, see LICENSE for details.
+# SPDX-License-Identifier: Apache-2.0
+
+name: "lowrisc:mhx:mhx_simple_system_test"
+description: "Testbench for MHX Neural T1 Simple System"
+
+filesets:
+  files_sim:
+    depend:
+      - lowrisc:mhx:mhx_simple_system_core
+    files:
+      - mhx_simple_system_tests/mhx_simple_system_test.sv
+    file_type: systemVerilogSource
+
+  files_verilator:
+    depend:
+      - lowrisc:dv_verilator:simutil_verilator
+    files:
+      - mhx_simple_system_tests/mhx_simple_system_test_main.cpp: { file_type: cppSource }
+      - mhx_simple_system_tests/verilator_waiver.vlt: { file_type: vlt }
+
+targets:
+  default:
+    filesets:
+      - files_sim
+      - tool_verilator ? (files_verilator)
+    toplevel: mhx_simple_system_test
+
+  sim:
+    <<: *default
+    default_tool: verilator
+    tools:
+      verilator:
+        mode: cc
+        verilator_options:
+          - '--trace'
+          - '--trace-fst'
+          - '--trace-structs'
+          - '--trace-params'
+          - '--trace-max-array 1024'
+          - '-CFLAGS "-std=c++17 -Wall -g"'
+          - '-LDFLAGS "-pthread -lutil"'
+          - "--unroll-count 72"
+        run_options:
+          - "+DUMP_VCD"
+
+  lint:
+    <<: *default
+    default_tool: verilator
+    tools:
+      verilator:
+        mode: lint-only
+        verilator_options:
+          - "-Wall"
+          - "--unroll-count 72"

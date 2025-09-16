@@ -77,6 +77,31 @@ run-mhx-system: sw-mhx-hello | $(Vmhx_simple_system)
 		--raminit=$(mhx-system-program)
 
 
+# MHX Neural T1 Testing
+# Use the following targets:
+# - "test-mhx-all" - Run all MHX tests
+# - "test-mhx-lint" - Run MHX linting
+# - "test-mhx-build" - Run MHX build tests
+# - "test-mhx-sim" - Run MHX simulation tests
+# - "test-mhx-fpga" - Run MHX FPGA validation
+.PHONY: test-mhx-all test-mhx-lint test-mhx-build test-mhx-sim test-mhx-fpga
+
+test-mhx-all:
+	util/mhx_tests/run_mhx_tests.sh all
+
+test-mhx-lint:
+	util/mhx_tests/run_mhx_tests.sh lint
+
+test-mhx-build:
+	util/mhx_tests/run_mhx_tests.sh build
+
+test-mhx-sim:
+	util/mhx_tests/run_mhx_tests.sh sim
+
+test-mhx-fpga:
+	util/mhx_tests/run_mhx_tests.sh fpga
+
+
 # Lint check
 .PHONY: lint-core-tracing
 lint-core-tracing:
