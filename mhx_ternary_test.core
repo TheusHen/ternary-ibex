@@ -10,6 +10,7 @@ description: MHX Ternary Extension Testbench
 filesets:
   files_rtl:
     depend:
+      - lowrisc:prim:assert
       - lowrisc:ibex:ibex_pkg
     files:
       - rtl/ibex_ternary_regfile.sv
@@ -73,6 +74,7 @@ targets:
         mode: lint-only
         verilator_options:
           - "--top-module mhx_ternary_test"
+          - "-Wall"
       veriblelint:
         rules:
           - "-line-length"

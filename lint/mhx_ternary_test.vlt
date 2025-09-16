@@ -1,11 +1,11 @@
-# Verilator waiver file for MHX ternary test
-# Waive warnings that are expected in test code
+// Verilator waiver file for MHX ternary test
+// Waive warnings that are expected in test code
 
-# Allow unused signals in testbench
+// Allow unused signals in testbench
 lint_off -rule UNUSED -file "*mhx_ternary_test*"
 
-# Allow undriven signals in testbench
+// Allow undriven signals in testbench
 lint_off -rule UNDRIVEN -file "*mhx_ternary_test*"
 
-# Allow width warnings for test patterns
+// Allow width warnings for test patterns
 lint_off -rule WIDTH -file "*mhx_ternary_test*"
