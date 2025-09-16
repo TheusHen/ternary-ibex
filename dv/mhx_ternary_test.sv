@@ -90,19 +90,17 @@ module mhx_ternary_test;
   endtask
 
   task automatic write_ternary_reg(input logic [3:0] addr, input logic [31:0] data);
-    @(posedge clk);
     trf_waddr = addr;
     trf_wdata = data;
     trf_we = 1'b1;
-    @(posedge clk);
+    repeat(2) @(posedge clk);
     trf_we = 1'b0;
   endtask
 
   task automatic read_ternary_reg(input logic [3:0] addr_a, input logic [3:0] addr_b);
-    @(posedge clk);
     trf_raddr_a = addr_a;
     trf_raddr_b = addr_b;
-    @(posedge clk);
+    repeat(2) @(posedge clk);
     // Data available immediately (asynchronous read)
   endtask
 
@@ -122,7 +120,7 @@ module mhx_ternary_test;
 
     // Perform addition
     talu_op = TERNARY_ADD;
-    @(posedge clk);
+    repeat(2) @(posedge clk);
 
     // Check result
     if (talu_ready && (talu_result == expected)) begin
@@ -152,7 +150,7 @@ module mhx_ternary_test;
 
     // Perform multiplication
     talu_op = TERNARY_MUL;
-    @(posedge clk);
+    repeat(2) @(posedge clk);
 
     // Check result
     if (talu_ready && (talu_result == expected)) begin
@@ -180,7 +178,7 @@ module mhx_ternary_test;
 
     // Perform neural multiply operation
     neural_op = NEURAL_MULTIPLY;
-    @(posedge clk);
+    repeat(2) @(posedge clk);
 
     // Check result (16 * (+1) * (+1) + 0 = 16)
     if (neural_valid && (neural_result[7:0] == 8'd16)) begin
@@ -204,7 +202,7 @@ module mhx_ternary_test;
 
     // Perform neural activation
     neural_op = NEURAL_ACTIVATE;
-    @(posedge clk);
+    repeat(2) @(posedge clk);
 
     // Check result (should be +1 since accumulation > 1)
     if (neural_valid && (neural_result[1:0] == TRIT_POS)) begin
