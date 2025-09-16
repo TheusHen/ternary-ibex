@@ -54,17 +54,8 @@ targets:
       verilator:
         mode: cc
         verilator_options:
-          - '--assert'
           - '--trace'
-          - '--trace-fst' # this requires -DVM_TRACE_FMT_FST in CPPFLAGS below!
-          - '--trace-structs'
-          - '--trace-params'
-          - '--trace-max-array 1024'
-          - '-CFLAGS "-std=c++11 -Wall -DVM_TRACE_FMT_FST -DTOPLEVEL_NAME=mhx_ternary_test"'
-          - '-LDFLAGS "-pthread -lutil -lelf"'
-          - "--x-assign=fast"
-          - "--x-initial=fast"
-          - "--noassert"
+          - '-CFLAGS "-std=c++11"'
 
   lint:
     <<: *default_target
@@ -73,9 +64,7 @@ targets:
       verilator:
         mode: lint-only
         verilator_options:
-          - "--top-module mhx_ternary_test"
           - "-Wall"
-          - "--no-timing"
       veriblelint:
         rules:
           - "-line-length"
