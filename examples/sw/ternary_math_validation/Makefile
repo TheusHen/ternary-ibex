@@ -7,3 +7,11 @@
 PROGRAM = ternary_math_validation
 PROGRAM_DIR := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 EXTRA_SRCS :=
+
+all: $(PROGRAM)
+
+$(PROGRAM): ternary_math_validation.c
+	$(CC) $(CFLAGS) -o $@ $^
+
+clean:
+	rm -f $(PROGRAM)
