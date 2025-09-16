@@ -4,9 +4,9 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /**
- * FPGA Top-level for MHX Simple System
+ * FPGA Top-level for MHX Neural T1 Simple System (Prototype)
  *
- * This module provides the top-level interface for running the MHX Simple System
+ * This module provides the top-level interface for running the MHX Neural T1 Simple System
  * on FPGA hardware. It includes clock generation, reset logic, and external
  * interfaces for GPIO and UART.
  */
@@ -63,7 +63,7 @@ module mhx_fpga_top (
   assign led_o = mhx_gpio_o[3:0];
   assign mhx_gpio_i = {sw_i, btn_i};
 
-  // MHX Simple System instance
+  // MHX Neural T1 Simple System instance
   mhx_simple_system #(
     .RV32E           (1'b0),
     .RV32M           (ibex_pkg::RV32MFast),
@@ -77,7 +77,7 @@ module mhx_fpga_top (
     .PMPEnable       (1'b0),
     .PMPNumRegions   (4),
     .SRAMInitFile    ("firmware.vmem")
-  ) u_mhx_system (
+  ) u_mhx_neural_t1_system (
     .IO_CLK  (clk_50mhz),
     .IO_RST_N(rst_n),
     

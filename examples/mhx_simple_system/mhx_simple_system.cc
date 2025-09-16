@@ -86,8 +86,8 @@ int MhxSystem::Setup(int argc, char **argv, bool &exit_app) {
 void MhxSystem::Run() {
   VerilatorSimCtrl &simctrl = VerilatorSimCtrl::GetInstance();
 
-  std::cout << "Simulation of MHX Core (Ternary-Extended Ibex)" << std::endl
-            << "===============================================" << std::endl
+  std::cout << "Simulation of MHX Neural T1 (Ternary-Extended Ibex) [Prototype]" << std::endl
+            << "=================================================================" << std::endl
             << std::endl;
 
   simctrl.RunSimulation();
@@ -114,7 +114,7 @@ bool MhxSystem::Finish() {
 
   std::cout << "\nTernary Extension Status" << std::endl
             << "========================" << std::endl;
-  std::cout << "MHX Ternary Extensions: Active" << std::endl;
+  std::cout << "MHX Neural T1 Ternary Extensions: Active (Prototype)" << std::endl;
   std::cout << "Ternary ALU: Available" << std::endl;
   std::cout << "Neural Processing Unit: Available" << std::endl;
 

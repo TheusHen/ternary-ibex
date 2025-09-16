@@ -4,7 +4,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /**
- * Ternary Register File for MHX Core
+ * Ternary Register File for MHX Neural T1
  *
  * Features:
  * - 16 ternary registers (T0-T15)

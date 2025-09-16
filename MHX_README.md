@@ -1,10 +1,10 @@
-# MHX Core: Ternary Extensions for Ibex RISC-V
+# MHX Neural T1: Ternary Extensions for Ibex RISC-V (Prototype)
 
-This repository contains the MHX Core, an enhanced version of the Ibex RISC-V core with native ternary (base-3) processing capabilities for accelerated artificial intelligence workloads.
+This repository contains the MHX Neural T1, a prototype enhanced version of the Ibex RISC-V core with native ternary (base-3) processing capabilities for accelerated artificial intelligence workloads.
 
 ## Overview
 
-The MHX Core extends the standard Ibex RISC-V core (RV32IMC) with:
+The MHX Neural T1 extends the standard Ibex RISC-V core (RV32IMC) with:
 
 - **16 Ternary Registers** (T0-T15): Each holding 16 trits (32 bits total)
 - **Ternary ALU**: Native base-3 arithmetic and logical operations
@@ -22,7 +22,7 @@ The MHX Core extends the standard Ibex RISC-V core (RV32IMC) with:
 ## Architecture
 
 ```
-MHX Core (RV32IMC + Ternary Extension):
+MHX Neural T1 (RV32IMC + Ternary Extension):
 ├── Standard RISC-V Pipeline (unchanged)
 │   ├── IF Stage: Instruction Fetch
 │   ├── ID Stage: Instruction Decode (extended)
@@ -190,7 +190,7 @@ cd dv
 
 ### Performance Benchmarks
 
-| Application | Binary Ibex | MHX Core | Improvement |
+| Application | Binary Ibex | MHX Neural T1 | Improvement |
 |-------------|-------------|----------|-------------|
 | MNIST Classification | 15ms | 5ms | 3.0x faster |
 | Image Convolution | 8ms | 2.5ms | 3.2x faster |
@@ -221,13 +221,14 @@ This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENS
 
 ## Citation
 
-If you use the MHX Core in your research, please cite:
+If you use the MHX Neural T1 in your research, please cite:
 
 ```bibtex
-@misc{mhx_core_2024,
-  title={MHX Core: Ternary RISC-V Extensions for Accelerated AI},
+@misc{mhx_neural_t1_2024,
+  title={MHX Neural T1: Ternary RISC-V Extensions for Accelerated AI},
   author={MHX Development Team},
   year={2024},
+  note={Prototype Implementation},
   howpublished={\url{https://github.com/TheusHen/ternary-ibex}}
 }
 ```
@@ -240,4 +241,4 @@ If you use the MHX Core in your research, please cite:
 
 ---
 
-**The MHX Core: Where RISC-V meets Ternary AI 🚀**
+**The MHX Neural T1: Where RISC-V meets Ternary AI 🚀** *(Prototype)*

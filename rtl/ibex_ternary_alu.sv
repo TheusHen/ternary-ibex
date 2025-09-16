@@ -4,7 +4,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /**
- * Ternary Arithmetic Logic Unit for MHX Core
+ * Ternary Arithmetic Logic Unit for MHX Neural T1
  *
  * Performs arithmetic and logical operations on ternary data.
  * Each trit is encoded using 2 bits:

@@ -59,7 +59,7 @@ void delay(int cycles) {
 }
 
 void test_ternary_operations() {
-    uart_puts("Testing MHX Ternary Extensions...\r\n");
+    uart_puts("Testing MHX Neural T1 Ternary Extensions...\r\n");
     
     // Placeholder for ternary operations
     // In real implementation, these would use ternary assembly instructions
@@ -99,10 +99,10 @@ int main() {
     gpio_init();
     
     uart_puts("\r\n");
-    uart_puts("======================================\r\n");
-    uart_puts("MHX Simple System - Hello World\r\n");
-    uart_puts("Ternary-Extended RISC-V Processor\r\n");
-    uart_puts("======================================\r\n");
+    uart_puts("==========================================\r\n");
+    uart_puts("MHX Neural T1 Simple System - Hello World\r\n");
+    uart_puts("Ternary-Extended RISC-V Processor (Prototype)\r\n");
+    uart_puts("==========================================\r\n");
     uart_puts("\r\n");
     
     // LED test pattern
@@ -115,7 +115,7 @@ int main() {
     test_neural_operations();
     
     uart_puts("\r\n");
-    uart_puts("MHX Demo completed successfully!\r\n");
+    uart_puts("MHX Neural T1 Demo completed successfully!\r\n");
     uart_puts("System features:\r\n");
     uart_puts("- RISC-V RV32IMC base ISA\r\n");
     uart_puts("- Ternary arithmetic extensions\r\n");

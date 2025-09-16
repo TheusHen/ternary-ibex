@@ -4,7 +4,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /**
- * Neural Processing Unit for MHX Core
+ * Neural Processing Unit for MHX Neural T1
  *
  * Specialized unit for ternary neural network operations:
  * - Weight × Input multiplication

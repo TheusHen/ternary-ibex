@@ -6,7 +6,7 @@ set -e
 BOARD=${1:-arty_a7}
 PROJECT_ROOT="$(dirname "$(readlink -f "$0")")/../../../"
 
-echo "Building MHX Simple System for $BOARD"
+echo "Building MHX Neural T1 Simple System for $BOARD"
 echo "Project root: $PROJECT_ROOT"
 
 case $BOARD in

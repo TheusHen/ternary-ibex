@@ -1,6 +1,6 @@
-# FPGA Synthesis for MHX Simple System
+# FPGA Synthesis for MHX Neural T1 Simple System (Prototype)
 
-This directory contains FPGA synthesis scripts and constraints for implementing the MHX Simple System (ternary-extended Ibex) on various FPGA development boards.
+This directory contains FPGA synthesis scripts and constraints for implementing the MHX Neural T1 Simple System (ternary-extended Ibex) on various FPGA development boards.
 
 ## Supported Boards
 
@@ -19,7 +19,7 @@ This directory contains FPGA synthesis scripts and constraints for implementing 
 ## Prerequisites
 
 - Xilinx Vivado (2020.1 or later)
-- MHX Simple System RTL files
+- MHX Neural T1 Simple System RTL files
 - RISC-V toolchain for firmware compilation
 
 ## Building for FPGA
@@ -100,7 +100,7 @@ set_property -dict [list CONFIG.SRAMInitFile {firmware.vmem}] [get_cells u_mhx_s
 
 ## Ternary Extensions on FPGA
 
-The FPGA implementation includes all MHX ternary extensions:
+The FPGA implementation includes all MHX Neural T1 ternary extensions:
 
 - **Ternary ALU**: Hardware acceleration for ternary arithmetic
 - **Neural Processing Unit**: Single-cycle neural operations  
@@ -121,7 +121,7 @@ Typical synthesis results on Artix-7:
 
 ### UART Console
 
-Connect to the UART (115200 baud, 8N1) to see debug output from the MHX system:
+Connect to the UART (115200 baud, 8N1) to see debug output from the MHX Neural T1 system:
 
 ```bash
 screen /dev/ttyUSB1 115200  # Linux
@@ -138,8 +138,8 @@ To add signal probing for debugging:
 
 ### LEDs and Switches
 
-- **LEDs**: Show GPIO output values from the MHX system
-- **Switches**: Provide input to the MHX system via GPIO
+- **LEDs**: Show GPIO output values from the MHX Neural T1 system
+- **Switches**: Provide input to the MHX Neural T1 system via GPIO
 - **Buttons**: Can trigger interrupts or provide additional input
 
 ## Troubleshooting

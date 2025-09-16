@@ -1,7 +1,7 @@
-# Vivado synthesis script for MHX Simple System on Arty A7
+# Vivado synthesis script for MHX Neural T1 Simple System on Arty A7
 
 # Set project properties
-set project_name "mhx_arty_a7"
+set project_name "mhx_neural_t1_arty_a7"
 set part_name "xc7a35ticsg324-1L"
 
 # Create project
@@ -75,6 +75,6 @@ if {[get_property PROGRESS [get_runs impl_1]] != "100%"} {
 # Export hardware
 write_hw_platform -fixed -include_bit -force -file ./${project_name}/${project_name}.xsa
 
-puts "MHX Arty A7 build completed successfully!"
+puts "MHX Neural T1 Arty A7 build completed successfully!"
 puts "Bitstream: ./${project_name}/${project_name}.runs/impl_1/mhx_fpga_top.bit"
 puts "Hardware platform: ./${project_name}/${project_name}.xsa"

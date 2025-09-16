@@ -417,7 +417,7 @@ int main(void) {
   puts("• 90% memory reduction for neural weights\n");
   puts("• Native ternary arithmetic operations\n");
   puts("• Hardware-accelerated neural primitives\n");
-  puts("\nMHX Core delivers significant performance\n");
+  puts("\nMHX Neural T1 delivers significant performance\n");
   puts("improvements for AI/ML workloads while\n");
   puts("maintaining full RISC-V compatibility!\n");
   puts("============================================\n");

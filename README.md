@@ -7,9 +7,9 @@ seen multiple tape-outs. Ibex supports the Integer (I) or Embedded (E),
 Integer Multiplication and Division (M), Compressed (C), and B (Bit
 Manipulation) extensions.
 
-## MHX Core: Ternary Extensions
+## MHX Neural T1: Ternary Extensions (Prototype)
 
-This repository now includes the **MHX Core**, an enhanced version of Ibex with native ternary (base-3) processing capabilities for accelerated AI workloads. The MHX Core provides:
+This repository now includes the **MHX Neural T1**, a prototype enhanced version of Ibex with native ternary (base-3) processing capabilities for accelerated AI workloads. The MHX Neural T1 provides:
 
 - **3x Performance Improvement** for neural network inference
 - **16 Ternary Registers (T0-T15)** with 16 trits each

@@ -173,7 +173,7 @@ maxperf-pmp-bmfull-icache:
 # Configurations using experimental features that aren't yet verified and/or
 # known to have issues.
 
-# MHX Core configuration with ternary extensions for neural processing
+# MHX Neural T1 configuration with ternary extensions for neural processing (Prototype)
 mhx:
   RV32E                    : 0
   RV32M                    : "ibex_pkg::RV32MFast"

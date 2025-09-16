@@ -1,4 +1,4 @@
-# Basys3 Constraints for MHX Simple System
+# Basys3 Constraints for MHX Neural T1 Simple System
 
 # Clock
 set_property -dict { PACKAGE_PIN W5   IOSTANDARD LVCMOS33 } [get_ports { clk_100mhz_i }]

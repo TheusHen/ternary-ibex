@@ -4,7 +4,7 @@ CAPI=2:
 # Licensed under the Apache License, Version 2.0, see LICENSE for details.
 # SPDX-License-Identifier: Apache-2.0
 name: "lowrisc:mhx:mhx_simple_system"
-description: "MHX simple system with ternary extensions for running binaries using verilator"
+description: "MHX Neural T1 simple system with ternary extensions for running binaries using verilator"
 filesets:
   files_simple_system:
     depend:

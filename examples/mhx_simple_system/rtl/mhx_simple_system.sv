@@ -20,12 +20,12 @@
 `endif
 
 /**
- * MHX simple system
+ * MHX Neural T1 simple system (Prototype)
  *
- * This is a basic system consisting of an MHX (ternary-extended Ibex) core,
+ * This is a basic system consisting of an MHX Neural T1 (ternary-extended Ibex) core,
  * a 1 MB SRAM for instruction/data, basic GPIO interface, UART for debug,
  * and a small memory mapped control module for outputting ASCII text and
- * controlling/halting the simulation from the software running on the MHX core.
+ * controlling/halting the simulation from the software running on the MHX Neural T1 core.
  *
  * It includes ternary extension demonstrations and neural processing capabilities.
  * Designed for FPGA prototyping and simulation testing.
@@ -205,7 +205,7 @@ module mhx_simple_system (
     assign instr_rdata_intg = '0;
   end
 
-  // MHX Core with ternary extensions
+  // MHX Neural T1 with ternary extensions
   ibex_top_tracing #(
       .SecureIbex      ( SecureIbex       ),
       .ICacheScramble  ( ICacheScramble   ),
@@ -228,7 +228,7 @@ module mhx_simple_system (
       .DmAddrMask      ( 32'h00000003     ),
       .DmHaltAddr      ( 32'h00100000     ),
       .DmExceptionAddr ( 32'h00100000     )
-    ) u_mhx_core (
+    ) u_mhx_neural_t1 (
       .clk_i                  (clk_sys),
       .rst_ni                 (rst_sys_n),
 
@@ -381,21 +381,21 @@ module mhx_simple_system (
   export "DPI-C" function mhpmcounter_num;
 
   function automatic int unsigned mhpmcounter_num();
-    return u_mhx_core.u_ibex_top.u_ibex_core.cs_registers_i.MHPMCounterNum;
+    return u_mhx_neural_t1.u_ibex_top.u_ibex_core.cs_registers_i.MHPMCounterNum;
   endfunction
 
   export "DPI-C" function mhpmcounter_get;
 
   function automatic longint unsigned mhpmcounter_get(int index);
-    return u_mhx_core.u_ibex_top.u_ibex_core.cs_registers_i.mhpmcounter[index];
+    return u_mhx_neural_t1.u_ibex_top.u_ibex_core.cs_registers_i.mhpmcounter[index];
   endfunction
 
-  // Export MHX ternary extension status for debugging
+  // Export MHX Neural T1 ternary extension status for debugging
   export "DPI-C" function mhx_ternary_status;
 
   function automatic int unsigned mhx_ternary_status();
     // Return status of ternary extensions (placeholder)
-    return 32'hDEADBEEF; // MHX signature
+    return 32'hDEADBEEF; // MHX Neural T1 signature
   endfunction
 
 endmodule
