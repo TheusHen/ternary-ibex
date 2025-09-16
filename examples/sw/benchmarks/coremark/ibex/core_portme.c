@@ -7,7 +7,6 @@
 #include "core_portme.h"
 
 #include "coremark.h"
-
 #include "simple_system_common.h"
 
 #if VALIDATION_RUN

@@ -132,7 +132,8 @@ void simple_exc_handler(void) {
   putchar('\n');
   sim_halt();
 
-  while(1);
+  while (1)
+    ;
 }
 
 volatile uint64_t time_elapsed;
