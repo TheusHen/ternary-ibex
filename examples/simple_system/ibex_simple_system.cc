@@ -2,13 +2,14 @@
 // Licensed under the Apache License, Version 2.0, see LICENSE for details.
 // SPDX-License-Identifier: Apache-2.0
 
+#include "ibex_simple_system.h"
+
 #include <cassert>
 #include <fstream>
 #include <iostream>
 
 #include "Vibex_simple_system__Syms.h"
 #include "ibex_pcounts.h"
-#include "ibex_simple_system.h"
 #include "verilated_toplevel.h"
 #include "verilator_memutil.h"
 #include "verilator_sim_ctrl.h"

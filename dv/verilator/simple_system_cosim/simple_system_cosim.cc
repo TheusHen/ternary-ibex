@@ -3,8 +3,10 @@
 // SPDX-License-Identifier: Apache-2.0
 
 #include <svdpi.h>
+
 #include <cassert>
 #include <memory>
+
 #include "cosim.h"
 #include "ibex_simple_system.h"
 #include "spike_cosim.h"

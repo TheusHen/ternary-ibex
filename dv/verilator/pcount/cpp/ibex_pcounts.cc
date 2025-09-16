@@ -2,12 +2,12 @@
 // Licensed under the Apache License, Version 2.0, see LICENSE for details.
 // SPDX-License-Identifier: Apache-2.0
 
+#include <svdpi.h>
+
 #include <numeric>
 #include <sstream>
 #include <string>
 #include <vector>
-
-#include <svdpi.h>
 
 extern "C" {
 extern unsigned int mhpmcounter_num();

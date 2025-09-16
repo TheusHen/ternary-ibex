@@ -6,6 +6,7 @@
 #define REGISTER_TRANSACTION_H_
 
 #include <stdint.h>
+
 #include <random>
 #include <string>
 
