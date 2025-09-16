@@ -113,36 +113,36 @@ jobs:
       - name: Run Ternary Mathematical Validation
         run: |
           echo "=== Running Ternary Mathematical Validation ==="
-          python3 -c "
+          python3 -c '
 import sys
 import random
 
-print('=== Ternary Mathematical Validation ===')
+print("=== Ternary Mathematical Validation ===")
 
 # Ternary encoding functions
 def encode_trit(val):
-    '''Encode ternary value (-1, 0, 1) to 2-bit representation'''
+    """Encode ternary value (-1, 0, 1) to 2-bit representation"""
     if val == -1: return 0b00
     elif val == 0: return 0b01  
     elif val == 1: return 0b10
-    else: raise ValueError(f'Invalid trit value: {val}')
+    else: raise ValueError(f"Invalid trit value: {val}")
 
 def decode_trit(encoded):
-    '''Decode 2-bit representation to ternary value'''
+    """Decode 2-bit representation to ternary value"""
     if encoded == 0b00: return -1
     elif encoded == 0b01: return 0
     elif encoded == 0b10: return 1
-    else: raise ValueError(f'Invalid encoded trit: {encoded}')
+    else: raise ValueError(f"Invalid encoded trit: {encoded}")
 
 def encode_ternary_register(trits):
-    '''Encode list of 16 trits to 32-bit register'''
+    """Encode list of 16 trits to 32-bit register"""
     result = 0
     for i, trit in enumerate(trits[:16]):
         result |= (encode_trit(trit) << (i * 2))
     return result
 
 def decode_ternary_register(encoded):
-    '''Decode 32-bit register to list of 16 trits'''
+    """Decode 32-bit register to list of 16 trits"""
     trits = []
     for i in range(16):
         trit_encoded = (encoded >> (i * 2)) & 0b11
@@ -151,30 +151,30 @@ def decode_ternary_register(encoded):
 
 # Ternary arithmetic operations
 def ternary_add_trit(a, b):
-    '''Ternary addition with saturation'''
+    """Ternary addition with saturation"""
     result = a + b
     if result > 1: return 1   # Saturate to max
     if result < -1: return -1 # Saturate to min
     return result
 
 def ternary_mul_trit(a, b):
-    '''Ternary multiplication'''
+    """Ternary multiplication"""
     return a * b
 
 def ternary_and_trit(a, b):
-    '''Ternary AND operation (min)'''
+    """Ternary AND operation (min)"""
     return min(a, b)
 
 def ternary_or_trit(a, b):
-    '''Ternary OR operation (max)'''
+    """Ternary OR operation (max)"""
     return max(a, b)
 
 def ternary_not_trit(a):
-    '''Ternary NOT operation (negation)'''
+    """Ternary NOT operation (negation)"""
     return -a
 
 def ternary_xor_trit(a, b):
-    '''Ternary XOR operation'''
+    """Ternary XOR operation"""
     if a == b: return 0
     elif (a == -1 and b == 1) or (a == 1 and b == -1): return 0
     elif a == 0: return b
@@ -183,30 +183,30 @@ def ternary_xor_trit(a, b):
 
 # Register-level operations
 def ternary_operation_register(a_encoded, b_encoded, operation):
-    '''Apply ternary operation element-wise on registers'''
+    """Apply ternary operation element-wise on registers"""
     a_trits = decode_ternary_register(a_encoded)
     b_trits = decode_ternary_register(b_encoded)
     result_trits = []
     
     for i in range(16):
-        if operation == 'add':
+        if operation == "add":
             result_trits.append(ternary_add_trit(a_trits[i], b_trits[i]))
-        elif operation == 'mul':
+        elif operation == "mul":
             result_trits.append(ternary_mul_trit(a_trits[i], b_trits[i]))
-        elif operation == 'and':
+        elif operation == "and":
             result_trits.append(ternary_and_trit(a_trits[i], b_trits[i]))
-        elif operation == 'or':
+        elif operation == "or":
             result_trits.append(ternary_or_trit(a_trits[i], b_trits[i]))
-        elif operation == 'xor':
+        elif operation == "xor":
             result_trits.append(ternary_xor_trit(a_trits[i], b_trits[i]))
         else:
-            raise ValueError(f'Unknown operation: {operation}')
+            raise ValueError(f"Unknown operation: {operation}")
     
     return encode_ternary_register(result_trits)
 
 # Neural network operations
 def neural_multiply_accumulate(weights_encoded, inputs_encoded):
-    '''Neural MAC operation: dot product of weights and inputs'''
+    """Neural MAC operation: dot product of weights and inputs"""
     weights = decode_ternary_register(weights_encoded)
     inputs = decode_ternary_register(inputs_encoded)
     
@@ -217,31 +217,31 @@ def neural_multiply_accumulate(weights_encoded, inputs_encoded):
     return accumulator
 
 def neural_activate(value, threshold=0):
-    '''Neural activation function with threshold'''
+    """Neural activation function with threshold"""
     if value > threshold: return 1
     elif value < -threshold: return -1
     else: return 0
 
 # Test suite
-print('Running comprehensive ternary validation...')
+print("Running comprehensive ternary validation...")
 
 # Test 1: Encoding/Decoding consistency
-print('\\n1. Testing encoding/decoding consistency...')
+print("\n1. Testing encoding/decoding consistency...")
 test_values = [-1, 0, 1, -1, 0, 1, 1, 0, -1, 1, 0, -1, 1, -1, 0, 1]
 encoded = encode_ternary_register(test_values)
 decoded = decode_ternary_register(encoded)
 
 if decoded == test_values:
-    print('✓ PASS: Encoding/decoding consistency')
+    print("✓ PASS: Encoding/decoding consistency")
 else:
-    print('✗ FAIL: Encoding/decoding inconsistency')
-    print(f'  Original: {test_values}')
-    print(f'  Decoded:  {decoded}')
+    print("✗ FAIL: Encoding/decoding inconsistency")
+    print(f"  Original: {test_values}")
+    print(f"  Decoded:  {decoded}")
     sys.exit(1)
 
 # Test 2: Ternary arithmetic operations
-print('\\n2. Testing ternary arithmetic operations...')
-operations = ['add', 'mul', 'and', 'or', 'xor']
+print("\n2. Testing ternary arithmetic operations...")
+operations = ["add", "mul", "and", "or", "xor"]
 test_cases = [
     ([-1, 0, 1] * 5 + [0], [1, -1, 0] * 5 + [0])
 ]
@@ -255,16 +255,16 @@ for a_trits, b_trits in test_cases:
         result_trits = decode_ternary_register(result)
         
         # Verify manually for first few elements
-        if op == 'add':
+        if op == "add":
             expected = ternary_add_trit(a_trits[0], b_trits[0])
             if result_trits[0] == expected:
-                print(f'✓ PASS: Ternary {op.upper()} operation')
+                print(f"✓ PASS: Ternary {op.upper()} operation")
             else:
-                print(f'✗ FAIL: Ternary {op.upper()} operation')
+                print(f"✗ FAIL: Ternary {op.upper()} operation")
                 sys.exit(1)
 
 # Test 3: Neural operations
-print('\\n3. Testing neural operations...')
+print("\n3. Testing neural operations...")
 weights = [1, -1, 0, 1] * 4
 inputs = [-1, 1, 0, -1] * 4
 
@@ -276,20 +276,20 @@ activation = neural_activate(mac_result)
 
 expected_mac = sum(w * i for w, i in zip(weights, inputs))
 if mac_result == expected_mac:
-    print('✓ PASS: Neural multiply-accumulate')
+    print("✓ PASS: Neural multiply-accumulate")
 else:
-    print('✗ FAIL: Neural multiply-accumulate')
-    print(f'  Expected: {expected_mac}, Got: {mac_result}')
+    print("✗ FAIL: Neural multiply-accumulate")
+    print(f"  Expected: {expected_mac}, Got: {mac_result}")
     sys.exit(1)
 
 if activation in [-1, 0, 1]:
-    print('✓ PASS: Neural activation function')
+    print("✓ PASS: Neural activation function")
 else:
-    print('✗ FAIL: Neural activation function')
+    print("✗ FAIL: Neural activation function")
     sys.exit(1)
 
 # Test 4: Edge cases and boundary conditions
-print('\\n4. Testing edge cases...')
+print("\n4. Testing edge cases...")
 
 # Test saturation in addition
 saturation_tests = [
@@ -302,13 +302,13 @@ saturation_tests = [
 for a, b, expected in saturation_tests:
     result = ternary_add_trit(a, b)
     if result == expected:
-        print(f'✓ PASS: Saturation test {a} + {b} = {result}')
+        print(f"✓ PASS: Saturation test {a} + {b} = {result}")
     else:
-        print(f'✗ FAIL: Saturation test {a} + {b} = {result}, expected {expected}')
+        print(f"✗ FAIL: Saturation test {a} + {b} = {result}, expected {expected}")
         sys.exit(1)
 
-print('\\n=== ALL TERNARY MATHEMATICAL VALIDATIONS PASSED! ===')
-"
+print("\n=== ALL TERNARY MATHEMATICAL VALIDATIONS PASSED! ===")
+'
           echo "✓ Ternary mathematical validation completed"
 
       - name: Upload Test Artifacts
