@@ -19,6 +19,11 @@ filesets:
       - dv/mhx_ternary_test.sv
     file_type: systemVerilogSource
 
+  files_verilator_cpp:
+    files:
+      - dv/mhx_ternary_test_main.cpp
+    file_type: cppSource
+
   files_verilator_waiver:
     depend:
       # common waivers
@@ -49,6 +54,12 @@ targets:
 
   sim:
     <<: *default_target
+    filesets:
+      - tool_verilator ? (files_verilator_waiver)
+      - tool_ascentlint ? (files_ascentlint_waiver)
+      - tool_veriblelint ? (files_veriblelint_waiver)
+      - files_rtl
+      - tool_verilator ? (files_verilator_cpp)
     default_tool: verilator
     tools:
       verilator:
