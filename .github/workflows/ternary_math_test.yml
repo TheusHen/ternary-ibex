@@ -9,7 +9,7 @@ name: MHX Ternary Math Testing
 
 on:
   push:
-    branches: [ "main", "master" ]
+    branches: [ "*" ]
     paths:
       - 'rtl/ibex_ternary_*.sv'
       - 'rtl/ibex_neural_unit.sv'
@@ -17,7 +17,7 @@ on:
       - 'examples/sw/ternary_*/**'
       - '.github/workflows/ternary_math_test.yml'
   pull_request:
-    branches: [ "main", "master" ]
+    branches: [ "*" ]
     paths:
       - 'rtl/ibex_ternary_*.sv'
       - 'rtl/ibex_neural_unit.sv'
