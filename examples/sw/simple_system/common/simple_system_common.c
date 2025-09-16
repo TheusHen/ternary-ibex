@@ -178,6 +178,28 @@ void timecmp_update(uint64_t new_time) {
 
 uint64_t get_elapsed_time(void) { return time_elapsed; }
 
+uint64_t get_mcycle(void) {
+  uint32_t mcycleh;
+  uint32_t mcycle;
+  uint32_t mcycleh_check;
+  // Read mcycle and mcycleh, checking for overflow
+  do {
+    asm volatile("csrr %0, mcycleh" : "=r"(mcycleh));
+    asm volatile("csrr %0, mcycle" : "=r"(mcycle));
+    asm volatile("csrr %0, mcycleh" : "=r"(mcycleh_check));
+  } while (mcycleh != mcycleh_check);
+  return ((uint64_t)mcycleh << 32) | mcycle;
+}
+
+void *memcpy(void *dest, const void *src, uint32_t n) {
+  char *d = (char *)dest;
+  const char *s = (const char *)src;
+  for (uint32_t i = 0; i < n; i++) {
+    d[i] = s[i];
+  }
+  return dest;
+}
+
 void simple_timer_handler(void) __attribute__((interrupt));
 
 void simple_timer_handler(void) {
