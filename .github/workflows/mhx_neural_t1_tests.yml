@@ -15,6 +15,8 @@ on:
       - 'examples/mhx_simple_system/**'
       - 'syn/fpga/**'
       - 'dv/mhx_simple_system_tests/**'
+      - 'rtl/ibex_ternary_*.sv'
+      - 'rtl/ibex_neural_*.sv'
       - '.github/workflows/mhx_neural_t1_tests.yml'
   pull_request:
     branches: [ "*" ]
@@ -22,6 +24,8 @@ on:
       - 'examples/mhx_simple_system/**'
       - 'syn/fpga/**'
       - 'dv/mhx_simple_system_tests/**'
+      - 'rtl/ibex_ternary_*.sv'
+      - 'rtl/ibex_neural_*.sv'
       - '.github/workflows/mhx_neural_t1_tests.yml'
   workflow_dispatch:
 
