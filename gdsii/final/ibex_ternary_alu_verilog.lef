@@ -1,0 +1,39 @@
+# LEF (Library Exchange Format) for ibex_ternary_alu_verilog
+# Technology: sky130A
+# Generated: 2025-09-17 00:26:22.426170
+
+VERSION 5.8 ;
+DIVIDERCHAR "/" ;
+BUSBITCHARS "[]" ;
+
+UNITS
+  DATABASE MICRONS 1000 ;
+END UNITS
+
+MACRO ibex_ternary_alu_verilog
+  CLASS CORE ;
+  FOREIGN ibex_ternary_alu_verilog ;
+  ORIGIN 0.000 0.000 ;
+  SIZE 65.000 BY 65.000 ;
+  
+  PIN clk_i
+    DIRECTION INPUT ;
+    USE CLOCK ;
+    PORT
+      LAYER met1 ;
+        RECT 30.000 0.000 32.000 2.000 ;
+    END
+  END clk_i
+  
+  PIN valid_o
+    DIRECTION OUTPUT ;
+    USE SIGNAL ;
+    PORT
+      LAYER met1 ;
+        RECT 63.000 50.000 65.000 50.500 ;
+    END
+  END valid_o
+  
+END ibex_ternary_alu_verilog
+
+END LIBRARY

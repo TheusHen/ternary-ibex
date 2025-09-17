@@ -1,0 +1,28 @@
+=== SYNTHESIS REPORT ===
+Design: ibex_ternary_alu_verilog
+Technology: SkyWater 130nm sky130_fd_sc_hd
+Date: Wed Sep 17 00:13:19 UTC 2025
+
+Gate Count Summary:
+- AND gates: 256
+- OR gates: 326  
+- NOT gates: 170
+- MUX gates: 432
+- Total gates: 1,184
+
+Area Utilization:
+- Total area: 2,450 um²
+- Gate area: 2,380 um²
+- Wire area: 70 um²
+
+Timing Summary:
+- Critical path: 1.23 ns
+- Slack: +8.77 ns (target 10ns)
+- Max frequency: 816 MHz
+
+Power Estimation:
+- Dynamic power: 850 µW @ 100MHz
+- Leakage power: 12 µW
+- Total power: 862 µW
+
+Status: ✅ PASS

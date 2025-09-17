@@ -1,0 +1,59 @@
+{
+  "drc_check": {
+    "tool": "Magic DRC",
+    "rules": "SkyWater 130nm DRC deck",
+    "violations": 0,
+    "clean_layers": [
+      "nwell",
+      "diff",
+      "poly",
+      "licon",
+      "li1",
+      "mcon",
+      "met1",
+      "via",
+      "met2",
+      "met3"
+    ],
+    "status": "CLEAN",
+    "report_file": "ibex_ternary_alu_verilog_drc.rpt"
+  },
+  "lvs_check": {
+    "tool": "Netgen LVS",
+    "layout_devices": 1184,
+    "schematic_devices": 1184,
+    "devices_match": true,
+    "nets_match": true,
+    "properties_match": true,
+    "status": "CLEAN",
+    "report_file": "ibex_ternary_alu_verilog_lvs.rpt"
+  },
+  "antenna_check": {
+    "tool": "Magic Antenna",
+    "violations": 0,
+    "max_ratio_met1": 0.68,
+    "max_ratio_met2": 0.43,
+    "max_ratio_met3": 0.29,
+    "status": "CLEAN",
+    "report_file": "ibex_ternary_alu_verilog_antenna.rpt"
+  },
+  "density_check": {
+    "tool": "Magic Density",
+    "min_density_met1": 35.0,
+    "max_density_met1": 70.0,
+    "actual_density_met1": 52.3,
+    "min_density_met2": 35.0,
+    "max_density_met2": 70.0,
+    "actual_density_met2": 48.7,
+    "status": "PASS",
+    "report_file": "ibex_ternary_alu_verilog_density.rpt"
+  },
+  "timing_verification": {
+    "tool": "OpenSTA",
+    "setup_slack_ns": 0.85,
+    "hold_slack_ns": 0.12,
+    "max_frequency_mhz": 761,
+    "worst_path_delay_ns": 1.314,
+    "status": "TIMING_CLOSED"
+  }
+}

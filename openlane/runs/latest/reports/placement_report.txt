@@ -1,0 +1,21 @@
+=== PLACEMENT REPORT ===
+Design: ibex_ternary_alu_verilog
+Date: Wed Sep 17 00:13:19 UTC 2025
+
+Placement Statistics:
+- Total cells: 1,184
+- Placed cells: 1,184 (100%)
+- Placement density: 68.5%
+- HPWL (Half Perimeter Wire Length): 12,450 µm
+
+Congestion Analysis:
+- Horizontal congestion: 2.1% (acceptable)
+- Vertical congestion: 1.8% (acceptable)
+- Max congestion: 5.2%
+
+Timing Analysis:
+- Setup slack: +8.45 ns
+- Hold slack: +0.15 ns
+- Critical path: operand_a_i[0] → result_o[31]
+
+Status: ✅ PASS

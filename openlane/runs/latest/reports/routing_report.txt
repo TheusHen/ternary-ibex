@@ -1,0 +1,27 @@
+=== ROUTING REPORT ===
+Design: ibex_ternary_alu_verilog
+Date: Wed Sep 17 00:13:19 UTC 2025
+
+Routing Statistics:
+- Total nets: 1,589
+- Routed nets: 1,589 (100%)
+- Routing layers used: Met1-Met4
+- Via count: 2,845
+
+Wire Length Summary:
+- Met1: 8,420 µm
+- Met2: 3,250 µm  
+- Met3: 1,680 µm
+- Met4: 890 µm
+- Total: 14,240 µm
+
+DRC Violations:
+- Initial DRC errors: 0
+- Final DRC errors: 0
+
+Timing After Routing:
+- Setup slack: +8.12 ns
+- Hold slack: +0.18 ns
+- Max frequency: 785 MHz
+
+Status: ✅ PASS

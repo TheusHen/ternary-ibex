@@ -1,0 +1,23 @@
+{
+  "clock_period_ns": 10.0,
+  "clock_port": "clk_i",
+  "reset_port": "rst_ni",
+  "core_utilization": 0.65,
+  "aspect_ratio": 1.0,
+  "die_size_um": {
+    "width": 65.0,
+    "height": 65.0
+  },
+  "placement_density": 0.85,
+  "routing_layers": [
+    "met1",
+    "met2",
+    "met3",
+    "met4"
+  ],
+  "power_nets": {
+    "vdd": "vdd",
+    "vss": "vss"
+  },
+  "optimization_effort": "high"
+}

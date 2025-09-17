@@ -1,0 +1,27 @@
+# MHX Ternary Extension Simple Synthesis Script for Yosys
+# This script synthesizes individual ternary modules
+
+# Read ternary ALU (combinational logic only)
+read_verilog -sv -I rtl rtl/ibex_ternary_alu.sv
+
+# Synthesize ternary ALU  
+hierarchy -check -top ibex_ternary_alu
+chformal -remove
+proc; opt; memory; opt; techmap; opt
+stat
+write_verilog synthesis/ibex_ternary_alu_synth.v
+
+# Clear design
+design -reset
+
+# Read neural unit (combinational logic only)
+read_verilog -sv -I rtl rtl/ibex_neural_unit.sv
+
+# Synthesize neural unit
+hierarchy -check -top ibex_neural_unit  
+chformal -remove
+proc; opt; memory; opt; techmap; opt
+stat
+write_verilog synthesis/ibex_neural_unit_synth.v
+
+echo "Individual module synthesis completed!"

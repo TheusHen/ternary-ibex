@@ -1,0 +1,1968 @@
+{
+  "start_time": "2025-09-17T01:15:31.741274",
+  "die_count": 5,
+  "test_results": [
+    {
+      "die_id": 1,
+      "test_timestamp": "2025-09-17T01:15:31.741302",
+      "functional_test": {
+        "instruction_set_test": {
+          "test_name": "Instruction Set Test",
+          "instructions_tested": [
+            "ADD",
+            "SUB",
+            "MUL",
+            "DIV",
+            "AND",
+            "OR",
+            "XOR",
+            "SLL",
+            "SRL",
+            "SRA",
+            "LW",
+            "SW",
+            "LB",
+            "SB",
+            "BEQ",
+            "BNE",
+            "BLT",
+            "BGE",
+            "JAL",
+            "JALR"
+          ],
+          "total": 20,
+          "passed": 20,
+          "failed": 0,
+          "details": {
+            "arithmetic_ops": {
+              "passed": 10,
+              "total": 10
+            },
+            "logical_ops": {
+              "passed": 6,
+              "total": 6
+            },
+            "memory_ops": {
+              "passed": 4,
+              "total": 4
+            },
+            "control_ops": {
+              "passed": 0,
+              "total": 0
+            }
+          }
+        },
+        "ternary_arithmetic_test": {
+          "test_name": "Ternary Arithmetic Test",
+          "operations_tested": [
+            "TADD",
+            "TSUB",
+            "TMUL",
+            "TMAX",
+            "TMIN",
+            "TCOMP",
+            "TSHIFT",
+            "TCOUNT"
+          ],
+          "total": 8,
+          "passed": 8,
+          "failed": 0,
+          "precision_test": {
+            "accuracy": 99.98,
+            "max_error": 0.001,
+            "test_vectors": 1000
+          }
+        },
+        "neural_unit_test": {
+          "test_name": "Neural Processing Unit Test",
+          "tests": [
+            "MAC_operations",
+            "Activation_functions",
+            "Quantization",
+            "Batch_processing",
+            "Weight_loading",
+            "Bias_handling"
+          ],
+          "total": 6,
+          "passed": 5,
+          "failed": 1,
+          "performance": {
+            "mac_throughput": 575.1857447469469,
+            "energy_efficiency": 53.89392466620737,
+            "precision": "INT3"
+          }
+        },
+        "memory_interface_test": {
+          "test_name": "Memory Interface Test",
+          "tests": [
+            "SRAM_read",
+            "SRAM_write",
+            "Cache_hit",
+            "Cache_miss",
+            "Memory_coherency",
+            "Address_translation"
+          ],
+          "total": 6,
+          "passed": 6,
+          "failed": 0,
+          "bandwidth": {
+            "read_bandwidth": 3289.2006745661865,
+            "write_bandwidth": 2778.5299286422032,
+            "latency": 2.2446150618614564
+          }
+        },
+        "io_interface_test": {
+          "test_name": "I/O Interface Test",
+          "tests": [
+            "GPIO_output",
+            "GPIO_input",
+            "UART_tx",
+            "UART_rx",
+            "SPI_master",
+            "I2C_master",
+            "Clock_generation"
+          ],
+          "total": 7,
+          "passed": 7,
+          "failed": 0,
+          "timing": {
+            "setup_time": 0.4552471120720079,
+            "hold_time": 0.2890625428694195,
+            "propagation_delay": 1.1146744756230405
+          }
+        },
+        "interrupt_test": {
+          "test_name": "Interrupt Handling Test",
+          "tests": [
+            "External_interrupt",
+            "Timer_interrupt",
+            "Software_interrupt",
+            "Nested_interrupts",
+            "Interrupt_latency",
+            "Context_switching"
+          ],
+          "total": 6,
+          "passed": 6,
+          "failed": 0,
+          "latency": {
+            "min_latency": 8.8048526938053,
+            "max_latency": 12.83567838687436,
+            "avg_latency": 11.128013299269721
+          }
+        },
+        "summary": {
+          "total_tests": 53,
+          "passed_tests": 52,
+          "pass_rate": 98.11320754716981,
+          "status": "fail"
+        }
+      },
+      "performance_test": {
+        "frequency_test": {
+          "max_frequency": 894.0909593112897,
+          "min_frequency": 600.0177289696104,
+          "nominal_frequency": 761.623607429996,
+          "frequency_distribution": [
+            760.9781619282314,
+            811.4180471283188,
+            894.0909593112897,
+            687.0057657803787,
+            760.0782457248939,
+            846.4216402399409,
+            600.0177289696104,
+            669.3162079775656,
+            732.9416816903123,
+            627.9758075739895,
+            671.508162404119,
+            809.877993442138
+          ],
+          "meets_spec": true,
+          "temperature_coefficient": -0.1,
+          "voltage_sensitivity": 15.2
+        },
+        "power_consumption": {
+          "dynamic_power": 59.64653616616013,
+          "static_power": 9.97099950989668,
+          "total_power": 69.61753567605682,
+          "meets_spec": true,
+          "power_efficiency": 10.931153948641228,
+          "breakdown": {
+            "core": 38.77024850800409,
+            "memory": 11.929307233232027,
+            "io": 8.94698042492402
+          }
+        },
+        "throughput_test": {
+          "instructions_per_second": 778815363.791737,
+          "ternary_ops_per_second": 586922114.4616876,
+          "neural_macs_per_second": 569127073.2476583,
+          "memory_bandwidth": 3179.0483914014208,
+          "cache_hit_rate": 94.09408899572374,
+          "branch_prediction": 92.08522649525405
+        },
+        "energy_efficiency": {
+          "energy_per_instruction": 92.63488158512341,
+          "energy_per_ternary_op": 35.4277279063428,
+          "energy_per_mac": 63.67397688628394,
+          "gops_per_watt": 10795.06966369992,
+          "efficiency_score": 8.701770253912642
+        },
+        "thermal_performance": {
+          "thermal_resistance": 35.0582845942067,
+          "junction_temperature": 77.58348287592534,
+          "temperature_coefficient": -0.0843774575502455,
+          "thermal_time_constant": 3.023751652512353,
+          "max_ambient_temp": 68.10797338141649
+        },
+        "summary": {
+          "frequency_score": 100,
+          "power_score": 100,
+          "efficiency_score": 87.01770253912642,
+          "overall_score": 95.67256751304213,
+          "grade": "A"
+        }
+      },
+      "characterization": {
+        "process_corners": {
+          "SS": {
+            "corner": "SS",
+            "max_frequency": 590.6778118993063,
+            "power_consumption": 88.54342961935198,
+            "meets_spec": true,
+            "timing_margin": 0.14899427218326144
+          },
+          "TT": {
+            "corner": "TT",
+            "max_frequency": 768.2138601944307,
+            "power_consumption": 68.81869910146224,
+            "meets_spec": true,
+            "timing_margin": 0.173479906332306
+          },
+          "FF": {
+            "corner": "FF",
+            "max_frequency": 903.4541689963457,
+            "power_consumption": 48.309329873982385,
+            "meets_spec": true,
+            "timing_margin": 0.15664613365747512
+          }
+        },
+        "voltage_characterization": {
+          "voltages": [
+            0.9,
+            0.9500000000000001,
+            1.0,
+            1.0500000000000003,
+            1.1,
+            1.1500000000000004,
+            1.2000000000000002,
+            1.2500000000000004,
+            1.3000000000000003,
+            1.3500000000000005
+          ],
+          "frequencies": [
+            555.6575605752437,
+            605.4624299584912,
+            638.8930054138921,
+            682.2113695542387,
+            692.1013956599108,
+            746.3191966711287,
+            751.0395556752181,
+            786.5496091413133,
+            829.5894327099567,
+            849.9880538614364
+          ],
+          "powers": [
+            38.55116108214728,
+            46.66300709286964,
+            46.52809149790717,
+            50.794415557956455,
+            57.32065865758861,
+            63.54390391544043,
+            68.4337902153026,
+            75.41038587506644,
+            81.7529869978726,
+            90.19602445899346
+          ]
+        },
+        "temperature_characterization": {
+          "temperatures": [
+            -40,
+            25,
+            85,
+            125
+          ],
+          "frequencies": [
+            823.532013775552,
+            756.7771611674565,
+            728.8732085012476,
+            687.4498922653535
+          ],
+          "leakage_currents": [
+            4.8688606759773805,
+            10.006888546180718,
+            17.80095179460368,
+            27.001876083030602
+          ]
+        },
+        "aging_characterization": {
+          "stress_hours": [
+            0,
+            100,
+            500,
+            1000,
+            2000
+          ],
+          "frequency_degradation": [
+            0,
+            0.5,
+            2.1,
+            4.8,
+            9.2
+          ],
+          "leakage_increase": [
+            0,
+            2.1,
+            8.5,
+            18.2,
+            35.6
+          ],
+          "extrapolated_lifetime": 15.2,
+          "failure_rate": 5.2e-09
+        }
+      },
+      "reliability_test": {
+        "burn_in_test": {
+          "test": "Burn-in Test",
+          "duration": 24,
+          "temperature": 125,
+          "voltage": 1.32,
+          "frequency": 900,
+          "passed": true,
+          "parameter_drift": {
+            "frequency": -1.9766181925102322,
+            "power": 0.104536982346655,
+            "leakage": 2.7881155977110463
+          }
+        },
+        "temperature_cycling": {
+          "test": "Temperature Cycling",
+          "cycles": 1000,
+          "temp_range": [
+            -40,
+            125
+          ],
+          "cycle_time": 30,
+          "passed": true,
+          "failure_mode": null
+        },
+        "voltage_stress": {
+          "test": "Voltage Stress",
+          "stress_voltage": 1.5,
+          "duration": 48,
+          "temperature": 85,
+          "passed": true,
+          "oxide_integrity": "good",
+          "leakage_increase": 1.2911141412853522
+        },
+        "esd_test": {
+          "test": "ESD Test",
+          "hbm_voltage": 2000,
+          "cdm_voltage": 500,
+          "mm_voltage": 200,
+          "passed": true,
+          "protection_level": "Class 2"
+        },
+        "latch_up_test": {
+          "test": "Latch-up Test",
+          "trigger_current": 100,
+          "voltage_overshoot": 2.0,
+          "passed": true,
+          "recovery": "automatic",
+          "holding_voltage": 1.8
+        },
+        "overall_reliability": "pass"
+      },
+      "overall_status": "fail"
+    },
+    {
+      "die_id": 2,
+      "test_timestamp": "2025-09-17T01:15:31.746742",
+      "functional_test": {
+        "instruction_set_test": {
+          "test_name": "Instruction Set Test",
+          "instructions_tested": [
+            "ADD",
+            "SUB",
+            "MUL",
+            "DIV",
+            "AND",
+            "OR",
+            "XOR",
+            "SLL",
+            "SRL",
+            "SRA",
+            "LW",
+            "SW",
+            "LB",
+            "SB",
+            "BEQ",
+            "BNE",
+            "BLT",
+            "BGE",
+            "JAL",
+            "JALR"
+          ],
+          "total": 20,
+          "passed": 19,
+          "failed": 1,
+          "details": {
+            "arithmetic_ops": {
+              "passed": 10,
+              "total": 10
+            },
+            "logical_ops": {
+              "passed": 6,
+              "total": 6
+            },
+            "memory_ops": {
+              "passed": 4,
+              "total": 4
+            },
+            "control_ops": {
+              "passed": -1,
+              "total": 0
+            }
+          }
+        },
+        "ternary_arithmetic_test": {
+          "test_name": "Ternary Arithmetic Test",
+          "operations_tested": [
+            "TADD",
+            "TSUB",
+            "TMUL",
+            "TMAX",
+            "TMIN",
+            "TCOMP",
+            "TSHIFT",
+            "TCOUNT"
+          ],
+          "total": 8,
+          "passed": 8,
+          "failed": 0,
+          "precision_test": {
+            "accuracy": 99.98,
+            "max_error": 0.001,
+            "test_vectors": 1000
+          }
+        },
+        "neural_unit_test": {
+          "test_name": "Neural Processing Unit Test",
+          "tests": [
+            "MAC_operations",
+            "Activation_functions",
+            "Quantization",
+            "Batch_processing",
+            "Weight_loading",
+            "Bias_handling"
+          ],
+          "total": 6,
+          "passed": 6,
+          "failed": 0,
+          "performance": {
+            "mac_throughput": 612.6351887891383,
+            "energy_efficiency": 57.97275273139,
+            "precision": "INT3"
+          }
+        },
+        "memory_interface_test": {
+          "test_name": "Memory Interface Test",
+          "tests": [
+            "SRAM_read",
+            "SRAM_write",
+            "Cache_hit",
+            "Cache_miss",
+            "Memory_coherency",
+            "Address_translation"
+          ],
+          "total": 6,
+          "passed": 6,
+          "failed": 0,
+          "bandwidth": {
+            "read_bandwidth": 3452.667183859099,
+            "write_bandwidth": 2680.977607103486,
+            "latency": 2.7583624678528675
+          }
+        },
+        "io_interface_test": {
+          "test_name": "I/O Interface Test",
+          "tests": [
+            "GPIO_output",
+            "GPIO_input",
+            "UART_tx",
+            "UART_rx",
+            "SPI_master",
+            "I2C_master",
+            "Clock_generation"
+          ],
+          "total": 7,
+          "passed": 7,
+          "failed": 0,
+          "timing": {
+            "setup_time": 0.3570725701980668,
+            "hold_time": 0.3024781428704714,
+            "propagation_delay": 1.1286818311058555
+          }
+        },
+        "interrupt_test": {
+          "test_name": "Interrupt Handling Test",
+          "tests": [
+            "External_interrupt",
+            "Timer_interrupt",
+            "Software_interrupt",
+            "Nested_interrupts",
+            "Interrupt_latency",
+            "Context_switching"
+          ],
+          "total": 6,
+          "passed": 6,
+          "failed": 0,
+          "latency": {
+            "min_latency": 8.218246209066482,
+            "max_latency": 13.13012375007816,
+            "avg_latency": 9.587582293797157
+          }
+        },
+        "summary": {
+          "total_tests": 53,
+          "passed_tests": 52,
+          "pass_rate": 98.11320754716981,
+          "status": "fail"
+        }
+      },
+      "performance_test": {
+        "frequency_test": {
+          "max_frequency": 904.2463115757217,
+          "min_frequency": 635.094448877241,
+          "nominal_frequency": 747.9309470504843,
+          "frequency_distribution": [
+            760.602276196547,
+            827.4221313569292,
+            878.6212940052991,
+            674.0750879254617,
+            715.4966195314565,
+            904.2463115757217,
+            677.3800185558198,
+            769.0990272665546,
+            745.5797904486775,
+            635.094448877241,
+            707.8217403355715,
+            726.4026187621585
+          ],
+          "meets_spec": true,
+          "temperature_coefficient": -0.1,
+          "voltage_sensitivity": 15.2
+        },
+        "power_consumption": {
+          "dynamic_power": 61.373143803340795,
+          "static_power": 9.86996635819824,
+          "total_power": 71.24311016153904,
+          "meets_spec": true,
+          "power_efficiency": 10.681734672650911,
+          "breakdown": {
+            "core": 39.89254347217152,
+            "memory": 12.27462876066816,
+            "io": 9.205971570501118
+          }
+        },
+        "throughput_test": {
+          "instructions_per_second": 778271462.4702468,
+          "ternary_ops_per_second": 590105468.5068148,
+          "neural_macs_per_second": 596270749.8742496,
+          "memory_bandwidth": 3277.6392247936565,
+          "cache_hit_rate": 97.33932377706694,
+          "branch_prediction": 89.39128052398517
+        },
+        "energy_efficiency": {
+          "energy_per_instruction": 89.1273383298186,
+          "energy_per_ternary_op": 34.78294899988112,
+          "energy_per_mac": 55.86103313124341,
+          "gops_per_watt": 11219.901982256753,
+          "efficiency_score": 7.925357950709938
+        },
+        "thermal_performance": {
+          "thermal_resistance": 46.32158959994064,
+          "junction_temperature": 77.22841252345279,
+          "temperature_coefficient": -0.09132767390777222,
+          "thermal_time_constant": 2.529081514369999,
+          "max_ambient_temp": 66.8200707794607
+        },
+        "summary": {
+          "frequency_score": 100,
+          "power_score": 98.25511525434479,
+          "efficiency_score": 79.25357950709937,
+          "overall_score": 92.50289825381473,
+          "grade": "A"
+        }
+      },
+      "characterization": {
+        "process_corners": {
+          "SS": {
+            "corner": "SS",
+            "max_frequency": 618.5966375672892,
+            "power_consumption": 87.55902966311828,
+            "meets_spec": true,
+            "timing_margin": 0.07653263638158775
+          },
+          "TT": {
+            "corner": "TT",
+            "max_frequency": 780.1269466392552,
+            "power_consumption": 68.99486909051843,
+            "meets_spec": true,
+            "timing_margin": 0.1704928276680331
+          },
+          "FF": {
+            "corner": "FF",
+            "max_frequency": 924.9014530273563,
+            "power_consumption": 50.26326952243319,
+            "meets_spec": true,
+            "timing_margin": 0.11136730192553568
+          }
+        },
+        "voltage_characterization": {
+          "voltages": [
+            0.9,
+            0.9500000000000001,
+            1.0,
+            1.0500000000000003,
+            1.1,
+            1.1500000000000004,
+            1.2000000000000002,
+            1.2500000000000004,
+            1.3000000000000003,
+            1.3500000000000005
+          ],
+          "frequencies": [
+            558.7546146333106,
+            591.8141156040326,
+            623.4234782089537,
+            669.5926408916287,
+            695.7260091262298,
+            716.7951405178342,
+            766.233813349317,
+            784.2858721295445,
+            804.4110527151967,
+            863.6200113483111
+          ],
+          "powers": [
+            39.53503978757825,
+            42.53965685441263,
+            48.67722802796147,
+            54.113683640101854,
+            56.93828890655022,
+            63.22312759969666,
+            72.6847078546626,
+            74.10935411177857,
+            83.19763298764983,
+            86.42787406382
+          ]
+        },
+        "temperature_characterization": {
+          "temperatures": [
+            -40,
+            25,
+            85,
+            125
+          ],
+          "frequencies": [
+            821.943963383165,
+            765.1300757939761,
+            717.9852576102571,
+            669.3634057832769
+          ],
+          "leakage_currents": [
+            5.061194492900703,
+            10.058927466652305,
+            18.60799576762681,
+            27.085811362334457
+          ]
+        },
+        "aging_characterization": {
+          "stress_hours": [
+            0,
+            100,
+            500,
+            1000,
+            2000
+          ],
+          "frequency_degradation": [
+            0,
+            0.5,
+            2.1,
+            4.8,
+            9.2
+          ],
+          "leakage_increase": [
+            0,
+            2.1,
+            8.5,
+            18.2,
+            35.6
+          ],
+          "extrapolated_lifetime": 15.2,
+          "failure_rate": 5.2e-09
+        }
+      },
+      "reliability_test": {
+        "burn_in_test": {
+          "test": "Burn-in Test",
+          "duration": 24,
+          "temperature": 125,
+          "voltage": 1.32,
+          "frequency": 900,
+          "passed": true,
+          "parameter_drift": {
+            "frequency": 0.5719610771474694,
+            "power": 1.2113577373561515,
+            "leakage": 5.829813558171454
+          }
+        },
+        "temperature_cycling": {
+          "test": "Temperature Cycling",
+          "cycles": 1000,
+          "temp_range": [
+            -40,
+            125
+          ],
+          "cycle_time": 30,
+          "passed": true,
+          "failure_mode": null
+        },
+        "voltage_stress": {
+          "test": "Voltage Stress",
+          "stress_voltage": 1.5,
+          "duration": 48,
+          "temperature": 85,
+          "passed": true,
+          "oxide_integrity": "good",
+          "leakage_increase": 4.345472417085596
+        },
+        "esd_test": {
+          "test": "ESD Test",
+          "hbm_voltage": 2000,
+          "cdm_voltage": 500,
+          "mm_voltage": 200,
+          "passed": true,
+          "protection_level": "Class 2"
+        },
+        "latch_up_test": {
+          "test": "Latch-up Test",
+          "trigger_current": 100,
+          "voltage_overshoot": 2.0,
+          "passed": true,
+          "recovery": "automatic",
+          "holding_voltage": 1.8
+        },
+        "overall_reliability": "pass"
+      },
+      "overall_status": "fail"
+    },
+    {
+      "die_id": 3,
+      "test_timestamp": "2025-09-17T01:15:31.747170",
+      "functional_test": {
+        "instruction_set_test": {
+          "test_name": "Instruction Set Test",
+          "instructions_tested": [
+            "ADD",
+            "SUB",
+            "MUL",
+            "DIV",
+            "AND",
+            "OR",
+            "XOR",
+            "SLL",
+            "SRL",
+            "SRA",
+            "LW",
+            "SW",
+            "LB",
+            "SB",
+            "BEQ",
+            "BNE",
+            "BLT",
+            "BGE",
+            "JAL",
+            "JALR"
+          ],
+          "total": 20,
+          "passed": 19,
+          "failed": 1,
+          "details": {
+            "arithmetic_ops": {
+              "passed": 10,
+              "total": 10
+            },
+            "logical_ops": {
+              "passed": 6,
+              "total": 6
+            },
+            "memory_ops": {
+              "passed": 4,
+              "total": 4
+            },
+            "control_ops": {
+              "passed": -1,
+              "total": 0
+            }
+          }
+        },
+        "ternary_arithmetic_test": {
+          "test_name": "Ternary Arithmetic Test",
+          "operations_tested": [
+            "TADD",
+            "TSUB",
+            "TMUL",
+            "TMAX",
+            "TMIN",
+            "TCOMP",
+            "TSHIFT",
+            "TCOUNT"
+          ],
+          "total": 8,
+          "passed": 7,
+          "failed": 1,
+          "precision_test": {
+            "accuracy": 99.98,
+            "max_error": 0.001,
+            "test_vectors": 1000
+          }
+        },
+        "neural_unit_test": {
+          "test_name": "Neural Processing Unit Test",
+          "tests": [
+            "MAC_operations",
+            "Activation_functions",
+            "Quantization",
+            "Batch_processing",
+            "Weight_loading",
+            "Bias_handling"
+          ],
+          "total": 6,
+          "passed": 6,
+          "failed": 0,
+          "performance": {
+            "mac_throughput": 599.2250001439421,
+            "energy_efficiency": 56.65198231895684,
+            "precision": "INT3"
+          }
+        },
+        "memory_interface_test": {
+          "test_name": "Memory Interface Test",
+          "tests": [
+            "SRAM_read",
+            "SRAM_write",
+            "Cache_hit",
+            "Cache_miss",
+            "Memory_coherency",
+            "Address_translation"
+          ],
+          "total": 6,
+          "passed": 6,
+          "failed": 0,
+          "bandwidth": {
+            "read_bandwidth": 3168.3859269355958,
+            "write_bandwidth": 2800.90303190398,
+            "latency": 2.787912244951421
+          }
+        },
+        "io_interface_test": {
+          "test_name": "I/O Interface Test",
+          "tests": [
+            "GPIO_output",
+            "GPIO_input",
+            "UART_tx",
+            "UART_rx",
+            "SPI_master",
+            "I2C_master",
+            "Clock_generation"
+          ],
+          "total": 7,
+          "passed": 6,
+          "failed": 1,
+          "timing": {
+            "setup_time": 0.5985482422412935,
+            "hold_time": 0.3317271304453254,
+            "propagation_delay": 1.1572112721507084
+          }
+        },
+        "interrupt_test": {
+          "test_name": "Interrupt Handling Test",
+          "tests": [
+            "External_interrupt",
+            "Timer_interrupt",
+            "Software_interrupt",
+            "Nested_interrupts",
+            "Interrupt_latency",
+            "Context_switching"
+          ],
+          "total": 6,
+          "passed": 6,
+          "failed": 0,
+          "latency": {
+            "min_latency": 8.806787322198014,
+            "max_latency": 10.429286372194676,
+            "avg_latency": 9.890495967842929
+          }
+        },
+        "summary": {
+          "total_tests": 53,
+          "passed_tests": 50,
+          "pass_rate": 94.33962264150944,
+          "status": "fail"
+        }
+      },
+      "performance_test": {
+        "frequency_test": {
+          "max_frequency": 946.2883251997085,
+          "min_frequency": 616.6829279350649,
+          "nominal_frequency": 759.0127914869506,
+          "frequency_distribution": [
+            716.2342100403546,
+            776.3968496244651,
+            946.2883251997085,
+            676.0116541095692,
+            777.4808403814596,
+            807.177484988028,
+            659.7947017136499,
+            730.4416155072607,
+            768.2122044506415,
+            616.6829279350649,
+            648.4991065487956,
+            754.0991988918813
+          ],
+          "meets_spec": true,
+          "temperature_coefficient": -0.1,
+          "voltage_sensitivity": 15.2
+        },
+        "power_consumption": {
+          "dynamic_power": 55.021357348360425,
+          "static_power": 9.495463185848978,
+          "total_power": 64.5168205342094,
+          "meets_spec": true,
+          "power_efficiency": 11.795373573880433,
+          "breakdown": {
+            "core": 35.76388227643428,
+            "memory": 11.004271469672085,
+            "io": 8.253203602254063
+          }
+        },
+        "throughput_test": {
+          "instructions_per_second": 768502671.6849061,
+          "ternary_ops_per_second": 637016877.5577149,
+          "neural_macs_per_second": 579148051.3232065,
+          "memory_bandwidth": 3113.096393832499,
+          "cache_hit_rate": 94.97715309570613,
+          "branch_prediction": 90.63986402312275
+        },
+        "energy_efficiency": {
+          "energy_per_instruction": 86.0941630528539,
+          "energy_per_ternary_op": 33.71911381016112,
+          "energy_per_mac": 62.43061879106501,
+          "gops_per_watt": 11615.189282763478,
+          "efficiency_score": 9.0885741044495
+        },
+        "thermal_performance": {
+          "thermal_resistance": 49.17770939247208,
+          "junction_temperature": 94.55412104402275,
+          "temperature_coefficient": -0.08264028193384909,
+          "thermal_time_constant": 3.162060546651743,
+          "max_ambient_temp": 65.90750485239012
+        },
+        "summary": {
+          "frequency_score": 100,
+          "power_score": 100,
+          "efficiency_score": 90.88574104449499,
+          "overall_score": 96.96191368149833,
+          "grade": "A"
+        }
+      },
+      "characterization": {
+        "process_corners": {
+          "SS": {
+            "corner": "SS",
+            "max_frequency": 586.871366323841,
+            "power_consumption": 93.21809786655768,
+            "meets_spec": true,
+            "timing_margin": 0.10884214377692021
+          },
+          "TT": {
+            "corner": "TT",
+            "max_frequency": 758.6486347400726,
+            "power_consumption": 67.64755226946315,
+            "meets_spec": true,
+            "timing_margin": 0.18973176126553373
+          },
+          "FF": {
+            "corner": "FF",
+            "max_frequency": 915.3912487649783,
+            "power_consumption": 48.66976061984685,
+            "meets_spec": true,
+            "timing_margin": 0.17278098976924922
+          }
+        },
+        "voltage_characterization": {
+          "voltages": [
+            0.9,
+            0.9500000000000001,
+            1.0,
+            1.0500000000000003,
+            1.1,
+            1.1500000000000004,
+            1.2000000000000002,
+            1.2500000000000004,
+            1.3000000000000003,
+            1.3500000000000005
+          ],
+          "frequencies": [
+            564.9015813006126,
+            596.5488875713951,
+            632.3207750251279,
+            657.8737873641309,
+            690.5501660516215,
+            729.6307512530875,
+            758.339111669444,
+            787.79784229119,
+            830.9041779045752,
+            858.4745022338074
+          ],
+          "powers": [
+            40.074071344986734,
+            42.10384977551992,
+            45.8619385175201,
+            52.12625575692352,
+            58.59903617338635,
+            61.52002874141869,
+            68.54494901034549,
+            76.5391583356231,
+            81.8385599094295,
+            85.95465919304758
+          ]
+        },
+        "temperature_characterization": {
+          "temperatures": [
+            -40,
+            25,
+            85,
+            125
+          ],
+          "frequencies": [
+            809.4492841686597,
+            753.0813801246535,
+            701.940885926468,
+            691.0852130698825
+          ],
+          "leakage_currents": [
+            5.783746186576673,
+            9.421446612764496,
+            18.156262182599985,
+            26.547779472863304
+          ]
+        },
+        "aging_characterization": {
+          "stress_hours": [
+            0,
+            100,
+            500,
+            1000,
+            2000
+          ],
+          "frequency_degradation": [
+            0,
+            0.5,
+            2.1,
+            4.8,
+            9.2
+          ],
+          "leakage_increase": [
+            0,
+            2.1,
+            8.5,
+            18.2,
+            35.6
+          ],
+          "extrapolated_lifetime": 15.2,
+          "failure_rate": 5.2e-09
+        }
+      },
+      "reliability_test": {
+        "burn_in_test": {
+          "test": "Burn-in Test",
+          "duration": 24,
+          "temperature": 125,
+          "voltage": 1.32,
+          "frequency": 900,
+          "passed": true,
+          "parameter_drift": {
+            "frequency": -0.9097957371555212,
+            "power": 1.8415081784428804,
+            "leakage": 7.4281823767058155
+          }
+        },
+        "temperature_cycling": {
+          "test": "Temperature Cycling",
+          "cycles": 1000,
+          "temp_range": [
+            -40,
+            125
+          ],
+          "cycle_time": 30,
+          "passed": true,
+          "failure_mode": null
+        },
+        "voltage_stress": {
+          "test": "Voltage Stress",
+          "stress_voltage": 1.5,
+          "duration": 48,
+          "temperature": 85,
+          "passed": true,
+          "oxide_integrity": "good",
+          "leakage_increase": 4.60031293686074
+        },
+        "esd_test": {
+          "test": "ESD Test",
+          "hbm_voltage": 2000,
+          "cdm_voltage": 500,
+          "mm_voltage": 200,
+          "passed": true,
+          "protection_level": "Class 2"
+        },
+        "latch_up_test": {
+          "test": "Latch-up Test",
+          "trigger_current": 100,
+          "voltage_overshoot": 2.0,
+          "passed": true,
+          "recovery": "automatic",
+          "holding_voltage": 1.8
+        },
+        "overall_reliability": "pass"
+      },
+      "overall_status": "fail"
+    },
+    {
+      "die_id": 4,
+      "test_timestamp": "2025-09-17T01:15:31.747523",
+      "functional_test": {
+        "instruction_set_test": {
+          "test_name": "Instruction Set Test",
+          "instructions_tested": [
+            "ADD",
+            "SUB",
+            "MUL",
+            "DIV",
+            "AND",
+            "OR",
+            "XOR",
+            "SLL",
+            "SRL",
+            "SRA",
+            "LW",
+            "SW",
+            "LB",
+            "SB",
+            "BEQ",
+            "BNE",
+            "BLT",
+            "BGE",
+            "JAL",
+            "JALR"
+          ],
+          "total": 20,
+          "passed": 20,
+          "failed": 0,
+          "details": {
+            "arithmetic_ops": {
+              "passed": 10,
+              "total": 10
+            },
+            "logical_ops": {
+              "passed": 6,
+              "total": 6
+            },
+            "memory_ops": {
+              "passed": 4,
+              "total": 4
+            },
+            "control_ops": {
+              "passed": 0,
+              "total": 0
+            }
+          }
+        },
+        "ternary_arithmetic_test": {
+          "test_name": "Ternary Arithmetic Test",
+          "operations_tested": [
+            "TADD",
+            "TSUB",
+            "TMUL",
+            "TMAX",
+            "TMIN",
+            "TCOMP",
+            "TSHIFT",
+            "TCOUNT"
+          ],
+          "total": 8,
+          "passed": 7,
+          "failed": 1,
+          "precision_test": {
+            "accuracy": 99.98,
+            "max_error": 0.001,
+            "test_vectors": 1000
+          }
+        },
+        "neural_unit_test": {
+          "test_name": "Neural Processing Unit Test",
+          "tests": [
+            "MAC_operations",
+            "Activation_functions",
+            "Quantization",
+            "Batch_processing",
+            "Weight_loading",
+            "Bias_handling"
+          ],
+          "total": 6,
+          "passed": 6,
+          "failed": 0,
+          "performance": {
+            "mac_throughput": 597.740722801979,
+            "energy_efficiency": 59.44486321826057,
+            "precision": "INT3"
+          }
+        },
+        "memory_interface_test": {
+          "test_name": "Memory Interface Test",
+          "tests": [
+            "SRAM_read",
+            "SRAM_write",
+            "Cache_hit",
+            "Cache_miss",
+            "Memory_coherency",
+            "Address_translation"
+          ],
+          "total": 6,
+          "passed": 6,
+          "failed": 0,
+          "bandwidth": {
+            "read_bandwidth": 3235.7173209279854,
+            "write_bandwidth": 2707.5924880757043,
+            "latency": 2.7136618470046705
+          }
+        },
+        "io_interface_test": {
+          "test_name": "I/O Interface Test",
+          "tests": [
+            "GPIO_output",
+            "GPIO_input",
+            "UART_tx",
+            "UART_rx",
+            "SPI_master",
+            "I2C_master",
+            "Clock_generation"
+          ],
+          "total": 7,
+          "passed": 7,
+          "failed": 0,
+          "timing": {
+            "setup_time": 0.5155135070504637,
+            "hold_time": 0.2897897349747245,
+            "propagation_delay": 1.2168918367838133
+          }
+        },
+        "interrupt_test": {
+          "test_name": "Interrupt Handling Test",
+          "tests": [
+            "External_interrupt",
+            "Timer_interrupt",
+            "Software_interrupt",
+            "Nested_interrupts",
+            "Interrupt_latency",
+            "Context_switching"
+          ],
+          "total": 6,
+          "passed": 6,
+          "failed": 0,
+          "latency": {
+            "min_latency": 8.579187232315949,
+            "max_latency": 12.64520661444432,
+            "avg_latency": 10.796151415376595
+          }
+        },
+        "summary": {
+          "total_tests": 53,
+          "passed_tests": 52,
+          "pass_rate": 98.11320754716981,
+          "status": "fail"
+        }
+      },
+      "performance_test": {
+        "frequency_test": {
+          "max_frequency": 869.5467109231247,
+          "min_frequency": 595.5054222769767,
+          "nominal_frequency": 785.4624001859491,
+          "frequency_distribution": [
+            710.780405963818,
+            771.0457495455258,
+            869.5467109231247,
+            686.557798685953,
+            741.4366121788936,
+            851.8761020265814,
+            595.5054222769767,
+            741.9251999529761,
+            735.9090929143118,
+            630.4726830400118,
+            683.1044727715831,
+            739.3164519031432
+          ],
+          "meets_spec": true,
+          "temperature_coefficient": -0.1,
+          "voltage_sensitivity": 15.2
+        },
+        "power_consumption": {
+          "dynamic_power": 59.01719413485891,
+          "static_power": 9.393737283189251,
+          "total_power": 68.41093141804816,
+          "meets_spec": true,
+          "power_efficiency": 11.123953207852876,
+          "breakdown": {
+            "core": 38.361176187658295,
+            "memory": 11.803438826971783,
+            "io": 8.852579120228837
+          }
+        },
+        "throughput_test": {
+          "instructions_per_second": 793943196.8510656,
+          "ternary_ops_per_second": 607955284.1454698,
+          "neural_macs_per_second": 628492691.6840417,
+          "memory_bandwidth": 3049.936713817794,
+          "cache_hit_rate": 96.23682453871358,
+          "branch_prediction": 90.74712570422692
+        },
+        "energy_efficiency": {
+          "energy_per_instruction": 92.21465258706624,
+          "energy_per_ternary_op": 34.45969617150828,
+          "energy_per_mac": 58.73898092952318,
+          "gops_per_watt": 10844.26359526574,
+          "efficiency_score": 8.157759711136558
+        },
+        "thermal_performance": {
+          "thermal_resistance": 45.49764062354204,
+          "junction_temperature": 74.00456077422533,
+          "temperature_coefficient": -0.10335493819619927,
+          "thermal_time_constant": 3.0788314379970716,
+          "max_ambient_temp": 65.67287607757403
+        },
+        "summary": {
+          "frequency_score": 100,
+          "power_score": 100,
+          "efficiency_score": 81.57759711136559,
+          "overall_score": 93.85919903712187,
+          "grade": "A"
+        }
+      },
+      "characterization": {
+        "process_corners": {
+          "SS": {
+            "corner": "SS",
+            "max_frequency": 619.5286427382492,
+            "power_consumption": 90.50918973949723,
+            "meets_spec": true,
+            "timing_margin": 0.0525035529372095
+          },
+          "TT": {
+            "corner": "TT",
+            "max_frequency": 773.61601886007,
+            "power_consumption": 76.72949388331483,
+            "meets_spec": true,
+            "timing_margin": 0.17171364698360422
+          },
+          "FF": {
+            "corner": "FF",
+            "max_frequency": 922.903164558445,
+            "power_consumption": 45.21551173570474,
+            "meets_spec": true,
+            "timing_margin": 0.10261769544709258
+          }
+        },
+        "voltage_characterization": {
+          "voltages": [
+            0.9,
+            0.9500000000000001,
+            1.0,
+            1.0500000000000003,
+            1.1,
+            1.1500000000000004,
+            1.2000000000000002,
+            1.2500000000000004,
+            1.3000000000000003,
+            1.3500000000000005
+          ],
+          "frequencies": [
+            559.7693662012833,
+            594.6167223513999,
+            618.606892006283,
+            660.7754471376609,
+            695.8636056958031,
+            744.8092616598268,
+            753.4769633445276,
+            777.1926835069092,
+            829.239654331067,
+            865.3739133204401
+          ],
+          "powers": [
+            41.40631730864612,
+            45.93844615608285,
+            49.84847880263284,
+            53.160572291326666,
+            61.0776745558339,
+            65.08398192209346,
+            67.90097219448498,
+            76.5688638954538,
+            84.96035163551126,
+            89.31849121477293
+          ]
+        },
+        "temperature_characterization": {
+          "temperatures": [
+            -40,
+            25,
+            85,
+            125
+          ],
+          "frequencies": [
+            803.9157185121118,
+            757.3306598566437,
+            725.0778069873762,
+            678.5715315196421
+          ],
+          "leakage_currents": [
+            5.162164046475657,
+            10.120911044814353,
+            18.511019945182884,
+            27.168043942922882
+          ]
+        },
+        "aging_characterization": {
+          "stress_hours": [
+            0,
+            100,
+            500,
+            1000,
+            2000
+          ],
+          "frequency_degradation": [
+            0,
+            0.5,
+            2.1,
+            4.8,
+            9.2
+          ],
+          "leakage_increase": [
+            0,
+            2.1,
+            8.5,
+            18.2,
+            35.6
+          ],
+          "extrapolated_lifetime": 15.2,
+          "failure_rate": 5.2e-09
+        }
+      },
+      "reliability_test": {
+        "burn_in_test": {
+          "test": "Burn-in Test",
+          "duration": 24,
+          "temperature": 125,
+          "voltage": 1.32,
+          "frequency": 900,
+          "passed": true,
+          "parameter_drift": {
+            "frequency": -1.0969701194371904,
+            "power": 0.8755218217392089,
+            "leakage": -1.5600600081445357
+          }
+        },
+        "temperature_cycling": {
+          "test": "Temperature Cycling",
+          "cycles": 1000,
+          "temp_range": [
+            -40,
+            125
+          ],
+          "cycle_time": 30,
+          "passed": true,
+          "failure_mode": null
+        },
+        "voltage_stress": {
+          "test": "Voltage Stress",
+          "stress_voltage": 1.5,
+          "duration": 48,
+          "temperature": 85,
+          "passed": true,
+          "oxide_integrity": "good",
+          "leakage_increase": 3.6618861250662205
+        },
+        "esd_test": {
+          "test": "ESD Test",
+          "hbm_voltage": 2000,
+          "cdm_voltage": 500,
+          "mm_voltage": 200,
+          "passed": true,
+          "protection_level": "Class 2"
+        },
+        "latch_up_test": {
+          "test": "Latch-up Test",
+          "trigger_current": 100,
+          "voltage_overshoot": 2.0,
+          "passed": true,
+          "recovery": "automatic",
+          "holding_voltage": 1.8
+        },
+        "overall_reliability": "pass"
+      },
+      "overall_status": "fail"
+    },
+    {
+      "die_id": 5,
+      "test_timestamp": "2025-09-17T01:15:31.747861",
+      "functional_test": {
+        "instruction_set_test": {
+          "test_name": "Instruction Set Test",
+          "instructions_tested": [
+            "ADD",
+            "SUB",
+            "MUL",
+            "DIV",
+            "AND",
+            "OR",
+            "XOR",
+            "SLL",
+            "SRL",
+            "SRA",
+            "LW",
+            "SW",
+            "LB",
+            "SB",
+            "BEQ",
+            "BNE",
+            "BLT",
+            "BGE",
+            "JAL",
+            "JALR"
+          ],
+          "total": 20,
+          "passed": 20,
+          "failed": 0,
+          "details": {
+            "arithmetic_ops": {
+              "passed": 10,
+              "total": 10
+            },
+            "logical_ops": {
+              "passed": 6,
+              "total": 6
+            },
+            "memory_ops": {
+              "passed": 4,
+              "total": 4
+            },
+            "control_ops": {
+              "passed": 0,
+              "total": 0
+            }
+          }
+        },
+        "ternary_arithmetic_test": {
+          "test_name": "Ternary Arithmetic Test",
+          "operations_tested": [
+            "TADD",
+            "TSUB",
+            "TMUL",
+            "TMAX",
+            "TMIN",
+            "TCOMP",
+            "TSHIFT",
+            "TCOUNT"
+          ],
+          "total": 8,
+          "passed": 8,
+          "failed": 0,
+          "precision_test": {
+            "accuracy": 99.98,
+            "max_error": 0.001,
+            "test_vectors": 1000
+          }
+        },
+        "neural_unit_test": {
+          "test_name": "Neural Processing Unit Test",
+          "tests": [
+            "MAC_operations",
+            "Activation_functions",
+            "Quantization",
+            "Batch_processing",
+            "Weight_loading",
+            "Bias_handling"
+          ],
+          "total": 6,
+          "passed": 6,
+          "failed": 0,
+          "performance": {
+            "mac_throughput": 595.6413116382851,
+            "energy_efficiency": 59.81818121185343,
+            "precision": "INT3"
+          }
+        },
+        "memory_interface_test": {
+          "test_name": "Memory Interface Test",
+          "tests": [
+            "SRAM_read",
+            "SRAM_write",
+            "Cache_hit",
+            "Cache_miss",
+            "Memory_coherency",
+            "Address_translation"
+          ],
+          "total": 6,
+          "passed": 6,
+          "failed": 0,
+          "bandwidth": {
+            "read_bandwidth": 3166.1223248249858,
+            "write_bandwidth": 2765.0307278368073,
+            "latency": 2.6719238781065733
+          }
+        },
+        "io_interface_test": {
+          "test_name": "I/O Interface Test",
+          "tests": [
+            "GPIO_output",
+            "GPIO_input",
+            "UART_tx",
+            "UART_rx",
+            "SPI_master",
+            "I2C_master",
+            "Clock_generation"
+          ],
+          "total": 7,
+          "passed": 7,
+          "failed": 0,
+          "timing": {
+            "setup_time": 0.5041091879877221,
+            "hold_time": 0.31243455099196765,
+            "propagation_delay": 1.3259372228237456
+          }
+        },
+        "interrupt_test": {
+          "test_name": "Interrupt Handling Test",
+          "tests": [
+            "External_interrupt",
+            "Timer_interrupt",
+            "Software_interrupt",
+            "Nested_interrupts",
+            "Interrupt_latency",
+            "Context_switching"
+          ],
+          "total": 6,
+          "passed": 6,
+          "failed": 0,
+          "latency": {
+            "min_latency": 8.724216377735468,
+            "max_latency": 11.669247777922344,
+            "avg_latency": 11.260321463672756
+          }
+        },
+        "summary": {
+          "total_tests": 53,
+          "passed_tests": 53,
+          "pass_rate": 100.0,
+          "status": "pass"
+        }
+      },
+      "performance_test": {
+        "frequency_test": {
+          "max_frequency": 947.6907926533216,
+          "min_frequency": 602.5542931990618,
+          "nominal_frequency": 764.4293666725064,
+          "frequency_distribution": [
+            741.8902665113579,
+            727.6182557071297,
+            947.6907926533216,
+            688.4568877680454,
+            735.3857443063357,
+            878.2486785596581,
+            648.2102081951998,
+            667.744522397372,
+            821.0123980836956,
+            602.5542931990618,
+            672.5611719594089,
+            746.5927550487675
+          ],
+          "meets_spec": true,
+          "temperature_coefficient": -0.1,
+          "voltage_sensitivity": 15.2
+        },
+        "power_consumption": {
+          "dynamic_power": 64.59228682742418,
+          "static_power": 9.554069435989849,
+          "total_power": 74.14635626341402,
+          "meets_spec": true,
+          "power_efficiency": 10.263484793459765,
+          "breakdown": {
+            "core": 41.98498643782572,
+            "memory": 12.918457365484835,
+            "io": 9.688843024113625
+          }
+        },
+        "throughput_test": {
+          "instructions_per_second": 757442109.610281,
+          "ternary_ops_per_second": 595126675.9524213,
+          "neural_macs_per_second": 546310486.9329479,
+          "memory_bandwidth": 3173.361050230641,
+          "cache_hit_rate": 95.71387483088797,
+          "branch_prediction": 92.24579305140034
+        },
+        "energy_efficiency": {
+          "energy_per_instruction": 91.88781378594601,
+          "energy_per_ternary_op": 35.04788306571754,
+          "energy_per_mac": 62.25587032336166,
+          "gops_per_watt": 10882.835914776628,
+          "efficiency_score": 8.960917814850472
+        },
+        "thermal_performance": {
+          "thermal_resistance": 43.003366519512824,
+          "junction_temperature": 82.52504819218605,
+          "temperature_coefficient": -0.09817065389475656,
+          "thermal_time_constant": 2.5991507983756192,
+          "max_ambient_temp": 59.832357193412726
+        },
+        "summary": {
+          "frequency_score": 100,
+          "power_score": 94.40787589253398,
+          "efficiency_score": 89.60917814850472,
+          "overall_score": 94.6723513470129,
+          "grade": "A"
+        }
+      },
+      "characterization": {
+        "process_corners": {
+          "SS": {
+            "corner": "SS",
+            "max_frequency": 613.2278089093465,
+            "power_consumption": 91.71905313942798,
+            "meets_spec": true,
+            "timing_margin": 0.06679465208352675
+          },
+          "TT": {
+            "corner": "TT",
+            "max_frequency": 742.2304073263558,
+            "power_consumption": 71.39476978522855,
+            "meets_spec": true,
+            "timing_margin": 0.16349418784712852
+          },
+          "FF": {
+            "corner": "FF",
+            "max_frequency": 919.310800799536,
+            "power_consumption": 50.55450010128792,
+            "meets_spec": true,
+            "timing_margin": 0.17620800133163206
+          }
+        },
+        "voltage_characterization": {
+          "voltages": [
+            0.9,
+            0.9500000000000001,
+            1.0,
+            1.0500000000000003,
+            1.1,
+            1.1500000000000004,
+            1.2000000000000002,
+            1.2500000000000004,
+            1.3000000000000003,
+            1.3500000000000005
+          ],
+          "frequencies": [
+            568.348819660105,
+            619.6302906359108,
+            634.3161554097638,
+            667.5453217565906,
+            699.0242740455822,
+            723.4845693324822,
+            761.0080126525339,
+            797.4649441315712,
+            836.8801793439009,
+            857.8673065456338
+          ],
+          "powers": [
+            35.95142443421657,
+            43.4247660737743,
+            46.72816992089678,
+            54.606433444898784,
+            59.255110761491785,
+            64.47753289354621,
+            71.83779771684267,
+            76.05651519979291,
+            84.92441772573534,
+            88.4602437741427
+          ]
+        },
+        "temperature_characterization": {
+          "temperatures": [
+            -40,
+            25,
+            85,
+            125
+          ],
+          "frequencies": [
+            811.1250732068795,
+            768.6025464439512,
+            727.8992091697022,
+            680.7659073680073
+          ],
+          "leakage_currents": [
+            5.146353460622958,
+            10.206580822914963,
+            18.867593169101113,
+            27.060554654414652
+          ]
+        },
+        "aging_characterization": {
+          "stress_hours": [
+            0,
+            100,
+            500,
+            1000,
+            2000
+          ],
+          "frequency_degradation": [
+            0,
+            0.5,
+            2.1,
+            4.8,
+            9.2
+          ],
+          "leakage_increase": [
+            0,
+            2.1,
+            8.5,
+            18.2,
+            35.6
+          ],
+          "extrapolated_lifetime": 15.2,
+          "failure_rate": 5.2e-09
+        }
+      },
+      "reliability_test": {
+        "burn_in_test": {
+          "test": "Burn-in Test",
+          "duration": 24,
+          "temperature": 125,
+          "voltage": 1.32,
+          "frequency": 900,
+          "passed": true,
+          "parameter_drift": {
+            "frequency": -0.8150593856158046,
+            "power": -0.5653560519875431,
+            "leakage": 6.997732413369668
+          }
+        },
+        "temperature_cycling": {
+          "test": "Temperature Cycling",
+          "cycles": 1000,
+          "temp_range": [
+            -40,
+            125
+          ],
+          "cycle_time": 30,
+          "passed": true,
+          "failure_mode": null
+        },
+        "voltage_stress": {
+          "test": "Voltage Stress",
+          "stress_voltage": 1.5,
+          "duration": 48,
+          "temperature": 85,
+          "passed": true,
+          "oxide_integrity": "good",
+          "leakage_increase": 3.2596036024499933
+        },
+        "esd_test": {
+          "test": "ESD Test",
+          "hbm_voltage": 2000,
+          "cdm_voltage": 500,
+          "mm_voltage": 200,
+          "passed": true,
+          "protection_level": "Class 2"
+        },
+        "latch_up_test": {
+          "test": "Latch-up Test",
+          "trigger_current": 100,
+          "voltage_overshoot": 2.0,
+          "passed": true,
+          "recovery": "automatic",
+          "holding_voltage": 1.8
+        },
+        "overall_reliability": "pass"
+      },
+      "overall_status": "pass"
+    }
+  ],
+  "yield_analysis": {
+    "total_dies_tested": 5,
+    "functional_yield": 20.0,
+    "performance_yield": 20.0,
+    "overall_yield": 20.0,
+    "status_breakdown": {
+      "fail": 4,
+      "pass": 1
+    },
+    "meets_target": false
+  },
+  "parametric_analysis": {
+    "frequency": {
+      "mean": 947.6907926533216,
+      "std_dev": 0,
+      "min": 947.6907926533216,
+      "max": 947.6907926533216,
+      "median": 947.6907926533216,
+      "distribution": [
+        947.6907926533216
+      ]
+    },
+    "power": {
+      "mean": 74.14635626341402,
+      "std_dev": 0,
+      "min": 74.14635626341402,
+      "max": 74.14635626341402,
+      "median": 74.14635626341402,
+      "distribution": [
+        74.14635626341402
+      ]
+    },
+    "efficiency": {
+      "mean": 8.960917814850472,
+      "std_dev": 0,
+      "min": 8.960917814850472,
+      "max": 8.960917814850472,
+      "median": 8.960917814850472,
+      "distribution": [
+        8.960917814850472
+      ]
+    }
+  },
+  "recommendations": [
+    "Overall yield below target (85%). Investigate failure modes.",
+    "Functional yield below target (95%). Review design and test procedures.",
+    "Continue characterization across temperature and voltage ranges",
+    "Implement production test program based on silicon results",
+    "Consider binning strategy for different performance grades",
+    "Monitor long-term reliability through accelerated testing"
+  ],
+  "end_time": "2025-09-17T01:15:31.748486"
+}

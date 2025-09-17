@@ -1,0 +1,18 @@
+{
+  "design_name": "ibex_ternary_alu_verilog",
+  "technology": "sky130A",
+  "automation_date": "2025-09-17T00:29:57.399609",
+  "scripts_created": [
+    "/workspaces/ternary-ibex/place_route/scripts/automated_placement.py",
+    "/workspaces/ternary-ibex/place_route/scripts/automated_routing.py",
+    "/workspaces/ternary-ibex/place_route/scripts/automated_drc.py",
+    "/workspaces/ternary-ibex/place_route/automated_pnr_master.py",
+    "/workspaces/ternary-ibex/place_route/pnr_config.json"
+  ],
+  "stages_ready": [
+    "placement",
+    "routing",
+    "drc",
+    "orchestration"
+  ]
+}

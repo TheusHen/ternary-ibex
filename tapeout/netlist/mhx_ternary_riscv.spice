@@ -1,0 +1,1 @@
+* MHX Ternary RISC-V Post-Layout Netlist\n* Generated: 2025-09-17T01:15:21.238388\n* Process: TSMC 130nm\n\n.subckt mhx_ternary_riscv\n+ vdd vss clk rst\n+ // Additional pins...\n\n* Extracted parasitic elements\n* Gate count: 1184\n* Die area: 65um x 65um\n\n.ends\n

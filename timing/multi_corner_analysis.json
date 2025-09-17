@@ -1,0 +1,362 @@
+{
+  "SS_125C_1p62V": {
+    "corner": {
+      "name": "SS_125C_1p62V",
+      "voltage": 1.62,
+      "temperature": 125,
+      "process": "SS",
+      "description": "Slow-Slow, Hot, Low Voltage (Worst Case)"
+    },
+    "critical_operation": "TERNARY_ADD",
+    "critical_delay_ns": 3.43,
+    "max_frequency_mhz": 291.5451895043732,
+    "meets_100mhz": true,
+    "timing_margin": 191.54518950437318,
+    "operations": {
+      "TERNARY_ADD": {
+        "description": "Ternary addition with saturation",
+        "logic_depth": 4,
+        "min_delay_ps": 882.0,
+        "typ_delay_ps": 1727.0000000000002,
+        "max_delay_ps": 3430.0,
+        "max_freq_mhz": 291.5451895043732
+      },
+      "TERNARY_SUB": {
+        "description": "Ternary subtraction with saturation",
+        "logic_depth": 4,
+        "min_delay_ps": 882.0,
+        "typ_delay_ps": 1727.0000000000002,
+        "max_delay_ps": 3430.0,
+        "max_freq_mhz": 291.5451895043732
+      },
+      "TERNARY_MUL": {
+        "description": "Ternary multiplication",
+        "logic_depth": 3,
+        "min_delay_ps": 594.0,
+        "typ_delay_ps": 1155.0,
+        "max_delay_ps": 2282.0,
+        "max_freq_mhz": 438.21209465381247
+      },
+      "TERNARY_AND": {
+        "description": "Ternary logical AND",
+        "logic_depth": 3,
+        "min_delay_ps": 594.0,
+        "typ_delay_ps": 1155.0,
+        "max_delay_ps": 2282.0,
+        "max_freq_mhz": 438.21209465381247
+      },
+      "TERNARY_OR": {
+        "description": "Ternary logical OR",
+        "logic_depth": 3,
+        "min_delay_ps": 585.0,
+        "typ_delay_ps": 1144.0,
+        "max_delay_ps": 2268.0,
+        "max_freq_mhz": 440.9171075837742
+      },
+      "TERNARY_XOR": {
+        "description": "Ternary logical XOR",
+        "logic_depth": 4,
+        "min_delay_ps": 882.0,
+        "typ_delay_ps": 1727.0000000000002,
+        "max_delay_ps": 3430.0,
+        "max_freq_mhz": 291.5451895043732
+      },
+      "TERNARY_NOT": {
+        "description": "Ternary logical NOT",
+        "logic_depth": 2,
+        "min_delay_ps": 198.0,
+        "typ_delay_ps": 385.00000000000006,
+        "max_delay_ps": 770.0,
+        "max_freq_mhz": 1298.7012987012988
+      }
+    }
+  },
+  "TT_25C_1p8V": {
+    "corner": {
+      "name": "TT_25C_1p8V",
+      "voltage": 1.8,
+      "temperature": 25,
+      "process": "TT",
+      "description": "Typical-Typical, Room Temp, Nominal Voltage"
+    },
+    "critical_operation": "TERNARY_ADD",
+    "critical_delay_ns": 1.225,
+    "max_frequency_mhz": 816.3265306122449,
+    "meets_100mhz": true,
+    "timing_margin": 716.3265306122449,
+    "operations": {
+      "TERNARY_ADD": {
+        "description": "Ternary addition with saturation",
+        "logic_depth": 4,
+        "min_delay_ps": 490.0,
+        "typ_delay_ps": 785.0,
+        "max_delay_ps": 1225.0,
+        "max_freq_mhz": 816.3265306122449
+      },
+      "TERNARY_SUB": {
+        "description": "Ternary subtraction with saturation",
+        "logic_depth": 4,
+        "min_delay_ps": 490.0,
+        "typ_delay_ps": 785.0,
+        "max_delay_ps": 1225.0,
+        "max_freq_mhz": 816.3265306122449
+      },
+      "TERNARY_MUL": {
+        "description": "Ternary multiplication",
+        "logic_depth": 3,
+        "min_delay_ps": 330.0,
+        "typ_delay_ps": 525.0,
+        "max_delay_ps": 815.0,
+        "max_freq_mhz": 1226.993865030675
+      },
+      "TERNARY_AND": {
+        "description": "Ternary logical AND",
+        "logic_depth": 3,
+        "min_delay_ps": 330.0,
+        "typ_delay_ps": 525.0,
+        "max_delay_ps": 815.0,
+        "max_freq_mhz": 1226.993865030675
+      },
+      "TERNARY_OR": {
+        "description": "Ternary logical OR",
+        "logic_depth": 3,
+        "min_delay_ps": 325.0,
+        "typ_delay_ps": 520.0,
+        "max_delay_ps": 810.0,
+        "max_freq_mhz": 1234.567901234568
+      },
+      "TERNARY_XOR": {
+        "description": "Ternary logical XOR",
+        "logic_depth": 4,
+        "min_delay_ps": 490.0,
+        "typ_delay_ps": 785.0,
+        "max_delay_ps": 1225.0,
+        "max_freq_mhz": 816.3265306122449
+      },
+      "TERNARY_NOT": {
+        "description": "Ternary logical NOT",
+        "logic_depth": 2,
+        "min_delay_ps": 110.0,
+        "typ_delay_ps": 175.0,
+        "max_delay_ps": 275.0,
+        "max_freq_mhz": 3636.3636363636365
+      }
+    }
+  },
+  "FF_n40C_1p95V": {
+    "corner": {
+      "name": "FF_n40C_1p95V",
+      "voltage": 1.95,
+      "temperature": -40,
+      "process": "FF",
+      "description": "Fast-Fast, Cold, High Voltage (Best Case)"
+    },
+    "critical_operation": "TERNARY_ADD",
+    "critical_delay_ns": 0.735,
+    "max_frequency_mhz": 1360.544217687075,
+    "meets_100mhz": true,
+    "timing_margin": 1260.544217687075,
+    "operations": {
+      "TERNARY_ADD": {
+        "description": "Ternary addition with saturation",
+        "logic_depth": 4,
+        "min_delay_ps": 196.0,
+        "typ_delay_ps": 392.5,
+        "max_delay_ps": 735.0,
+        "max_freq_mhz": 1360.544217687075
+      },
+      "TERNARY_SUB": {
+        "description": "Ternary subtraction with saturation",
+        "logic_depth": 4,
+        "min_delay_ps": 196.0,
+        "typ_delay_ps": 392.5,
+        "max_delay_ps": 735.0,
+        "max_freq_mhz": 1360.544217687075
+      },
+      "TERNARY_MUL": {
+        "description": "Ternary multiplication",
+        "logic_depth": 3,
+        "min_delay_ps": 132.0,
+        "typ_delay_ps": 262.5,
+        "max_delay_ps": 489.0,
+        "max_freq_mhz": 2044.9897750511248
+      },
+      "TERNARY_AND": {
+        "description": "Ternary logical AND",
+        "logic_depth": 3,
+        "min_delay_ps": 132.0,
+        "typ_delay_ps": 262.5,
+        "max_delay_ps": 489.0,
+        "max_freq_mhz": 2044.9897750511248
+      },
+      "TERNARY_OR": {
+        "description": "Ternary logical OR",
+        "logic_depth": 3,
+        "min_delay_ps": 130.0,
+        "typ_delay_ps": 260.0,
+        "max_delay_ps": 486.0,
+        "max_freq_mhz": 2057.61316872428
+      },
+      "TERNARY_XOR": {
+        "description": "Ternary logical XOR",
+        "logic_depth": 4,
+        "min_delay_ps": 196.0,
+        "typ_delay_ps": 392.5,
+        "max_delay_ps": 735.0,
+        "max_freq_mhz": 1360.544217687075
+      },
+      "TERNARY_NOT": {
+        "description": "Ternary logical NOT",
+        "logic_depth": 2,
+        "min_delay_ps": 44.0,
+        "typ_delay_ps": 87.5,
+        "max_delay_ps": 165.0,
+        "max_freq_mhz": 6060.606060606061
+      }
+    }
+  },
+  "SF_125C_1p62V": {
+    "corner": {
+      "name": "SF_125C_1p62V",
+      "voltage": 1.62,
+      "temperature": 125,
+      "process": "SF",
+      "description": "Slow nFET, Fast pFET, Hot, Low Voltage"
+    },
+    "critical_operation": "TERNARY_ADD",
+    "critical_delay_ns": 2.0825,
+    "max_frequency_mhz": 480.1920768307323,
+    "meets_100mhz": true,
+    "timing_margin": 380.1920768307323,
+    "operations": {
+      "TERNARY_ADD": {
+        "description": "Ternary addition with saturation",
+        "logic_depth": 4,
+        "min_delay_ps": 588.0,
+        "typ_delay_ps": 1099.0,
+        "max_delay_ps": 2082.5,
+        "max_freq_mhz": 480.1920768307323
+      },
+      "TERNARY_SUB": {
+        "description": "Ternary subtraction with saturation",
+        "logic_depth": 4,
+        "min_delay_ps": 588.0,
+        "typ_delay_ps": 1099.0,
+        "max_delay_ps": 2082.5,
+        "max_freq_mhz": 480.1920768307323
+      },
+      "TERNARY_MUL": {
+        "description": "Ternary multiplication",
+        "logic_depth": 3,
+        "min_delay_ps": 396.0,
+        "typ_delay_ps": 735.0,
+        "max_delay_ps": 1385.5,
+        "max_freq_mhz": 721.7610970768676
+      },
+      "TERNARY_AND": {
+        "description": "Ternary logical AND",
+        "logic_depth": 3,
+        "min_delay_ps": 396.0,
+        "typ_delay_ps": 735.0,
+        "max_delay_ps": 1385.5,
+        "max_freq_mhz": 721.7610970768676
+      },
+      "TERNARY_OR": {
+        "description": "Ternary logical OR",
+        "logic_depth": 3,
+        "min_delay_ps": 390.0,
+        "typ_delay_ps": 728.0,
+        "max_delay_ps": 1377.0,
+        "max_freq_mhz": 726.2164124909223
+      },
+      "TERNARY_XOR": {
+        "description": "Ternary logical XOR",
+        "logic_depth": 4,
+        "min_delay_ps": 588.0,
+        "typ_delay_ps": 1099.0,
+        "max_delay_ps": 2082.5,
+        "max_freq_mhz": 480.1920768307323
+      },
+      "TERNARY_NOT": {
+        "description": "Ternary logical NOT",
+        "logic_depth": 2,
+        "min_delay_ps": 132.0,
+        "typ_delay_ps": 244.99999999999997,
+        "max_delay_ps": 467.5,
+        "max_freq_mhz": 2139.03743315508
+      }
+    }
+  },
+  "FS_n40C_1p95V": {
+    "corner": {
+      "name": "FS_n40C_1p95V",
+      "voltage": 1.95,
+      "temperature": -40,
+      "process": "FS",
+      "description": "Fast nFET, Slow pFET, Cold, High Voltage"
+    },
+    "critical_operation": "TERNARY_ADD",
+    "critical_delay_ns": 1.5925,
+    "max_frequency_mhz": 627.9434850863422,
+    "meets_100mhz": true,
+    "timing_margin": 527.9434850863422,
+    "operations": {
+      "TERNARY_ADD": {
+        "description": "Ternary addition with saturation",
+        "logic_depth": 4,
+        "min_delay_ps": 392.0,
+        "typ_delay_ps": 785.0,
+        "max_delay_ps": 1592.5,
+        "max_freq_mhz": 627.9434850863422
+      },
+      "TERNARY_SUB": {
+        "description": "Ternary subtraction with saturation",
+        "logic_depth": 4,
+        "min_delay_ps": 392.0,
+        "typ_delay_ps": 785.0,
+        "max_delay_ps": 1592.5,
+        "max_freq_mhz": 627.9434850863422
+      },
+      "TERNARY_MUL": {
+        "description": "Ternary multiplication",
+        "logic_depth": 3,
+        "min_delay_ps": 264.0,
+        "typ_delay_ps": 525.0,
+        "max_delay_ps": 1059.5,
+        "max_freq_mhz": 943.8414346389807
+      },
+      "TERNARY_AND": {
+        "description": "Ternary logical AND",
+        "logic_depth": 3,
+        "min_delay_ps": 264.0,
+        "typ_delay_ps": 525.0,
+        "max_delay_ps": 1059.5,
+        "max_freq_mhz": 943.8414346389807
+      },
+      "TERNARY_OR": {
+        "description": "Ternary logical OR",
+        "logic_depth": 3,
+        "min_delay_ps": 260.0,
+        "typ_delay_ps": 520.0,
+        "max_delay_ps": 1053.0,
+        "max_freq_mhz": 949.667616334283
+      },
+      "TERNARY_XOR": {
+        "description": "Ternary logical XOR",
+        "logic_depth": 4,
+        "min_delay_ps": 392.0,
+        "typ_delay_ps": 785.0,
+        "max_delay_ps": 1592.5,
+        "max_freq_mhz": 627.9434850863422
+      },
+      "TERNARY_NOT": {
+        "description": "Ternary logical NOT",
+        "logic_depth": 2,
+        "min_delay_ps": 88.0,
+        "typ_delay_ps": 175.0,
+        "max_delay_ps": 357.5,
+        "max_freq_mhz": 2797.2027972027972
+      }
+    }
+  }
+}

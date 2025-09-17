@@ -5,6 +5,7 @@
 """
 
 import os
+from pathlib import Path
 
 from mako import exceptions
 from mako.template import Template

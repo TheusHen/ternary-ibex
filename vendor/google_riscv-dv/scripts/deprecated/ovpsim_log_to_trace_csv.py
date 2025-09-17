@@ -18,6 +18,7 @@ Convert ovpsim sim log to standard riscv-dv .csv instruction trace format
 """
 import re
 import os
+from pathlib import Path
 import argparse
 import logging
 

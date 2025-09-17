@@ -1,3 +1,4 @@
+from pathlib import Path
 '''
 Fixes an issue where the Sail -> SV compiler references t_Pmpcfg_ent (in sail_genlib_ibexspec.sv) before it defines it (in ibexspec.sv)
 by just moving that definition.

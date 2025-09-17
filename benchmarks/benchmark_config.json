@@ -1,0 +1,227 @@
+{
+  "benchmark_configuration": {
+    "description": "MHX Ternary RISC-V Performance Benchmark Configuration",
+    "version": "1.0"
+  },
+  
+  "test_parameters": {
+    "vector_sizes": [100, 500, 1000, 5000, 10000, 50000, 100000],
+    "matrix_sizes": [
+      [32, 32],
+      [64, 64], 
+      [128, 128],
+      [256, 256],
+      [512, 512],
+      [1024, 1024]
+    ],
+    "neural_layer_sizes": [784, 256, 128, 64, 32, 10],
+    "iterations_per_test": 20,
+    "warmup_iterations": 5,
+    "timeout_seconds": 600
+  },
+  
+  "measurement_settings": {
+    "energy_measurement": true,
+    "detailed_profiling": true,
+    "cache_analysis": true,
+    "memory_bandwidth_analysis": true,
+    "thermal_monitoring": true,
+    "frequency_scaling_test": true
+  },
+  
+  "comparison_targets": {
+    "binary_reference": {
+      "data_types": ["int8", "int16", "int32"],
+      "implementations": ["standard", "optimized", "simd"]
+    },
+    "ternary_variants": {
+      "implementations": ["basic", "optimized", "neural_accelerated"]
+    }
+  },
+  
+  "workload_profiles": {
+    "arithmetic_intensive": {
+      "vector_operations": ["add", "subtract", "multiply", "dot_product"],
+      "matrix_operations": ["multiply", "transpose", "convolution"],
+      "data_sizes": "large"
+    },
+    "neural_processing": {
+      "network_architectures": [
+        {"type": "mlp", "layers": [784, 128, 10]},
+        {"type": "cnn", "layers": [32, 64, 128], "kernels": [3, 5]},
+        {"type": "deep", "layers": [784, 512, 256, 128, 64, 10]}
+      ],
+      "batch_sizes": [1, 8, 16, 32, 64],
+      "activation_functions": ["sign", "relu", "tanh"]
+    },
+    "memory_intensive": {
+      "access_patterns": ["sequential", "random", "strided"],
+      "data_sizes": [1024, 4096, 16384, 65536, 262144],
+      "cache_scenarios": ["cache_friendly", "cache_unfriendly", "mixed"]
+    },
+    "mixed_workloads": {
+      "image_processing": {
+        "operations": ["edge_detection", "filtering", "convolution"],
+        "image_sizes": ["64x64", "128x128", "256x256", "512x512"]
+      },
+      "signal_processing": {
+        "operations": ["fir_filter", "fft", "correlation"],
+        "signal_lengths": [1024, 4096, 16384, 65536]
+      },
+      "machine_learning": {
+        "algorithms": ["neural_network", "svm", "decision_tree"],
+        "dataset_sizes": ["small", "medium", "large"]
+      }
+    }
+  },
+  
+  "performance_targets": {
+    "throughput": {
+      "ternary_arithmetic": {
+        "min_ops_per_sec": 500000000,
+        "target_ops_per_sec": 1000000000,
+        "stretch_ops_per_sec": 1500000000
+      },
+      "neural_processing": {
+        "min_inferences_per_sec": 1000,
+        "target_inferences_per_sec": 5000,
+        "stretch_inferences_per_sec": 10000
+      }
+    },
+    "energy_efficiency": {
+      "ternary_arithmetic": {
+        "min_ops_per_uj": 1.0,
+        "target_ops_per_uj": 3.0,
+        "stretch_ops_per_uj": 5.0
+      },
+      "neural_processing": {
+        "min_inferences_per_uj": 0.01,
+        "target_inferences_per_uj": 0.05,
+        "stretch_inferences_per_uj": 0.1
+      }
+    },
+    "memory_bandwidth": {
+      "sequential_read": {
+        "min_gbps": 2.0,
+        "target_gbps": 4.0,
+        "stretch_gbps": 6.0
+      },
+      "sequential_write": {
+        "min_gbps": 1.0,
+        "target_gbps": 2.0,
+        "stretch_gbps": 3.0
+      },
+      "random_access": {
+        "min_mbps": 100,
+        "target_mbps": 500,
+        "stretch_mbps": 1000
+      }
+    }
+  },
+  
+  "comparison_baselines": {
+    "binary_processors": {
+      "arm_cortex_m4": {
+        "frequency_mhz": 180,
+        "process_node": "40nm",
+        "typical_performance": {
+          "int32_adds_per_sec": 180000000,
+          "int32_muls_per_sec": 180000000,
+          "energy_per_op_pj": 100
+        }
+      },
+      "risc_v_rv32i": {
+        "frequency_mhz": 400,
+        "process_node": "28nm", 
+        "typical_performance": {
+          "int32_adds_per_sec": 400000000,
+          "int32_muls_per_sec": 133000000,
+          "energy_per_op_pj": 80
+        }
+      }
+    },
+    "neural_accelerators": {
+      "eyeriss_v1": {
+        "process_node": "65nm",
+        "typical_performance": {
+          "int16_macs_per_sec": 84000000,
+          "energy_per_mac_pj": 600
+        }
+      },
+      "bit_fusion": {
+        "process_node": "45nm",
+        "typical_performance": {
+          "int8_macs_per_sec": 500000000,
+          "energy_per_mac_pj": 300
+        }
+      }
+    }
+  },
+  
+  "analysis_settings": {
+    "statistical_analysis": {
+      "confidence_interval": 0.95,
+      "outlier_detection": true,
+      "normality_testing": true
+    },
+    "visualization": {
+      "generate_plots": true,
+      "plot_formats": ["png", "svg", "pdf"],
+      "plot_types": [
+        "throughput_comparison",
+        "energy_efficiency", 
+        "scalability_analysis",
+        "workload_breakdown",
+        "comparative_analysis"
+      ]
+    },
+    "reporting": {
+      "detailed_metrics": true,
+      "summary_statistics": true,
+      "regression_analysis": true,
+      "performance_projections": true
+    }
+  },
+  
+  "hardware_simulation": {
+    "processor_model": {
+      "core_frequency_mhz": 761,
+      "cache_sizes": {
+        "l1_instruction_kb": 16,
+        "l1_data_kb": 16,
+        "l2_unified_kb": 0
+      },
+      "memory_system": {
+        "main_memory_kb": 32,
+        "memory_bandwidth_gbps": 4.0,
+        "memory_latency_cycles": 10
+      },
+      "special_units": {
+        "ternary_alu": {
+          "latency_cycles": 1,
+          "throughput_ops_per_cycle": 1
+        },
+        "neural_processing_unit": {
+          "matrix_size": "8x8",
+          "latency_cycles": 8,
+          "throughput_macs_per_cycle": 64
+        }
+      }
+    },
+    "power_model": {
+      "base_power_mw": 25.0,
+      "dynamic_power_per_mhz_mw": 0.05,
+      "ternary_unit_power_mw": 8.0,
+      "neural_unit_power_mw": 12.0,
+      "memory_power_per_access_pj": 50
+    }
+  },
+  
+  "output_configuration": {
+    "report_formats": ["text", "json", "html", "csv"],
+    "include_raw_data": true,
+    "include_visualizations": true,
+    "compression": false,
+    "timestamp_format": "ISO8601"
+  }
+}

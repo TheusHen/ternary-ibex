@@ -17,6 +17,7 @@ Parse the regression testlist in YAML format
 """
 
 import os
+from pathlib import Path
 import random
 import sys
 import re

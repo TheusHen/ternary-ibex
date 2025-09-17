@@ -1,0 +1,37 @@
+# MHX Ternary Extension Synthesis Script for Yosys
+# This script synthesizes the ternary ALU and neural unit for ASIC flow
+
+# Read SystemVerilog design files
+read_verilog -sv -noassert -noassume -nomeminit rtl/ibex_pkg.sv
+read_verilog -sv -noassert -noassume rtl/ibex_ternary_regfile.sv  
+read_verilog -sv -noassert -noassume rtl/ibex_ternary_alu.sv
+read_verilog -sv -noassert -noassume rtl/ibex_neural_unit.sv
+
+# Set synthesis defines and target hierarchies
+hierarchy -check -top ibex_ternary_alu
+chformal -remove
+
+# High-level synthesis
+proc; opt; fsm; opt; memory; opt
+
+# Technology mapping for generic cells
+techmap; opt
+
+# Generate reports
+stat
+check
+
+# Write synthesized netlists
+write_verilog synthesis/ibex_ternary_alu_synth.v
+
+# Synthesize neural unit separately
+hierarchy -check -top ibex_neural_unit
+chformal -remove
+proc; opt; fsm; opt; memory; opt
+techmap; opt
+write_verilog synthesis/ibex_neural_unit_synth.v
+
+# Write JSON netlist for OpenLane
+write_json synthesis/mhx_ternary_netlist.json
+
+echo "Synthesis completed successfully!"

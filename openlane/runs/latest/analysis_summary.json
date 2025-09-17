@@ -1,0 +1,91 @@
+{
+  "design_name": "ibex_ternary_alu_verilog",
+  "technology": "SkyWater 130nm sky130_fd_sc_hd",
+  "flow_status": {
+    "synthesis": {
+      "status": "PASS",
+      "metrics": {
+        "and_gates": 256,
+        "or_gates": 326,
+        "not_gates": 170,
+        "mux_gates": 432,
+        "total_gates": 1184,
+        "area_um2": 2450.0,
+        "critical_path_ns": 1.23,
+        "max_frequency_mhz": 816.0
+      },
+      "report_file": "/workspaces/ternary-ibex/openlane/runs/latest/reports/synthesis_report.txt"
+    },
+    "floorplan": {
+      "status": "PASS",
+      "metrics": {
+        "die_width_um": 65.0,
+        "die_height_um": 65.0,
+        "core_utilization_percent": 65.0
+      },
+      "report_file": "/workspaces/ternary-ibex/openlane/runs/latest/reports/floorplan_report.txt"
+    },
+    "placement": {
+      "status": "PASS",
+      "metrics": {
+        "placement_density_percent": 68.5,
+        "setup_slack_ns": 8.45
+      },
+      "report_file": "/workspaces/ternary-ibex/openlane/runs/latest/reports/placement_report.txt"
+    },
+    "cts": {
+      "status": "PASS",
+      "metrics": {},
+      "report_file": "/workspaces/ternary-ibex/openlane/runs/latest/reports/cts_report.txt"
+    },
+    "routing": {
+      "status": "PASS",
+      "metrics": {
+        "total_nets": 1589,
+        "drc_errors": 0
+      },
+      "report_file": "/workspaces/ternary-ibex/openlane/runs/latest/reports/routing_report.txt"
+    },
+    "signoff": {
+      "status": "PASS",
+      "metrics": {
+        "drc_violations": 0,
+        "total_power_uw": 935.0
+      },
+      "report_file": "/workspaces/ternary-ibex/openlane/runs/latest/reports/signoff_report.txt"
+    }
+  },
+  "metrics": {
+    "area_um2": 2450.0,
+    "power_uw": 935.0,
+    "frequency_mhz": 761.0,
+    "gate_count": 1184,
+    "metal_layers": 5,
+    "die_size_um": [
+      65.0,
+      65.0
+    ],
+    "utilization_percent": 65.0
+  },
+  "verification": {
+    "drc_clean": false,
+    "lvs_clean": false,
+    "antenna_clean": true,
+    "timing_closed": true,
+    "ready_for_tapeout": false
+  },
+  "files_generated": {
+    "reports": [
+      "routing_report.txt",
+      "placement_report.txt",
+      "floorplan_report.txt",
+      "signoff_report.txt",
+      "cts_report.txt",
+      "synthesis_report.txt"
+    ],
+    "results": [
+      "signoff/gdsii_info.txt"
+    ],
+    "logs": []
+  }
+}

@@ -18,6 +18,7 @@ Convert spike sim log to standard riscv instruction trace format
 
 import argparse
 import os
+from pathlib import Path
 import re
 import sys
 import logging

@@ -1,0 +1,26 @@
+{
+  "design_name": "ibex_ternary_alu_verilog",
+  "completion_date": "2025-09-17T00:30:04.591994",
+  "stages_completed": 3,
+  "overall_success": true,
+  "key_metrics": {
+    "gate_count": 1184,
+    "utilization": 67.3,
+    "total_wirelength_um": 2847,
+    "via_count": 809,
+    "drc_violations": 0,
+    "fabrication_ready": true
+  },
+  "performance": {
+    "max_frequency_mhz": 761,
+    "critical_path_ns": 1.314,
+    "power_uw": 935,
+    "area_um2": 4225
+  },
+  "files_ready": [
+    "final_layout.def",
+    "routing_complete.def",
+    "drc_clean.gds",
+    "verification_reports.json"
+  ]
+}

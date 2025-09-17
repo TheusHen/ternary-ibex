@@ -1,0 +1,27 @@
+{
+  "layout": [
+    "/workspaces/ternary-ibex/tapeout/gds/mhx_ternary_riscv.gds"
+  ],
+  "netlist": [
+    "/workspaces/ternary-ibex/tapeout/netlist/mhx_ternary_riscv.spice"
+  ],
+  "timing": [
+    "/workspaces/ternary-ibex/tapeout/timing/mhx_ternary_riscv.sdf"
+  ],
+  "power": [
+    "/workspaces/ternary-ibex/tapeout/power/mhx_ternary_riscv.lib"
+  ],
+  "test": [
+    "/workspaces/ternary-ibex/tapeout/test/mhx_ternary_riscv_vectors.tv"
+  ],
+  "verification": [
+    "/workspaces/ternary-ibex/tapeout/verification/design_verification_report.json",
+    "/workspaces/ternary-ibex/tapeout/verification/physical_verification_report.json"
+  ],
+  "documentation": [
+    "/workspaces/ternary-ibex/tapeout/documentation/design_specification.md",
+    "/workspaces/ternary-ibex/tapeout/documentation/verification_report.md",
+    "/workspaces/ternary-ibex/tapeout/documentation/test_plan.md",
+    "/workspaces/ternary-ibex/tapeout/documentation/package_specification.md"
+  ]
+}

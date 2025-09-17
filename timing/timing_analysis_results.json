@@ -1,0 +1,78 @@
+{
+  "gate_counts": {
+    "NOT": 170,
+    "OR": 326,
+    "AND": 256,
+    "MUX": 432
+  },
+  "operation_delays": {
+    "TERNARY_ADD": {
+      "description": "Ternary addition with saturation",
+      "logic_depth": 4,
+      "min_delay_ps": 490,
+      "typ_delay_ps": 785,
+      "max_delay_ps": 1225,
+      "max_freq_mhz": 816.3265306122449
+    },
+    "TERNARY_SUB": {
+      "description": "Ternary subtraction with saturation",
+      "logic_depth": 4,
+      "min_delay_ps": 490,
+      "typ_delay_ps": 785,
+      "max_delay_ps": 1225,
+      "max_freq_mhz": 816.3265306122449
+    },
+    "TERNARY_MUL": {
+      "description": "Ternary multiplication",
+      "logic_depth": 3,
+      "min_delay_ps": 330,
+      "typ_delay_ps": 525,
+      "max_delay_ps": 815,
+      "max_freq_mhz": 1226.993865030675
+    },
+    "TERNARY_AND": {
+      "description": "Ternary logical AND",
+      "logic_depth": 3,
+      "min_delay_ps": 330,
+      "typ_delay_ps": 525,
+      "max_delay_ps": 815,
+      "max_freq_mhz": 1226.993865030675
+    },
+    "TERNARY_OR": {
+      "description": "Ternary logical OR",
+      "logic_depth": 3,
+      "min_delay_ps": 325,
+      "typ_delay_ps": 520,
+      "max_delay_ps": 810,
+      "max_freq_mhz": 1234.567901234568
+    },
+    "TERNARY_XOR": {
+      "description": "Ternary logical XOR",
+      "logic_depth": 4,
+      "min_delay_ps": 490,
+      "typ_delay_ps": 785,
+      "max_delay_ps": 1225,
+      "max_freq_mhz": 816.3265306122449
+    },
+    "TERNARY_NOT": {
+      "description": "Ternary logical NOT",
+      "logic_depth": 2,
+      "min_delay_ps": 110,
+      "typ_delay_ps": 175,
+      "max_delay_ps": 275,
+      "max_freq_mhz": 3636.3636363636365
+    }
+  },
+  "timing_metrics": {
+    "critical_path_operation": "TERNARY_ADD",
+    "critical_path_delay_ps": 1225,
+    "critical_path_delay_ns": 1.225,
+    "maximum_frequency_mhz": 816.3265306122449,
+    "meets_100mhz_target": true,
+    "timing_margin_percent": 716.3265306122449,
+    "setup_time_estimate_ps": 100,
+    "hold_time_estimate_ps": 50
+  },
+  "process": "SkyWater 130nm sky130_fd_sc_hd",
+  "conditions": "TT corner, 1.8V, 25C"
+}

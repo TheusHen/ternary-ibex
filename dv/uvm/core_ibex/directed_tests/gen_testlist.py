@@ -12,6 +12,7 @@ Generating testlists for following open-source test suites
 # SPDX-License-Identifier: Apache-2.0
 
 import os
+from pathlib import Path
 import argparse
 import sys
 

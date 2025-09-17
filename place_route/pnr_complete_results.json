@@ -1,0 +1,65 @@
+{
+  "design_name": "ibex_ternary_alu_verilog",
+  "start_time": "2025-09-17T00:30:04.591296",
+  "stages_completed": [
+    "placement",
+    "routing",
+    "drc"
+  ],
+  "stage_results": {
+    "placement": {
+      "success": true,
+      "cells_placed": 1184,
+      "utilization": 0.67,
+      "wirelength_um": 2450,
+      "timing_closure": true,
+      "files_generated": [
+        "floorplan.def",
+        "global_placement.def",
+        "detailed_placement.def"
+      ]
+    },
+    "routing": {
+      "success": true,
+      "nets_routed": 1589,
+      "routing_success_rate": 100.0,
+      "total_wirelength_um": 2847,
+      "via_count": 809,
+      "drc_violations": 0,
+      "layer_utilization": {
+        "met1": 0.72,
+        "met2": 0.68,
+        "met3": 0.45,
+        "met4": 0.23
+      },
+      "files_generated": [
+        "global_routing.def",
+        "detailed_routing.def"
+      ]
+    },
+    "drc": {
+      "success": true,
+      "magic_violations": 0,
+      "klayout_violations": 0,
+      "total_violations": 0,
+      "drc_clean": true,
+      "categories_checked": [
+        "width",
+        "spacing",
+        "enclosure",
+        "via",
+        "density",
+        "antenna"
+      ],
+      "fabrication_ready": true,
+      "files_generated": [
+        "magic_drc_summary.txt",
+        "klayout_drc_results.json",
+        "comprehensive_drc_summary.json"
+      ]
+    }
+  },
+  "overall_status": "completed",
+  "end_time": "2025-09-17T00:30:04.592403",
+  "duration_minutes": 1.855e-05
+}

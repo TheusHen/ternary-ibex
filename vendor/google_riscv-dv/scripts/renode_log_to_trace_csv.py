@@ -5,6 +5,7 @@ Converts Renode log to execution trace for RISC-V DV
 
 import argparse
 import os
+from pathlib import Path
 import re
 import sys
 import logging

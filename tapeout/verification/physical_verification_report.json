@@ -1,0 +1,60 @@
+{
+  "drc": {
+    "passed": true,
+    "violations": 0,
+    "warnings": 2,
+    "details": {
+      "min_width_violations": 0,
+      "min_spacing_violations": 0,
+      "via_violations": 0,
+      "metal_density_warnings": 2
+    },
+    "report_file": "drc_report.txt"
+  },
+  "lvs": {
+    "passed": true,
+    "net_matches": 1184,
+    "device_matches": 1184,
+    "mismatches": 0,
+    "details": {
+      "net_count_layout": 1184,
+      "net_count_schematic": 1184,
+      "device_count_layout": 1184,
+      "device_count_schematic": 1184
+    },
+    "report_file": "lvs_report.txt"
+  },
+  "erc": {
+    "passed": true,
+    "violations": 0,
+    "warnings": 1,
+    "details": {
+      "floating_nets": 0,
+      "power_violations": 0,
+      "connectivity_violations": 0,
+      "antenna_warnings": 1
+    },
+    "report_file": "erc_report.txt"
+  },
+  "antenna": {
+    "passed": true,
+    "violations": 0,
+    "antenna_ratio_max": 45.2,
+    "antenna_ratio_limit": 100.0,
+    "protected_gates": 98.5,
+    "report_file": "antenna_report.txt"
+  },
+  "density": {
+    "passed": true,
+    "densities": {
+      "metal1": 65.2,
+      "metal2": 58.7,
+      "metal3": 42.3,
+      "metal4": 38.9
+    },
+    "min_required": 30.0,
+    "max_allowed": 70.0,
+    "fill_required": false,
+    "report_file": "density_report.txt"
+  }
+}

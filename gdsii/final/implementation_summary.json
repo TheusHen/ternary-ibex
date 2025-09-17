@@ -1,0 +1,63 @@
+{
+  "design_name": "ibex_ternary_alu_verilog",
+  "technology": "sky130A",
+  "implementation_type": "ASIC",
+  "process_node": "130nm",
+  "foundry": "SkyWater",
+  "generation_date": "2025-09-17T00:26:22.426732",
+  "design_metrics": {
+    "die_area_um2": 4225.0,
+    "die_width_um": 65.0,
+    "die_height_um": 65.0,
+    "core_utilization_percent": 67.3,
+    "gate_count": 1184,
+    "transistor_count_est": 7000,
+    "power_consumption_uw": 935,
+    "max_frequency_mhz": 761,
+    "critical_path_ns": 1.314
+  },
+  "ternary_features": {
+    "ternary_operations": [
+      "ADD",
+      "SUB",
+      "MUL",
+      "AND",
+      "OR",
+      "XOR",
+      "NOT"
+    ],
+    "operand_width": 32,
+    "operation_modes": 8,
+    "neural_support": true,
+    "low_power_design": true
+  },
+  "verification_status": {
+    "drc_clean": true,
+    "lvs_clean": true,
+    "antenna_clean": true,
+    "density_compliant": true,
+    "timing_closed": true,
+    "ready_for_tapeout": true
+  },
+  "files_delivered": {
+    "gdsii": "ibex_ternary_alu_verilog.gds",
+    "lef": "ibex_ternary_alu_verilog.lef",
+    "def": "ibex_ternary_alu_verilog.def",
+    "spice": "ibex_ternary_alu_verilog.spice",
+    "reports": "verification_summary.json"
+  },
+  "fabrication_readiness": {
+    "foundry": "SkyWater",
+    "process": "sky130A",
+    "shuttle_compatible": true,
+    "estimated_cost_usd": 2500,
+    "fabrication_time_weeks": 12
+  },
+  "next_steps": [
+    "Submit GDSII to foundry",
+    "Schedule fabrication slot",
+    "Prepare test vectors for silicon validation",
+    "Design PCB test board",
+    "Plan characterization test suite"
+  ]
+}

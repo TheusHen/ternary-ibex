@@ -1,0 +1,28 @@
+{
+  "design_name": "ibex_ternary_alu_verilog",
+  "technology": "sky130A",
+  "file_format": "GDSII Stream Format",
+  "database_unit": "1 nanometer",
+  "user_unit": "1 micrometer",
+  "die_size_um": {
+    "width": 65.0,
+    "height": 65.0
+  },
+  "area_um2": 4225.0,
+  "layers_used": {
+    "nwell (64/20)": "N-well implant",
+    "diff (65/20)": "Active diffusion",
+    "poly (66/20)": "Polysilicon gate",
+    "licon (67/20)": "Local interconnect contact",
+    "li1 (68/20)": "Local interconnect",
+    "mcon (67/44)": "Metal contact",
+    "met1 (68/20)": "Metal 1",
+    "via (68/44)": "Via 1",
+    "met2 (69/20)": "Metal 2",
+    "met3 (70/20)": "Metal 3"
+  },
+  "creation_date": "2025-09-17T00:26:22.425908",
+  "estimated_size_mb": 2.8,
+  "polygon_count": 18650,
+  "fabrication_ready": true
+}

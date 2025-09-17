@@ -8,6 +8,7 @@
 
 import sys
 import os
+from pathlib import Path
 from types import *
 import pathlib3x as pathlib
 import pickle

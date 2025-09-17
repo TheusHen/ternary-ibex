@@ -7,6 +7,7 @@ Class describing a one-shot build configuration object
 
 import logging as log
 import os
+from pathlib import Path
 from collections import OrderedDict
 
 from Deploy import CompileOneShot

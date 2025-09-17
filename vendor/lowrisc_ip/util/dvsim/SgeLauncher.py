@@ -6,6 +6,7 @@
 #
 # ------------------------------------
 import os
+from pathlib import Path
 import shlex
 import subprocess
 from subprocess import PIPE, Popen

@@ -1,0 +1,502 @@
+{
+  "scaling_analysis": {
+    "130nm": {
+      "die_area_mm2": 0.004225,
+      "estimated_frequency_mhz": 761.0,
+      "estimated_power_mw": 69.6,
+      "transistor_density": 1000000.0,
+      "gate_density": 280236.6863905326,
+      "performance_per_watt": 10.933908045977013,
+      "performance_per_mm2": 180118.3431952663
+    },
+    "65nm": {
+      "die_area_mm2": 0.00105625,
+      "estimated_frequency_mhz": 1217.6000000000001,
+      "estimated_power_mw": 8.458333333333334,
+      "transistor_density": 2500000.0,
+      "gate_density": 1120946.7455621304,
+      "performance_per_watt": 143.9527093596059,
+      "performance_per_mm2": 1152757.3964497044
+    },
+    "28nm": {
+      "die_area_mm2": 0.00019599999999999994,
+      "estimated_frequency_mhz": 2826.571428571429,
+      "estimated_power_mw": 1.2713325443786976,
+      "transistor_density": 8000000.0,
+      "gate_density": 6040816.326530614,
+      "performance_per_watt": 2223.3139874137173,
+      "performance_per_mm2": 14421282.798833825
+    },
+    "14nm": {
+      "die_area_mm2": 4.8999999999999985e-05,
+      "estimated_frequency_mhz": 5653.142857142858,
+      "estimated_power_mw": 0.25112741617356993,
+      "transistor_density": 20000000.0,
+      "gate_density": 24163265.306122456,
+      "performance_per_watt": 22511.054122563884,
+      "performance_per_mm2": 115370262.3906706
+    }
+  },
+  "yield_analysis": {
+    "130nm": {
+      "defect_yield": 0.99999999857195,
+      "parametric_yield": 0.85,
+      "overall_yield": 0.7913499988699126,
+      "dies_per_wafer": 6692150.031315536,
+      "good_dies_per_wafer": 5295832.9197188355,
+      "yield_loss_breakdown": {
+        "defects": 1.4280500115759764e-09,
+        "parametric": 0.15000000000000002,
+        "design": 0.050000000000000044,
+        "test": 0.020000000000000018
+      }
+    },
+    "65nm": {
+      "defect_yield": 0.999999999989265,
+      "parametric_yield": 0.85,
+      "overall_yield": 0.7913499999915048,
+      "dies_per_wafer": 26768600.125262145,
+      "good_dies_per_wafer": 21183331.708898794,
+      "yield_loss_breakdown": {
+        "defects": 1.0734968469705564e-11,
+        "parametric": 0.15000000000000002,
+        "design": 0.050000000000000044,
+        "test": 0.020000000000000018
+      }
+    },
+    "28nm": {
+      "defect_yield": 0.9999999999999923,
+      "parametric_yield": 0.85,
+      "overall_yield": 0.7913499999999938,
+      "dies_per_wafer": 144256805.52198035,
+      "good_dies_per_wafer": 114157623.04981825,
+      "yield_loss_breakdown": {
+        "defects": 7.66053886991358e-15,
+        "parametric": 0.15000000000000002,
+        "design": 0.050000000000000044,
+        "test": 0.020000000000000018
+      }
+    },
+    "14nm": {
+      "defect_yield": 1.0,
+      "parametric_yield": 0.85,
+      "overall_yield": 0.79135,
+      "dies_per_wafer": 577027222.0879214,
+      "good_dies_per_wafer": 456630492.19927657,
+      "yield_loss_breakdown": {
+        "defects": 0.0,
+        "parametric": 0.15000000000000002,
+        "design": 0.050000000000000044,
+        "test": 0.020000000000000018
+      }
+    }
+  },
+  "cost_analysis": {
+    "130nm": {
+      "nre_costs": {
+        "design": 150000,
+        "mask_tooling": 50000,
+        "test_program": 25000,
+        "qualification": 50000,
+        "packaging": 15000
+      },
+      "volume_costs": {
+        "volume_100": {
+          "nre_total": 290000,
+          "nre_per_unit": 2900.0,
+          "unit_cost": 1.900151062167581,
+          "total_cost": 2901.9001510621674,
+          "breakdown": {
+            "wafer": 0.00015106216758108625,
+            "assembly": 0.5,
+            "test": 0.25,
+            "packaging": 1.0,
+            "quality": 0.15,
+            "nre_amortized": 2900.0
+          }
+        },
+        "volume_1000": {
+          "nre_total": 290000,
+          "nre_per_unit": 290.0,
+          "unit_cost": 1.900151062167581,
+          "total_cost": 291.9001510621676,
+          "breakdown": {
+            "wafer": 0.00015106216758108625,
+            "assembly": 0.5,
+            "test": 0.25,
+            "packaging": 1.0,
+            "quality": 0.15,
+            "nre_amortized": 290.0
+          }
+        },
+        "volume_10000": {
+          "nre_total": 290000,
+          "nre_per_unit": 29.0,
+          "unit_cost": 0.1901510621675811,
+          "total_cost": 29.19015106216758,
+          "breakdown": {
+            "wafer": 0.00015106216758108625,
+            "assembly": 0.05,
+            "test": 0.025,
+            "packaging": 0.1,
+            "quality": 0.015,
+            "nre_amortized": 29.0
+          }
+        },
+        "volume_100000": {
+          "nre_total": 290000,
+          "nre_per_unit": 2.9,
+          "unit_cost": 0.019151062167581088,
+          "total_cost": 2.919151062167581,
+          "breakdown": {
+            "wafer": 0.00015106216758108625,
+            "assembly": 0.005,
+            "test": 0.0025,
+            "packaging": 0.01,
+            "quality": 0.0015,
+            "nre_amortized": 2.9
+          }
+        },
+        "volume_1000000": {
+          "nre_total": 290000,
+          "nre_per_unit": 0.29,
+          "unit_cost": 0.0020510621675810864,
+          "total_cost": 0.2920510621675811,
+          "breakdown": {
+            "wafer": 0.00015106216758108625,
+            "assembly": 0.0005,
+            "test": 0.00025,
+            "packaging": 0.001,
+            "quality": 0.00015,
+            "nre_amortized": 0.29
+          }
+        }
+      },
+      "manufacturing_data": {
+        "yield": 0.7913499988699126,
+        "dies_per_wafer": 5295832.9197188355,
+        "area_mm2": 0.004225
+      }
+    },
+    "65nm": {
+      "nre_costs": {
+        "design": 150000,
+        "mask_tooling": 150000,
+        "test_program": 25000,
+        "qualification": 50000,
+        "packaging": 15000
+      },
+      "volume_costs": {
+        "volume_100": {
+          "nre_total": 390000,
+          "nre_per_unit": 3900.0,
+          "unit_cost": 1.9000566483127626,
+          "total_cost": 3901.900056648313,
+          "breakdown": {
+            "wafer": 5.664831276261885e-05,
+            "assembly": 0.5,
+            "test": 0.25,
+            "packaging": 1.0,
+            "quality": 0.15,
+            "nre_amortized": 3900.0
+          }
+        },
+        "volume_1000": {
+          "nre_total": 390000,
+          "nre_per_unit": 390.0,
+          "unit_cost": 1.9000566483127626,
+          "total_cost": 391.9000566483128,
+          "breakdown": {
+            "wafer": 5.664831276261885e-05,
+            "assembly": 0.5,
+            "test": 0.25,
+            "packaging": 1.0,
+            "quality": 0.15,
+            "nre_amortized": 390.0
+          }
+        },
+        "volume_10000": {
+          "nre_total": 390000,
+          "nre_per_unit": 39.0,
+          "unit_cost": 0.19005664831276264,
+          "total_cost": 39.19005664831276,
+          "breakdown": {
+            "wafer": 5.664831276261885e-05,
+            "assembly": 0.05,
+            "test": 0.025,
+            "packaging": 0.1,
+            "quality": 0.015,
+            "nre_amortized": 39.0
+          }
+        },
+        "volume_100000": {
+          "nre_total": 390000,
+          "nre_per_unit": 3.9,
+          "unit_cost": 0.01905664831276262,
+          "total_cost": 3.9190566483127625,
+          "breakdown": {
+            "wafer": 5.664831276261885e-05,
+            "assembly": 0.005,
+            "test": 0.0025,
+            "packaging": 0.01,
+            "quality": 0.0015,
+            "nre_amortized": 3.9
+          }
+        },
+        "volume_1000000": {
+          "nre_total": 390000,
+          "nre_per_unit": 0.39,
+          "unit_cost": 0.001956648312762619,
+          "total_cost": 0.3919566483127626,
+          "breakdown": {
+            "wafer": 5.664831276261885e-05,
+            "assembly": 0.0005,
+            "test": 0.00025,
+            "packaging": 0.001,
+            "quality": 0.00015,
+            "nre_amortized": 0.39
+          }
+        }
+      },
+      "manufacturing_data": {
+        "yield": 0.7913499999915048,
+        "dies_per_wafer": 21183331.708898794,
+        "area_mm2": 0.00105625
+      }
+    },
+    "28nm": {
+      "nre_costs": {
+        "design": 150000,
+        "mask_tooling": 500000,
+        "test_program": 25000,
+        "qualification": 50000,
+        "packaging": 15000
+      },
+      "volume_costs": {
+        "volume_100": {
+          "nre_total": 740000,
+          "nre_per_unit": 7400.0,
+          "unit_cost": 1.9000175196359783,
+          "total_cost": 7401.900017519636,
+          "breakdown": {
+            "wafer": 1.7519635978468144e-05,
+            "assembly": 0.5,
+            "test": 0.25,
+            "packaging": 1.0,
+            "quality": 0.15,
+            "nre_amortized": 7400.0
+          }
+        },
+        "volume_1000": {
+          "nre_total": 740000,
+          "nre_per_unit": 740.0,
+          "unit_cost": 1.9000175196359783,
+          "total_cost": 741.900017519636,
+          "breakdown": {
+            "wafer": 1.7519635978468144e-05,
+            "assembly": 0.5,
+            "test": 0.25,
+            "packaging": 1.0,
+            "quality": 0.15,
+            "nre_amortized": 740.0
+          }
+        },
+        "volume_10000": {
+          "nre_total": 740000,
+          "nre_per_unit": 74.0,
+          "unit_cost": 0.19001751963597846,
+          "total_cost": 74.19001751963597,
+          "breakdown": {
+            "wafer": 1.7519635978468144e-05,
+            "assembly": 0.05,
+            "test": 0.025,
+            "packaging": 0.1,
+            "quality": 0.015,
+            "nre_amortized": 74.0
+          }
+        },
+        "volume_100000": {
+          "nre_total": 740000,
+          "nre_per_unit": 7.4,
+          "unit_cost": 0.019017519635978468,
+          "total_cost": 7.419017519635979,
+          "breakdown": {
+            "wafer": 1.7519635978468144e-05,
+            "assembly": 0.005,
+            "test": 0.0025,
+            "packaging": 0.01,
+            "quality": 0.0015,
+            "nre_amortized": 7.4
+          }
+        },
+        "volume_1000000": {
+          "nre_total": 740000,
+          "nre_per_unit": 0.74,
+          "unit_cost": 0.0019175196359784681,
+          "total_cost": 0.7419175196359784,
+          "breakdown": {
+            "wafer": 1.7519635978468144e-05,
+            "assembly": 0.0005,
+            "test": 0.00025,
+            "packaging": 0.001,
+            "quality": 0.00015,
+            "nre_amortized": 0.74
+          }
+        }
+      },
+      "manufacturing_data": {
+        "yield": 0.7913499999999938,
+        "dies_per_wafer": 114157623.04981825,
+        "area_mm2": 0.00019599999999999994
+      }
+    },
+    "14nm": {
+      "nre_costs": {
+        "design": 150000,
+        "mask_tooling": 2000000,
+        "test_program": 25000,
+        "qualification": 50000,
+        "packaging": 15000
+      },
+      "volume_costs": {
+        "volume_100": {
+          "nre_total": 2240000,
+          "nre_per_unit": 22400.0,
+          "unit_cost": 1.9000087598179891,
+          "total_cost": 22401.900008759818,
+          "breakdown": {
+            "wafer": 8.759817989234002e-06,
+            "assembly": 0.5,
+            "test": 0.25,
+            "packaging": 1.0,
+            "quality": 0.15,
+            "nre_amortized": 22400.0
+          }
+        },
+        "volume_1000": {
+          "nre_total": 2240000,
+          "nre_per_unit": 2240.0,
+          "unit_cost": 1.9000087598179891,
+          "total_cost": 2241.900008759818,
+          "breakdown": {
+            "wafer": 8.759817989234002e-06,
+            "assembly": 0.5,
+            "test": 0.25,
+            "packaging": 1.0,
+            "quality": 0.15,
+            "nre_amortized": 2240.0
+          }
+        },
+        "volume_10000": {
+          "nre_total": 2240000,
+          "nre_per_unit": 224.0,
+          "unit_cost": 0.19000875981798926,
+          "total_cost": 224.190008759818,
+          "breakdown": {
+            "wafer": 8.759817989234002e-06,
+            "assembly": 0.05,
+            "test": 0.025,
+            "packaging": 0.1,
+            "quality": 0.015,
+            "nre_amortized": 224.0
+          }
+        },
+        "volume_100000": {
+          "nre_total": 2240000,
+          "nre_per_unit": 22.4,
+          "unit_cost": 0.019008759817989235,
+          "total_cost": 22.419008759817988,
+          "breakdown": {
+            "wafer": 8.759817989234002e-06,
+            "assembly": 0.005,
+            "test": 0.0025,
+            "packaging": 0.01,
+            "quality": 0.0015,
+            "nre_amortized": 22.4
+          }
+        },
+        "volume_1000000": {
+          "nre_total": 2240000,
+          "nre_per_unit": 2.24,
+          "unit_cost": 0.001908759817989234,
+          "total_cost": 2.2419087598179894,
+          "breakdown": {
+            "wafer": 8.759817989234002e-06,
+            "assembly": 0.0005,
+            "test": 0.00025,
+            "packaging": 0.001,
+            "quality": 0.00015,
+            "nre_amortized": 2.24
+          }
+        }
+      },
+      "manufacturing_data": {
+        "yield": 0.79135,
+        "dies_per_wafer": 456630492.19927657,
+        "area_mm2": 4.8999999999999985e-05
+      }
+    }
+  },
+  "readiness_analysis": {
+    "130nm": {
+      "individual_scores": {
+        "design_rules_compliance": 0.95,
+        "timing_closure": 0.9,
+        "power_analysis": 0.9,
+        "signal_integrity": 0.95,
+        "thermal_analysis": 0.9,
+        "testability": 0.88,
+        "packaging_compatibility": 0.92,
+        "supply_chain_readiness": 0.95
+      },
+      "overall_readiness": 0.9187500000000001,
+      "risk_level": "Low",
+      "recommendation": "RECOMMENDED: 130nm process is ready for fabrication with low risk"
+    },
+    "65nm": {
+      "individual_scores": {
+        "design_rules_compliance": 0.95,
+        "timing_closure": 0.8,
+        "power_analysis": 0.95,
+        "signal_integrity": 0.95,
+        "thermal_analysis": 0.9,
+        "testability": 0.88,
+        "packaging_compatibility": 0.92,
+        "supply_chain_readiness": 0.95
+      },
+      "overall_readiness": 0.9125000000000001,
+      "risk_level": "Low",
+      "recommendation": "RECOMMENDED: 65nm process is ready for fabrication with low risk"
+    },
+    "28nm": {
+      "individual_scores": {
+        "design_rules_compliance": 0.95,
+        "timing_closure": 0.8,
+        "power_analysis": 0.95,
+        "signal_integrity": 0.95,
+        "thermal_analysis": 0.9,
+        "testability": 0.88,
+        "packaging_compatibility": 0.92,
+        "supply_chain_readiness": 0.8
+      },
+      "overall_readiness": 0.89375,
+      "risk_level": "Medium",
+      "recommendation": "CONDITIONAL: 28nm process ready with medium risk - address identified issues"
+    },
+    "14nm": {
+      "individual_scores": {
+        "design_rules_compliance": 0.85,
+        "timing_closure": 0.8,
+        "power_analysis": 0.95,
+        "signal_integrity": 0.95,
+        "thermal_analysis": 0.9,
+        "testability": 0.88,
+        "packaging_compatibility": 0.92,
+        "supply_chain_readiness": 0.65
+      },
+      "overall_readiness": 0.8625,
+      "risk_level": "Medium",
+      "recommendation": "CONDITIONAL: 14nm process ready with medium risk - address identified issues"
+    }
+  }
+}

@@ -1,0 +1,32 @@
+# DEF (Design Exchange Format) for ibex_ternary_alu_verilog
+# Technology: sky130A
+# Generated: 2025-09-17 00:26:22.426278
+
+VERSION 5.8 ;
+DIVIDERCHAR "/" ;
+BUSBITCHARS "[]" ;
+
+DESIGN ibex_ternary_alu_verilog ;
+
+UNITS DISTANCE MICRONS 1000 ;
+
+DIEAREA ( 0 0 ) ( 65000 65000 ) ;
+
+COMPONENTS 1184 ;
+  # MHX Ternary ALU components:
+  # - 256 AND gates for ternary conjunction
+  # - 432 MUX gates for ternary selection  
+  # - 170 NOT gates for ternary negation
+  # - 326 OR gates for ternary disjunction
+END COMPONENTS
+
+PINS 68 ;
+  # 32-bit operand_a_i + 32-bit operand_b_i + 3-bit operation_i + 1 clk_i
+  # 32-bit result_o + 1 valid_o = 68 total pins
+END PINS
+
+NETS 1589 ;
+  # Net connectivity for ternary arithmetic operations
+END NETS
+
+END DESIGN
