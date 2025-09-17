@@ -303,25 +303,25 @@ This project is licensed under the **Apache License 2.0** - see the [LICENSE](LI
 
 ## 📞 Contact & Support
 
-### MHX Technologies
+### MHX Inc.
 **Revolutionizing Computing Through Ternary Innovation**
 
 #### Technical Support
-- 📧 **Email**: support@mhx-technologies.com
+- 📧 **Email**: support@mhx-inc.com
 - 📋 **Issues**: [GitHub Issues](https://github.com/TheusHen/ternary-ibex/issues)
 - 📖 **Documentation**: [Technical Docs](doc/)
 - 💬 **Community**: [Discussions](https://github.com/TheusHen/ternary-ibex/discussions)
 
 #### Business Inquiries
-- 📧 **Email**: business@mhx-technologies.com
+- 📧 **Email**: business@mhx-inc.com
 - 📞 **Phone**: +1 (555) 123-TRIT
-- 🌐 **Website**: www.mhx-technologies.com
-- 💼 **LinkedIn**: MHX Technologies
+- 🌐 **Website**: www.mhx-inc.com
+- 💼 **LinkedIn**: MHX Inc.
 
 #### Research Collaboration
-- 📧 **Email**: research@mhx-technologies.com
-- 🎓 **Academic**: partnerships@mhx-technologies.com
-- 📊 **Publications**: publications@mhx-technologies.com
+- 📧 **Email**: research@mhx-inc.com
+- 🎓 **Academic**: partnerships@mhx-inc.com
+- 📊 **Publications**: publications@mhx-inc.com
 
 ---
 
@@ -341,7 +341,7 @@ This project is licensed under the **Apache License 2.0** - see the [LICENSE](LI
 
 ---
 
-*Copyright © 2025 MHX Technologies. All rights reserved.*
+*Copyright © 2025 MHX Inc. All rights reserved.*
 
 **MHX Ternary RISC-V Processor** - *Redefining the Future of Efficient Computing*
 

@@ -751,7 +751,7 @@ Guidelines for optimizing code for ternary operations and neural processing.
 **Document Information**
 - **Version**: 1.0
 - **Date**: December 2024
-- **Author**: MHX Neural Research Team
+- **Author**: MHX Neural
 - **Status**: Implementation Complete
 - **Next Review**: Q1 2025
 

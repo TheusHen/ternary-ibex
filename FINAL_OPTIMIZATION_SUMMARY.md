@@ -142,10 +142,10 @@ Key breakthroughs:
 - Complete ASIC fabrication readiness
 - Comprehensive cross-platform portability
 
-This processor establishes MHX Technologies as the definitive leader in next-generation efficient computing, providing the foundation for a new era of ultra-low-power, high-performance edge computing applications.
+This processor establishes MHX Inc. as the definitive leader in next-generation efficient computing, providing the foundation for a new era of ultra-low-power, high-performance edge computing applications.
 
 ---
 
 **🏆 MISSION ACCOMPLISHED: World-class ternary processor with industry-leading 98.5/100 efficiency score**
 
-*© 2025 MHX Technologies - Revolutionizing Computing Through Ternary Innovation*
+*© 2025 MHX Inc. - Revolutionizing Computing Through Ternary Innovation*

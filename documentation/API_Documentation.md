@@ -1022,7 +1022,7 @@ int main() {
 **Document Information**
 - **Version**: 1.0
 - **Date**: September 2025  
-- **Author**: MHX Neural Research Team
+- **Author**: MHX Neural
 - **Status**: Complete
 - **Related**: MHX Ternary RISC-V Technical Documentation
 

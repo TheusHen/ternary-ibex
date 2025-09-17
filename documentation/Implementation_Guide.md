@@ -692,4 +692,4 @@ For commercial support, training, and custom implementations:
 
 **Last Updated**: December 2024  
 **Version**: 1.0  
-**Maintainer**: MHX Neural Research Team
+**Maintainer**: MHX Neural

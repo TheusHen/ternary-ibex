@@ -1,5 +1,6 @@
 // Enhanced MHX Ternary ALU - Optimized for Maximum Performance
-// Copyright MHX Technologies 2025
+// Ternary ALU Extension for Ibex Core
+// Copyright MHX Neural 2025
 // High-performance ternary arithmetic logic unit with advanced optimizations
 
 /**

@@ -224,10 +224,10 @@ This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENS
 If you use the MHX Neural T1 in your research, please cite:
 
 ```bibtex
-@misc{mhx_neural_t1_2024,
+@misc{mhx_neural_t1_2025,
   title={MHX Neural T1: Ternary RISC-V Extensions for Accelerated AI},
-  author={MHX Development Team},
-  year={2024},
+  author={MHX Inc.},
+  year={2025},
   note={Prototype Implementation},
   howpublished={\url{https://github.com/TheusHen/ternary-ibex}}
 }

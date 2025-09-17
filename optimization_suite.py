@@ -2,7 +2,7 @@
 """
 MHX Ternary Processor Optimization Suite
 Advanced optimization framework for maximum efficiency scores
-Copyright 2025 MHX Technologies
+Copyright 2025 MHX Inc.
 """
 
 import os
