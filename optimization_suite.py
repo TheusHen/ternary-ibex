@@ -1,4 +1,43 @@
-#!/usr/bin/env python3
+=== Linting MHX Neural T1 Simple System RTL ===
+WARNING: Failed to register library '/workspaces/ternary-ibex is not a directory'
+Traceback (most recent call last):
+  File "/usr/local/bin/fusesoc", line 7, in <module>
+    sys.exit(main())
+  File "/usr/local/lib/python3.10/dist-packages/fusesoc/main.py", line 835, in main
+    fusesoc(args)
+  File "/usr/local/lib/python3.10/dist-packages/fusesoc/main.py", line 823, in fusesoc
+    cm = init_coremanager(config, args.cores_root)
+  File "/usr/local/lib/python3.10/dist-packages/fusesoc/main.py", line 559, in init_coremanager
+    cm.add_library(library)
+  File "/usr/local/lib/python3.10/dist-packages/fusesoc/coremanager.py", line 311, in add_library
+    self._load_cores(library, from_generator)
+  File "/usr/local/lib/python3.10/dist-packages/fusesoc/coremanager.py", line 293, in _load_cores
+    found_cores = self.find_cores(library, from_generator=from_generator)
+  File "/usr/local/lib/python3.10/dist-packages/fusesoc/coremanager.py", line 244, in find_cores
+    core = Core(
+  File "/usr/local/lib/python3.10/dist-packages/fusesoc/core.py", line 14, in __new__
+    return Capi2Core(*args, **kwargs)
+  File "/usr/local/lib/python3.10/dist-packages/fusesoc/capi2/core.py", line 160, in __init__
+    _root = Root(utils.yaml_fread(self.core_file))
+  File "/usr/local/lib/python3.10/dist-packages/fusesoc/utils.py", line 159, in yaml_fread
+    return yaml.load(f, Loader=YamlLoader)
+  File "/usr/local/lib/python3.10/dist-packages/yaml/__init__.py", line 81, in load
+    return loader.get_single_data()
+  File "/usr/local/lib/python3.10/dist-packages/yaml/constructor.py", line 49, in get_single_data
+    node = self.get_single_node()
+  File "yaml/_yaml.pyx", line 673, in yaml._yaml.CParser.get_single_node
+  File "yaml/_yaml.pyx", line 687, in yaml._yaml.CParser._compose_document
+  File "yaml/_yaml.pyx", line 731, in yaml._yaml.CParser._compose_node
+  File "yaml/_yaml.pyx", line 845, in yaml._yaml.CParser._compose_mapping_node
+  File "yaml/_yaml.pyx", line 731, in yaml._yaml.CParser._compose_node
+  File "yaml/_yaml.pyx", line 845, in yaml._yaml.CParser._compose_mapping_node
+  File "yaml/_yaml.pyx", line 731, in yaml._yaml.CParser._compose_node
+  File "yaml/_yaml.pyx", line 845, in yaml._yaml.CParser._compose_mapping_node
+  File "yaml/_yaml.pyx", line 703, in yaml._yaml.CParser._compose_node
+yaml.composer.ComposerError: found undefined alias
+  in "./ibex_top_tracing.core", line 35, column 9
+Error: Verilator lint failed on MHX Simple System RTL
+Error: Process completed with exit code 1.#!/usr/bin/env python3
 """
 MHX Ternary Processor Optimization Suite
 Advanced optimization framework for maximum efficiency scores

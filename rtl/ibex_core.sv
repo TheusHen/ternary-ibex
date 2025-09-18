@@ -970,11 +970,22 @@ module ibex_core import ibex_pkg::*; #(
   ////////////////////////////////////////////////
 
   ibex_ternary_alu ternary_alu_i (
-    .operand_a_i (ternary_rdata_a),
-    .operand_b_i (ternary_rdata_b),
-    .operator_i  (ternary_op_id),
-    .result_o    (ternary_alu_result),
-    .ready_o     (ternary_alu_ready)
+    .clk_i                (clk_i),
+    .rst_ni               (rst_ni),
+    .operand_a_i          (ternary_rdata_a),
+    .operand_b_i          (ternary_rdata_b),
+    .operator_i           (ternary_op_id),
+    .enable_i             (1'b1),  // Always enabled for now
+    .precision_mode_i     (2'b00), // T1 mode
+    .vectorize_enable_i   (1'b0),  // Disabled for now
+    .neural_acc_enable_i  (1'b0),  // Disabled for now
+    .power_save_mode_i    (1'b0),  // Disabled for now
+    .result_o             (ternary_alu_result),
+    .ready_o              (ternary_alu_ready),
+    .valid_o              (),      // Not used
+    .efficiency_score_o   (),      // Not used
+    .power_estimate_o     (),      // Not used
+    .operation_latency_o  ()       // Not used
   );
 
   ////////////////////////////////////////////////

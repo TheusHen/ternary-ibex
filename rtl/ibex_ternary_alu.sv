@@ -201,7 +201,7 @@ module ibex_ternary_alu import ibex_pkg::*; #(
   // State machine for advanced pipeline control
   typedef enum logic [2:0] {
     IDLE,
-    DECODE,
+    TERN_DECODE,
     EXECUTE,
     VECTORIZE,
     NEURAL_ACC,
@@ -217,7 +217,6 @@ module ibex_ternary_alu import ibex_pkg::*; #(
       efficiency_counter <= 8'h00;
       power_counter <= 16'h0000;
       latency_counter <= 4'h0;
-      operation_active <= 1'b0;
     end else begin
       current_state <= next_state;
       
@@ -243,11 +242,12 @@ module ibex_ternary_alu import ibex_pkg::*; #(
     next_state = current_state;
     
     case (current_state)
+    case (current_state)
       IDLE: begin
-        if (enable_i) next_state = DECODE;
+        if (enable_i) next_state = TERN_DECODE;
       end
       
-      DECODE: begin
+      TERN_DECODE: begin
         if (neural_acc_enable_i) next_state = NEURAL_ACC;
         else if (vectorize_enable_i) next_state = VECTORIZE;
         else next_state = EXECUTE;
@@ -257,8 +257,8 @@ module ibex_ternary_alu import ibex_pkg::*; #(
       VECTORIZE: next_state = EXECUTE;
       NEURAL_ACC: next_state = EXECUTE;
       COMPLETE: next_state = IDLE;
+      default: next_state = IDLE;
     endcase
-  end
 
   // Ultra-high performance computation engine
   always_comb begin

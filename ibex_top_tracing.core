@@ -25,7 +25,7 @@ parameters:
     paramtype: vlogdefine
 
 targets:
-  default:
+  default: &default
     filesets:
       - tool_veriblelint ? (files_lint_verible)
       - files_rtl

@@ -23,7 +23,7 @@ filesets:
       - dv/mhx_simple_system_tests/verilator_waiver.vlt: { file_type: vlt }
 
 targets:
-  default:
+  default: &default
     filesets:
       - files_sim
       - tool_verilator ? (files_verilator)
