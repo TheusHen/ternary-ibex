@@ -242,7 +242,6 @@ module ibex_ternary_alu import ibex_pkg::*; #(
     next_state = current_state;
     
     case (current_state)
-    case (current_state)
       IDLE: begin
         if (enable_i) next_state = TERN_DECODE;
       end
@@ -259,6 +258,7 @@ module ibex_ternary_alu import ibex_pkg::*; #(
       COMPLETE: next_state = IDLE;
       default: next_state = IDLE;
     endcase
+  end
 
   // Ultra-high performance computation engine
   always_comb begin

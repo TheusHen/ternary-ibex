@@ -63,11 +63,22 @@ module mhx_ternary_test;
   );
 
   ibex_ternary_alu dut_alu (
-    .operand_a_i (trf_rdata_a),
-    .operand_b_i (trf_rdata_b),
-    .operator_i  (talu_op),
-    .result_o    (talu_result),
-    .ready_o     (talu_ready)
+    .clk_i               (clk),
+    .rst_ni              (rst_n),
+    .operand_a_i         (trf_rdata_a),
+    .operand_b_i         (trf_rdata_b),
+    .operator_i          (talu_op),
+    .enable_i            (1'b1),
+    .precision_mode_i    (2'b00),
+    .vectorize_enable_i  (1'b0),
+    .neural_acc_enable_i (1'b0),
+    .power_save_mode_i   (1'b0),
+    .result_o            (talu_result),
+    .ready_o             (talu_ready),
+    .valid_o             (),
+    .efficiency_score_o  (),
+    .power_estimate_o    (),
+    .operation_latency_o ()
   );
 
   ibex_neural_unit dut_neural (

@@ -152,12 +152,15 @@ module mhx_simple_system_test;
 
   // UART Test
   task run_uart_test();
+    logic prev_tx;
+    integer tx_change_count;
+    
     $display("--- Running UART Test ---");
     test_count++;
     
     // Monitor UART TX for activity
-    logic prev_tx = uart_tx_o;
-    integer tx_change_count = 0;
+    prev_tx = uart_tx_o;
+    tx_change_count = 0;
     
     for (int i = 0; i < 1000; i++) begin
       @(posedge clk);
@@ -178,13 +181,16 @@ module mhx_simple_system_test;
 
   // System Integration Test
   task run_system_integration_test();
+    logic prev_gpio;
+    logic gpio_activity;
+    
     $display("--- Running System Integration Test ---");
     test_count++;
     
     // Test memory access patterns
     // Monitor for system activity
-    logic prev_gpio = |gpio_o;
-    logic gpio_activity = 1'b0;
+    prev_gpio = |gpio_o;
+    gpio_activity = 1'b0;
     
     for (int i = 0; i < 5000; i++) begin
       @(posedge clk);
