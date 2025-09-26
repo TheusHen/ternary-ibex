@@ -56,6 +56,9 @@ jobs:
       - name: Lint MHX Simple System RTL
         run: |
           echo "=== Linting MHX Neural T1 Simple System RTL ==="
+          echo "Current working directory: $(pwd)"
+          echo "Directory contents: $(ls -la | head -10)"
+          echo "fusesoc.conf exists: $(test -f fusesoc.conf && echo 'yes' || echo 'no')"
           set +e
           fusesoc --cores-root . run --target=lint --tool=verilator lowrisc:mhx:mhx_simple_system_core
           if [ $? != 0 ]; then
@@ -67,6 +70,7 @@ jobs:
       - name: Lint MHX Test RTL
         run: |
           echo "=== Linting MHX Neural T1 Test RTL ==="
+          echo "Working directory: $(pwd)"
           set +e
           fusesoc --cores-root . run --target=lint --tool=verilator lowrisc:mhx:mhx_simple_system_test
           if [ $? != 0 ]; then

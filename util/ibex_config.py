@@ -127,13 +127,27 @@ class FusesocOpts:
             'fusesoc_opts', help=('Outputs options for fusesoc'))
         output_argparser.set_defaults(output_fn=self.output)
 
+    def _resolve_enum_value(self, field_name, value):
+        """Convert enum package references to Verilator-compatible format."""
+        # For enum parameters, remove the package prefix for Verilator
+        if isinstance(value, str) and value.startswith('ibex_pkg::'):
+            return value.replace('ibex_pkg::', '')
+        return value
+
     def output(self, config, args):
         fusesoc_cmd = []
         for fld, typ in Config.known_fields:
             val = config.params[fld]
-            fusesoc_cmd.append(shlex.quote(f'--{fld}={val}'))
+            # Pass parameters directly as FuseSoC parameters, not as Verilator -G options
+            # This lets FuseSoC handle the enum conversion automatically
+            fusesoc_cmd.append(f'{fld}={val}')
 
-        return ' '.join(fusesoc_cmd)
+        # Add RVFI define for tracing modules as verilator option
+        if fusesoc_cmd:
+            params = ' '.join(fusesoc_cmd)
+            return f'{params} --verilator_options "+define+RVFI"'
+        else:
+            return '--verilator_options "+define+RVFI"'
 
 class QueryOpts:
     def setup_args(self, arg_subparser):
