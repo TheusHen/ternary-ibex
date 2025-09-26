@@ -62,8 +62,11 @@ build-mhx-system:
 		lowrisc:mhx:mhx_simple_system \
 		$(FUSESOC_CONFIG_OPTS)
 
-mhx-system-program = examples/sw/simple_system/hello_test/hello_test.vmem
+mhx-system-program = examples/sw/mhx_system/hello_mhx/hello_mhx.vmem
 sw-mhx-hello: $(mhx-system-program)
+
+$(mhx-system-program):
+	make -C examples/sw/mhx_system/hello_mhx
 
 Vmhx_simple_system = \
       build/lowrisc_mhx_mhx_simple_system_0/sim-verilator/Vmhx_simple_system
