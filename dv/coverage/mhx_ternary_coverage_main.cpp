@@ -45,20 +45,18 @@ int main(int argc, char **argv) {
   std::cout << "========================================\n";
   std::cout << "Running comprehensive coverage tests...\n\n";
 
-  // Run simulation
+  // Run simulation - the testbench is entirely self-contained
+  // Clock and reset are generated internally
   while (!Verilated::gotFinish() && main_time < 1000000) {
     main_time++;
 
-    // Toggle clock
-    if (main_time % 5 == 0) {
-      dut->clk = !dut->clk;
-    }
-
-    // Evaluate model
+    // Evaluate model (clock is generated internally in the testbench)
     dut->eval();
 
-    // Dump trace
-    tfp->dump(main_time);
+    // Dump trace every few cycles to reduce file size
+    if (main_time % 10 == 0) {
+      tfp->dump(main_time);
+    }
   }
 
   // Clean up

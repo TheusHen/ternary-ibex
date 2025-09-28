@@ -138,14 +138,18 @@ class FusesocOpts:
         fusesoc_cmd = []
         for fld, typ in Config.known_fields:
             val = config.params[fld]
-            # Pass parameters directly as FuseSoC parameters, not as Verilator -G options
-            # This lets FuseSoC handle the enum conversion automatically
-            fusesoc_cmd.append(f'{fld}={val}')
+            # Resolve enum values to simple names for Verilator
+            resolved_val = self._resolve_enum_value(fld, val)
+            # Use Verilator -G parameter format for fusesoc backend args
+            fusesoc_cmd.append(f'-G{fld}={resolved_val}')
 
-        # Add RVFI define for tracing modules as verilator option
+        # Add RVFI define for tracing modules
+        fusesoc_cmd.append('+define+RVFI')
+
+        # Return parameters formatted for verilator_options
         if fusesoc_cmd:
-            params = ' '.join(fusesoc_cmd)
-            return f'{params} --verilator_options "+define+RVFI"'
+            verilator_args = ' '.join(fusesoc_cmd)
+            return f'--verilator_options "{verilator_args}"'
         else:
             return '--verilator_options "+define+RVFI"'
 

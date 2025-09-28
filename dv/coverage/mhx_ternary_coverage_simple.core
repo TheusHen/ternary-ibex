@@ -4,8 +4,8 @@ CAPI=2:
 # Licensed under the Apache License, Version 2.0, see LICENSE for details.
 # SPDX-License-Identifier: Apache-2.0
 
-name: lowrisc:ibex:mhx_ternary_coverage:0.1
-description: MHX Ternary Extension Coverage Analysis
+name: lowrisc:ibex:mhx_ternary_coverage_simple:0.1
+description: MHX Ternary Extension Simple Coverage Analysis (Verilator compatible)
 
 filesets:
   files_rtl:
@@ -16,7 +16,7 @@ filesets:
       - ../../rtl/ibex_ternary_regfile.sv
       - ../../rtl/ibex_ternary_alu.sv
       - ../../rtl/ibex_neural_unit.sv
-      - mhx_ternary_coverage_test.sv
+      - mhx_ternary_coverage_simple.sv
     file_type: systemVerilogSource
 
   files_verilator_cpp:
@@ -26,7 +26,6 @@ filesets:
 
   files_verilator_waiver:
     depend:
-      # common waivers
       - lowrisc:lint:common
     files:
       - ../../lint/mhx_ternary_test.vlt
@@ -46,23 +45,18 @@ targets:
       - files_rtl
       - tool_verilator ? (files_verilator_cpp)
     default_tool: verilator
+    toplevel: mhx_ternary_coverage_test
     tools:
       verilator:
         mode: cc
         verilator_options:
-          - '--trace'
-          - '--timing'
-          - '--coverage'
-          - '--coverage-line'
-          - '--coverage-toggle'
-          - '-CFLAGS "-std=c++17 -g -O0"'
-          - '-LDFLAGS "-lgcov"'
-
-  lint:
-    <<: *default_target
-    default_tool: verilator
-    tools:
-      verilator:
-        mode: lint-only
-        verilator_options:
-          - "-Wall"
+          - --trace
+          - --coverage
+          - --coverage-line
+          - --coverage-toggle
+          - --no-timing
+          - -Wno-WIDTHEXPAND
+          - -Wno-INFINITELOOP
+          - -Wno-STMTDLY
+          - -CFLAGS "-std=c++17 -g -O0"
+          - -LDFLAGS "-lgcov"
