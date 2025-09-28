@@ -26,9 +26,7 @@
 module ibex_ternary_alu import ibex_pkg::*; #(
   parameter int unsigned WIDTH = 32,
   parameter bit ENABLE_VECTORIZATION = 1'b1,
-  /* verilator lint_off UNUSEDPARAM */
   parameter bit ENABLE_POWER_OPT = 1'b1,
-  /* verilator lint_on UNUSEDPARAM */
   parameter bit ENABLE_NEURAL_ACC = 1'b1
 ) (
   input  logic                clk_i,
@@ -41,9 +39,7 @@ module ibex_ternary_alu import ibex_pkg::*; #(
   
   // Advanced control signals
   input  logic                enable_i,
-  /* verilator lint_off UNUSEDSIGNAL */
   input  logic [1:0]          precision_mode_i, // 00: T1, 01: T2, 10: T3, 11: mixed
-  /* verilator lint_on UNUSEDSIGNAL */
   input  logic                vectorize_enable_i,
   input  logic                neural_acc_enable_i,
   input  logic                power_save_mode_i,
@@ -61,9 +57,7 @@ module ibex_ternary_alu import ibex_pkg::*; #(
 
   // Enhanced ternary arithmetic functions with optimizations
   function automatic logic [1:0] trit_add_enhanced(logic [1:0] a, logic [1:0] b, logic carry_in);
-    /* verilator lint_off UNUSEDSIGNAL */
     logic [2:0] sum = {1'b0, a} + {1'b0, b} + {2'b0, carry_in};
-    /* verilator lint_on UNUSEDSIGNAL */
     case (sum[1:0])
       2'b00: return TRIT_NEG;    // -1
       2'b01: return TRIT_ZERO;   // 0  

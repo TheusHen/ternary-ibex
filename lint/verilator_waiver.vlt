@@ -77,3 +77,8 @@ lint_off -file "*/lowrisc_prim_*/rtl/*.sv"
 
 lint_off -rule UNUSED -file "*/rtl/ibex_top_tracing.sv" -match "*RndCnstLfsrSeed*"
 lint_off -rule UNUSED -file "*/rtl/ibex_top_tracing.sv" -match "*RndCnstLfsrPerm*"
+
+// MHX Ternary ALU waivers - these signals are intended for future use
+lint_off -rule UNUSED -file "*/rtl/ibex_ternary_alu.sv" -match "*ENABLE_POWER_OPT*"
+lint_off -rule UNUSED -file "*/rtl/ibex_ternary_alu.sv" -match "*precision_mode_i*"
+lint_off -rule UNUSED -file "*/rtl/ibex_ternary_alu.sv" -match "*sum*"
