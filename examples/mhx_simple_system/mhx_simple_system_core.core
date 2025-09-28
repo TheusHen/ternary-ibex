@@ -30,9 +30,27 @@ filesets:
     files:
       - lint/verible_waiver.vbw: {file_type: veribleLintWaiver}
 
+parameters:
+  RVFI:
+    datatype: bool
+    paramtype: vlogdefine
+
 targets:
-  default:
+  default: &default_target
     filesets:
       - tool_veriblelint ? (files_lint_verible)
       - files_sim
       - tool_verilator ? (files_verilator)
+    toplevel: mhx_simple_system
+
+  lint:
+    <<: *default_target
+    parameters:
+      - RVFI=true
+    default_tool: verilator
+    tools:
+      verilator:
+        mode: lint-only
+        verilator_options:
+          - "-Wall"
+          - "--unroll-count 72"

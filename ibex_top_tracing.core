@@ -33,6 +33,8 @@ targets:
 
   lint:
     <<: *default
+    parameters:
+      - RVFI=true
     default_tool: verilator
     tools:
       verilator:
