@@ -16,9 +16,9 @@
  *
  * Memory Map:
  * - ROM: 0x0000_0000 - 0x0000_FFFF (64KB)
- * - RAM: 0x2000_0000 - 0x2000_FFFF (64KB) 
+ * - RAM: 0x2000_0000 - 0x2000_FFFF (64KB)
  * - UART: 0x4000_0000 - 0x4000_0FFF
- * - GPIO: 0x4001_0000 - 0x4001_0FFF  
+ * - GPIO: 0x4001_0000 - 0x4001_0FFF
  * - Timer: 0x4002_0000 - 0x4002_0FFF
  * - SPI: 0x4003_0000 - 0x4003_0FFF
  */
@@ -26,16 +26,16 @@
 module mhx_simple_system (
   input IO_CLK,
   input IO_RST_N,
-  
+
   // UART interface
   output uart_tx,
   input  uart_rx,
-  
+
   // GPIO interface
   output [7:0] gpio_out,
   input  [7:0] gpio_in,
   output [7:0] gpio_oe,
-  
+
   // SPI interface (optional)
   output spi_sck,
   output spi_mosi,
@@ -89,7 +89,7 @@ module mhx_simple_system (
   logic uart_irq;
   logic gpio_irq;
   logic spi_irq;
-  
+
   logic [31:0] irq_vector;
   assign irq_vector = {28'b0, spi_irq, gpio_irq, uart_irq, timer_irq};
 
@@ -169,7 +169,7 @@ module mhx_simple_system (
   // Simple bus implementation (for now)
   // TODO: Replace with proper bus interconnect
   logic [31:0] rom_addr, ram_addr, uart_addr, gpio_addr, timer_addr, spi_addr;
-  
+
   always_comb begin
     // Default assignments
     for (int i = 0; i < NrDevices; i++) begin
@@ -179,12 +179,12 @@ module mhx_simple_system (
       device_be[i] = 4'h0;
       device_wdata[i] = 32'h0;
     end
-    
+
     host_gnt[CoreD] = 1'b1;
     host_rvalid[CoreD] = 1'b0;
     host_rdata[CoreD] = 32'h0;
     host_err[CoreD] = 1'b0;
-    
+
     // Address decode and routing
     if (host_req[CoreD]) begin
       if (host_addr[CoreD] >= RomBase && host_addr[CoreD] < RomBase + RomSize) begin
@@ -322,7 +322,7 @@ module mhx_simple_system (
   // Simple ROM implementation using always blocks
   logic [31:0] rom_data [0:RomSize/4-1];
   logic rom_req_d, rom_req_q;
-  
+
   // Initialize ROM with simple program if no init file
   initial begin
     if (ROMInitFile == "") begin
@@ -337,14 +337,14 @@ module mhx_simple_system (
       $readmemh(ROMInitFile, rom_data);
     end
   end
-  
+
   always_ff @(posedge clk_sys) begin
     rom_req_d <= device_req[Rom];
     if (device_req[Rom] && !device_we[Rom]) begin
       device_rdata[Rom] <= rom_data[device_addr[Rom][15:2]];
     end
   end
-  
+
   always_ff @(posedge clk_sys or negedge rst_sys_n) begin
     if (!rst_sys_n) begin
       rom_req_q <= 1'b0;
@@ -352,14 +352,14 @@ module mhx_simple_system (
       rom_req_q <= rom_req_d;
     end
   end
-  
+
   assign device_rvalid[Rom] = rom_req_q;
 
   // RAM for runtime data
   // Simple RAM implementation using always blocks
   logic [31:0] ram_data [0:RamSize/4-1];
   logic ram_req_d, ram_req_q;
-  
+
   // Initialize RAM if init file provided
   initial begin
     if (RAMInitFile != "") begin
@@ -370,7 +370,7 @@ module mhx_simple_system (
       end
     end
   end
-  
+
   always_ff @(posedge clk_sys) begin
     ram_req_d <= device_req[Ram];
     if (device_req[Ram]) begin
@@ -384,7 +384,7 @@ module mhx_simple_system (
       device_rdata[Ram] <= ram_data[device_addr[Ram][15:2]];
     end
   end
-  
+
   always_ff @(posedge clk_sys or negedge rst_sys_n) begin
     if (!rst_sys_n) begin
       ram_req_q <= 1'b0;
@@ -392,11 +392,11 @@ module mhx_simple_system (
       ram_req_q <= ram_req_d;
     end
   end
-  
+
   assign device_rvalid[Ram] = ram_req_q;
 
   // Instruction memory mux (ROM only for now)
-  always_comb begin 
+  always_comb begin
     if (instr_addr >= RomBase && instr_addr < RomBase + RomSize) begin
       instr_rdata = rom_data[instr_addr[15:2]];
       instr_rvalid = 1'b1;
@@ -411,7 +411,7 @@ module mhx_simple_system (
   logic [31:0] uart_tx_data;
   logic uart_tx_valid;
   logic uart_tx_ready;
-  
+
   always_ff @(posedge clk_sys or negedge rst_sys_n) begin
     if (!rst_sys_n) begin
       device_rvalid[Uart] <= 1'b0;
@@ -420,7 +420,7 @@ module mhx_simple_system (
       uart_irq <= 1'b0;
     end else begin
       device_rvalid[Uart] <= device_req[Uart];
-      
+
       if (device_req[Uart] && device_we[Uart]) begin
         // Write to UART - send character
         uart_tx_data <= device_wdata[Uart];
@@ -430,20 +430,20 @@ module mhx_simple_system (
         uart_tx_valid <= 1'b0;
         uart_irq <= 1'b0;
       end
-      
+
       if (device_req[Uart] && !device_we[Uart]) begin
         // Read from UART - return status
         device_rdata[Uart] <= {31'b0, uart_tx_ready};
       end
     end
   end
-  
+
   // Simple UART TX (just toggle for simulation)
   assign uart_tx = clk_sys; // For now, just clock
 
   // Simple GPIO implementation
   logic [7:0] gpio_out_reg, gpio_oe_reg;
-  
+
   always_ff @(posedge clk_sys or negedge rst_sys_n) begin
     if (!rst_sys_n) begin
       device_rvalid[Gpio] <= 1'b0;
@@ -453,7 +453,7 @@ module mhx_simple_system (
       gpio_irq <= 1'b0;
     end else begin
       device_rvalid[Gpio] <= device_req[Gpio];
-      
+
       if (device_req[Gpio] && device_we[Gpio]) begin
         case (device_addr[Gpio][3:0])
           4'h0: gpio_out_reg <= device_wdata[Gpio][7:0]; // GPIO_OUT
@@ -461,7 +461,7 @@ module mhx_simple_system (
           default: ;
         endcase
       end
-      
+
       if (device_req[Gpio] && !device_we[Gpio]) begin
         case (device_addr[Gpio][3:0])
           4'h0: device_rdata[Gpio] <= {24'b0, gpio_out_reg}; // GPIO_OUT
@@ -470,18 +470,18 @@ module mhx_simple_system (
           default: device_rdata[Gpio] <= 32'h0;
         endcase
       end
-      
+
       gpio_irq <= 1'b0; // No interrupts for now
     end
   end
-  
+
   assign gpio_out = gpio_out_reg;
   assign gpio_oe = gpio_oe_reg;
 
   // Simple Timer implementation
   logic [31:0] timer_count, timer_compare;
   logic timer_enable;
-  
+
   always_ff @(posedge clk_sys or negedge rst_sys_n) begin
     if (!rst_sys_n) begin
       device_rvalid[Timer] <= 1'b0;
@@ -492,7 +492,7 @@ module mhx_simple_system (
       timer_irq <= 1'b0;
     end else begin
       device_rvalid[Timer] <= device_req[Timer];
-      
+
       // Timer counting
       if (timer_enable) begin
         timer_count <= timer_count + 1;
@@ -503,7 +503,7 @@ module mhx_simple_system (
           timer_irq <= 1'b0;
         end
       end
-      
+
       if (device_req[Timer] && device_we[Timer]) begin
         case (device_addr[Timer][3:0])
           4'h0: timer_count <= device_wdata[Timer];    // TIMER_COUNT
@@ -512,7 +512,7 @@ module mhx_simple_system (
           default: ;
         endcase
       end
-      
+
       if (device_req[Timer] && !device_we[Timer]) begin
         case (device_addr[Timer][3:0])
           4'h0: device_rdata[Timer] <= timer_count;   // TIMER_COUNT
@@ -536,7 +536,7 @@ module mhx_simple_system (
       spi_irq <= 1'b0;
     end
   end
-  
+
   // SPI outputs (placeholder)
   assign spi_sck = 1'b0;
   assign spi_mosi = 1'b0;
