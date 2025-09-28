@@ -192,7 +192,7 @@ module mhx_simple_system (
     logic [31:0] unused_instr_rdata;
 
     prim_secded_inv_39_32_enc u_data_rdata_intg_gen (
-      .data_i (host_rdata[CoreD]),
+      .data_i (host_rdata[0]),
       .data_o ({data_rdata_intg, unused_data_rdata})
     );
 
@@ -248,17 +248,17 @@ module mhx_simple_system (
       .instr_rdata_intg_i     (instr_rdata_intg),
       .instr_err_i            (instr_err),
 
-      .data_req_o             (host_req[CoreD]),
-      .data_gnt_i             (host_gnt[CoreD]),
-      .data_rvalid_i          (host_rvalid[CoreD]),
-      .data_we_o              (host_we[CoreD]),
-      .data_be_o              (host_be[CoreD]),
-      .data_addr_o            (host_addr[CoreD]),
-      .data_wdata_o           (host_wdata[CoreD]),
+      .data_req_o             (host_req[0]),
+      .data_gnt_i             (host_gnt[0]),
+      .data_rvalid_i          (host_rvalid[0]),
+      .data_we_o              (host_we[0]),
+      .data_be_o              (host_be[0]),
+      .data_addr_o            (host_addr[0]),
+      .data_wdata_o           (host_wdata[0]),
       .data_wdata_intg_o      (),
-      .data_rdata_i           (host_rdata[CoreD]),
-      .data_rdata_intg_i      (data_rdata_intg),
-      .data_err_i             (host_err[CoreD]),
+      .data_rdata_i           (host_rdata[0]),
+      .data_rdata_intg_i      ('0),
+      .data_err_i             (host_err[0]),
 
       .irq_software_i         (1'b0),
       .irq_timer_i            (timer_irq),

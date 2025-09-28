@@ -136,7 +136,7 @@ module uart_controller (
         end
         
         TX_START, TX_DATA, TX_STOP: begin
-          if (tx_counter == BAUD_DIV - 1) begin
+          if (tx_counter == ($clog2(BAUD_DIV))'(BAUD_DIV - 1)) begin
             tx_counter <= '0;
             uart_tx_o  <= tx_shift_reg[0];
             tx_shift_reg <= {1'b1, tx_shift_reg[9:1]};

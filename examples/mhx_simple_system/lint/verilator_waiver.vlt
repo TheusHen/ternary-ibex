@@ -1,3 +1,19 @@
 `verilator_config
 
 lint_off -rule EOFNEWLINE -file "*"
+
+// Waive unused signal warnings for GPIO controller
+lint_off -rule UNUSED -file "*gpio_controller.sv" -match "*be_i*"
+lint_off -rule UNUSED -file "*gpio_controller.sv" -match "*addr_i*" 
+lint_off -rule UNUSED -file "*gpio_controller.sv" -match "*wdata_i*"
+lint_off -rule UNUSED -file "*gpio_controller.sv" -match "*word_addr*"
+
+// Waive unused signal warnings for UART controller
+lint_off -rule UNUSED -file "*uart_controller.sv" -match "*be_i*"
+lint_off -rule UNUSED -file "*uart_controller.sv" -match "*addr_i*"
+lint_off -rule UNUSED -file "*uart_controller.sv" -match "*wdata_i*"
+lint_off -rule UNUSED -file "*uart_controller.sv" -match "*uart_rx_i*"
+lint_off -rule UNUSED -file "*uart_controller.sv" -match "*word_addr*"
+
+// Waive unused signal warnings for MHX simple system
+lint_off -rule UNUSEDSIGNAL -file "*mhx_simple_system.sv" -match "*data_rdata_intg*"
