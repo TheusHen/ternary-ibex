@@ -320,7 +320,7 @@ module mhx_simple_system (
 
   // ROM for bootloader and programs
   // Simple ROM implementation using always blocks
-  logic [31:0] rom_data [0:RomSize/4-1];
+  logic [31:0] rom_data [RomSize/4];
   logic rom_req_d, rom_req_q;
 
   // Initialize ROM with simple program if no init file
@@ -357,7 +357,7 @@ module mhx_simple_system (
 
   // RAM for runtime data
   // Simple RAM implementation using always blocks
-  logic [31:0] ram_data [0:RamSize/4-1];
+  logic [31:0] ram_data [RamSize/4];
   logic ram_req_d, ram_req_q;
 
   // Initialize RAM if init file provided
