@@ -12,11 +12,8 @@ filesets:
       - lowrisc:ibex:ibex_top
       - lowrisc:prim:ram_1p
     files:
-      - rtl/mhx_simple_system.sv
-      - tool_verilator ? (mhx_simple_system_main.cc)
-    file_type: 
-      - rtl/mhx_simple_system.sv : systemVerilogSource
-      - mhx_simple_system_main.cc : cppSource
+      - rtl/mhx_simple_system.sv: {file_type: systemVerilogSource}
+      - tool_verilator ? (mhx_simple_system_main.cc): {file_type: cppSource}
 
 parameters:
   RV32E:
