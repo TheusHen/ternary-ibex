@@ -239,6 +239,55 @@ make test-peripherals     # Test UART/GPIO/Timer
 3. Modify `syn/tcl/build_vivado.tcl` if needed
 4. Test with simple firmware like `blink_gpio`
 
+## 3D Chip Model Generation
+
+The MHX Simple System includes an advanced 3D chip model generation workflow that creates accurate, detailed 3D models of the MHX T1 Prototype chip.
+
+### Features
+
+- **Realistic Package Geometry**: 15mm × 15mm BGA package with proper dimensions
+- **Color-Coded Functional Areas**: Visual representation of RTL modules
+- **Text Engraving**: "MHX T1 Prototype" engraved on package surface
+- **MHX Neural Logo**: Company logo placement
+- **Debug Information**: Synthesis metrics overlay
+- **Multiple Formats**: OBJ (3D modeling), STL (3D printing), PNG (visualization)
+
+### Automatic Generation
+
+The 3D model is automatically generated via GitHub Actions on:
+- Push to main/develop branches
+- Pull requests affecting MHX Simple System files
+- Manual workflow dispatch
+
+### Manual Generation
+
+```bash
+# Install Python dependencies
+pip install -r scripts/requirements_3d.txt
+
+# Generate 3D model
+python scripts/generate_3d_chip_model.py \
+  --rtl-dir examples/mhx_simple_system/rtl \
+  --syn-dir examples/mhx_simple_system/syn \
+  --output-dir my_3d_model \
+  --formats obj stl png
+```
+
+### Viewing the Model
+
+- **OBJ files**: Open in Blender, Maya, MeshLab, or online 3D viewers
+- **STL files**: Use for 3D printing or CAD software 
+- **PNG images**: Quick preview of the model
+
+### Technical Specifications
+
+- **Package**: 15mm × 15mm × 1.2mm BGA package
+- **Die**: 8mm × 8mm × 0.3mm silicon die
+- **Model Complexity**: ~500 vertices, ~400 faces
+- **Functional Areas**: CPU Core, Memory, UART, GPIO, SPI, Debug
+
+For detailed information, see [`docs/3D_MODEL_GENERATION.md`](docs/3D_MODEL_GENERATION.md).
+
 ## Directory Structure
 
 ```
@@ -258,6 +307,7 @@ mhx_simple_system/
 │       ├── mhx_simple_system.ld  # Linker script
 │       └── memory_map.inc        # Memory map definitions
 ├── docs/                         # Documentation
+│   └── 3D_MODEL_GENERATION.md   # 3D model generation guide
 ├── Makefile                      # Top-level build system
 └── README.md                     # This file
 ```
