@@ -1,0 +1,13 @@
+# Python requirements for 3D chip model generation
+# Copyright 2025 MHX Neural.
+
+# Core dependencies for 3D modeling and mathematics
+numpy>=1.21.0
+matplotlib>=3.5.0
+
+# Optional dependencies for advanced mesh operations
+# trimesh>=3.12.0  # Uncomment if advanced mesh operations are needed
+# scipy>=1.7.0     # Uncomment for advanced mathematical operations
+
+# File format support
+# pillow>=8.3.0    # Uncomment for additional image format support
