@@ -159,7 +159,8 @@ module ibex_neural_unit import ibex_pkg::*; (
   `ASSERT_INIT(ValidInputs, all_trits_valid(weights_i) && all_trits_valid(inputs_i))
 
   // Accumulator bounds check
-  `ASSERT_INIT(AccumulatorBounds, next_accumulator >= NEURAL_ACCUMULATOR_MIN && next_accumulator <= NEURAL_ACCUMULATOR_MAX)
+  `ASSERT_INIT(AccumulatorBounds, next_accumulator >= NEURAL_ACCUMULATOR_WIDTH'(signed'(NEURAL_ACCUMULATOR_MIN)) && 
+                                  next_accumulator <= NEURAL_ACCUMULATOR_WIDTH'(signed'(NEURAL_ACCUMULATOR_MAX)))
 
   // Operation-specific assertions
   `ASSERT_INIT(MultiplyAccumulateRange,
@@ -178,13 +179,11 @@ module ibex_neural_unit import ibex_pkg::*; (
   genvar trit_idx;
   generate
     for (trit_idx = 0; trit_idx < TERNARY_TRITS_PER_REG; trit_idx++) begin : g_trit_conversion_assertions
-      logic [TERNARY_BITS_PER_TRIT-1:0] weight_trit, input_trit;
-      logic signed [1:0] weight_int, input_int;
+      logic [TERNARY_BITS_PER_TRIT-1:0] weight_trit;
+      logic signed [1:0] weight_int;
       
       assign weight_trit = weights_i[trit_idx*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT];
-      assign input_trit = inputs_i[trit_idx*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT];
       assign weight_int = trit_to_int(weight_trit);
-      assign input_int = trit_to_int(input_trit);
 
       // Trit to integer conversion correctness
       `ASSERT_INIT(TritToIntCorrectNeg,
@@ -207,9 +206,10 @@ module ibex_neural_unit import ibex_pkg::*; (
   // Simulation-only dynamic checks
   always_comb begin
     // Runtime accumulator bounds check
-    assert (next_accumulator >= NEURAL_ACCUMULATOR_MIN && next_accumulator <= NEURAL_ACCUMULATOR_MAX) else
-      $error("Neural unit accumulator out of range: %d", next_accumulator);
-      
+    assert (next_accumulator >= NEURAL_ACCUMULATOR_WIDTH'(signed'(NEURAL_ACCUMULATOR_MIN)) && 
+            next_accumulator <= NEURAL_ACCUMULATOR_WIDTH'(signed'(NEURAL_ACCUMULATOR_MAX))) else
+            $error("Neural unit accumulator out of range: %d", next_accumulator);
+
     // Check that unused bias bits are properly handled
     assert (unused_bias_bits == bias_i[TERNARY_REG_WIDTH-1:TERNARY_BITS_PER_TRIT]) else
       $error("Unused bias bits assignment error");

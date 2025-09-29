@@ -63,11 +63,13 @@ module mhx_ternary_test;
   );
 
   ibex_ternary_alu dut_alu (
-    .operand_a_i (trf_rdata_a),
-    .operand_b_i (trf_rdata_b),
-    .operator_i  (talu_op),
-    .result_o    (talu_result),
-    .ready_o     (talu_ready)
+    .operand_a_i     (trf_rdata_a),
+    .operand_b_i     (trf_rdata_b),
+    .operator_i      (talu_op),
+    .result_o        (talu_result),
+    .ready_o         (talu_ready),
+    .overflow_o      (talu_overflow),
+    .trit_overflow_o (talu_trit_overflow)
   );
 
   ibex_neural_unit dut_neural (

@@ -939,6 +939,9 @@ module ibex_core import ibex_pkg::*; #(
     .valid_o     (neural_valid)
   );
 
+  // Ternary ALU overflow monitoring (for future CSR integration)
+  `ASSERT_IF(TernaryAluOverflowConsistency, !ternary_alu_overflow || |ternary_alu_trit_overflow, ternary_alu_ready)
+
   ////////////////////////////////////////////////
   // MHX Ternary Extension - Result Multiplexing //
   ////////////////////////////////////////////////

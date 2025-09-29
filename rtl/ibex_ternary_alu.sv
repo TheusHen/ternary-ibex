@@ -68,13 +68,17 @@ module ibex_ternary_alu import ibex_pkg::*; #(
   function automatic logic [1:0] trit_add(logic [1:0] a, logic [1:0] b);
     logic [2:0] result_with_overflow;
     result_with_overflow = trit_add_with_overflow(a, b);
-    return result_with_overflow[1:0];
+    /* verilator lint_off UNUSED */
+    return result_with_overflow[1:0];  // Intentionally ignore overflow bit [2]
+    /* verilator lint_on UNUSED */
   endfunction
 
   function automatic logic [1:0] trit_sub(logic [1:0] a, logic [1:0] b);
     logic [2:0] result_with_overflow;
     result_with_overflow = trit_sub_with_overflow(a, b);
-    return result_with_overflow[1:0];
+    /* verilator lint_off UNUSED */
+    return result_with_overflow[1:0];  // Intentionally ignore overflow bit [2]
+    /* verilator lint_on UNUSED */
   endfunction
 
   function automatic logic [1:0] trit_mul(logic [1:0] a, logic [1:0] b);
@@ -250,20 +254,22 @@ module ibex_ternary_alu import ibex_pkg::*; #(
   genvar trit_idx;
   generate
     for (trit_idx = 0; trit_idx < TERNARY_TRITS_PER_REG; trit_idx++) begin : g_trit_assertions
-      logic [TERNARY_BITS_PER_TRIT-1:0] trit_a, trit_b, trit_result;
       
-      assign trit_a = operand_a_i[trit_idx*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT];
-      assign trit_b = operand_b_i[trit_idx*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT];
-      assign trit_result = result_o[trit_idx*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT];
-
       // Addition properties
       `ASSERT_INIT(TernaryAddCommutative, 
-        (operator_i == TERNARY_ADD && is_valid_trit(trit_a) && is_valid_trit(trit_b)) |->
-        trit_add(trit_a, trit_b) == trit_add(trit_b, trit_a))
+        (operator_i == TERNARY_ADD && 
+         is_valid_trit(operand_a_i[trit_idx*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT]) && 
+         is_valid_trit(operand_b_i[trit_idx*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT])) |->
+        trit_add(operand_a_i[trit_idx*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT], 
+                 operand_b_i[trit_idx*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT]) == 
+        trit_add(operand_b_i[trit_idx*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT], 
+                 operand_a_i[trit_idx*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT]))
 
       `ASSERT_INIT(TernaryAddIdentity,
-        (operator_i == TERNARY_ADD && is_valid_trit(trit_a)) |->
-        trit_add(trit_a, TRIT_ZERO) == trit_a)
+        (operator_i == TERNARY_ADD && 
+         is_valid_trit(operand_a_i[trit_idx*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT])) |->
+        trit_add(operand_a_i[trit_idx*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT], TRIT_ZERO) == 
+        operand_a_i[trit_idx*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT])
 
       // Multiplication properties  
       `ASSERT_INIT(TernaryMulCommutative,

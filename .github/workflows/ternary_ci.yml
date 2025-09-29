@@ -321,7 +321,7 @@ jobs:
         run: |
           echo "=== Generating MHX Ternary CI Report ==="
           python3 util/generate_ternary_report.py \
-            --artifacts ci-artifacts \
+            --test-results ci-artifacts \
             --output ternary_ci_report.md
           
           echo "✅ CI report generated successfully"
