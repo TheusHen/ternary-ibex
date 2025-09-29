@@ -46,6 +46,7 @@ Runs FPGA synthesis using:
 - **Primary Tool**: Yosys + NextPNR (open-source)
 - **Target Boards**: Arty A7-35T, Basys3
 - **Output**: Netlist, utilization reports, timing analysis
+- **Note**: In CI environments, NextPNR for Xilinx may not be available, so the workflow uses synthesis estimates
 
 ### 3. Data Extraction
 Extracts key metrics:
@@ -214,8 +215,9 @@ def generate_text_engraving(self):
 
 1. **Missing Dependencies**: Install requirements with `pip install -r scripts/requirements_3d.txt`
 2. **Synthesis Failures**: Workflow creates placeholder data if synthesis fails
-3. **Large File Sizes**: Reduce model complexity or use compression
-4. **Visualization Issues**: Check matplotlib installation and display settings
+3. **NextPNR-Xilinx Not Available**: This is expected in CI environments. The package `nextpnr-xilinx` is not available in Ubuntu repositories as it's still experimental. The workflow handles this gracefully by using synthesis estimates.
+4. **Large File Sizes**: Reduce model complexity or use compression
+5. **Visualization Issues**: Check matplotlib installation and display settings
 
 ### Debug Information
 
