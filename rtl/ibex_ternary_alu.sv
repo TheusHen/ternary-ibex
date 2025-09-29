@@ -335,7 +335,9 @@ module ibex_ternary_alu import ibex_pkg::*; #(
   genvar overflow_idx;
   generate
     for (overflow_idx = 0; overflow_idx < NumTrits; overflow_idx++) begin : g_overflow_assertions
+      /* verilator lint_off UNUSED */
       logic [1:0] trit_a, trit_b;
+      /* verilator lint_on UNUSED */
       
       assign trit_a = operand_a_i[overflow_idx*2 +: 2];
       assign trit_b = operand_b_i[overflow_idx*2 +: 2];
