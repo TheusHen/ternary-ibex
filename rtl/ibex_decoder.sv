@@ -103,9 +103,9 @@ module ibex_decoder #(
   output logic                 neural_en_o,           // enable neural operation
   output ibex_pkg::ternary_op_e ternary_op_o,         // ternary operation selection
   output ibex_pkg::neural_op_e neural_op_o,           // neural operation selection
-  output logic [3:0]           ternary_raddr_a_o,     // ternary register file read address A
-  output logic [3:0]           ternary_raddr_b_o,     // ternary register file read address B
-  output logic [3:0]           ternary_waddr_o,       // ternary register file write address
+  output logic [4:0]           ternary_raddr_a_o,     // ternary register file read address A
+  output logic [4:0]           ternary_raddr_b_o,     // ternary register file read address B
+  output logic [4:0]           ternary_waddr_o,       // ternary register file write address
   output logic                 ternary_we_o           // ternary register file write enable
 );
 
@@ -251,9 +251,9 @@ module ibex_decoder #(
     neural_en_o           = 1'b0;
     ternary_op_o          = TERNARY_ADD;
     neural_op_o           = NEURAL_MULTIPLY;
-    ternary_raddr_a_o     = 4'b0;
-    ternary_raddr_b_o     = 4'b0;
-    ternary_waddr_o       = 4'b0;
+    ternary_raddr_a_o     = 5'b0;
+    ternary_raddr_b_o     = 5'b0;
+    ternary_waddr_o       = 5'b0;
     ternary_we_o          = 1'b0;
 
     opcode                = opcode_e'(instr[6:0]);
@@ -660,6 +660,55 @@ module ibex_decoder #(
           illegal_insn = csr_illegal;
         end
 
+      end
+
+      OPCODE_TERNARY: begin // MHX Ternary Operations
+        ternary_en_o     = 1'b1;
+        ternary_we_o     = 1'b1;
+        rf_we            = 1'b0;  // Disable standard RF write
+
+        // Decode ternary operation from funct3
+        unique case (instr[14:12])
+          3'b000: ternary_op_o = TERNARY_ADD;
+          3'b001: ternary_op_o = TERNARY_SUB;
+          3'b010: ternary_op_o = TERNARY_MUL;
+          3'b011: ternary_op_o = TERNARY_AND;
+          3'b100: ternary_op_o = TERNARY_OR;
+          3'b101: ternary_op_o = TERNARY_XOR;
+          3'b110: ternary_op_o = TERNARY_NOT;
+          default: begin
+            ternary_op_o = TERNARY_ADD;
+            illegal_insn = 1'b1;
+          end
+        endcase
+
+        // Extract ternary register addresses (5 bits each for T0-T31)
+        ternary_raddr_a_o = instr[20:16];  // rs1 (ternary source 1)
+        ternary_raddr_b_o = instr[25:21];  // rs2 (ternary source 2)
+        ternary_waddr_o   = instr[11:7];   // rd (ternary destination)
+      end
+
+      OPCODE_NEURAL: begin // MHX Neural Operations
+        neural_en_o      = 1'b1;
+        ternary_we_o     = 1'b1;  // Neural ops write to ternary registers
+        rf_we            = 1'b0;  // Disable standard RF write
+
+        // Decode neural operation from funct3
+        unique case (instr[14:12])
+          3'b000: neural_op_o = NEURAL_MULTIPLY;
+          3'b001: neural_op_o = NEURAL_ACCUMULATE;
+          3'b010: neural_op_o = NEURAL_ACTIVATE;
+          3'b011: neural_op_o = NEURAL_LEARN;
+          default: begin
+            neural_op_o = NEURAL_MULTIPLY;
+            illegal_insn = 1'b1;
+          end
+        endcase
+
+        // Extract ternary register addresses for neural operations (5 bits each)
+        ternary_raddr_a_o = instr[20:16];  // weights register
+        ternary_raddr_b_o = instr[25:21];  // inputs register
+        ternary_waddr_o   = instr[11:7];   // result register
       end
 
       default: begin

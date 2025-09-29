@@ -251,7 +251,15 @@ def generate_summary_report(neural_results, matrix_results, memory_results, powe
 
 def main():
     """Main performance analysis execution"""
-    print('=== MHX Ternary Performance Analysis ===')
+    import argparse
+    import json
+    
+    parser = argparse.ArgumentParser(description="MHX Ternary Performance Analysis")
+    parser.add_argument("--json", action="store_true", help="Output results in JSON format")
+    args = parser.parse_args()
+    
+    if not args.json:
+        print('=== MHX Ternary Performance Analysis ===')
     
     try:
         # Run all benchmarks
@@ -268,6 +276,19 @@ def main():
             neural_results, matrix_results, memory_results, power_results
         )
         
+        # Prepare results for JSON output
+        if args.json:
+            json_results = {
+                "neural_inference_speedup": neural_results[0],
+                "matrix_operation_speedup": matrix_results[0], 
+                "memory_usage_reduction_percent": memory_results[0],
+                "power_efficiency_improvement_percent": power_results[0],
+                "overall_score": overall_score,
+                "status": status,
+                "integration_test_passed": integration_success
+            }
+            print(json.dumps(json_results, indent=2))
+        
         # Return appropriate exit code
         if integration_success and overall_score >= 60:
             return 0  # Success
@@ -275,7 +296,11 @@ def main():
             return 1  # Failure
             
     except Exception as e:
-        print(f"Error during performance analysis: {e}")
+        if args.json:
+            error_result = {"error": str(e), "status": "failed"}
+            print(json.dumps(error_result))
+        else:
+            print(f"Error during performance analysis: {e}")
         return 1
 
 if __name__ == "__main__":

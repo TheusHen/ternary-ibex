@@ -278,9 +278,9 @@ module ibex_core import ibex_pkg::*; #(
   logic        neural_en_id;
   ternary_op_e ternary_op_id;
   neural_op_e  neural_op_id;
-  logic [3:0]  ternary_raddr_a_id;
-  logic [3:0]  ternary_raddr_b_id;
-  logic [3:0]  ternary_waddr_id;
+  logic [4:0]  ternary_raddr_a_id;
+  logic [4:0]  ternary_raddr_b_id;
+  logic [4:0]  ternary_waddr_id;
 
   // Ternary Register File Signals
   logic [31:0] ternary_rdata_a;
@@ -291,6 +291,8 @@ module ibex_core import ibex_pkg::*; #(
   // Ternary ALU Signals
   logic [31:0] ternary_alu_result;
   logic        ternary_alu_ready;
+  logic        ternary_alu_overflow;
+  logic [15:0] ternary_alu_trit_overflow;
 
   // Neural Unit Signals
   logic [31:0] neural_result;
@@ -727,7 +729,17 @@ module ibex_core import ibex_pkg::*; #(
     .perf_dside_wait_o(perf_dside_wait),
     .perf_mul_wait_o  (perf_mul_wait),
     .perf_div_wait_o  (perf_div_wait),
-    .instr_id_done_o  (instr_id_done)
+    .instr_id_done_o  (instr_id_done),
+
+    // MHX Ternary Extension
+    .ternary_en_id_o      (ternary_en_id),
+    .neural_en_id_o       (neural_en_id),
+    .ternary_op_id_o      (ternary_op_id),
+    .neural_op_id_o       (neural_op_id),
+    .ternary_raddr_a_id_o (ternary_raddr_a_id),
+    .ternary_raddr_b_id_o (ternary_raddr_b_id),
+    .ternary_waddr_id_o   (ternary_waddr_id),
+    .ternary_we_id_o      (/* unused */)
   );
 
   // for RVFI only
@@ -882,72 +894,7 @@ module ibex_core import ibex_pkg::*; #(
     .instr_done_wb_o(instr_done_wb)
   );
 
-  ////////////////////////////////////////////////
-  // MHX Ternary Extension - Instruction Decode //
-  ////////////////////////////////////////////////
 
-  // Temporary direct instruction decode for ternary operations
-  // TODO: Integrate properly with ID stage decoder
-  logic [6:0] current_opcode;
-  assign current_opcode = instr_rdata_id[6:0];
-
-  always_comb begin
-    // Default values
-    ternary_en_id     = 1'b0;
-    neural_en_id      = 1'b0;
-    ternary_op_id     = TERNARY_ADD;
-    neural_op_id      = NEURAL_MULTIPLY;
-    ternary_raddr_a_id = 4'b0;
-    ternary_raddr_b_id = 4'b0;
-    ternary_waddr_id   = 4'b0;
-
-    if (instr_valid_id) begin
-      case (current_opcode)
-        OPCODE_TERNARY: begin
-          ternary_en_id = 1'b1;
-
-          // Decode ternary operation from funct3
-          case (instr_rdata_id[14:12])
-            3'b000: ternary_op_id = TERNARY_ADD;
-            3'b001: ternary_op_id = TERNARY_SUB;
-            3'b010: ternary_op_id = TERNARY_MUL;
-            3'b011: ternary_op_id = TERNARY_AND;
-            3'b100: ternary_op_id = TERNARY_OR;
-            3'b101: ternary_op_id = TERNARY_XOR;
-            3'b110: ternary_op_id = TERNARY_NOT;
-            default: ternary_op_id = TERNARY_ADD;
-          endcase
-
-          // Extract ternary register addresses (4 bits each)
-          ternary_raddr_a_id = instr_rdata_id[19:16];  // rs1 (ternary source 1)
-          ternary_raddr_b_id = instr_rdata_id[23:20];  // rs2 (ternary source 2)
-          ternary_waddr_id   = instr_rdata_id[11:8];   // rd (ternary destination)
-        end
-
-        OPCODE_NEURAL: begin
-          neural_en_id = 1'b1;
-
-          // Decode neural operation from funct3
-          case (instr_rdata_id[14:12])
-            3'b000: neural_op_id = NEURAL_MULTIPLY;
-            3'b001: neural_op_id = NEURAL_ACCUMULATE;
-            3'b010: neural_op_id = NEURAL_ACTIVATE;
-            3'b011: neural_op_id = NEURAL_LEARN;
-            default: neural_op_id = NEURAL_MULTIPLY;
-          endcase
-
-          // Extract ternary register addresses for neural operations
-          ternary_raddr_a_id = instr_rdata_id[19:16];  // weights register
-          ternary_raddr_b_id = instr_rdata_id[23:20];  // inputs register
-          ternary_waddr_id   = instr_rdata_id[11:8];   // result register
-        end
-
-        default: begin
-          // Not a ternary instruction
-        end
-      endcase
-    end
-  end
 
   ////////////////////////////////////////////////
   // MHX Ternary Extension - Register File     //
@@ -970,11 +917,13 @@ module ibex_core import ibex_pkg::*; #(
   ////////////////////////////////////////////////
 
   ibex_ternary_alu ternary_alu_i (
-    .operand_a_i (ternary_rdata_a),
-    .operand_b_i (ternary_rdata_b),
-    .operator_i  (ternary_op_id),
-    .result_o    (ternary_alu_result),
-    .ready_o     (ternary_alu_ready)
+    .operand_a_i      (ternary_rdata_a),
+    .operand_b_i      (ternary_rdata_b),
+    .operator_i       (ternary_op_id),
+    .result_o         (ternary_alu_result),
+    .ready_o          (ternary_alu_ready),
+    .overflow_o       (ternary_alu_overflow),
+    .trit_overflow_o  (ternary_alu_trit_overflow)
   );
 
   ////////////////////////////////////////////////

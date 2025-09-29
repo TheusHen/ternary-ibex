@@ -6,7 +6,7 @@ This repository contains the MHX Core, an enhanced version of the Ibex RISC-V co
 
 The MHX Core extends the standard Ibex RISC-V core (RV32IMC) with:
 
-- **16 Ternary Registers** (T0-T15): Each holding 16 trits (32 bits total)
+- **32 Ternary Registers** (T0-T31): Each holding 16 trits (32 bits total)
 - **Ternary ALU**: Native base-3 arithmetic and logical operations
 - **Neural Processing Unit**: Specialized hardware for ternary neural networks
 - **Custom Instruction Set**: New opcodes for ternary and neural operations
@@ -28,11 +28,11 @@ MHX Core (RV32IMC + Ternary Extension):
 │   ├── ID Stage: Instruction Decode (extended)
 │   ├── EX Stage: Execute (extended)
 │   └── WB Stage: Writeback
-├── Ternary Extensions (NEW!)
-│   ├── Ternary Register File (16 × 32-trit registers)
+├── Ternary Extensions (ENHANCED!)
+│   ├── Ternary Register File (32 × 32-trit registers T0-T31)
 │   ├── Ternary ALU (TADD, TSUB, TMUL, TAND, TOR, TXOR, TNOT)
 │   ├── Neural Processing Unit (NEURON, ACTIVATE, LEARN)
-│   └── Extended Instruction Decoder
+│   └── Extended Instruction Decoder (5-bit addressing)
 └── Memory System (unchanged)
 ```
 
@@ -45,6 +45,7 @@ Each trit (ternary digit) is encoded using 2 bits:
 - `11` = invalid
 
 Each ternary register holds 16 trits = 32 bits total.
+**Enhanced with 32 registers (T0-T31) for improved ML/AI performance!**
 
 ## Instruction Set Extensions
 
