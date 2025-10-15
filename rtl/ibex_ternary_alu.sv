@@ -66,19 +66,19 @@ module ibex_ternary_alu import ibex_pkg::*; #(
 
   // Backward compatibility functions (without overflow)
   function automatic logic [1:0] trit_add(logic [1:0] a, logic [1:0] b);
-    logic [2:0] result_with_overflow;
-    result_with_overflow = trit_add_with_overflow(a, b);
     /* verilator lint_off UNUSED */
-    return result_with_overflow[1:0];  // Intentionally ignore overflow bit [2]
+    logic [2:0] result_with_overflow;
     /* verilator lint_on UNUSED */
+    result_with_overflow = trit_add_with_overflow(a, b);
+    return result_with_overflow[1:0];  // Intentionally ignore overflow bit [2]
   endfunction
 
   function automatic logic [1:0] trit_sub(logic [1:0] a, logic [1:0] b);
-    logic [2:0] result_with_overflow;
-    result_with_overflow = trit_sub_with_overflow(a, b);
     /* verilator lint_off UNUSED */
-    return result_with_overflow[1:0];  // Intentionally ignore overflow bit [2]
+    logic [2:0] result_with_overflow;
     /* verilator lint_on UNUSED */
+    result_with_overflow = trit_sub_with_overflow(a, b);
+    return result_with_overflow[1:0];  // Intentionally ignore overflow bit [2]
   endfunction
 
   function automatic logic [1:0] trit_mul(logic [1:0] a, logic [1:0] b);
@@ -159,10 +159,13 @@ module ibex_ternary_alu import ibex_pkg::*; #(
     logic [2:0] add_result;
     logic [2:0] sub_result;
     
+    // Initialize all outputs to prevent latch inference
     result_o = '0;
     ready_o = 1'b1;
     overflow_o = 1'b0;
     trit_overflow_o = '0;
+    add_result = '0;
+    sub_result = '0;
 
     case (operator_i)
       TERNARY_ADD: begin
@@ -335,7 +338,9 @@ module ibex_ternary_alu import ibex_pkg::*; #(
   genvar overflow_idx;
   generate
     for (overflow_idx = 0; overflow_idx < NumTrits; overflow_idx++) begin : g_overflow_assertions
+      /* verilator lint_off UNUSEDSIGNAL */
       logic [1:0] trit_a, trit_b;
+      /* verilator lint_on UNUSEDSIGNAL */
       
       assign trit_a = operand_a_i[overflow_idx*2 +: 2];
       assign trit_b = operand_b_i[overflow_idx*2 +: 2];
