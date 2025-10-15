@@ -93,8 +93,8 @@ class mhx_ternary_coverage extends uvm_subscriber #(mhx_ternary_transaction);
     cx_op_patterns: cross cp_operation, cp_operand_a_pattern, cp_operand_b_pattern;
     cx_reg_usage: cross cp_rs1, cp_rs2, cp_rd {
       // Ensure we test same register for multiple operations
-      bins same_src_diff_dst = binsof(cp_rs1) intersect binsof(cp_rs2) &&
-                               !binsof(cp_rd) intersect binsof(cp_rs1);
+  bins same_src_diff_dst = binsof(cp_rs1) intersect binsof(cp_rs2) &&
+           !binsof(cp_rd) intersect binsof(cp_rs1);
       bins diff_all = !binsof(cp_rs1) intersect binsof(cp_rs2) &&
                       !binsof(cp_rd) intersect binsof(cp_rs1) &&
                       !binsof(cp_rd) intersect binsof(cp_rs2);
@@ -226,7 +226,7 @@ class mhx_ternary_coverage extends uvm_subscriber #(mhx_ternary_transaction);
     
     // Check if coverage goal is met
     if (current_coverage >= cfg.coverage_goal) begin
-      `uvm_info("COV", $sformatf("Coverage goal achieved: %0.1f%% >= %0d%%", 
+  `uvm_info("COV", $sformatf("Coverage goal achieved: %0.1f%% >= %0d%%",
                                 current_coverage, cfg.coverage_goal), UVM_LOW);
     end
   endfunction

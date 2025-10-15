@@ -57,8 +57,9 @@ jobs:
           echo "::group::Linting Ternary ALU"
           verilator --lint-only -Wall -Wno-UNUSED \
             --top-module ibex_ternary_alu \
-            -I rtl \
+            -I rtl -I vendor/lowrisc_ip/ip/prim/rtl \
             rtl/ibex_pkg.sv \
+            vendor/lowrisc_ip/ip/prim/rtl/prim_assert.sv \
             rtl/ibex_ternary_alu.sv
           echo "::endgroup::"
 
@@ -67,8 +68,9 @@ jobs:
           echo "::group::Linting Neural Unit"
           verilator --lint-only -Wall -Wno-UNUSED \
             --top-module ibex_neural_unit \
-            -I rtl \
+            -I rtl -I vendor/lowrisc_ip/ip/prim/rtl \
             rtl/ibex_pkg.sv \
+            vendor/lowrisc_ip/ip/prim/rtl/prim_assert.sv \
             rtl/ibex_neural_unit.sv
           echo "::endgroup::"
 
@@ -77,8 +79,9 @@ jobs:
           echo "::group::Linting Ternary Register File"
           verilator --lint-only -Wall -Wno-UNUSED \
             --top-module ibex_ternary_regfile \
-            -I rtl \
+            -I rtl -I vendor/lowrisc_ip/ip/prim/rtl \
             rtl/ibex_pkg.sv \
+            vendor/lowrisc_ip/ip/prim/rtl/prim_assert.sv \
             rtl/ibex_ternary_regfile.sv
           echo "::endgroup::"
 
