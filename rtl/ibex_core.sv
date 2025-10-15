@@ -291,10 +291,10 @@ module ibex_core import ibex_pkg::*; #(
   // Ternary ALU Signals
   logic [31:0] ternary_alu_result;
   logic        ternary_alu_ready;
-  /* verilator lint_off UNUSEDSIGNAL */
+  /* verilator lint_off UNUSED */
   logic        ternary_alu_overflow;
   logic [15:0] ternary_alu_trit_overflow;
-  /* verilator lint_on UNUSEDSIGNAL */
+  /* verilator lint_on UNUSED */
 
   // Neural Unit Signals
   logic [31:0] neural_result;

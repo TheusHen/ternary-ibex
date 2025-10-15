@@ -39,6 +39,8 @@ module mhx_ternary_test;
   ternary_op_e talu_op;
   logic [31:0] talu_result;
   logic        talu_ready;
+  logic        talu_overflow;
+  logic [15:0] talu_trit_overflow;
 
   // DUT signals for neural unit
   neural_op_e  neural_op;

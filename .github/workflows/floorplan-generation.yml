@@ -371,7 +371,7 @@ jobs:
           EOF
 
       - name: Upload Floorplan Artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: floorplan-visualization
           path: |

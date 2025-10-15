@@ -80,10 +80,10 @@ lint_off -rule UNUSED -file "*/rtl/ibex_top_tracing.sv" -match "*RndCnstLfsrPerm
 
 // MHX Ternary Extension waivers
 // Signals used in assertions that Verilator doesn't recognize as used
-lint_off -rule UNUSEDSIGNAL -file "*/rtl/ibex_core.sv" -match "*ternary_alu_overflow*"
-lint_off -rule UNUSEDSIGNAL -file "*/rtl/ibex_core.sv" -match "*ternary_alu_trit_overflow*"
-lint_off -rule UNUSEDSIGNAL -file "*/rtl/ibex_ternary_alu.sv" -match "*trit_a*"
-lint_off -rule UNUSEDSIGNAL -file "*/rtl/ibex_ternary_alu.sv" -match "*trit_b*"
-lint_off -rule UNUSEDSIGNAL -file "*/rtl/ibex_neural_unit.sv" -match "*weight_int*"
+lint_off -rule UNUSED -file "*/rtl/ibex_core.sv" -match "*ternary_alu_overflow*"
+lint_off -rule UNUSED -file "*/rtl/ibex_core.sv" -match "*ternary_alu_trit_overflow*"
+lint_off -rule UNUSED -file "*/rtl/ibex_ternary_alu.sv" -match "*trit_a*"
+lint_off -rule UNUSED -file "*/rtl/ibex_ternary_alu.sv" -match "*trit_b*"
+lint_off -rule UNUSED -file "*/rtl/ibex_neural_unit.sv" -match "*weight_int*"
 lint_off -rule UNUSED -file "*/rtl/ibex_ternary_alu.sv" -match "*result_with_overflow*[2]*"
 

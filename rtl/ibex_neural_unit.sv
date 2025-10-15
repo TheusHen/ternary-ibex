@@ -179,10 +179,10 @@ module ibex_neural_unit import ibex_pkg::*; (
   genvar trit_idx;
   generate
     for (trit_idx = 0; trit_idx < TERNARY_TRITS_PER_REG; trit_idx++) begin : g_trit_conversion_assertions
-      logic [TERNARY_BITS_PER_TRIT-1:0] weight_trit;
-      /* verilator lint_off UNUSEDSIGNAL */
-      logic signed [1:0] weight_int;
-      /* verilator lint_on UNUSEDSIGNAL */
+  logic [TERNARY_BITS_PER_TRIT-1:0] weight_trit;
+  /* verilator lint_off UNUSED */
+  logic signed [1:0] weight_int;
+  /* verilator lint_on UNUSED */
       
       assign weight_trit = weights_i[trit_idx*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT];
       assign weight_int = trit_to_int(weight_trit);

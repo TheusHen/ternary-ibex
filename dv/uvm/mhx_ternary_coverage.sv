@@ -3,22 +3,22 @@
 
 class mhx_ternary_coverage extends uvm_subscriber #(mhx_ternary_transaction);
   `uvm_component_utils(mhx_ternary_coverage)
-  
+
   // Configuration
   mhx_ternary_config cfg;
-  
+
   // Coverage statistics
   int unsigned transactions_covered = 0;
   real current_coverage = 0.0;
-  
+
   // Transaction for sampling
   mhx_ternary_transaction tr;
-  
+
   // Coverage groups
   covergroup ternary_operations_cg;
-    option.per_instance = 1;
-    option.name = "ternary_operations";
-    
+  option.per_instance = 1;
+  option.name = "ternary_operations";
+
     // Basic operation coverage
     cp_operation: coverpoint tr.ternary_operation {
       bins add = {TERNARY_ADD};
@@ -28,59 +28,59 @@ class mhx_ternary_coverage extends uvm_subscriber #(mhx_ternary_transaction);
       bins or_op = {TERNARY_OR};
       bins xor_op = {TERNARY_XOR};
       bins not_op = {TERNARY_NOT};
-    }
-    
+  }
+
     // Register address coverage
     cp_rs1: coverpoint tr.ternary_rs1 {
       bins low_regs   = {[0:7]};   // T0-T7
       bins mid_regs   = {[8:15]};  // T8-T15
       bins high_regs  = {[16:23]}; // T16-T23
       bins upper_regs = {[24:31]}; // T24-T31
-    }
-    
+  }
+
     cp_rs2: coverpoint tr.ternary_rs2 {
       bins low_regs   = {[0:7]};   // T0-T7
       bins mid_regs   = {[8:15]};  // T8-T15
       bins high_regs  = {[16:23]}; // T16-T23
       bins upper_regs = {[24:31]}; // T24-T31
-    }
-    
+  }
+
     cp_rd: coverpoint tr.ternary_rd {
       bins low_regs   = {[0:7]};   // T0-T7
       bins mid_regs   = {[8:15]};  // T8-T15
       bins high_regs  = {[16:23]}; // T16-T23
       bins upper_regs = {[24:31]}; // T24-T31
-    }
-    
+  }
+
     // Operand patterns
     cp_operand_a_pattern: coverpoint tr.operand_a {
       bins all_neg  = {32'h00000000}; // All -1
       bins all_zero = {32'h55555555}; // All 0
       bins all_pos  = {32'hAAAAAAAA}; // All +1
       bins mixed    = default;
-    }
-    
+  }
+
     cp_operand_b_pattern: coverpoint tr.operand_b {
       bins all_neg  = {32'h00000000}; // All -1
       bins all_zero = {32'h55555555}; // All 0
       bins all_pos  = {32'hAAAAAAAA}; // All +1
       bins mixed    = default;
-    }
-    
+  }
+
     // Result patterns
     cp_result_pattern: coverpoint tr.result {
       bins all_neg  = {32'h00000000};
       bins all_zero = {32'h55555555};
       bins all_pos  = {32'hAAAAAAAA};
       bins mixed    = default;
-    }
-    
+  }
+
     // Overflow scenarios
     cp_overflow: coverpoint tr.overflow {
       bins no_overflow = {1'b0};
       bins overflow    = {1'b1};
-    }
-    
+  }
+
     // Latency coverage
     cp_latency: coverpoint tr.latency {
       bins single_cycle = {1};
@@ -93,26 +93,26 @@ class mhx_ternary_coverage extends uvm_subscriber #(mhx_ternary_transaction);
     cx_op_patterns: cross cp_operation, cp_operand_a_pattern, cp_operand_b_pattern;
     cx_reg_usage: cross cp_rs1, cp_rs2, cp_rd {
       // Ensure we test same register for multiple operations
-      bins same_src_diff_dst = binsof(cp_rs1) intersect binsof(cp_rs2) && 
+      bins same_src_diff_dst = binsof(cp_rs1) intersect binsof(cp_rs2) &&
                                !binsof(cp_rd) intersect binsof(cp_rs1);
-      bins diff_all = !binsof(cp_rs1) intersect binsof(cp_rs2) && 
+      bins diff_all = !binsof(cp_rs1) intersect binsof(cp_rs2) &&
                       !binsof(cp_rd) intersect binsof(cp_rs1) &&
                       !binsof(cp_rd) intersect binsof(cp_rs2);
     }
   endgroup
   
   covergroup neural_operations_cg;
-    option.per_instance = 1;
-    option.name = "neural_operations";
-    
+  option.per_instance = 1;
+  option.name = "neural_operations";
+
     // Neural operation coverage
     cp_neural_op: coverpoint tr.neural_operation {
       bins multiply   = {NEURAL_MULTIPLY};
       bins accumulate = {NEURAL_ACCUMULATE};
       bins activate   = {NEURAL_ACTIVATE};
       bins learn      = {NEURAL_LEARN};
-    }
-    
+  }
+
     // Neural-specific patterns
     cp_weights_pattern: coverpoint tr.operand_a {
       bins all_neg     = {32'h00000000};
@@ -120,22 +120,22 @@ class mhx_ternary_coverage extends uvm_subscriber #(mhx_ternary_transaction);
       bins all_pos     = {32'hAAAAAAAA};
       bins alternating = {32'h50A050A0, 32'hA050A050};
       bins random      = default;
-    }
-    
+  }
+
     cp_inputs_pattern: coverpoint tr.operand_b {
       bins all_neg     = {32'h00000000};
       bins all_zero    = {32'h55555555};
       bins all_pos     = {32'hAAAAAAAA};
       bins alternating = {32'h50A050A0, 32'hA050A050};
       bins random      = default;
-    }
-    
-    cp_bias_pattern: coverpoint tr.bias[1:0] {
+  }
+
+  cp_bias_pattern: coverpoint tr.bias[1:0] {
       bins neg_bias  = {2'b00};
       bins zero_bias = {2'b01};
       bins pos_bias  = {2'b10};
-    }
-    
+  }
+
     // Valid signal coverage
     cp_valid: coverpoint tr.valid {
       bins not_valid = {1'b0};
@@ -148,15 +148,15 @@ class mhx_ternary_coverage extends uvm_subscriber #(mhx_ternary_transaction);
   endgroup
   
   covergroup error_scenarios_cg;
-    option.per_instance = 1;
-    option.name = "error_scenarios";
-    
+  option.per_instance = 1;
+  option.name = "error_scenarios";
+
     // Error detection coverage
     cp_error_detected: coverpoint tr.error_detected {
       bins no_error = {1'b0};
       bins error    = {1'b1};
-    }
-    
+  }
+
     // Types of errors (based on error message)
     cp_error_type: coverpoint tr.error_message {
       bins latency_violation = {"Latency violation"};
@@ -186,7 +186,7 @@ class mhx_ternary_coverage extends uvm_subscriber #(mhx_ternary_transaction);
       `uvm_fatal("NOCFG", "Configuration object not found");
     end
   endfunction
-  
+
   // Main coverage collection function
   virtual function void write(mhx_ternary_transaction t);
     if (!cfg.enable_coverage) return;
@@ -212,7 +212,7 @@ class mhx_ternary_coverage extends uvm_subscriber #(mhx_ternary_transaction);
       update_coverage_stats();
     end
   endfunction
-  
+
   // Update coverage statistics
   virtual function void update_coverage_stats();
     real ternary_cov = ternary_operations_cg.get_inst_coverage();
@@ -272,12 +272,12 @@ class mhx_ternary_coverage extends uvm_subscriber #(mhx_ternary_transaction);
       `uvm_info("COV", "Some error scenarios not covered (this may be expected)", UVM_MEDIUM);
     end
   endfunction
-  
+
   // Get current coverage for external queries
   virtual function real get_coverage();
     return current_coverage;
   endfunction
-  
+
   // Check if coverage goal is met
   virtual function bit is_coverage_complete();
     return (current_coverage >= cfg.coverage_goal);

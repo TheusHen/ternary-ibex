@@ -48,8 +48,9 @@ jobs:
       - name: Setup FuseSoC Cache
         run: |
           mkdir -p $FUSESOC_CACHE
-          fusesoc library add fusesoc_cores https://github.com/fusesoc/fusesoc-cores
-          fusesoc library add pulp-platform https://github.com/pulp-platform/pulp-platform-ip
+          fusesoc library add fusesoc_cores https://github.com/fusesoc/fusesoc-cores || true
+          # pulp-platform library is optional; network/permission issues shouldn't fail CI
+          fusesoc library add pulp-platform https://github.com/pulp-platform/pulp-platform-ip || true
 
       - name: Lint Ternary ALU
         run: |
@@ -141,7 +142,7 @@ jobs:
           echo "::endgroup::"
 
       - name: Upload Synthesis Reports
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: synthesis-reports
           path: |
@@ -203,7 +204,7 @@ jobs:
           echo "::endgroup::"
 
       - name: Upload Test Results
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ternary-test-results
           path: |
@@ -233,7 +234,7 @@ jobs:
           echo "::endgroup::"
 
       - name: Upload Performance Reports
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: performance-reports
           path: |
@@ -338,7 +339,7 @@ jobs:
           echo "::endgroup::"
 
       - name: Upload Integration Report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: integration-report
           path: build/integration_report/
