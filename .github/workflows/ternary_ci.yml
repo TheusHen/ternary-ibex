@@ -123,8 +123,10 @@ jobs:
           # Build with formal verification flags
           fusesoc --cores-root . run --target=formal --tool=symbiyosys lowrisc:ibex:mhx_ternary_test || {
             echo "Warning: Formal verification not available, checking assertion syntax"
-            # Fallback: check assertion syntax with Verilator
+            # Fallback: check assertion syntax with Verilator (split to avoid MULTITOP)
+            echo "-- Verifying ibex_ternary_alu"
             verilator --lint-only \
+              --top-module ibex_ternary_alu \
               -y rtl \
               -y vendor/lowrisc_ip/ip/prim/rtl \
               -y vendor/lowrisc_ip/dv/sv/dv_utils \
@@ -133,8 +135,33 @@ jobs:
               +incdir+vendor/lowrisc_ip/dv/sv/dv_utils \
               +define+SYNTHESIS \
               rtl/ibex_pkg.sv \
-              rtl/ibex_ternary_*.sv \
-              rtl/ibex_neural_*.sv
+              rtl/ibex_ternary_alu.sv
+
+            echo "-- Verifying ibex_ternary_regfile"
+            verilator --lint-only \
+              --top-module ibex_ternary_regfile \
+              -y rtl \
+              -y vendor/lowrisc_ip/ip/prim/rtl \
+              -y vendor/lowrisc_ip/dv/sv/dv_utils \
+              +incdir+rtl \
+              +incdir+vendor/lowrisc_ip/ip/prim/rtl \
+              +incdir+vendor/lowrisc_ip/dv/sv/dv_utils \
+              +define+SYNTHESIS \
+              rtl/ibex_pkg.sv \
+              rtl/ibex_ternary_regfile.sv
+
+            echo "-- Verifying ibex_neural_unit"
+            verilator --lint-only \
+              --top-module ibex_neural_unit \
+              -y rtl \
+              -y vendor/lowrisc_ip/ip/prim/rtl \
+              -y vendor/lowrisc_ip/dv/sv/dv_utils \
+              +incdir+rtl \
+              +incdir+vendor/lowrisc_ip/ip/prim/rtl \
+              +incdir+vendor/lowrisc_ip/dv/sv/dv_utils \
+              +define+SYNTHESIS \
+              rtl/ibex_pkg.sv \
+              rtl/ibex_neural_unit.sv
             echo "✅ Assertion syntax verified"
           }
 

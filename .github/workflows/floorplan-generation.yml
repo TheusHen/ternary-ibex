@@ -281,7 +281,14 @@ jobs:
             echo "No changes to floorplan"
           else
             git commit -m "Update floorplan visualization [skip ci]"
-            git push
+            # Handle detached HEAD in PRs: push to the PR's head branch
+            if [ "${{ github.event_name }}" = "pull_request" ]; then
+              BRANCH="${{ github.head_ref }}"
+              echo "Pushing to PR branch: $BRANCH"
+              git push origin HEAD:$BRANCH
+            else
+              git push
+            fi
           fi
 
       - name: Update README with Floorplan
@@ -326,8 +333,15 @@ jobs:
           PYTHON_SCRIPT
           
             git add README.md
-            git commit -m "Add floorplan architecture section to README [skip ci]" || echo "No README changes"
-            git push || echo "No changes to push"
+              git commit -m "Add floorplan architecture section to README [skip ci]" || echo "No README changes"
+              # Handle detached HEAD in PRs: push to the PR's head branch
+              if [ "${{ github.event_name }}" = "pull_request" ]; then
+                BRANCH="${{ github.head_ref }}"
+                echo "Pushing README update to PR branch: $BRANCH"
+                git push origin HEAD:$BRANCH || echo "No changes to push"
+              else
+                git push || echo "No changes to push"
+              fi
           fi
 
       - name: Generate Floorplan Report

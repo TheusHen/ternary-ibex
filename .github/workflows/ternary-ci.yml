@@ -113,6 +113,7 @@ jobs:
             +incdir+vendor/lowrisc_ip/dv/sv/dv_utils \
             +define+SYNTHESIS \
             rtl/ibex_pkg.sv \
+             vendor/lowrisc_ip/ip/prim/rtl/prim_cipher_pkg.sv \
             rtl/ibex_ternary_*.sv \
             rtl/ibex_neural_unit.sv \
             rtl/ibex_decoder.sv \
