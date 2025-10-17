@@ -19,6 +19,21 @@ This repository now includes the **MHX Core**, an enhanced version of Ibex with 
 
 For complete documentation, see [MHX_README.md](MHX_README.md).
 
+### Floorplan Architecture
+
+The MHX Core integrates seamlessly into the Ibex pipeline with dedicated ternary processing units:
+
+![MHX Ternary Core Floorplan](https://raw.githubusercontent.com/TheusHen/ternary-ibex/7/merge/docs/images/mhx_floorplan.png)
+
+Key architectural features:
+- **Ternary ALU**: Native 16-trit operations with overflow detection
+- **Neural Processing Unit**: Hardware-accelerated ternary neural networks
+- **Dual Register File**: 32 binary registers (x0-x31) + 16 ternary registers (t0-t15)
+- **Unified Pipeline**: Full integration with standard RISC-V pipeline stages
+- **Memory Subsystem**: Optimized for ternary data access patterns
+
+
+
 Ibex was initially developed as part of the [PULP platform](https://www.pulp-platform.org)
 under the name ["Zero-riscy"](https://doi.org/10.1109/PATMOS.2017.8106976), and has been
 contributed to [lowRISC](https://www.lowrisc.org) who maintains it and develops it further. It is
