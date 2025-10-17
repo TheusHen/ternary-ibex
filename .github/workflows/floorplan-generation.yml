@@ -11,6 +11,11 @@ on:
     branches: [ main, develop ]
   workflow_dispatch:
 
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
 env:
   OPENLANE_TAG: 2023.09.12
   PDK: sky130A

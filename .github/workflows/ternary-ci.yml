@@ -58,6 +58,8 @@ jobs:
           verilator --lint-only -Wall -Wno-UNUSED \
             --top-module ibex_ternary_alu \
             -I rtl -I vendor/lowrisc_ip/ip/prim/rtl \
+            -I vendor/lowrisc_ip/dv/sv/dv_utils \
+            +define+SYNTHESIS \
             rtl/ibex_pkg.sv \
             vendor/lowrisc_ip/ip/prim/rtl/prim_assert.sv \
             rtl/ibex_ternary_alu.sv
@@ -69,6 +71,8 @@ jobs:
           verilator --lint-only -Wall -Wno-UNUSED \
             --top-module ibex_neural_unit \
             -I rtl -I vendor/lowrisc_ip/ip/prim/rtl \
+            -I vendor/lowrisc_ip/dv/sv/dv_utils \
+            +define+SYNTHESIS \
             rtl/ibex_pkg.sv \
             vendor/lowrisc_ip/ip/prim/rtl/prim_assert.sv \
             rtl/ibex_neural_unit.sv
@@ -80,6 +84,8 @@ jobs:
           verilator --lint-only -Wall -Wno-UNUSED \
             --top-module ibex_ternary_regfile \
             -I rtl -I vendor/lowrisc_ip/ip/prim/rtl \
+            -I vendor/lowrisc_ip/dv/sv/dv_utils \
+            +define+SYNTHESIS \
             rtl/ibex_pkg.sv \
             vendor/lowrisc_ip/ip/prim/rtl/prim_assert.sv \
             rtl/ibex_ternary_regfile.sv
@@ -92,6 +98,8 @@ jobs:
             --top-module ibex_core \
             -I rtl \
             -I vendor/lowrisc_ip/ip/prim/rtl \
+            -I vendor/lowrisc_ip/dv/sv/dv_utils \
+            +define+SYNTHESIS \
             rtl/ibex_pkg.sv \
             rtl/ibex_ternary_*.sv \
             rtl/ibex_neural_unit.sv \

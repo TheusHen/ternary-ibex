@@ -254,11 +254,13 @@ package ibex_pkg;
   parameter int unsigned TERNARY_NUM_REGISTERS = 32;  // Number of ternary registers (T0-T31)
   parameter int unsigned TERNARY_TRITS_PER_REG = 16;  // Number of trits per register
   parameter int unsigned TERNARY_BITS_PER_TRIT = 2;   // Encoding bits per trit
-  parameter int unsigned TERNARY_REG_WIDTH = TERNARY_TRITS_PER_REG * TERNARY_BITS_PER_TRIT; // 32 bits
+  parameter int unsigned TERNARY_REG_WIDTH =
+      TERNARY_TRITS_PER_REG * TERNARY_BITS_PER_TRIT; // 32 bits
   parameter int unsigned TERNARY_ADDR_WIDTH = $clog2(TERNARY_NUM_REGISTERS); // 5 bits
 
-  // Ternary constants  
-  parameter logic [TERNARY_REG_WIDTH-1:0] TERNARY_ZERO_PATTERN = 32'h55555555; // All zeros in ternary
+  // Ternary constants
+  parameter logic [TERNARY_REG_WIDTH-1:0] TERNARY_ZERO_PATTERN =
+      32'h55555555; // All zeros in ternary
   parameter logic [TERNARY_REG_WIDTH-1:0] TERNARY_RESET_VALUE = TERNARY_ZERO_PATTERN;
 
   // Neural unit configuration

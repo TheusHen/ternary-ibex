@@ -78,8 +78,10 @@ module ibex_ternary_regfile import ibex_pkg::*; (
   `ASSERT(NoWriteWhenDisabled, !we_i |=> ternary_regs == $past(ternary_regs), clk_i, !rst_ni)
 
   // Reset behavior verification
-  `ASSERT(ResetInitialization, !rst_ni |=> 
-    (ternary_regs[0] == TERNARY_RESET_VALUE && ternary_regs[TERNARY_NUM_REGISTERS-1] == TERNARY_RESET_VALUE), clk_i, 1'b1)
+  `ASSERT(ResetInitialization, !rst_ni |=>
+    (ternary_regs[0] == TERNARY_RESET_VALUE &&
+     ternary_regs[TERNARY_NUM_REGISTERS-1] == TERNARY_RESET_VALUE),
+    clk_i, 1'b1)
 
   // Read behavior verification (combinational, so immediate)
   `ASSERT_INIT(ReadPortA_Immediate, rdata_a_o == ternary_regs[raddr_a_i])
@@ -90,15 +92,19 @@ module ibex_ternary_regfile import ibex_pkg::*; (
   generate
     for (reg_idx = 0; reg_idx < TERNARY_NUM_REGISTERS; reg_idx++) begin : g_register_integrity
       // After reset, all registers should contain valid ternary zeros
-      `ASSERT(InitialStateValid, !rst_ni |=> (ternary_regs[reg_idx] == TERNARY_RESET_VALUE), clk_i, 1'b1)
-      
+      `ASSERT(InitialStateValid, !rst_ni |=>
+        (ternary_regs[reg_idx] == TERNARY_RESET_VALUE), clk_i, 1'b1)
+
       // When writing to a register, the data should be properly stored
-      `ASSERT(WriteDataIntegrity, 
-        (we_i && waddr_i == reg_idx) |=> (ternary_regs[reg_idx] == $past(wdata_i)), clk_i, !rst_ni)
-      
+      `ASSERT(WriteDataIntegrity,
+        (we_i && waddr_i == reg_idx) |=>
+        (ternary_regs[reg_idx] == $past(wdata_i)), clk_i, !rst_ni)
+
       // Register contents should remain stable when not being written to
       `ASSERT(RegisterStability,
-        (!we_i || waddr_i != reg_idx) |=> (ternary_regs[reg_idx] == $past(ternary_regs[reg_idx])), clk_i, !rst_ni)
+        (!we_i || waddr_i != reg_idx) |=>
+        (ternary_regs[reg_idx] == $past(ternary_regs[reg_idx])),
+        clk_i, !rst_ni)
     end
   endgenerate
 
@@ -109,7 +115,7 @@ module ibex_ternary_regfile import ibex_pkg::*; (
       `ASSERT(ReadPortA_Independence,
         (raddr_a_i == port_test && (!we_i || waddr_i != port_test)) |->
         (rdata_a_o == ternary_regs[port_test]), clk_i, !rst_ni)
-        
+
       `ASSERT(ReadPortB_Independence,
         (raddr_b_i == port_test && (!we_i || waddr_i != port_test)) |->
         (rdata_b_o == ternary_regs[port_test]), clk_i, !rst_ni)

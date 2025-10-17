@@ -37,7 +37,7 @@ module ibex_ternary_alu import ibex_pkg::*; #(
     case ({a, b})
       4'b0000: return 3'b101;     // (-1) + (-1) = -2 → +1 with overflow
       4'b0001: return 3'b000;     // (-1) + 0 = -1
-      4'b0010: return 3'b001;     // (-1) + 1 = 0  
+      4'b0010: return 3'b001;     // (-1) + 1 = 0
       4'b0100: return 3'b000;     // 0 + (-1) = -1
       4'b0101: return 3'b001;     // 0 + 0 = 0
       4'b0110: return 3'b010;     // 0 + 1 = 1
@@ -158,7 +158,7 @@ module ibex_ternary_alu import ibex_pkg::*; #(
   always_comb begin
     logic [2:0] add_result;
     logic [2:0] sub_result;
-    
+
     // Initialize all outputs to prevent latch inference
     result_o = '0;
     ready_o = 1'b1;
@@ -188,39 +188,39 @@ module ibex_ternary_alu import ibex_pkg::*; #(
 
       TERNARY_MUL: begin
         for (int i = 0; i < TERNARY_TRITS_PER_REG; i++) begin
-          result_o[i*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT] = 
-            trit_mul(operand_a_i[i*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT], 
+          result_o[i*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT] =
+            trit_mul(operand_a_i[i*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT],
                      operand_b_i[i*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT]);
         end
       end
 
       TERNARY_AND: begin
         for (int i = 0; i < TERNARY_TRITS_PER_REG; i++) begin
-          result_o[i*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT] = 
-            trit_and(operand_a_i[i*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT], 
+          result_o[i*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT] =
+            trit_and(operand_a_i[i*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT],
                      operand_b_i[i*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT]);
         end
       end
 
       TERNARY_OR: begin
         for (int i = 0; i < TERNARY_TRITS_PER_REG; i++) begin
-          result_o[i*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT] = 
-            trit_or(operand_a_i[i*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT], 
+          result_o[i*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT] =
+            trit_or(operand_a_i[i*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT],
                     operand_b_i[i*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT]);
         end
       end
 
       TERNARY_XOR: begin
         for (int i = 0; i < TERNARY_TRITS_PER_REG; i++) begin
-          result_o[i*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT] = 
-            trit_xor(operand_a_i[i*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT], 
+          result_o[i*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT] =
+            trit_xor(operand_a_i[i*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT],
                      operand_b_i[i*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT]);
         end
       end
 
       TERNARY_NOT: begin
         for (int i = 0; i < TERNARY_TRITS_PER_REG; i++) begin
-          result_o[i*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT] = 
+          result_o[i*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT] =
             trit_not(operand_a_i[i*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT]);
         end
       end
@@ -247,8 +247,8 @@ module ibex_ternary_alu import ibex_pkg::*; #(
   endfunction
 
   // Basic operation validity assertions
-  `ASSERT_INIT(TernaryOpValid, operator_i inside {TERNARY_ADD, TERNARY_SUB, TERNARY_MUL, 
-                                                  TERNARY_AND, TERNARY_OR, TERNARY_XOR, TERNARY_NOT})
+  `ASSERT_INIT(TernaryOpValid, operator_i inside {TERNARY_ADD, TERNARY_SUB,
+    TERNARY_MUL, TERNARY_AND, TERNARY_OR, TERNARY_XOR, TERNARY_NOT})
 
   // Ready signal should always be high for combinational ALU
   `ASSERT(AlwaysReady, ready_o === 1'b1)
@@ -257,24 +257,24 @@ module ibex_ternary_alu import ibex_pkg::*; #(
   genvar trit_idx;
   generate
     for (trit_idx = 0; trit_idx < TERNARY_TRITS_PER_REG; trit_idx++) begin : g_trit_assertions
-      
+
       // Addition properties
-      `ASSERT_INIT(TernaryAddCommutative, 
-        (operator_i == TERNARY_ADD && 
-         is_valid_trit(operand_a_i[trit_idx*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT]) && 
+      `ASSERT_INIT(TernaryAddCommutative,
+        (operator_i == TERNARY_ADD &&
+         is_valid_trit(operand_a_i[trit_idx*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT]) &&
          is_valid_trit(operand_b_i[trit_idx*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT])) |->
-        trit_add(operand_a_i[trit_idx*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT], 
-                 operand_b_i[trit_idx*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT]) == 
-        trit_add(operand_b_i[trit_idx*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT], 
+        trit_add(operand_a_i[trit_idx*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT],
+                 operand_b_i[trit_idx*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT]) ==
+        trit_add(operand_b_i[trit_idx*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT],
                  operand_a_i[trit_idx*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT]))
 
       `ASSERT_INIT(TernaryAddIdentity,
-        (operator_i == TERNARY_ADD && 
+        (operator_i == TERNARY_ADD &&
          is_valid_trit(operand_a_i[trit_idx*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT])) |->
-        trit_add(operand_a_i[trit_idx*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT], TRIT_ZERO) == 
+        trit_add(operand_a_i[trit_idx*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT], TRIT_ZERO) ==
         operand_a_i[trit_idx*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT])
 
-      // Multiplication properties  
+      // Multiplication properties
       `ASSERT_INIT(TernaryMulCommutative,
         (operator_i == TERNARY_MUL && is_valid_trit(trit_a) && is_valid_trit(trit_b)) |->
         trit_mul(trit_a, trit_b) == trit_mul(trit_b, trit_a))
@@ -341,7 +341,7 @@ module ibex_ternary_alu import ibex_pkg::*; #(
   /* verilator lint_off UNUSED */
   logic [1:0] trit_a, trit_b;
   /* verilator lint_on UNUSED */
-      
+
       assign trit_a = operand_a_i[overflow_idx*2 +: 2];
       assign trit_b = operand_b_i[overflow_idx*2 +: 2];
 
@@ -354,7 +354,7 @@ module ibex_ternary_alu import ibex_pkg::*; #(
         (operator_i == TERNARY_ADD && trit_a == TRIT_POS && trit_b == TRIT_POS) |->
         trit_overflow_o[overflow_idx])
 
-      // Subtraction overflow cases: (-1) - (+1) and (+1) - (-1)  
+      // Subtraction overflow cases: (-1) - (+1) and (+1) - (-1)
       `ASSERT_INIT(SubOverflowNegPos,
         (operator_i == TERNARY_SUB && trit_a == TRIT_NEG && trit_b == TRIT_POS) |->
         trit_overflow_o[overflow_idx])

@@ -30,7 +30,8 @@ module ibex_neural_unit import ibex_pkg::*; (
 );
 
   // Internal accumulator for neural computations
-  // Can hold sum of TERNARY_TRITS_PER_REG trits plus bias: range [NEURAL_ACCUMULATOR_MIN, NEURAL_ACCUMULATOR_MAX]
+  // Can hold sum of TERNARY_TRITS_PER_REG trits plus bias
+  // Range: [NEURAL_ACCUMULATOR_MIN, NEURAL_ACCUMULATOR_MAX]
   logic signed [NEURAL_ACCUMULATOR_WIDTH-1:0] next_accumulator;
 
   // Unused bias bits (only first trit is used for ternary bias)
@@ -63,9 +64,9 @@ module ibex_neural_unit import ibex_pkg::*; (
     logic signed [NEURAL_ACCUMULATOR_WIDTH-1:0] accumulator_temp;
     logic [TERNARY_BITS_PER_TRIT-1:0] bias_trit;
     logic signed [1:0] bias_int;
-    
+
     accumulator_temp = '0;
-    
+
     // Multiply all weight-input pairs and accumulate
     for (int i = 0; i < TERNARY_TRITS_PER_REG; i++) begin
       logic [TERNARY_BITS_PER_TRIT-1:0] weight;
@@ -79,14 +80,16 @@ module ibex_neural_unit import ibex_pkg::*; (
       weight_int = trit_to_int(weight);
       input_int = trit_to_int(input_val);
       product = $signed(weight_int) * $signed(input_int);
-      accumulator_temp += {{NEURAL_ACCUMULATOR_WIDTH-4{product[3]}}, product};  // Sign extend and accumulate
+      // Sign extend and accumulate
+      accumulator_temp += {{NEURAL_ACCUMULATOR_WIDTH-4{product[3]}}, product};
     end
-    
+
     // Add bias (extract ternary value from bias input)
     bias_trit = bias_i[TERNARY_BITS_PER_TRIT-1:0];
     bias_int = trit_to_int(bias_trit);
-    accumulator_temp += {{NEURAL_ACCUMULATOR_WIDTH-2{bias_int[1]}}, bias_int};  // Sign extend bias and add
-    
+    // Sign extend bias and add
+    accumulator_temp += {{NEURAL_ACCUMULATOR_WIDTH-2{bias_int[1]}}, bias_int};
+
     next_accumulator = accumulator_temp;
   end
 
@@ -94,25 +97,30 @@ module ibex_neural_unit import ibex_pkg::*; (
   always_comb begin
     case (operation_i)
       NEURAL_MULTIPLY: begin
-        // Store accumulated result for next stage
-        result_o = {{TERNARY_REG_WIDTH-NEURAL_ACCUMULATOR_WIDTH{1'b0}}, next_accumulator};  // Return raw accumulator value
+        // Store accumulated result for next stage - Return raw accumulator value
+        result_o = {{TERNARY_REG_WIDTH-NEURAL_ACCUMULATOR_WIDTH{1'b0}},
+                    next_accumulator};
         valid_o = 1'b1;
       end
 
       NEURAL_ACCUMULATE: begin
         // Return accumulated value as ternary (keep raw for now)
-        result_o = {{TERNARY_REG_WIDTH-NEURAL_ACCUMULATOR_WIDTH{1'b0}}, next_accumulator};
+        result_o = {{TERNARY_REG_WIDTH-NEURAL_ACCUMULATOR_WIDTH{1'b0}},
+                    next_accumulator};
         valid_o = 1'b1;
       end
 
       NEURAL_ACTIVATE: begin
         // Ternary activation function: sign(accumulator)
         if (next_accumulator > 1) begin
-          result_o = {{TERNARY_REG_WIDTH-TERNARY_BITS_PER_TRIT{1'b0}}, TRIT_POS}; // +1 in ternary encoding
+          // +1 in ternary encoding
+          result_o = {{TERNARY_REG_WIDTH-TERNARY_BITS_PER_TRIT{1'b0}}, TRIT_POS};
         end else if (next_accumulator < -1) begin
-          result_o = {{TERNARY_REG_WIDTH-TERNARY_BITS_PER_TRIT{1'b0}}, TRIT_NEG}; // -1 in ternary encoding
+          // -1 in ternary encoding
+          result_o = {{TERNARY_REG_WIDTH-TERNARY_BITS_PER_TRIT{1'b0}}, TRIT_NEG};
         end else begin
-          result_o = {{TERNARY_REG_WIDTH-TERNARY_BITS_PER_TRIT{1'b0}}, TRIT_ZERO}; // 0 in ternary encoding
+          // 0 in ternary encoding
+          result_o = {{TERNARY_REG_WIDTH-TERNARY_BITS_PER_TRIT{1'b0}}, TRIT_ZERO};
         end
         valid_o = 1'b1;
       end
@@ -149,27 +157,32 @@ module ibex_neural_unit import ibex_pkg::*; (
   endfunction
 
   // Basic operation validity
-  `ASSERT_INIT(NeuralValidOp, operation_i inside {NEURAL_MULTIPLY, NEURAL_ACCUMULATE, NEURAL_ACTIVATE, NEURAL_LEARN})
+  `ASSERT_INIT(NeuralValidOp, operation_i inside
+    {NEURAL_MULTIPLY, NEURAL_ACCUMULATE, NEURAL_ACTIVATE, NEURAL_LEARN})
 
   // Valid output should always be asserted for implemented operations
-  `ASSERT_INIT(ValidOutputForValidOp, 
-    operation_i inside {NEURAL_MULTIPLY, NEURAL_ACCUMULATE, NEURAL_ACTIVATE, NEURAL_LEARN} |-> valid_o)
+  `ASSERT_INIT(ValidOutputForValidOp,
+    operation_i inside {NEURAL_MULTIPLY, NEURAL_ACCUMULATE,
+                        NEURAL_ACTIVATE, NEURAL_LEARN} |-> valid_o)
 
   // Input validation
-  `ASSERT_INIT(ValidInputs, all_trits_valid(weights_i) && all_trits_valid(inputs_i))
+  `ASSERT_INIT(ValidInputs,
+    all_trits_valid(weights_i) && all_trits_valid(inputs_i))
 
   // Accumulator bounds check
-  `ASSERT_INIT(AccumulatorBounds, next_accumulator >= NEURAL_ACCUMULATOR_WIDTH'(signed'(NEURAL_ACCUMULATOR_MIN)) && 
-                                  next_accumulator <= NEURAL_ACCUMULATOR_WIDTH'(signed'(NEURAL_ACCUMULATOR_MAX)))
+  `ASSERT_INIT(AccumulatorBounds,
+    next_accumulator >= NEURAL_ACCUMULATOR_WIDTH'(signed'(NEURAL_ACCUMULATOR_MIN)) &&
+    next_accumulator <= NEURAL_ACCUMULATOR_WIDTH'(signed'(NEURAL_ACCUMULATOR_MAX)))
 
   // Operation-specific assertions
   `ASSERT_INIT(MultiplyAccumulateRange,
     (operation_i inside {NEURAL_MULTIPLY, NEURAL_ACCUMULATE}) |->
-    (result_o[TERNARY_REG_WIDTH-1:NEURAL_ACCUMULATOR_WIDTH] == '0))  // Upper bits should be zero for accumulator results
+    (result_o[TERNARY_REG_WIDTH-1:NEURAL_ACCUMULATOR_WIDTH] == '0))
 
   `ASSERT_INIT(ActivationOutputValid,
     (operation_i == NEURAL_ACTIVATE) |->
-    (result_o[TERNARY_REG_WIDTH-1:TERNARY_BITS_PER_TRIT] == '0 && is_valid_trit(result_o[TERNARY_BITS_PER_TRIT-1:0])))
+    (result_o[TERNARY_REG_WIDTH-1:TERNARY_BITS_PER_TRIT] == '0 &&
+     is_valid_trit(result_o[TERNARY_BITS_PER_TRIT-1:0])))
 
   `ASSERT_INIT(LearnPassThrough,
     (operation_i == NEURAL_LEARN) |->
@@ -178,12 +191,13 @@ module ibex_neural_unit import ibex_pkg::*; (
   // Trit conversion correctness
   genvar trit_idx;
   generate
-    for (trit_idx = 0; trit_idx < TERNARY_TRITS_PER_REG; trit_idx++) begin : g_trit_conversion_assertions
+    for (trit_idx = 0; trit_idx < TERNARY_TRITS_PER_REG; trit_idx++)
+      begin : g_trit_conversion_assertions
   logic [TERNARY_BITS_PER_TRIT-1:0] weight_trit;
   /* verilator lint_off UNUSED */
   logic signed [1:0] weight_int;
   /* verilator lint_on UNUSED */
-      
+
       assign weight_trit = weights_i[trit_idx*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT];
       assign weight_int = trit_to_int(weight_trit);
 
@@ -195,7 +209,7 @@ module ibex_neural_unit import ibex_pkg::*; (
       `ASSERT_INIT(TritToIntCorrectPos,
         (weight_trit == TRIT_POS) |-> (weight_int == 1))
 
-      // Integer to trit conversion correctness  
+      // Integer to trit conversion correctness
       `ASSERT_INIT(IntToTritCorrectNeg,
         (weight_int < 0) |-> (int_to_trit({{6{weight_int[1]}}, weight_int}) == TRIT_NEG))
       `ASSERT_INIT(IntToTritCorrectZero,
@@ -208,7 +222,7 @@ module ibex_neural_unit import ibex_pkg::*; (
   // Simulation-only dynamic checks
   always_comb begin
     // Runtime accumulator bounds check
-    assert (next_accumulator >= NEURAL_ACCUMULATOR_WIDTH'(signed'(NEURAL_ACCUMULATOR_MIN)) && 
+    assert (next_accumulator >= NEURAL_ACCUMULATOR_WIDTH'(signed'(NEURAL_ACCUMULATOR_MIN)) &&
             next_accumulator <= NEURAL_ACCUMULATOR_WIDTH'(signed'(NEURAL_ACCUMULATOR_MAX))) else
             $error("Neural unit accumulator out of range: %d", next_accumulator);
 
