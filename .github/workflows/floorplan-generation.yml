@@ -31,6 +31,8 @@ jobs:
         with:
           submodules: recursive
           token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+          ref: ${{ github.head_ref || github.ref_name }}
 
       - name: Free Disk Space
         run: |

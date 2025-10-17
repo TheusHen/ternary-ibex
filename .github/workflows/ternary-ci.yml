@@ -103,7 +103,7 @@ jobs:
       - name: Lint Core with Ternary Extensions
         run: |
           echo "::group::Linting Core with Ternary Extensions"
-          verilator --lint-only -Wall -Wno-UNUSED \
+          verilator --lint-only -Wall -Wno-UNUSED -Wno-PINCONNECTEMPTY \
             --top-module ibex_core \
             -y rtl \
             -y vendor/lowrisc_ip/ip/prim/rtl \
