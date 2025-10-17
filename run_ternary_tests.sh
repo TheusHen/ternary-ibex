@@ -11,18 +11,24 @@ set -e
 
 # Parse command line arguments
 JSON_OUTPUT=false
+REGRESSION=false
 while [[ $# -gt 0 ]]; do
-  case $1 in
-    --json)
-      JSON_OUTPUT=true
-      shift
-      ;;
-    *)
-      echo "Unknown option: $1"
-      echo "Usage: $0 [--json]"
-      exit 1
-      ;;
-  esac
+    case $1 in
+        --json)
+            JSON_OUTPUT=true
+            shift
+            ;;
+        --regression)
+            # Accept --regression as a no-op alias for running the default suite
+            REGRESSION=true
+            shift
+            ;;
+        *)
+            echo "Unknown option: $1"
+            echo "Usage: $0 [--json] [--regression]"
+            exit 1
+            ;;
+    esac
 done
 
 echo "========================================"
