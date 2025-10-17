@@ -89,7 +89,7 @@ class mhx_ternary_scoreboard extends uvm_scoreboard;
       result_match = compare_neural_result(tr, expected_tr, mismatch_msg);
       neural_checks++;
     end else begin
-      `uvm_warning("SB", "Transaction with unknown operation type");
+      uvm_report_warning("SB", "Transaction with unknown operation type");
       return;
     end
     
@@ -211,7 +211,10 @@ class mhx_ternary_scoreboard extends uvm_scoreboard;
       `uvm_info("SB_STATS", $sformatf("Pass rate: %0.1f%%", pass_rate), UVM_LOW);
       
       if (pass_rate < 100.0) begin
-        `uvm_warning("SB_STATS", $sformatf("Pass rate below 100%% (%0.1f%%)", pass_rate));
+        uvm_report_warning(
+          "SB_STATS",
+          $sformatf("Pass rate below 100%% (%0.1f%%)", pass_rate)
+        );
       end
     end
     

@@ -77,7 +77,10 @@ class mhx_ternary_config extends uvm_object;
         target_throughput = 0.9;
       end
       default: begin
-        `uvm_warning("CONFIG", $sformatf("Unknown test type: %s, using default config", test_name));
+        uvm_report_warning(
+          "CONFIG",
+          $sformatf("Unknown test type: %s, using default config", test_name)
+        );
       end
     endcase
   endfunction

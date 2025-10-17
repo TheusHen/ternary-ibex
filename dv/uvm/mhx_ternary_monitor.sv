@@ -79,8 +79,10 @@ class mhx_ternary_monitor extends uvm_monitor;
       if (tr.is_neural) neural_ops_seen++;
       if (tr.error_detected) errors_detected++;
       
-      `uvm_info("MON", $sformatf("Monitored transaction #%0d: %s", 
-                                transactions_monitored, tr.convert2string()), UVM_HIGH);
+  `uvm_info("MON",
+        $sformatf("Monitored transaction #%0d: %s",
+          transactions_monitored, tr.convert2string()),
+        UVM_HIGH);
       
       // Wait for next instruction
       @(vif.monitor_cb);
@@ -184,12 +186,17 @@ class mhx_ternary_monitor extends uvm_monitor;
       
       if (instructions_in_window > 0) begin
         real ipc = real'(instructions_in_window) / real'(window_size);
-        `uvm_info("PERF", $sformatf("Performance window: %0d instructions in %0d cycles (IPC: %0.3f)", 
-                                   instructions_in_window, window_size, ipc), UVM_MEDIUM);
+  `uvm_info("PERF",
+      $sformatf("Performance window: %0d instructions in %0d cycles (IPC: %0.3f)",
+          instructions_in_window, window_size, ipc),
+      UVM_MEDIUM);
         
         if (ipc < cfg.target_throughput) begin
-          `uvm_warning("PERF", $sformatf("Performance below target: %0.3f < %0.3f", 
-                                        ipc, cfg.target_throughput));
+          uvm_report_warning(
+            "PERF",
+            $sformatf("Performance below target: %0.3f < %0.3f",
+                      ipc, cfg.target_throughput)
+          );
         end
       end
       
@@ -201,8 +208,11 @@ class mhx_ternary_monitor extends uvm_monitor;
   virtual function void validate_transaction(mhx_ternary_transaction tr);
     // Check latency bounds
     if (tr.latency > cfg.max_latency_cycles) begin
-      `uvm_warning("MON", $sformatf("Transaction latency (%0d) exceeds maximum (%0d)", 
-                                   tr.latency, cfg.max_latency_cycles));
+        uvm_report_warning(
+          "MON",
+          $sformatf("Transaction latency (%0d) exceeds maximum (%0d)",
+                    tr.latency, cfg.max_latency_cycles)
+        );
       tr.error_detected = 1'b1;
       tr.error_message = "Latency violation";
     end
@@ -267,7 +277,9 @@ class mhx_ternary_monitor extends uvm_monitor;
     `uvm_info("MON_STATS", $sformatf("Neural operations: %0d", neural_ops_seen), UVM_LOW);
     `uvm_info("MON_STATS", $sformatf("Errors detected: %0d", errors_detected), UVM_LOW);
     `uvm_info("MON_STATS", $sformatf("Average latency: %0.1f cycles", average_latency), UVM_LOW);
-    `uvm_info("MON_STATS", $sformatf("Min/Max latency: %0d/%0d cycles", min_latency, max_latency), UVM_LOW);
+  `uvm_info("MON_STATS",
+        $sformatf("Min/Max latency: %0d/%0d cycles", min_latency, max_latency),
+        UVM_LOW);
     `uvm_info("MON_STATS", "==========================", UVM_LOW);
   endfunction
 

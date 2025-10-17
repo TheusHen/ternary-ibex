@@ -24,7 +24,7 @@ class mhx_ternary_base_sequence extends uvm_sequence #(mhx_ternary_transaction);
     
     // Get configuration
     if (!uvm_config_db#(mhx_ternary_config)::get(m_sequencer, "", "cfg", cfg)) begin
-      `uvm_warning("SEQ", "Configuration not found, using defaults");
+      uvm_report_warning("SEQ", "Configuration not found, using defaults");
       cfg = mhx_ternary_config::type_id::create("default_cfg");
     end
   endtask

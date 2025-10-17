@@ -221,8 +221,10 @@ class mhx_ternary_coverage extends uvm_subscriber #(mhx_ternary_transaction);
 
     current_coverage = (ternary_cov + neural_cov + error_cov) / 3.0;
 
-    `uvm_info("COV", $sformatf("Coverage update: Ternary=%0.1f%%, Neural=%0.1f%%, Errors=%0.1f%%, Overall=%0.1f%%",
-                              ternary_cov, neural_cov, error_cov, current_coverage), UVM_MEDIUM);
+  `uvm_info("COV",
+        $sformatf("Coverage update: Ternary=%0.1f%%, Neural=%0.1f%%, Errors=%0.1f%%, Overall=%0.1f%%",
+            ternary_cov, neural_cov, error_cov, current_coverage),
+        UVM_MEDIUM);
 
     // Check if coverage goal is met
     if (current_coverage >= cfg.coverage_goal) begin
@@ -261,11 +263,11 @@ class mhx_ternary_coverage extends uvm_subscriber #(mhx_ternary_transaction);
     // For now, provide basic reporting framework
 
     if (ternary_operations_cg.get_inst_coverage() < 100.0) begin
-      `uvm_warning("COV", "Some ternary operation scenarios not covered");
+      uvm_report_warning("COV", "Some ternary operation scenarios not covered");
     end
 
     if (neural_operations_cg.get_inst_coverage() < 100.0) begin
-      `uvm_warning("COV", "Some neural operation scenarios not covered");
+      uvm_report_warning("COV", "Some neural operation scenarios not covered");
     end
 
     if (error_scenarios_cg.get_inst_coverage() < 100.0) begin

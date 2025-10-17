@@ -62,7 +62,7 @@ class mhx_ternary_agent extends uvm_agent;
     if (get_is_active() == UVM_ACTIVE) begin
       seq.start(sequencer);
     end else begin
-      `uvm_warning("AGENT", "Cannot start sequence on passive agent");
+      uvm_report_warning("AGENT", "Cannot start sequence on passive agent");
     end
   endtask
 

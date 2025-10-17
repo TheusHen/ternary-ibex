@@ -202,11 +202,14 @@ class mhx_ternary_coverage_test extends mhx_ternary_base_test;
     if (cfg.enable_coverage && env.coverage != null) begin
       real final_coverage = env.coverage.get_coverage();
       if (final_coverage >= cfg.coverage_goal) begin
-        `uvm_info("TEST_RESULT", $sformatf("Coverage goal achieved: %0.1f%% >= %0d%%", 
-                                          final_coverage, cfg.coverage_goal), UVM_LOW);
+        `uvm_info("TEST_RESULT",
+                  $sformatf("Coverage goal achieved: %0.1f%% >= %0d%%",
+                            final_coverage, cfg.coverage_goal),
+                  UVM_LOW);
       end else begin
-        `uvm_warning("TEST_RESULT", $sformatf("Coverage goal not met: %0.1f%% < %0d%%", 
-                                             final_coverage, cfg.coverage_goal));
+        uvm_report_warning("TEST_RESULT",
+                           $sformatf("Coverage goal not met: %0.1f%% < %0d%%",
+                                     final_coverage, cfg.coverage_goal));
       end
     end
   endfunction
@@ -276,7 +279,10 @@ class mhx_ternary_error_test extends mhx_ternary_base_test;
     if (env.agent.monitor.errors_detected > 0) begin
       `uvm_info("TEST_RESULT", "Status: PASSED (errors detected as expected)", UVM_LOW);
     end else begin
-      `uvm_warning("TEST_RESULT", "Status: WARNING (no errors detected, error injection might not be working)");
+      uvm_report_warning(
+        "TEST_RESULT",
+        "Status: WARNING (no errors detected, error injection might not be working)"
+      );
     end
     
     `uvm_info("TEST_RESULT", "===========================", UVM_LOW);
@@ -315,14 +321,16 @@ class mhx_ternary_performance_test extends mhx_ternary_base_test;
     `uvm_info("PERF_RESULT", "=== Performance Results ===", UVM_LOW);
     `uvm_info("PERF_RESULT", $sformatf("Average latency: %0.1f cycles", 
                                       env.agent.monitor.average_latency), UVM_LOW);
-    `uvm_info("PERF_RESULT", $sformatf("Min/Max latency: %0d/%0d cycles", 
-                                      env.agent.monitor.min_latency, 
-                                      env.agent.monitor.max_latency), UVM_LOW);
+  `uvm_info("PERF_RESULT",
+        $sformatf("Min/Max latency: %0d/%0d cycles",
+            env.agent.monitor.min_latency,
+            env.agent.monitor.max_latency),
+        UVM_LOW);
     
     if (env.agent.monitor.average_latency <= cfg.max_latency_cycles) begin
       `uvm_info("PERF_RESULT", "Latency target met", UVM_LOW);
     end else begin
-      `uvm_warning("PERF_RESULT", "Latency target exceeded");
+      uvm_report_warning("PERF_RESULT", "Latency target exceeded");
     end
     
     `uvm_info("PERF_RESULT", "===========================", UVM_LOW);

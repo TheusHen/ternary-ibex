@@ -87,12 +87,17 @@ class mhx_ternary_env extends uvm_env;
       if (current_count == last_count) begin
         stall_cycles++;
         if (stall_cycles > 10) begin // No progress for 10 checks
-          `uvm_warning("ENV", $sformatf("Test progress stalled at %0d transactions", current_count));
+          uvm_report_warning(
+            "ENV",
+            $sformatf("Test progress stalled at %0d transactions", current_count)
+          );
           stall_cycles = 0; // Reset to avoid spam
         end
       end else begin
         stall_cycles = 0;
-        `uvm_info("ENV", $sformatf("Test progress: %0d transactions completed", current_count), UVM_HIGH);
+  `uvm_info("ENV",
+      $sformatf("Test progress: %0d transactions completed", current_count),
+      UVM_HIGH);
       end
       
       last_count = current_count;
@@ -143,8 +148,11 @@ class mhx_ternary_env extends uvm_env;
     if (cfg.enable_coverage) begin
       real final_coverage = coverage.get_coverage();
       if (final_coverage < cfg.coverage_goal) begin
-        `uvm_warning("ENV", $sformatf("Coverage goal not met: %0.1f%% < %0d%%", 
-                                     final_coverage, cfg.coverage_goal));
+        uvm_report_warning(
+          "ENV",
+          $sformatf("Coverage goal not met: %0.1f%% < %0d%%",
+                    final_coverage, cfg.coverage_goal)
+        );
       end
     end
     
