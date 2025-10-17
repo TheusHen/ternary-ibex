@@ -27,22 +27,28 @@ def run_command(cmd):
         return None
 
 def get_performance_metrics(git_ref):
-    """Get performance metrics for a specific git reference"""
+    """Get performance metrics for a specific git reference in an isolated worktree"""
     print(f"Getting performance metrics for {git_ref}")
-    
-    # Checkout the reference
-    run_command(f"git checkout {git_ref}")
-    
-    # Run performance analysis
-    output = run_command("python3 util/ternary_performance_analysis.py --json")
-    
-    if output:
-        try:
-            return json.loads(output)
-        except json.JSONDecodeError:
-            print(f"Failed to parse JSON output for {git_ref}")
-            return None
-    return None
+    worktree_dir = f"/tmp/ternary-ibex-perf-{git_ref.replace('/', '_').replace('~','_').replace('^','_')}"
+    # Create/update worktree
+    run_command(f"git worktree remove -f {worktree_dir} 2>/dev/null || true")
+    add_out = run_command(f"git worktree add --force {worktree_dir} {git_ref}")
+    if add_out is None:
+        print(f"Failed to create worktree for {git_ref}")
+        return None
+    try:
+        # Run performance analysis in the worktree
+        output = run_command(f"cd {worktree_dir} && python3 util/ternary_performance_analysis.py --json")
+        if output:
+            try:
+                return json.loads(output)
+            except json.JSONDecodeError:
+                print(f"Failed to parse JSON output for {git_ref}")
+                return None
+        return None
+    finally:
+        # Clean up worktree
+        run_command(f"git worktree remove -f {worktree_dir}")
 
 def compare_metrics(baseline, current):
     """Compare performance metrics and detect regressions"""
@@ -82,53 +88,44 @@ def compare_metrics(baseline, current):
                 regressions.append({
                     'metric': metric,
                     'baseline': baseline_val,
-                    'current': current_val,
-                    'change_percent': change_percent
-                })
-                print(f"  ❌ REGRESSION DETECTED")
-            elif change_percent > improvement_threshold:
-                improvements.append({
-                    'metric': metric,
-                    'baseline': baseline_val,
-                    'current': current_val,
-                    'change_percent': change_percent
-                })
-                print(f"  ✅ IMPROVEMENT")
-            else:
-                print(f"  ➡️  STABLE")
-            
-            print()
+                    # Get baseline metrics
+                    print(f"Analyzing baseline: {args.baseline}")
+                    baseline_metrics = get_performance_metrics(args.baseline)
     
-    return regressions, improvements
-
-def generate_report(regressions, improvements):
-    """Generate performance regression report"""
-    report = []
-    report.append("# MHX Ternary Performance Regression Report\\n")
+                    if not baseline_metrics:
+                        print(f"Failed to get baseline metrics for {args.baseline}")
+                        return 1
     
-    if regressions:
-        report.append("## ❌ Performance Regressions Detected\\n")
-        for reg in regressions:
-            report.append(f"- **{reg['metric']}**: {reg['change_percent']:+.2f}% change")
-            report.append(f"  - Baseline: {reg['baseline']:.3f}")
-            report.append(f"  - Current: {reg['current']:.3f}")
-        report.append("")
+                    # Get current metrics
+                    print(f"Analyzing current: {args.current}")
+                    current_metrics = get_performance_metrics(args.current)
     
-    if improvements:
-        report.append("## ✅ Performance Improvements\\n")
-        for imp in improvements:
-            report.append(f"- **{imp['metric']}**: {imp['change_percent']:+.2f}% improvement")
-            report.append(f"  - Baseline: {imp['baseline']:.3f}")
-            report.append(f"  - Current: {imp['current']:.3f}")
-        report.append("")
+                    if not current_metrics:
+                        print(f"Failed to get current metrics for {args.current}")
+                        return 1
     
-    if not regressions and not improvements:
-        report.append("## ➡️ Performance Stable\\n")
-        report.append("No significant performance changes detected.\\n")
+                    # Compare metrics
+                    regressions, improvements = compare_metrics(baseline_metrics, current_metrics)
     
-    return "\\n".join(report)
-
-def main():
+                    # Generate report
+                    report = generate_report(regressions, improvements)
+    
+                    if args.output:
+                        with open(args.output, 'w') as f:
+                            f.write(report)
+                        print(f"Report written to {args.output}")
+                    else:
+                        print("\n" + report)
+    
+                    # Return appropriate exit code
+                    if regressions:
+                        print(f"\n❌ {len(regressions)} performance regression(s) detected!")
+                        return 1
+                    else:
+                        print(f"\n✅ No performance regressions detected")
+                        if improvements:
+                            print(f"🎉 {len(improvements)} improvement(s) found!")
+                        return 0
     parser = argparse.ArgumentParser(description="Check for performance regressions")
     parser.add_argument("--baseline", required=True, help="Baseline git reference")
     parser.add_argument("--current", required=True, help="Current git reference")

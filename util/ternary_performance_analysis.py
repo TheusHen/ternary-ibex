@@ -12,6 +12,8 @@ import time
 import random
 import sys
 import math
+import os
+import contextlib
 
 def benchmark_neural_inference():
     """Benchmark neural network inference performance"""
@@ -262,27 +264,36 @@ def main():
         print('=== MHX Ternary Performance Analysis ===')
     
     try:
-        # Run all benchmarks
-        neural_results = benchmark_neural_inference()
-        matrix_results = benchmark_matrix_operations()
-        memory_results = analyze_memory_efficiency()
-        power_results = analyze_power_efficiency()
-        
-        # Run integration tests
-        integration_success = test_integration()
-        
-        # Generate summary report
-        overall_score, status = generate_summary_report(
-            neural_results, matrix_results, memory_results, power_results
-        )
-        
+        # Run all benchmarks; if JSON mode, suppress stdout noise during computations
+        if args.json:
+            null = open(os.devnull, 'w')
+            with contextlib.redirect_stdout(null):
+                neural_results = benchmark_neural_inference()
+                matrix_results = benchmark_matrix_operations()
+                memory_results = analyze_memory_efficiency()
+                power_results = analyze_power_efficiency()
+                integration_success = test_integration()
+                overall_score, status = generate_summary_report(
+                    neural_results, matrix_results, memory_results, power_results
+                )
+            null.close()
+        else:
+            neural_results = benchmark_neural_inference()
+            matrix_results = benchmark_matrix_operations()
+            memory_results = analyze_memory_efficiency()
+            power_results = analyze_power_efficiency()
+            integration_success = test_integration()
+            overall_score, status = generate_summary_report(
+                neural_results, matrix_results, memory_results, power_results
+            )
+
         # Prepare results for JSON output
         if args.json:
             json_results = {
-                "neural_inference_speedup": neural_results[0],
-                "matrix_operation_speedup": matrix_results[0], 
-                "memory_usage_reduction_percent": memory_results[0],
-                "power_efficiency_improvement_percent": power_results[0],
+                "neural_inference_speedup": neural_results.get("speedup"),
+                "matrix_operation_speedup": matrix_results.get("speedup"),
+                "memory_usage_reduction_percent": memory_results.get("memory_reduction"),
+                "power_efficiency_improvement_percent": power_results.get("power_reduction"),
                 "overall_score": overall_score,
                 "status": status,
                 "integration_test_passed": integration_success
