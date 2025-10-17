@@ -87,7 +87,7 @@ class mhx_ternary_coverage extends uvm_subscriber #(mhx_ternary_transaction);
       bins few_cycles   = {[2:5]};
       bins many_cycles  = {[6:$]};
     }
-    
+
     // Cross coverage for comprehensive scenarios
     cx_op_overflow: cross cp_operation, cp_overflow;
     cx_op_patterns: cross cp_operation, cp_operand_a_pattern, cp_operand_b_pattern;
@@ -100,7 +100,7 @@ class mhx_ternary_coverage extends uvm_subscriber #(mhx_ternary_transaction);
                       !binsof(cp_rd) intersect binsof(cp_rs2);
     }
   endgroup
-  
+
   covergroup neural_operations_cg;
   option.per_instance = 1;
   option.name = "neural_operations";
@@ -141,12 +141,12 @@ class mhx_ternary_coverage extends uvm_subscriber #(mhx_ternary_transaction);
       bins not_valid = {1'b0};
       bins valid     = {1'b1};
     }
-    
+
     // Cross coverage for neural operations
     cx_neural_weights_inputs: cross cp_neural_op, cp_weights_pattern, cp_inputs_pattern;
     cx_neural_bias: cross cp_neural_op, cp_bias_pattern;
   endgroup
-  
+
   covergroup error_scenarios_cg;
   option.per_instance = 1;
   option.name = "error_scenarios";
@@ -165,23 +165,23 @@ class mhx_ternary_coverage extends uvm_subscriber #(mhx_ternary_transaction);
       bins multiple_ops = {"Multiple operation types"};
       bins protocol_violation = default;
     }
-    
+
     // Cross coverage
     cx_error_scenarios: cross cp_error_detected, cp_error_type;
   endgroup
-  
+
   function new(string name, uvm_component parent);
     super.new(name, parent);
-    
+
     // Create coverage groups
     ternary_operations_cg = new();
     neural_operations_cg = new();
     error_scenarios_cg = new();
   endfunction
-  
+
   function void build_phase(uvm_phase phase);
     super.build_phase(phase);
-    
+
     if (!uvm_config_db#(mhx_ternary_config)::get(this, "", "cfg", cfg)) begin
       `uvm_fatal("NOCFG", "Configuration object not found");
     end
@@ -190,23 +190,23 @@ class mhx_ternary_coverage extends uvm_subscriber #(mhx_ternary_transaction);
   // Main coverage collection function
   virtual function void write(mhx_ternary_transaction t);
     if (!cfg.enable_coverage) return;
-    
+
     tr = t; // Assign for coverpoint sampling
-    
+
     // Sample appropriate coverage groups
     if (t.is_ternary) begin
       ternary_operations_cg.sample();
     end
-    
+
     if (t.is_neural) begin
       neural_operations_cg.sample();
     end
-    
+
     // Always sample error scenarios
     error_scenarios_cg.sample();
-    
+
     transactions_covered++;
-    
+
     // Update coverage statistics periodically
     if (transactions_covered % 100 == 0) begin
       update_coverage_stats();
@@ -218,56 +218,56 @@ class mhx_ternary_coverage extends uvm_subscriber #(mhx_ternary_transaction);
     real ternary_cov = ternary_operations_cg.get_inst_coverage();
     real neural_cov = neural_operations_cg.get_inst_coverage();
     real error_cov = error_scenarios_cg.get_inst_coverage();
-    
+
     current_coverage = (ternary_cov + neural_cov + error_cov) / 3.0;
-    
+
     `uvm_info("COV", $sformatf("Coverage update: Ternary=%0.1f%%, Neural=%0.1f%%, Errors=%0.1f%%, Overall=%0.1f%%",
                               ternary_cov, neural_cov, error_cov, current_coverage), UVM_MEDIUM);
-    
+
     // Check if coverage goal is met
     if (current_coverage >= cfg.coverage_goal) begin
   `uvm_info("COV", $sformatf("Coverage goal achieved: %0.1f%% >= %0d%%",
                                 current_coverage, cfg.coverage_goal), UVM_LOW);
     end
   endfunction
-  
+
   // Report detailed coverage
   virtual function void report_phase(uvm_phase phase);
     super.report_phase(phase);
-    
+
     if (!cfg.enable_coverage) return;
-    
+
     update_coverage_stats();
-    
+
     `uvm_info("COV_STATS", "=== Coverage Statistics ===", UVM_LOW);
     `uvm_info("COV_STATS", $sformatf("Transactions covered: %0d", transactions_covered), UVM_LOW);
-    `uvm_info("COV_STATS", $sformatf("Ternary operations coverage: %0.1f%%", 
+    `uvm_info("COV_STATS", $sformatf("Ternary operations coverage: %0.1f%%",
                                     ternary_operations_cg.get_inst_coverage()), UVM_LOW);
-    `uvm_info("COV_STATS", $sformatf("Neural operations coverage: %0.1f%%", 
+    `uvm_info("COV_STATS", $sformatf("Neural operations coverage: %0.1f%%",
                                     neural_operations_cg.get_inst_coverage()), UVM_LOW);
-    `uvm_info("COV_STATS", $sformatf("Error scenarios coverage: %0.1f%%", 
+    `uvm_info("COV_STATS", $sformatf("Error scenarios coverage: %0.1f%%",
                                     error_scenarios_cg.get_inst_coverage()), UVM_LOW);
     `uvm_info("COV_STATS", $sformatf("Overall coverage: %0.1f%%", current_coverage), UVM_LOW);
-    
+
     // Report uncovered items
     report_uncovered_items();
-    
+
     `uvm_info("COV_STATS", "===========================", UVM_LOW);
   endfunction
-  
+
   // Report uncovered coverage items
   virtual function void report_uncovered_items();
     // This would typically use coverage database queries
     // For now, provide basic reporting framework
-    
+
     if (ternary_operations_cg.get_inst_coverage() < 100.0) begin
       `uvm_warning("COV", "Some ternary operation scenarios not covered");
     end
-    
+
     if (neural_operations_cg.get_inst_coverage() < 100.0) begin
       `uvm_warning("COV", "Some neural operation scenarios not covered");
     end
-    
+
     if (error_scenarios_cg.get_inst_coverage() < 100.0) begin
       `uvm_info("COV", "Some error scenarios not covered (this may be expected)", UVM_MEDIUM);
     end

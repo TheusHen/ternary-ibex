@@ -122,9 +122,19 @@ jobs:
           echo "=== Running Formal Assertions Verification ==="
           # Build with formal verification flags
           fusesoc --cores-root . run --target=formal --tool=symbiyosys lowrisc:ibex:mhx_ternary_test || {
-            echo "::warning::Formal verification not available, checking assertion syntax"
+            echo "Warning: Formal verification not available, checking assertion syntax"
             # Fallback: check assertion syntax with Verilator
-            verilator --lint-only --assert rtl/ibex_ternary_*.sv rtl/ibex_neural_*.sv
+            verilator --lint-only \
+              -y rtl \
+              -y vendor/lowrisc_ip/ip/prim/rtl \
+              -y vendor/lowrisc_ip/dv/sv/dv_utils \
+              +incdir+rtl \
+              +incdir+vendor/lowrisc_ip/ip/prim/rtl \
+              +incdir+vendor/lowrisc_ip/dv/sv/dv_utils \
+              +define+SYNTHESIS \
+              rtl/ibex_pkg.sv \
+              rtl/ibex_ternary_*.sv \
+              rtl/ibex_neural_*.sv
             echo "✅ Assertion syntax verified"
           }
 

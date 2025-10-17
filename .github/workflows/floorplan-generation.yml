@@ -266,7 +266,6 @@ jobs:
           PYTHON_SCRIPT
 
       - name: Commit and Push Floorplan
-        if: github.event_name != 'pull_request'
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
@@ -286,7 +285,6 @@ jobs:
           fi
 
       - name: Update README with Floorplan
-        if: github.event_name != 'pull_request'
         run: |
           # Check if floorplan section exists in README
           if ! grep -q "## Floorplan Architecture" README.md; then
