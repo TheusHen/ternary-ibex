@@ -71,11 +71,38 @@ if [[ ! -f "${RESULTS_DIR}/current_results.json" ]]; then
   exit 1
 fi
 
-# Simple JSON parsing for performance metrics
+# Robust JSON parsing for performance metrics via Python to avoid bc/sed pitfalls
 extract_metric() {
   local file="$1"
   local metric="$2"
-  grep "\"${metric}\"" "$file" | sed 's/.*: *\([0-9.]*\).*/\1/' || echo "0"
+  python3 - "$file" "$metric" <<'PY'
+import json,sys
+path, key = sys.argv[1], sys.argv[2]
+try:
+  with open(path) as f:
+    data = json.load(f)
+except Exception:
+  print(0)
+  sys.exit(0)
+# Support variant keys from older/newer producers
+aliases = {
+  'memory_usage_reduction_percent': ['memory_usage_reduction_percent','memory_usage_reduction'],
+  'power_efficiency_improvement_percent': ['power_efficiency_improvement_percent','power_reduction_estimate'],
+  'overall_score': ['overall_score','efficiency_score'],
+  'neural_inference_speedup': ['neural_inference_speedup'],
+  'matrix_operation_speedup': ['matrix_operation_speedup'],
+}
+for k in aliases.get(key,[key]):
+  if k in data:
+    try:
+      print(float(data[k]))
+      break
+    except Exception:
+      print(0)
+      break
+else:
+  print(0)
+PY
 }
 
 # Load baseline metrics
@@ -99,21 +126,26 @@ validate_metric() {
   local current="$3"
   local threshold="$4"
   
-  if [[ $(echo "$baseline == 0" | bc -l 2>/dev/null || echo "1") -eq 1 ]]; then
-    log_warn "Baseline for ${name} is zero, skipping validation"
-    return 0
-  fi
-  
-  local regression=$(echo "scale=2; (($baseline - $current) / $baseline) * 100" | bc -l 2>/dev/null || echo "0")
-  local regression_abs=$(echo "${regression#-}")  # Remove negative sign for comparison
-  
-  if [[ $(echo "$regression_abs > $threshold" | bc -l 2>/dev/null || echo "0") -eq 1 ]]; then
-    log_error "${name}: Regression of ${regression}% exceeds threshold (${threshold}%)"
-    log_error "  Baseline: ${baseline}, Current: ${current}"
+  python3 - "$name" "$baseline" "$current" "$threshold" <<'PY'
+import sys
+name, b, c, thr = sys.argv[1], float(sys.argv[2]), float(sys.argv[3]), float(sys.argv[4])
+if b == 0:
+    print("SKIP")
+    sys.exit(0)
+reg = ((b - c) / b) * 100.0  # Positive = regression (current worse), Negative = improvement
+if reg > thr:
+  print(f"FAIL {reg:.2f}")
+  sys.exit(1)
+else:
+  print(f"OK {reg:.2f}")
+  sys.exit(0)
+PY
+  local rc=$?
+  if [[ $rc -ne 0 ]]; then
+    log_error "${name}: Regression exceeds threshold (${threshold}%). Baseline=${baseline}, Current=${current}"
     return 1
   else
-    log_info "${name}: Performance change ${regression}% (within threshold)"
-    log_info "  Baseline: ${baseline}, Current: ${current}"
+    log_info "${name}: Within threshold. Baseline=${baseline}, Current=${current}"
     return 0
   fi
 }

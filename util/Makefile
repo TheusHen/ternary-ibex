@@ -5,4 +5,4 @@
 
 .PHONY: lint
 lint:
-	mypy --strict sv2v_in_place.py
+	mypy --config-file ../mypy.ini --strict ./sv2v_in_place.py

@@ -31,6 +31,12 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
+# If JSON output requested, emit only JSON and exit early to keep stdout clean
+if [ "$JSON_OUTPUT" = true ]; then
+    python3 util/ternary_performance_analysis.py --json
+    exit $?
+fi
+
 echo "========================================"
 echo "MHX Ternary Extension Test Runner"
 echo "========================================"
@@ -135,28 +141,7 @@ EOF
 echo "✅ Test report generated: build/manual_test/test_report.md"
 
 # Output results
-if [ "$JSON_OUTPUT" = true ]; then
-  # Generate JSON output for CI/CD
-  cat << EOF
-{
-  "neural_inference_speedup": 1.37,
-  "matrix_operation_speedup": 1.59,
-  "memory_usage_reduction": 93.8,
-  "power_reduction_estimate": 70.0,
-  "efficiency_score": 129.6,
-  "test_status": "PASSED",
-  "test_date": "$(date -Iseconds)",
-  "rtl_stats": {
-    "ternary_alu_lines": $(wc -l < rtl/ibex_ternary_alu.sv),
-    "neural_unit_lines": $(wc -l < rtl/ibex_neural_unit.sv),
-    "regfile_lines": $(wc -l < rtl/ibex_ternary_regfile.sv),
-    "total_ternary_lines": $(($(wc -l < rtl/ibex_ternary_alu.sv) + $(wc -l < rtl/ibex_neural_unit.sv) + $(wc -l < rtl/ibex_ternary_regfile.sv)))
-  }
-}
-EOF
-else
-  echo "========================================"
-  echo "Basic validation completed successfully!"
-  echo "Check build/manual_test/ for results"
-  echo "========================================"
-fi
+echo "========================================"
+echo "Basic validation completed successfully!"
+echo "Check build/manual_test/ for results"
+echo "========================================"
