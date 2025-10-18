@@ -14,59 +14,70 @@ import sys
 import math
 import os
 import platform
+import statistics
 import contextlib
 
 def benchmark_neural_inference():
     """Benchmark neural network inference performance"""
     print('\n--- Neural Network Inference Benchmark ---')
     
-    # Simulate binary neural network
-    print('Testing binary neural network inference...')
-    start_time = time.time()
+    # Run multiple trials and take median to reduce timing noise
+    NUM_TRIALS = 5
+    binary_times = []
+    ternary_times = []
     
-    # Simulate multiple neural network layers
-    # Heavier binary workload to reflect more complex activations in binary nets
-    # (e.g., non-linear activations and normalization), which ternary nets avoid.
-    for layer in range(10):
-        for neuron in range(64):
-            accumulator = 0
-            for weight_idx in range(16):
-                weight = random.randint(-128, 127)
-                input_val = random.randint(-128, 127)
-                accumulator += weight * input_val
-            # Simulate a more expensive activation and normalization step
-            act = math.tanh(accumulator / 512.0)
-            # Map back to quantized range (costly math function on purpose)
-            result = int(max(-128, min(127, act * 127.0)))
+    for trial in range(NUM_TRIALS):
+        # Simulate binary neural network
+        start_time = time.time()
+        
+        # Simulate multiple neural network layers
+        # Heavier binary workload to reflect more complex activations in binary nets
+        # (e.g., non-linear activations and normalization), which ternary nets avoid.
+        for layer in range(10):
+            for neuron in range(64):
+                accumulator = 0
+                for weight_idx in range(16):
+                    weight = random.randint(-128, 127)
+                    input_val = random.randint(-128, 127)
+                    accumulator += weight * input_val
+                # Simulate a more expensive activation and normalization step
+                act = math.tanh(accumulator / 512.0)
+                # Map back to quantized range (costly math function on purpose)
+                result = int(max(-128, min(127, act * 127.0)))
+        
+        binary_times.append(time.time() - start_time)
+        
+        # Simulate ternary neural network
+        start_time = time.time()
+        
+        for layer in range(10):
+            for neuron in range(64):
+                accumulator = 0
+                for weight_idx in range(16):
+                    weight = random.choice([-1, 0, 1])
+                    input_val = random.choice([-1, 0, 1])
+                    accumulator += weight * input_val
+                # Lightweight ternary activation (branch-only)
+                if accumulator > 0:
+                    result = 1
+                elif accumulator < 0:
+                    result = -1
+                else:
+                    result = 0
+        
+        ternary_times.append(time.time() - start_time)
     
-    binary_time = time.time() - start_time
-    
-    # Simulate ternary neural network
-    print('Testing ternary neural network inference...')
-    start_time = time.time()
-    
-    for layer in range(10):
-        for neuron in range(64):
-            accumulator = 0
-            for weight_idx in range(16):
-                weight = random.choice([-1, 0, 1])
-                input_val = random.choice([-1, 0, 1])
-                accumulator += weight * input_val
-            # Lightweight ternary activation (branch-only)
-            if accumulator > 0:
-                result = 1
-            elif accumulator < 0:
-                result = -1
-            else:
-                result = 0
-    
-    ternary_time = time.time() - start_time
+    # Use median to reduce noise
+    binary_time = statistics.median(binary_times)
+    ternary_time = statistics.median(ternary_times)
     
     speedup = binary_time / ternary_time if ternary_time > 0 else 1.0
     efficiency = (1 - ternary_time / binary_time) * 100 if binary_time > 0 else 0
     
-    print(f'Binary inference time:   {binary_time:.4f}s')
-    print(f'Ternary inference time:  {ternary_time:.4f}s')
+    print(f'Testing binary neural network inference... ({NUM_TRIALS} trials)')
+    print(f'Binary inference time:   {binary_time:.4f}s (median of {NUM_TRIALS})')
+    print(f'Testing ternary neural network inference... ({NUM_TRIALS} trials)')
+    print(f'Ternary inference time:  {ternary_time:.4f}s (median of {NUM_TRIALS})')
     print(f'Speedup:                 {speedup:.2f}x')
     print(f'Efficiency improvement:  {efficiency:.1f}%')
     
@@ -77,45 +88,53 @@ def benchmark_matrix_operations():
     print('\n--- Matrix Operations Benchmark ---')
     
     matrix_size = 32
+    NUM_TRIALS = 5
+    binary_times = []
+    ternary_times = []
     
-    # Binary matrix multiplication
-    print(f'Testing {matrix_size}x{matrix_size} binary matrix multiplication...')
-    start_time = time.time()
+    for trial in range(NUM_TRIALS):
+        # Binary matrix multiplication
+        start_time = time.time()
+        
+        for iteration in range(10):
+            # Simulate matrix multiplication
+            for i in range(matrix_size):
+                for j in range(matrix_size):
+                    result = 0
+                    for k in range(matrix_size):
+                        a_val = random.randint(-128, 127)
+                        b_val = random.randint(-128, 127)
+                        result += a_val * b_val
+                        # Simulate additional data movement/normalization overhead present in binary paths
+                        _ = math.fabs(result) * 0.0  # keep side-effect-free
+        
+        binary_times.append(time.time() - start_time)
+        
+        # Ternary matrix multiplication
+        start_time = time.time()
+        
+        for iteration in range(10):
+            for i in range(matrix_size):
+                for j in range(matrix_size):
+                    result = 0
+                    for k in range(matrix_size):
+                        a_val = random.choice([-1, 0, 1])
+                        b_val = random.choice([-1, 0, 1])
+                        result += a_val * b_val
+        
+        ternary_times.append(time.time() - start_time)
     
-    for iteration in range(10):
-        # Simulate matrix multiplication
-        for i in range(matrix_size):
-            for j in range(matrix_size):
-                result = 0
-                for k in range(matrix_size):
-                    a_val = random.randint(-128, 127)
-                    b_val = random.randint(-128, 127)
-                    result += a_val * b_val
-                    # Simulate additional data movement/normalization overhead present in binary paths
-                    _ = math.fabs(result) * 0.0  # keep side-effect-free
-    
-    binary_time = time.time() - start_time
-    
-    # Ternary matrix multiplication
-    print(f'Testing {matrix_size}x{matrix_size} ternary matrix multiplication...')
-    start_time = time.time()
-    
-    for iteration in range(10):
-        for i in range(matrix_size):
-            for j in range(matrix_size):
-                result = 0
-                for k in range(matrix_size):
-                    a_val = random.choice([-1, 0, 1])
-                    b_val = random.choice([-1, 0, 1])
-                    result += a_val * b_val
-    
-    ternary_time = time.time() - start_time
+    # Use median to reduce noise
+    binary_time = statistics.median(binary_times)
+    ternary_time = statistics.median(ternary_times)
     
     speedup = binary_time / ternary_time if ternary_time > 0 else 1.0
     throughput_improvement = (speedup - 1) * 100
     
-    print(f'Binary matrix time:      {binary_time:.4f}s')
-    print(f'Ternary matrix time:     {ternary_time:.4f}s')
+    print(f'Testing {matrix_size}x{matrix_size} binary matrix multiplication... ({NUM_TRIALS} trials)')
+    print(f'Binary matrix time:      {binary_time:.4f}s (median of {NUM_TRIALS})')
+    print(f'Testing {matrix_size}x{matrix_size} ternary matrix multiplication... ({NUM_TRIALS} trials)')
+    print(f'Ternary matrix time:     {ternary_time:.4f}s (median of {NUM_TRIALS})')
     print(f'Speedup:                 {speedup:.2f}x')
     print(f'Throughput improvement:  {throughput_improvement:.1f}%')
     
