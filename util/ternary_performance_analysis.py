@@ -13,6 +13,7 @@ import random
 import sys
 import math
 import os
+import platform
 import contextlib
 
 def benchmark_neural_inference():
@@ -309,6 +310,12 @@ def main():
                 "power_reduction_estimate": power_results.get("power_reduction"),
                 "efficiency_score": overall_score,
                 "test_status": "PASSED" if integration_success else "FAILED",
+                # Environment metadata for diagnostics
+                "env": {
+                    "python_version": sys.version.split(" ")[0],
+                    "platform": platform.platform(),
+                    "processor": platform.processor(),
+                }
             }
             print(json.dumps(json_results, indent=2))
         
