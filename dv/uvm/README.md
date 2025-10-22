@@ -161,17 +161,17 @@ To create a new test:
 ```systemverilog
 class my_custom_test extends mhx_ternary_base_test;
   `uvm_component_utils(my_custom_test)
-  
+
   function new(string name, uvm_component parent);
     super.new(name, parent);
   endfunction
-  
+
   virtual function void configure_test();
     cfg.num_transactions = 500;
     cfg.enable_coverage = 1;
     // Add custom configuration
   endfunction
-  
+
   virtual task run_default_sequence();
     my_custom_sequence seq = my_custom_sequence::type_id::create("seq");
     seq.start(env.agent.sequencer);
@@ -184,16 +184,16 @@ endclass
 ```systemverilog
 class my_custom_sequence extends mhx_ternary_base_sequence;
   `uvm_object_utils(my_custom_sequence)
-  
+
   virtual task body();
     mhx_ternary_transaction tr;
-    
+
     repeat(50) begin
       tr = create_transaction();
       // Custom constraints/modifications
       tr.is_ternary = 1'b1;
       tr.ternary_operation = TERNARY_ADD;
-      
+
       start_item(tr);
       finish_item(tr);
     end
@@ -242,7 +242,7 @@ ibex_core_with_ternary dut (
   .clk_i(clk),
   .rst_ni(rst_n),
   // ... standard Ibex ports ...
-  
+
   // Ternary extension ports
   .ternary_en_id(vif.ternary_en_id),
   .neural_en_id(vif.neural_en_id),
@@ -291,7 +291,7 @@ The testbench is designed for efficiency:
 
 Expected performance:
 - Basic test: ~1-2 minutes
-- Coverage test: ~5-10 minutes  
+- Coverage test: ~5-10 minutes
 - Regression test: ~15-30 minutes
 
 ## Contributing

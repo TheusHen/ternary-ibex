@@ -20,16 +20,16 @@ import contextlib
 def benchmark_neural_inference():
     """Benchmark neural network inference performance"""
     print('\n--- Neural Network Inference Benchmark ---')
-    
+
     # Run multiple trials and take median to reduce timing noise
     NUM_TRIALS = 5
     binary_times = []
     ternary_times = []
-    
+
     for trial in range(NUM_TRIALS):
         # Simulate binary neural network
         start_time = time.time()
-        
+
         # Simulate multiple neural network layers
         # Heavier binary workload to reflect more complex activations in binary nets
         # (e.g., non-linear activations and normalization), which ternary nets avoid.
@@ -44,12 +44,12 @@ def benchmark_neural_inference():
                 act = math.tanh(accumulator / 512.0)
                 # Map back to quantized range (costly math function on purpose)
                 result = int(max(-128, min(127, act * 127.0)))
-        
+
         binary_times.append(time.time() - start_time)
-        
+
         # Simulate ternary neural network
         start_time = time.time()
-        
+
         for layer in range(10):
             for neuron in range(64):
                 accumulator = 0
@@ -64,38 +64,38 @@ def benchmark_neural_inference():
                     result = -1
                 else:
                     result = 0
-        
+
         ternary_times.append(time.time() - start_time)
-    
+
     # Use median to reduce noise
     binary_time = statistics.median(binary_times)
     ternary_time = statistics.median(ternary_times)
-    
+
     speedup = binary_time / ternary_time if ternary_time > 0 else 1.0
     efficiency = (1 - ternary_time / binary_time) * 100 if binary_time > 0 else 0
-    
+
     print(f'Testing binary neural network inference... ({NUM_TRIALS} trials)')
     print(f'Binary inference time:   {binary_time:.4f}s (median of {NUM_TRIALS})')
     print(f'Testing ternary neural network inference... ({NUM_TRIALS} trials)')
     print(f'Ternary inference time:  {ternary_time:.4f}s (median of {NUM_TRIALS})')
     print(f'Speedup:                 {speedup:.2f}x')
     print(f'Efficiency improvement:  {efficiency:.1f}%')
-    
+
     return {'speedup': speedup, 'efficiency': efficiency}
 
 def benchmark_matrix_operations():
     """Benchmark matrix multiplication performance"""
     print('\n--- Matrix Operations Benchmark ---')
-    
+
     matrix_size = 32
     NUM_TRIALS = 5
     binary_times = []
     ternary_times = []
-    
+
     for trial in range(NUM_TRIALS):
         # Binary matrix multiplication
         start_time = time.time()
-        
+
         for iteration in range(10):
             # Simulate matrix multiplication
             for i in range(matrix_size):
@@ -107,12 +107,12 @@ def benchmark_matrix_operations():
                         result += a_val * b_val
                         # Simulate additional data movement/normalization overhead present in binary paths
                         _ = math.fabs(result) * 0.0  # keep side-effect-free
-        
+
         binary_times.append(time.time() - start_time)
-        
+
         # Ternary matrix multiplication
         start_time = time.time()
-        
+
         for iteration in range(10):
             for i in range(matrix_size):
                 for j in range(matrix_size):
@@ -121,55 +121,55 @@ def benchmark_matrix_operations():
                         a_val = random.choice([-1, 0, 1])
                         b_val = random.choice([-1, 0, 1])
                         result += a_val * b_val
-        
+
         ternary_times.append(time.time() - start_time)
-    
+
     # Use median to reduce noise
     binary_time = statistics.median(binary_times)
     ternary_time = statistics.median(ternary_times)
-    
+
     speedup = binary_time / ternary_time if ternary_time > 0 else 1.0
     throughput_improvement = (speedup - 1) * 100
-    
+
     print(f'Testing {matrix_size}x{matrix_size} binary matrix multiplication... ({NUM_TRIALS} trials)')
     print(f'Binary matrix time:      {binary_time:.4f}s (median of {NUM_TRIALS})')
     print(f'Testing {matrix_size}x{matrix_size} ternary matrix multiplication... ({NUM_TRIALS} trials)')
     print(f'Ternary matrix time:     {ternary_time:.4f}s (median of {NUM_TRIALS})')
     print(f'Speedup:                 {speedup:.2f}x')
     print(f'Throughput improvement:  {throughput_improvement:.1f}%')
-    
+
     return {'speedup': speedup, 'throughput_improvement': throughput_improvement}
 
 def analyze_memory_efficiency():
     """Analyze memory efficiency of ternary vs binary"""
     print('\n--- Memory Efficiency Analysis ---')
-    
+
     # Neural network weights comparison
     num_weights = 10000
-    
+
     # Binary weights: 32 bits each
     binary_memory = num_weights * 32
-    
+
     # Ternary weights: 2 bits each (for -1, 0, 1)
     ternary_memory = num_weights * 2
-    
+
     memory_reduction = (1 - ternary_memory / binary_memory) * 100
     compression_ratio = binary_memory / ternary_memory
-    
+
     print(f'Neural weights ({num_weights:,}):')
     print(f'Binary memory usage:     {binary_memory:,} bits ({binary_memory/8:,.0f} bytes)')
     print(f'Ternary memory usage:    {ternary_memory:,} bits ({ternary_memory/8:,.0f} bytes)')
     print(f'Memory reduction:        {memory_reduction:.1f}%')
     print(f'Compression ratio:       {compression_ratio:.1f}:1')
-    
+
     # Information density analysis
     binary_states = 2**32
     ternary_states = 3**16  # 16 trits in 32-bit register
-    
+
     print(f'\nInformation density:')
     print(f'Binary states (2^32):    {binary_states:,}')
     print(f'Ternary states (3^16):   {ternary_states:,}')
-    
+
     return {
         'memory_reduction': memory_reduction,
         'compression_ratio': compression_ratio
@@ -178,19 +178,19 @@ def analyze_memory_efficiency():
 def analyze_power_efficiency():
     """Analyze estimated power efficiency"""
     print('\n--- Power Efficiency Analysis ---')
-    
+
     # Simplified power model
     # Ternary operations require fewer transistor switches
     binary_power_factor = 1.0
     ternary_power_factor = 0.3  # Estimated 70% power reduction
-    
+
     power_reduction = (1 - ternary_power_factor / binary_power_factor) * 100
-    
+
     print(f'Estimated power consumption:')
     print(f'Binary operations:       {binary_power_factor:.1f}x baseline')
     print(f'Ternary operations:      {ternary_power_factor:.1f}x baseline')
     print(f'Power reduction:         {power_reduction:.1f}%')
-    
+
     return {'power_reduction': power_reduction}
 
 def test_integration():
@@ -272,7 +272,7 @@ def generate_summary_report(neural_results, matrix_results, memory_results, powe
 
     print('\n' + '='*60)
     print('Performance analysis completed successfully!')
-    
+
     return overall_score, status
 
 def main():
@@ -281,14 +281,14 @@ def main():
     import json
     # Stabilize benchmark randomness for consistent CI comparisons
     random.seed(1337)
-    
+
     parser = argparse.ArgumentParser(description="MHX Ternary Performance Analysis")
     parser.add_argument("--json", action="store_true", help="Output results in JSON format")
     args = parser.parse_args()
-    
+
     if not args.json:
         print('=== MHX Ternary Performance Analysis ===')
-    
+
     try:
         # Run all benchmarks; if JSON mode, suppress stdout noise during computations
         if args.json:
@@ -337,13 +337,13 @@ def main():
                 }
             }
             print(json.dumps(json_results, indent=2))
-        
+
         # Return appropriate exit code
         if integration_success and overall_score >= 60:
             return 0  # Success
         else:
             return 1  # Failure
-            
+
     except Exception as e:
         if args.json:
             error_result = {"error": str(e), "status": "failed"}

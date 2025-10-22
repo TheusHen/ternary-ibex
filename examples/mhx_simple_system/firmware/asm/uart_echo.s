@@ -11,7 +11,7 @@
  *
  * Features:
  * - Character echo with case conversion
- * - Command processing  
+ * - Command processing
  * - Status reporting
  * - Simple line editing
  * - Demonstration of UART interrupts
@@ -23,7 +23,7 @@
 
 # Memory map constants
 .equ ROM_BASE,   0x00000000
-.equ RAM_BASE,   0x20000000  
+.equ RAM_BASE,   0x20000000
 .equ UART_BASE,  0x40000000
 .equ GPIO_BASE,  0x40010000
 .equ TIMER_BASE, 0x40020000
@@ -41,7 +41,7 @@
 .equ UART_TX_EMPTY,   0x04
 .equ UART_RX_FULL,    0x08
 
-# GPIO register offsets  
+# GPIO register offsets
 .equ GPIO_OUT,        0x00
 .equ GPIO_OE,         0x04
 .equ GPIO_IN,         0x08
@@ -66,13 +66,13 @@ _start:
 main:
     # Initialize system
     call init_system
-    
+
     # Print welcome message
     call print_welcome
-    
+
     # Main UART echo loop
     call uart_echo_loop
-    
+
     # Should never reach here
     j hang
 
@@ -82,19 +82,19 @@ main:
 init_system:
     addi sp, sp, -4
     sw ra, 0(sp)
-    
+
     # Set up stack pointer if not already done
     li sp, (RAM_BASE + 0x10000) # 64KB RAM
-    
+
     # Initialize UART
     call init_uart
-    
+
     # Initialize GPIO for status LEDs
     call init_gpio
-    
+
     # Initialize timer for timeouts
     call init_timer
-    
+
     lw ra, 0(sp)
     addi sp, sp, 4
     ret
@@ -104,19 +104,19 @@ init_system:
  */
 init_uart:
     li t0, UART_BASE
-    
+
     # Set baud rate divisor for 115200 baud at 100MHz
     # Divisor = 100MHz / (16 * 115200) = ~54
     li t1, 54
     sw t1, UART_BAUD_DIV(t0)
-    
+
     # Enable UART TX and RX
     li t1, 0x03  # Enable TX and RX
     sw t1, UART_CONTROL(t0)
-    
+
     # Clear status
     sw zero, UART_STATUS(t0)
-    
+
     ret
 
 /**
@@ -124,15 +124,15 @@ init_uart:
  */
 init_gpio:
     li t0, GPIO_BASE
-    
+
     # Set all pins as outputs
     li t1, 0xFF
     sw t1, GPIO_OE(t0)
-    
+
     # Initial pattern - show system ready
     li t1, 0x01
     sw t1, GPIO_OUT(t0)
-    
+
     ret
 
 /**
@@ -140,15 +140,15 @@ init_gpio:
  */
 init_timer:
     li t0, TIMER_BASE
-    
+
     # Set compare value for 1ms ticks
     li t1, 100000  # 100MHz / 1000
     sw t1, TIMER_COMPARE(t0)
-    
+
     # Enable timer
     li t1, 1
     sw t1, TIMER_CTRL(t0)
-    
+
     ret
 
 /**
@@ -157,13 +157,13 @@ init_timer:
 print_welcome:
     addi sp, sp, -4
     sw ra, 0(sp)
-    
+
     la a0, welcome_msg
     call uart_print_string
-    
+
     la a0, help_msg
     call uart_print_string
-    
+
     lw ra, 0(sp)
     addi sp, sp, 4
     ret
@@ -176,53 +176,53 @@ uart_echo_loop:
     la t0, cmd_buffer
     li t1, 0
     sw t1, cmd_length
-    
+
     # Show prompt
     la a0, prompt_msg
     call uart_print_string
-    
+
 echo_char_loop:
     # Wait for character
     call uart_getchar
     mv t2, a0  # Save received character
-    
+
     # Update activity LED
     call update_activity_led
-    
+
     # Check for special characters
     li t0, CHAR_CR
     beq t2, t0, handle_enter
-    
+
     li t0, CHAR_LF
     beq t2, t0, handle_enter
-    
+
     li t0, CHAR_BS
     beq t2, t0, handle_backspace
-    
+
     li t0, CHAR_DEL
     beq t2, t0, handle_backspace
-    
+
     li t0, CHAR_ESC
     beq t2, t0, handle_escape
-    
+
     # Regular character - add to buffer and echo
     call add_char_to_buffer
     call echo_character
-    
+
     j echo_char_loop
 
 handle_enter:
     # Process command
     call uart_print_newline
     call process_command
-    
+
     # Reset buffer
     sw zero, cmd_length
-    
+
     # Show new prompt
     la a0, prompt_msg
     call uart_print_string
-    
+
     j echo_char_loop
 
 handle_backspace:
@@ -242,16 +242,16 @@ add_char_to_buffer:
     lw t0, cmd_length
     li t1, CMD_BUFFER_SIZE - 1
     bge t0, t1, buffer_full
-    
+
     # Add character to buffer
     la t1, cmd_buffer
     add t1, t1, t0
     sb t2, 0(t1)
-    
+
     # Increment length
     addi t0, t0, 1
     sw t0, cmd_length
-    
+
     ret
 
 buffer_full:
@@ -266,11 +266,11 @@ buffer_full:
 handle_backspace_char:
     lw t0, cmd_length
     beqz t0, backspace_done  # Nothing to delete
-    
+
     # Remove character from buffer
     addi t0, t0, -1
     sw t0, cmd_length
-    
+
     # Echo backspace sequence
     li a0, CHAR_BS
     call uart_putchar
@@ -292,17 +292,17 @@ echo_character:
     blt t2, t0, not_lowercase
     li t0, 'z'
     bgt t2, t0, not_lowercase
-    
+
     # Convert to uppercase
     addi t2, t2, -32
 
 not_lowercase:
-    # Check if uppercase letter  
+    # Check if uppercase letter
     li t0, 'A'
     blt t2, t0, echo_as_is
     li t0, 'Z'
     bgt t2, t0, echo_as_is
-    
+
     # Convert to lowercase
     addi t2, t2, 32
 
@@ -317,37 +317,37 @@ echo_as_is:
 process_command:
     addi sp, sp, -4
     sw ra, 0(sp)
-    
+
     # Check command length
     lw t0, cmd_length
     beqz t0, cmd_empty
-    
+
     # Null-terminate command
     la t1, cmd_buffer
     add t1, t1, t0
     sb zero, 0(t1)
-    
+
     # Check for built-in commands
     la a0, cmd_buffer
     la a1, cmd_help
     call string_compare
     beqz a0, cmd_show_help
-    
+
     la a0, cmd_buffer
     la a1, cmd_status
     call string_compare
     beqz a0, cmd_show_status
-    
+
     la a0, cmd_buffer
     la a1, cmd_test
     call string_compare
     beqz a0, cmd_run_test
-    
+
     la a0, cmd_buffer
     la a1, cmd_reset
     call string_compare
     beqz a0, cmd_do_reset
-    
+
     # Unknown command
     la a0, unknown_cmd_msg
     call uart_print_string
@@ -386,10 +386,10 @@ cmd_done:
 show_system_status:
     addi sp, sp, -4
     sw ra, 0(sp)
-    
+
     la a0, status_msg
     call uart_print_string
-    
+
     # Show UART status
     li t0, UART_BASE
     lw t1, UART_STATUS(t0)
@@ -398,7 +398,7 @@ show_system_status:
     mv a0, t1
     call uart_print_hex
     call uart_print_newline
-    
+
     # Show GPIO status
     li t0, GPIO_BASE
     lw t1, GPIO_OUT(t0)
@@ -407,7 +407,7 @@ show_system_status:
     mv a0, t1
     call uart_print_hex
     call uart_print_newline
-    
+
     # Show timer status
     li t0, TIMER_BASE
     lw t1, TIMER_COUNT(t0)
@@ -416,7 +416,7 @@ show_system_status:
     mv a0, t1
     call uart_print_hex
     call uart_print_newline
-    
+
     lw ra, 0(sp)
     addi sp, sp, 4
     ret
@@ -427,31 +427,31 @@ show_system_status:
 run_uart_test:
     addi sp, sp, -4
     sw ra, 0(sp)
-    
+
     la a0, test_start_msg
     call uart_print_string
-    
+
     # Send test pattern
     la t0, test_pattern
     li t1, 26  # Alphabet length
-    
+
 test_loop:
     lb a0, 0(t0)
     call uart_putchar
-    
+
     # Small delay
     li a0, 10
     call delay_ms
-    
+
     addi t0, t0, 1
     addi t1, t1, -1
     bnez t1, test_loop
-    
+
     call uart_print_newline
-    
+
     la a0, test_done_msg
     call uart_print_string
-    
+
     lw ra, 0(sp)
     addi sp, sp, 4
     ret
@@ -462,11 +462,11 @@ test_loop:
 update_activity_led:
     li t0, GPIO_BASE
     lw t1, GPIO_OUT(t0)
-    
+
     # Toggle bit 0 to show activity
     xori t1, t1, 0x01
     sw t1, GPIO_OUT(t0)
-    
+
     ret
 
 /**
@@ -475,16 +475,16 @@ update_activity_led:
  */
 uart_getchar:
     li t0, UART_BASE
-    
+
 uart_wait_rx:
     lw t1, UART_STATUS(t0)
     andi t1, t1, UART_RX_READY
     beqz t1, uart_wait_rx
-    
+
     # Read character
     lw a0, UART_RX_DATA(t0)
     andi a0, a0, 0xFF
-    
+
     ret
 
 /**
@@ -493,15 +493,15 @@ uart_wait_rx:
  */
 uart_putchar:
     li t0, UART_BASE
-    
+
 uart_wait_tx:
     lw t1, UART_STATUS(t0)
     andi t1, t1, UART_TX_READY
     beqz t1, uart_wait_tx
-    
+
     # Send character
     sw a0, UART_TX_DATA(t0)
-    
+
     ret
 
 /**
@@ -512,17 +512,17 @@ uart_print_string:
     addi sp, sp, -8
     sw ra, 0(sp)
     sw t0, 4(sp)
-    
+
     mv t0, a0
-    
+
 print_loop:
     lb a0, 0(t0)
     beqz a0, print_done
-    
+
     call uart_putchar
     addi t0, t0, 1
     j print_loop
-    
+
 print_done:
     lw t0, 4(sp)
     lw ra, 0(sp)
@@ -535,12 +535,12 @@ print_done:
 uart_print_newline:
     addi sp, sp, -4
     sw ra, 0(sp)
-    
+
     li a0, CHAR_CR
     call uart_putchar
     li a0, CHAR_LF
     call uart_putchar
-    
+
     lw ra, 0(sp)
     addi sp, sp, 4
     ret
@@ -554,22 +554,22 @@ uart_print_hex:
     sw ra, 0(sp)
     sw t0, 4(sp)
     sw t1, 8(sp)
-    
+
     # Print "0x" prefix
     li a0, '0'
     call uart_putchar
     li a0, 'x'
     call uart_putchar
-    
+
     # Print 8 hex digits
     lw t0, 4(sp)  # Restore original value
     li t1, 8      # Number of digits
-    
+
 hex_loop:
     # Extract top nibble
     srli a0, t0, 28
     andi a0, a0, 0xF
-    
+
     # Convert to ASCII
     li t2, 10
     blt a0, t2, hex_digit
@@ -579,12 +579,12 @@ hex_digit:
     addi a0, a0, '0'
 hex_print:
     call uart_putchar
-    
+
     # Shift for next nibble
     slli t0, t0, 4
     addi t1, t1, -1
     bnez t1, hex_loop
-    
+
     lw t1, 8(sp)
     lw t0, 4(sp)
     lw ra, 0(sp)
@@ -599,11 +599,11 @@ hex_print:
 string_compare:
     lb t0, 0(a0)
     lb t1, 0(a1)
-    
+
     bne t0, t1, strings_different
-    
+
     beqz t0, strings_equal  # Both null terminators
-    
+
     addi a0, a0, 1
     addi a1, a1, 1
     j string_compare
@@ -625,17 +625,17 @@ delay_ms:
     sw t0, 0(sp)
     sw t1, 4(sp)
     sw t2, 8(sp)
-    
+
     li t0, TIMER_BASE
     lw t1, TIMER_COUNT(t0)
-    
+
     # Calculate target (assuming 1ms timer resolution)
     add t2, t1, a0
-    
+
 delay_loop:
     lw t1, TIMER_COUNT(t0)
     bltu t1, t2, delay_loop
-    
+
     lw t2, 8(sp)
     lw t1, 4(sp)
     lw t0, 0(sp)

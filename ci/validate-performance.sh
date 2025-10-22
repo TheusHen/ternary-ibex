@@ -125,7 +125,7 @@ validate_metric() {
   local baseline="$2"
   local current="$3"
   local threshold="$4"
-  
+
   python3 - "$name" "$baseline" "$current" "$threshold" <<'PY'
 import sys
 name, b, c, thr = sys.argv[1], float(sys.argv[2]), float(sys.argv[3]), float(sys.argv[4])

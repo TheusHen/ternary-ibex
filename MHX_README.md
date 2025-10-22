@@ -41,7 +41,7 @@ MHX Core (RV32IMC + Ternary Extension):
 Each trit (ternary digit) is encoded using 2 bits:
 - `00` = -1 (negative)
 - `01` = 0 (zero)
-- `10` = +1 (positive)  
+- `10` = +1 (positive)
 - `11` = invalid
 
 Each ternary register holds 16 trits = 32 bits total.
@@ -120,7 +120,7 @@ ACTIVATE T3, T2          # T3 = sign(T2) → {-1, 0, +1}
 binary_neuron:
     mul  x2, x3, x4      # weight[0] * input[0]
     add  x5, x5, x2      # accumulate
-    mul  x2, x6, x7      # weight[1] * input[1] 
+    mul  x2, x6, x7      # weight[1] * input[1]
     add  x5, x5, x2      # accumulate
     # ... repeat 14 more times ...
     # ... add activation function ...
@@ -158,7 +158,7 @@ make test-ternary
 cd dv
 ./run_ternary_tests.sh
 
-# Run neural processing tests  
+# Run neural processing tests
 ./run_neural_tests.sh
 ```
 

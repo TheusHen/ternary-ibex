@@ -1,8 +1,8 @@
 # MHX Ternary Extension - Formal Specification
 
-**Version:** 1.0  
-**Date:** September 29, 2025  
-**Authors:** MHX Neural Team  
+**Version:** 1.0
+**Date:** September 29, 2025
+**Authors:** MHX Neural Team
 
 ## 1. Overview
 
@@ -15,7 +15,7 @@ This document provides the formal specification for the MHX Ternary Extension to
 The MHX ternary system uses balanced ternary notation with three possible values per digit (trit):
 
 - **TRIT_NEG** (`2'b00`): Represents -1
-- **TRIT_ZERO** (`2'b01`): Represents 0  
+- **TRIT_ZERO** (`2'b01`): Represents 0
 - **TRIT_POS** (`2'b10`): Represents +1
 - **INVALID** (`2'b11`): Reserved/invalid encoding
 
@@ -73,14 +73,14 @@ property ADD_COMMUTATIVE;
   @(posedge clk) trit_add(a, b) == trit_add(b, a);
 endproperty
 
-// Identity: a + 0 = a  
+// Identity: a + 0 = a
 property ADD_IDENTITY;
   @(posedge clk) trit_add(a, TRIT_ZERO) == a;
 endproperty
 
 // Overflow occurs only for (-1,-1) and (+1,+1)
 property ADD_OVERFLOW;
-  @(posedge clk) overflow == ((a == TRIT_NEG && b == TRIT_NEG) || 
+  @(posedge clk) overflow == ((a == TRIT_NEG && b == TRIT_NEG) ||
                               (a == TRIT_POS && b == TRIT_POS));
 endproperty
 ```
@@ -172,7 +172,7 @@ endproperty
 #### 3.4.1 Ternary AND (TERNARY_AND)
 **Definition:** `result[i] = min(operand_a[i], operand_b[i])`
 
-#### 3.4.2 Ternary OR (TERNARY_OR)  
+#### 3.4.2 Ternary OR (TERNARY_OR)
 **Definition:** `result[i] = max(operand_a[i], operand_b[i])`
 
 #### 3.4.3 Ternary XOR (TERNARY_XOR)
@@ -209,7 +209,7 @@ endproperty
 **Function:** Ternary activation function
 ```
 if (accumulator > 1)       result = +1
-else if (accumulator < -1) result = -1  
+else if (accumulator < -1) result = -1
 else                       result = 0
 ```
 
@@ -258,7 +258,7 @@ result = weights (pass-through for now)
 
 **Encodings:**
 - `funct3 = 3'b000`: TERNARY_ADD
-- `funct3 = 3'b001`: TERNARY_SUB  
+- `funct3 = 3'b001`: TERNARY_SUB
 - `funct3 = 3'b010`: TERNARY_MUL
 - `funct3 = 3'b011`: TERNARY_AND
 - `funct3 = 3'b100`: TERNARY_OR
@@ -277,7 +277,7 @@ result = weights (pass-through for now)
 **Encodings:**
 - `funct3 = 3'b000`: NEURAL_MULTIPLY
 - `funct3 = 3'b001`: NEURAL_ACCUMULATE
-- `funct3 = 3'b010`: NEURAL_ACTIVATE  
+- `funct3 = 3'b010`: NEURAL_ACTIVATE
 - `funct3 = 3'b011`: NEURAL_LEARN
 
 ## 7. Performance Characteristics
@@ -315,7 +315,7 @@ result = weights (pass-through for now)
 **Concern SEC-001:** Ternary operations may have timing variations
 **Mitigation:** Use constant-time implementations where security-critical
 
-**Concern SEC-002:** Power consumption may leak ternary values  
+**Concern SEC-002:** Power consumption may leak ternary values
 **Mitigation:** Implement power analysis countermeasures if needed
 
 ### 9.2 Fault Injection
@@ -333,6 +333,6 @@ This specification complies with:
 
 ---
 
-**Document Status:** APPROVED  
-**Review Date:** September 29, 2025  
+**Document Status:** APPROVED
+**Review Date:** September 29, 2025
 **Next Review:** December 29, 2025

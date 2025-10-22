@@ -35,7 +35,7 @@ jobs:
   ternary_lint_and_format:
     name: Ternary Code Quality
     runs-on: ubuntu-22.04
-    
+
     steps:
       - uses: actions/checkout@v4
         with:
@@ -103,7 +103,7 @@ jobs:
     name: Formal Verification
     runs-on: ubuntu-22.04
     needs: ternary_lint_and_format
-    
+
     steps:
       - uses: actions/checkout@v4
         with:
@@ -169,12 +169,12 @@ jobs:
     name: Unit Tests
     runs-on: ubuntu-22.04
     needs: ternary_lint_and_format
-    
+
     strategy:
       matrix:
         test_suite: [alu, neural, regfile, integration]
       fail-fast: false
-    
+
     steps:
       - uses: actions/checkout@v4
         with:
@@ -198,7 +198,7 @@ jobs:
         run: |
           echo "=== Running Ternary Unit Tests: ${{ matrix.test_suite }} ==="
           cd build/lowrisc_ibex_mhx_ternary_test_0.1/sim-verilator
-          
+
           # Set test-specific parameters
           case "${{ matrix.test_suite }}" in
             alu)
@@ -214,13 +214,13 @@ jobs:
               TEST_PARAMS="+TEST_SUITE=INTEGRATION +MAX_CYCLES=50000"
               ;;
           esac
-          
+
           # Run test with timeout
           timeout 600s ./Vmhx_ternary_test $TEST_PARAMS || {
             echo "::error::${{ matrix.test_suite }} tests failed or timed out"
             exit 1
           }
-          
+
           echo "✅ ${{ matrix.test_suite }} tests passed"
 
       - name: Generate Test Coverage Report
@@ -250,7 +250,7 @@ jobs:
     name: Performance Validation
     runs-on: ubuntu-22.04
     needs: ternary_unit_tests
-    
+
     steps:
       - uses: actions/checkout@v4
         with:
@@ -290,7 +290,7 @@ jobs:
     runs-on: ubuntu-22.04
     needs: [ternary_formal_verification, ternary_performance_tests]
     if: github.event_name == 'pull_request'
-    
+
     steps:
       - uses: actions/checkout@v4
         with:
@@ -322,7 +322,7 @@ jobs:
     name: Security Scan
     runs-on: ubuntu-22.04
     needs: ternary_lint_and_format
-    
+
     steps:
       - uses: actions/checkout@v4
         with:
@@ -334,10 +334,10 @@ jobs:
           # Check for potential security issues in ternary code
           echo "Scanning for hardcoded secrets..."
           grep -r "password\|secret\|key" rtl/ibex_ternary_*.sv rtl/ibex_neural_*.sv || echo "No secrets found"
-          
+
           echo "Checking for potential timing side-channels..."
           grep -r "time\|delay\|wait" rtl/ibex_ternary_*.sv rtl/ibex_neural_*.sv || echo "No timing dependencies found"
-          
+
           echo "✅ Security scan completed"
 
   generate_report:
@@ -345,7 +345,7 @@ jobs:
     runs-on: ubuntu-22.04
     needs: [ternary_formal_verification, ternary_unit_tests, ternary_performance_tests, ternary_security_scan]
     if: always()
-    
+
     steps:
       - uses: actions/checkout@v4
 
@@ -360,7 +360,7 @@ jobs:
           python3 util/generate_ternary_report.py \
             --test-results ci-artifacts \
             --output ternary_ci_report.md
-          
+
           echo "✅ CI report generated successfully"
 
       - name: Upload CI Report

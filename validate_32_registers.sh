@@ -30,7 +30,7 @@ else
 fi
 
 if grep -q "logic \[4:0\].*ternary_raddr_a_id" rtl/ibex_core.sv; then
-    echo "✅ Core ternary address signals updated to 5 bits"  
+    echo "✅ Core ternary address signals updated to 5 bits"
 else
     echo "❌ Core signals not updated"
     exit 1
@@ -73,7 +73,7 @@ fi
 if grep -q "Register naming: T0, T1, T2, ..., T31 (32 ternary registers)" examples/mhx_demo.s; then
     echo "✅ Example code updated with T31 reference"
 else
-    echo "❌ Example code not updated" 
+    echo "❌ Example code not updated"
     exit 1
 fi
 

@@ -1,15 +1,15 @@
 # MHX Ternary Extension - Security Analysis and Implications
 
-**Version:** 1.0  
-**Date:** September 29, 2025  
-**Classification:** Internal - Security Review  
-**Authors:** MHX Neural Security Team  
+**Version:** 1.0
+**Date:** September 29, 2025
+**Classification:** Internal - Security Review
+**Authors:** MHX Neural Security Team
 
 ## Executive Summary
 
 This document analyzes the security implications of the MHX Ternary Extension to the Ibex RISC-V core, identifying potential attack vectors, vulnerabilities, and recommended mitigations. The analysis covers side-channel attacks, fault injection, and neural network specific threats.
 
-**Security Assessment:** MEDIUM RISK  
+**Security Assessment:** MEDIUM RISK
 **Recommended Security Level:** Suitable for non-critical applications with additional mitigations for sensitive deployments.
 
 ## 1. Threat Model
@@ -22,7 +22,7 @@ This document analyzes the security implications of the MHX Ternary Extension to
 - **Fault injection** attacks targeting neural weights
 - **Timing analysis** of ternary arithmetic operations
 
-#### Software-based Attacks  
+#### Software-based Attacks
 - **Malicious neural models** designed to extract system information
 - **Overflow exploitation** in ternary arithmetic
 - **Resource exhaustion** via neural unit monopolization
@@ -51,18 +51,18 @@ This document analyzes the security implications of the MHX Ternary Extension to
 ```
 Power consumption patterns:
 - TRIT_NEG (00): ~P₀ + ΔP_neg
-- TRIT_ZERO (01): ~P₀  
+- TRIT_ZERO (01): ~P₀
 - TRIT_POS (10): ~P₀ + ΔP_pos
 
 Differential power: ΔP = |ΔP_pos - ΔP_neg|
 ```
 
-**Risk Level:** MEDIUM  
+**Risk Level:** MEDIUM
 **Exploitability:** Requires physical access and specialized equipment
 
 **Mitigations:**
 - Power line filtering and noise injection
-- Randomized operation scheduling  
+- Randomized operation scheduling
 - Constant-power circuit techniques
 - Power consumption normalization
 
@@ -74,7 +74,7 @@ Differential power: ΔP = |ΔP_pos - ΔP_neg|
 2. Monitors power consumption during NEURAL_MULTIPLY
 3. Correlates power patterns with known inputs to extract weights
 
-**Risk Level:** HIGH for sensitive ML models  
+**Risk Level:** HIGH for sensitive ML models
 **Exploitability:** Moderate - requires controlled inputs and power monitoring
 
 **Mitigations:**
@@ -97,7 +97,7 @@ case ({a, b})
 endcase
 ```
 
-**Risk Level:** LOW  
+**Risk Level:** LOW
 **Exploitability:** Requires high-precision timing measurement
 
 **Mitigations:**
@@ -108,7 +108,7 @@ endcase
 #### 2.2.2 Neural Unit Timing
 **Vulnerability:** Neural accumulator loop may have data-dependent timing.
 
-**Risk Level:** MEDIUM  
+**Risk Level:** MEDIUM
 **Exploitability:** Moderate with controlled inputs
 
 **Mitigations:**
@@ -121,7 +121,7 @@ endcase
 #### 2.3.1 EM Side-Channel Analysis
 **Vulnerability:** Ternary register switching may generate detectable EM signatures.
 
-**Risk Level:** LOW to MEDIUM  
+**Risk Level:** LOW to MEDIUM
 **Exploitability:** Requires close proximity EM monitoring
 
 **Mitigations:**
@@ -162,7 +162,7 @@ end
 #### 3.1.2 Clock Glitching
 **Attack:** Manipulate clock signals to cause setup/hold violations.
 
-**Risk Level:** MEDIUM  
+**Risk Level:** MEDIUM
 **Mitigations:**
 - Clock integrity monitoring
 - Clock domain isolation
@@ -187,7 +187,7 @@ always_ff @(posedge clk_i) begin
     weight_checksum <= compute_checksum(weight_data);
   end
   if (neural_compute) begin
-    assert(compute_checksum(current_weights) == weight_checksum) 
+    assert(compute_checksum(current_weights) == weight_checksum)
       else weight_corruption_detected = 1'b1;
   end
 end
@@ -202,7 +202,7 @@ end
 #### 3.2.2 Accumulator Manipulation
 **Attack:** Manipulate neural accumulator during computation.
 
-**Risk Level:** MEDIUM  
+**Risk Level:** MEDIUM
 **Mitigations:**
 - Accumulator bounds checking (already implemented)
 - Redundant accumulation
@@ -220,13 +220,13 @@ genvar reg_idx;
 generate
   for (reg_idx = 0; reg_idx < 16; reg_idx++) begin
     logic [7:0] reg_parity;
-    
+
     always_ff @(posedge clk_i) begin
       if (we_i && waddr_i == reg_idx) begin
         reg_parity[reg_idx] <= ^wdata_i; // XOR parity
       end
     end
-    
+
     // Continuous parity checking during read
     assign parity_error[reg_idx] = (^ternary_regs[reg_idx] != reg_parity[reg_idx]);
   end
@@ -252,7 +252,7 @@ endgenerate
 3. Reverse-engineer weight values
 4. Reconstruct model architecture
 
-**Risk Level:** HIGH for proprietary models  
+**Risk Level:** HIGH for proprietary models
 **Mitigations:**
 - Output noise injection
 - Input/output access controls
@@ -262,7 +262,7 @@ endgenerate
 #### 4.1.2 Architecture Discovery
 **Attack:** Discover neural network architecture through performance analysis.
 
-**Risk Level:** MEDIUM  
+**Risk Level:** MEDIUM
 **Mitigations:**
 - Performance signature obfuscation
 - Dummy computation insertion
@@ -273,7 +273,7 @@ endgenerate
 #### 4.2.1 Weight Modification
 **Attack:** Modify neural weights to create backdoors or reduce accuracy.
 
-**Risk Level:** HIGH  
+**Risk Level:** HIGH
 **Mitigations:**
 - Cryptographic weight authentication
 - Secure weight update protocols
@@ -282,7 +282,7 @@ endgenerate
 #### 4.2.2 Bias Manipulation
 **Attack:** Manipulate neural unit bias values to alter inference results.
 
-**Risk Level:** MEDIUM  
+**Risk Level:** MEDIUM
 **Mitigations:**
 - Bias value validation
 - Secure bias storage
@@ -293,7 +293,7 @@ endgenerate
 #### 4.3.1 Input Manipulation
 **Attack:** Craft adversarial inputs to cause misclassification.
 
-**Risk Level:** MEDIUM to HIGH (application dependent)  
+**Risk Level:** MEDIUM to HIGH (application dependent)
 **Mitigations:**
 - Input sanitization and validation
 - Adversarial training
@@ -364,7 +364,7 @@ typedef struct packed {
 - [ ] Timing analysis validation
 - [ ] Statistical correlation analysis
 
-#### 6.1.2 Fault Injection Testing  
+#### 6.1.2 Fault Injection Testing
 - [ ] Voltage glitch testing
 - [ ] Clock manipulation testing
 - [ ] Temperature stress testing
@@ -404,7 +404,7 @@ typedef struct packed {
 
 ### 7.2 Emergency Contacts
 - Security Team Lead: [REDACTED]
-- Neural Engineering: [REDACTED]  
+- Neural Engineering: [REDACTED]
 - Legal/Compliance: [REDACTED]
 - External Security Consultants: [REDACTED]
 
@@ -428,7 +428,7 @@ The MHX Ternary Extension introduces novel security considerations due to its un
 
 **Key Recommendations:**
 1. Implement comprehensive side-channel protections for high-security applications
-2. Add fault injection detection and mitigation mechanisms  
+2. Add fault injection detection and mitigation mechanisms
 3. Secure neural model storage and computation pathways
 4. Establish continuous security monitoring and incident response procedures
 
@@ -440,7 +440,7 @@ The MHX Ternary Extension introduces novel security considerations due to its un
 
 ---
 
-**Document Classification:** INTERNAL - Security Sensitive  
-**Distribution:** Security Team, Engineering Leads, Management  
-**Review Cycle:** Quarterly or after significant changes  
+**Document Classification:** INTERNAL - Security Sensitive
+**Distribution:** Security Team, Engineering Leads, Management
+**Review Cycle:** Quarterly or after significant changes
 **Next Review Date:** December 29, 2025

@@ -84,7 +84,7 @@ log_info "Validating Ternary ALU implementation..."
 
 alu_functions=(
   "trit_add"
-  "trit_sub" 
+  "trit_sub"
   "trit_mul"
   "trit_and"
   "trit_or"

@@ -13,7 +13,7 @@
  * - ROM: 0x0000_0000 - 0x0000_FFFF (64KB)
  * - RAM: 0x2000_0000 - 0x2000_FFFF (64KB)
  * - UART: 0x4000_0000
- * - GPIO: 0x4001_0000  
+ * - GPIO: 0x4001_0000
  * - Timer: 0x4002_0000
  * - SPI: 0x4003_0000
  */
@@ -25,7 +25,7 @@
 # Memory map constants
 .equ ROM_BASE,   0x00000000
 .equ ROM_SIZE,   0x00010000
-.equ RAM_BASE,   0x20000000  
+.equ RAM_BASE,   0x20000000
 .equ RAM_SIZE,   0x00010000
 .equ UART_BASE,  0x40000000
 .equ GPIO_BASE,  0x40010000
@@ -53,38 +53,38 @@ _start:
 _boot:
     # Disable interrupts during boot
     csrci mstatus, 0x8
-    
+
     # Set up stack pointer
     li sp, STACK_TOP
-    
+
     # Set up global pointer (if needed)
     # la gp, __global_pointer$
-    
+
     # Initialize exception vectors
     la t0, _trap_handler
     csrw mtvec, t0
-    
+
     # Clear BSS section (if we had one)
     # For now, we don't have a BSS section
-    
+
     # Initialize data section (if we had one)
     # For now, all data is in ROM or initialized in RAM
-    
+
     # Initialize peripherals
     call _init_uart
     call _init_gpio
     call _init_timer
-    
+
     # Print boot message
     call _print_boot_message
-    
+
     # Enable interrupts
     csrsi mstatus, 0x8
-    
+
     # Jump to main program
     # For now, just run a simple test
     call _main_program
-    
+
     # If main returns, loop forever
     j _hang
 
@@ -100,19 +100,19 @@ _init_uart:
     ret
 
 /**
- * Initialize GPIO peripheral  
+ * Initialize GPIO peripheral
  */
 _init_gpio:
     li t0, GPIO_BASE
-    
+
     # Set GPIO direction (all outputs for LEDs)
     li t1, 0xFF
     sw t1, GPIO_OE(t0)
-    
+
     # Clear GPIO outputs
     li t1, 0x00
     sw t1, GPIO_OUT(t0)
-    
+
     ret
 
 /**
@@ -120,19 +120,19 @@ _init_gpio:
  */
 _init_timer:
     li t0, TIMER_BASE
-    
+
     # Set timer compare value (1 second at 100MHz)
     li t1, 100000000
     sw t1, TIMER_COMPARE(t0)
-    
+
     # Reset timer count
     li t1, 0
     sw t1, TIMER_COUNT(t0)
-    
+
     # Enable timer
     li t1, 1
     sw t1, TIMER_CTRL(t0)
-    
+
     ret
 
 /**
@@ -142,14 +142,14 @@ _print_boot_message:
     # Save return address
     addi sp, sp, -4
     sw ra, 0(sp)
-    
+
     # Print "MHX Simple System Boot\n"
     la t0, boot_message
     call _print_string
-    
+
     # Print memory information
     call _print_memory_info
-    
+
     # Restore return address
     lw ra, 0(sp)
     addi sp, sp, 4
@@ -161,10 +161,10 @@ _print_boot_message:
 _print_memory_info:
     addi sp, sp, -4
     sw ra, 0(sp)
-    
+
     la t0, memory_info_msg
     call _print_string
-    
+
     lw ra, 0(sp)
     addi sp, sp, 4
     ret
@@ -175,21 +175,21 @@ _print_memory_info:
  */
 _print_string:
     li t1, UART_BASE
-    
+
 print_loop:
     lb t2, 0(t0)        # Load byte from string
     beqz t2, print_done # If null terminator, done
-    
+
     # Wait for UART ready (simplified)
     # In real implementation, check status register
-    
+
     # Send character
     sw t2, UART_TX_DATA(t1)
-    
+
     # Next character
     addi t0, t0, 1
     j print_loop
-    
+
 print_done:
     ret
 
@@ -200,14 +200,14 @@ _main_program:
     # Save return address
     addi sp, sp, -4
     sw ra, 0(sp)
-    
+
     # Run GPIO blink test
     call _gpio_blink_test
-    
+
     # Run ternary test if MHX extensions are available
     call _ternary_demo
-    
-    # Restore return address  
+
+    # Restore return address
     lw ra, 0(sp)
     addi sp, sp, 4
     ret
@@ -219,34 +219,34 @@ _gpio_blink_test:
     li t0, GPIO_BASE
     li t1, 1          # LED pattern
     li t2, 8          # Number of blinks
-    
+
 blink_loop:
     # Turn on LED
     sw t1, GPIO_OUT(t0)
-    
+
     # Simple delay
     li t3, 1000000
 delay1:
     addi t3, t3, -1
     bnez t3, delay1
-    
+
     # Turn off LED
     sw zero, GPIO_OUT(t0)
-    
+
     # Simple delay
     li t3, 1000000
 delay2:
     addi t3, t3, -1
     bnez t3, delay2
-    
+
     # Next LED
     slli t1, t1, 1
     andi t1, t1, 0xFF
-    
+
     # Decrement counter
     addi t2, t2, -1
     bnez t2, blink_loop
-    
+
     ret
 
 /**
@@ -256,26 +256,26 @@ delay2:
 _ternary_demo:
     # Note: These are pseudo-instructions for MHX ternary extensions
     # In real implementation, these would be custom instruction encodings
-    
+
     # For now, just demonstrate with regular RISC-V instructions
     # showing what ternary operations would look like
-    
+
     # Load ternary values (simulated)
     li t0, 0xAAAA5555  # Example ternary pattern
     li t1, 0x5555AAAA  # Another ternary pattern
-    
+
     # Simulate ternary addition (would be TADD instruction)
     add t2, t0, t1
-    
-    # Simulate ternary multiplication (would be TMUL instruction)  
+
+    # Simulate ternary multiplication (would be TMUL instruction)
     mul t3, t0, t1
-    
+
     # Simulate neural operation (would be NEURON instruction)
     # For now, just use regular multiply-accumulate
     li t4, 0           # Accumulator
     mul t5, t0, t1     # Weight * Input
     add t4, t4, t5     # Accumulate
-    
+
     ret
 
 /**
@@ -288,18 +288,18 @@ _trap_handler:
     sw t1, 4(sp)
     sw t2, 8(sp)
     sw ra, 12(sp)
-    
+
     # Check cause of trap
     csrr t0, mcause
-    
+
     # Handle timer interrupt
     li t1, 0x80000007  # Timer interrupt cause
     beq t0, t1, _handle_timer_irq
-    
+
     # Handle external interrupt
     li t1, 0x8000000B  # External interrupt cause
     beq t0, t1, _handle_external_irq
-    
+
     # Default: print error and hang
     la t0, trap_error_msg
     call _print_string
@@ -311,11 +311,11 @@ _handle_timer_irq:
     lw t1, GPIO_OUT(t0)
     xori t1, t1, 0x01
     sw t1, GPIO_OUT(t0)
-    
+
     # Clear timer interrupt
     li t0, TIMER_BASE
     sw zero, TIMER_COUNT(t0)
-    
+
     j _trap_exit
 
 _handle_external_irq:
@@ -330,7 +330,7 @@ _trap_exit:
     lw t1, 4(sp)
     lw t0, 0(sp)
     addi sp, sp, 32
-    
+
     # Return from trap
     mret
 
@@ -354,7 +354,7 @@ boot_message:
 memory_info_msg:
     .ascii "Memory Map:\n"
     .ascii "  ROM:   0x00000000 - 0x0000FFFF (64KB)\n"
-    .ascii "  RAM:   0x20000000 - 0x2000FFFF (64KB)\n"  
+    .ascii "  RAM:   0x20000000 - 0x2000FFFF (64KB)\n"
     .ascii "  UART:  0x40000000\n"
     .ascii "  GPIO:  0x40010000\n"
     .ascii "  Timer: 0x40020000\n"

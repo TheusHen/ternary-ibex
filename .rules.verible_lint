@@ -1,0 +1,5 @@
+# Verible Lint Configuration for Ternary Ibex
+# Custom configuration to extend line length limit
+
+# Set line length to 150 characters (default is 100)
+-line-length=length:150

@@ -31,7 +31,7 @@ This ensures the image is always up-to-date from the repository.
 
 ### Core Pipeline (Blue)
 - **IF Stage**: Instruction Fetch
-- **ID Stage**: Instruction Decode  
+- **ID Stage**: Instruction Decode
 - **EX Stage**: Execute
 - **Controller**: Pipeline control logic
 
@@ -119,6 +119,6 @@ The floorplan shows the physical organization and interconnections of the MHX Te
 
 ---
 
-**Last Updated**: Automatically via CI/CD  
-**Version**: 1.0.0  
+**Last Updated**: Automatically via CI/CD
+**Version**: 1.0.0
 **License**: Apache 2.0

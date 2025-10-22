@@ -122,7 +122,7 @@ cat > build/manual_test/test_report.md << EOF
 
 ### RTL Implementation
 - ✅ Ternary ALU: $(wc -l < rtl/ibex_ternary_alu.sv) lines implemented
-- ✅ Neural Unit: $(wc -l < rtl/ibex_neural_unit.sv) lines implemented  
+- ✅ Neural Unit: $(wc -l < rtl/ibex_neural_unit.sv) lines implemented
 - ✅ Register File: $(wc -l < rtl/ibex_ternary_regfile.sv) lines implemented
 - ✅ Configuration: MHX config integrated
 

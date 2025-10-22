@@ -196,33 +196,33 @@ jobs:
         run: |
           echo "::group::Generating Extended Test Report"
           mkdir -p build/test_reports
-          
+
           # Create comprehensive test report
           cat > build/test_reports/ternary_test_summary.md << 'EOF'
           # MHX Ternary Extension Test Summary
-          
+
           **Test Date:** $(date)
           **Branch:** ${{ github.ref_name }}
           **Commit:** ${{ github.sha }}
-          
+
           ## Test Results Summary
-          
+
           ### RTL Implementation Status
           - ✅ Ternary ALU: Fully implemented with overflow handling
-          - ✅ Neural Unit: Complete with bias support  
+          - ✅ Neural Unit: Complete with bias support
           - ✅ Register File: 16 registers with dual-port access
           - ✅ Decoder Integration: Full instruction decode support
-          
+
           ### Key Metrics
           - Total ternary RTL lines: $(find rtl -name "ibex_ternary*.sv" -o -name "ibex_neural_unit.sv" | xargs wc -l | tail -1 | awk '{print $1}')
           - Ternary operations supported: 7 (ADD, SUB, MUL, AND, OR, XOR, NOT)
           - Neural operations supported: 4 (MULTIPLY, ACCUMULATE, ACTIVATE, LEARN)
-          
+
           ### Quality Metrics
           - Lint warnings: $(grep -c "Warning" build/manual_test/performance.log || echo "0")
           - Synthesis successful: ✅
           - Formal assertions: 50+ properties verified
-          
+
           EOF
           echo "::endgroup::"
 
@@ -294,10 +294,10 @@ jobs:
       - name: Validate Configuration
         run: |
           echo "::group::Validating System Configuration"
-          
+
           # Check that all ternary modules are properly integrated
           echo "Checking ternary module integration..."
-          
+
           # Verify decoder includes ternary opcodes
           if grep -q "OPCODE_TERNARY\|OPCODE_NEURAL" rtl/ibex_decoder.sv; then
             echo "✅ Ternary opcodes integrated in decoder"
@@ -305,7 +305,7 @@ jobs:
             echo "❌ Ternary opcodes missing from decoder"
             exit 1
           fi
-          
+
           # Verify core includes ternary signals
           if grep -q "ternary_en_id\|neural_en_id" rtl/ibex_core.sv; then
             echo "✅ Ternary signals integrated in core"
@@ -313,7 +313,7 @@ jobs:
             echo "❌ Ternary signals missing from core"
             exit 1
           fi
-          
+
           # Verify package includes ternary types
           if grep -q "ternary_op_e\|neural_op_e" rtl/ibex_pkg.sv; then
             echo "✅ Ternary types defined in package"
@@ -321,43 +321,43 @@ jobs:
             echo "❌ Ternary types missing from package"
             exit 1
           fi
-          
+
           echo "::endgroup::"
 
       - name: Generate Integration Report
         run: |
           echo "::group::Generating Integration Report"
           mkdir -p build/integration_report
-          
+
           cat > build/integration_report/integration_status.md << 'EOF'
           # Ternary Extension Integration Status
-          
+
           ## Integration Checklist
           - [x] Ternary ALU integrated
-          - [x] Neural Unit integrated  
+          - [x] Neural Unit integrated
           - [x] Register File integrated
           - [x] Decoder extended with ternary opcodes
           - [x] Core modified to support ternary operations
           - [x] Package updated with ternary types
           - [x] Formal assertions added
           - [x] Performance validation implemented
-          
+
           ## Build Status
           - RTL Linting: ✅ Passed
-          - Synthesis Check: ✅ Passed  
+          - Synthesis Check: ✅ Passed
           - Functional Tests: ✅ Passed
           - Performance Validation: ✅ Passed
           - Integration Check: ✅ Passed
-          
+
           ## Ready for Production?
-          Current status: **DEVELOPMENT READY** 
-          
+          Current status: **DEVELOPMENT READY**
+
           Next steps for production:
           1. Silicon validation with FPGA prototype
-          2. Full UVM testbench implementation  
+          2. Full UVM testbench implementation
           3. Toolchain support development
           4. Security analysis completion
-          
+
           EOF
           echo "::endgroup::"
 
