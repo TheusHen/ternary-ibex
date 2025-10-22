@@ -43,13 +43,13 @@ class mhx_ternary_transaction extends uvm_sequence_item;
   string            error_message;
 
   // Constraints
-  constraint c_valid_ternary_addresses {
+  constraint valid_ternary_addresses_c {
     ternary_rs1 < 32;  // Updated for 32 ternary registers (T0-T31)
     ternary_rs2 < 32;  // Updated for 32 ternary registers (T0-T31)
     ternary_rd  < 32;  // Updated for 32 ternary registers (T0-T31)
   }
 
-  constraint c_valid_ternary_data {
+  constraint valid_ternary_data_c {
     // Ensure operands contain valid trits only
     foreach (operand_a[i]) {
       if (i % 2 == 0) operand_a[i+1:i] inside {2'b00, 2'b01, 2'b10};
@@ -62,7 +62,7 @@ class mhx_ternary_transaction extends uvm_sequence_item;
     }
   }
 
-  constraint c_operation_type {
+  constraint operation_type_c {
     // Only one operation type at a time
     is_ternary + is_neural <= 1;
 
@@ -78,7 +78,7 @@ class mhx_ternary_transaction extends uvm_sequence_item;
       };
   }
 
-  constraint c_instruction_encoding {
+  constraint instruction_encoding_c {
     // RISC-V instruction format constraints
     if (is_ternary) {
       opcode == 7'b0001011; // OPCODE_TERNARY

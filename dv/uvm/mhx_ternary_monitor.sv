@@ -492,11 +492,15 @@ class mhx_ternary_monitor extends uvm_monitor;
       // Check for invalid ternary data
       if (vif.ternary_en_id) begin
         if (!is_valid_ternary_data(vif.ternary_rdata_a)) begin
-          `uvm_error("MON", $sformatf("Invalid ternary data in operand A: 0x%08h", vif.ternary_rdata_a));
+          `uvm_error("MON",
+              $sformatf("Invalid ternary data in operand A: 0x%08h",
+                  vif.ternary_rdata_a));
           errors_detected++;
         end
         if (!is_valid_ternary_data(vif.ternary_rdata_b)) begin
-          `uvm_error("MON", $sformatf("Invalid ternary data in operand B: 0x%08h", vif.ternary_rdata_b));
+          `uvm_error("MON",
+              $sformatf("Invalid ternary data in operand B: 0x%08h",
+                  vif.ternary_rdata_b));
           errors_detected++;
         end
       end
@@ -597,7 +601,8 @@ class mhx_ternary_monitor extends uvm_monitor;
     if (transactions_monitored == 0) begin
       average_latency = latency;
     end else begin
-      average_latency = ((average_latency * transactions_monitored) + latency) / (transactions_monitored + 1);
+      average_latency = ((average_latency * transactions_monitored) + latency) /
+                        (transactions_monitored + 1);
     end
   endfunction
   
@@ -605,7 +610,9 @@ class mhx_ternary_monitor extends uvm_monitor;
   virtual function void report_phase(uvm_phase phase);
     super.report_phase(phase);
     `uvm_info("MON_STATS", "=== Monitor Statistics ===", UVM_LOW);
-    `uvm_info("MON_STATS", $sformatf("Transactions monitored: %0d", transactions_monitored), UVM_LOW);
+    `uvm_info("MON_STATS",
+        $sformatf("Transactions monitored: %0d", transactions_monitored),
+        UVM_LOW);
     `uvm_info("MON_STATS", $sformatf("Ternary operations: %0d", ternary_ops_seen), UVM_LOW);
     `uvm_info("MON_STATS", $sformatf("Neural operations: %0d", neural_ops_seen), UVM_LOW);
     `uvm_info("MON_STATS", $sformatf("Errors detected: %0d", errors_detected), UVM_LOW);

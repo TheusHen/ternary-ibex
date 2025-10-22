@@ -222,7 +222,8 @@ class mhx_ternary_coverage extends uvm_subscriber #(mhx_ternary_transaction);
     current_coverage = (ternary_cov + neural_cov + error_cov) / 3.0;
 
   `uvm_info("COV",
-        $sformatf("Coverage update: Ternary=%0.1f%%, Neural=%0.1f%%, Errors=%0.1f%%, Overall=%0.1f%%",
+        $sformatf({"Coverage update: Ternary=%0.1f%%, Neural=%0.1f%%, ",
+            "Errors=%0.1f%%, Overall=%0.1f%%"},
             ternary_cov, neural_cov, error_cov, current_coverage),
         UVM_MEDIUM);
 

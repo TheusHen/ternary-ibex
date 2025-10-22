@@ -10,7 +10,7 @@ class mhx_ternary_base_sequence extends uvm_sequence #(mhx_ternary_transaction);
 
   // Sequence parameters
   rand int num_transactions;
-  constraint c_num_transactions { num_transactions inside {[10:100]}; }
+  constraint num_transactions_c { num_transactions inside {[10:100]}; }
 
   function new(string name = "mhx_ternary_base_sequence");
     super.new(name);
@@ -51,7 +51,7 @@ endclass : mhx_ternary_base_sequence
 class mhx_ternary_random_sequence extends mhx_ternary_base_sequence;
   `uvm_object_utils(mhx_ternary_random_sequence)
 
-  constraint c_num_transactions { num_transactions == cfg.num_transactions; }
+  constraint num_transactions_c { num_transactions == cfg.num_transactions; }
 
   function new(string name = "mhx_ternary_random_sequence");
     super.new(name);
@@ -293,7 +293,7 @@ endclass : mhx_ternary_corner_sequence
 class mhx_ternary_stress_sequence extends mhx_ternary_base_sequence;
   `uvm_object_utils(mhx_ternary_stress_sequence)
 
-  constraint c_num_transactions { num_transactions == cfg.num_transactions * 5; } // 5x normal load
+  constraint num_transactions_c { num_transactions == cfg.num_transactions * 5; } // 5x normal load
 
   function new(string name = "mhx_ternary_stress_sequence");
     super.new(name);
@@ -358,7 +358,7 @@ class mhx_ternary_coverage_sequence extends mhx_ternary_base_sequence;
   `uvm_object_utils(mhx_ternary_coverage_sequence)
 
   // Coverage-specific constraints
-  constraint c_coverage_focused {
+  constraint coverage_focused_c {
     num_transactions inside {[500:2000]};
   }
 
@@ -449,7 +449,7 @@ class mhx_ternary_base_sequence extends uvm_sequence #(mhx_ternary_transaction);
   
   // Sequence parameters
   rand int num_transactions;
-  constraint c_num_transactions { num_transactions inside {[10:100]}; }
+  constraint num_transactions_c { num_transactions inside {[10:100]}; }
   
   function new(string name = "mhx_ternary_base_sequence");
     super.new(name);
@@ -490,7 +490,7 @@ endclass : mhx_ternary_base_sequence
 class mhx_ternary_random_sequence extends mhx_ternary_base_sequence;
   `uvm_object_utils(mhx_ternary_random_sequence)
   
-  constraint c_num_transactions { num_transactions == cfg.num_transactions; }
+  constraint num_transactions_c { num_transactions == cfg.num_transactions; }
   
   function new(string name = "mhx_ternary_random_sequence");
     super.new(name);
@@ -499,7 +499,9 @@ class mhx_ternary_random_sequence extends mhx_ternary_base_sequence;
   virtual task body();
     mhx_ternary_transaction tr;
     
-    `uvm_info("SEQ", $sformatf("Starting random sequence with %0d transactions", num_transactions), UVM_LOW);
+    `uvm_info("SEQ",
+        $sformatf("Starting random sequence with %0d transactions",
+            num_transactions), UVM_LOW);
     
     repeat(num_transactions) begin
       tr = create_transaction();
@@ -720,7 +722,7 @@ endclass : mhx_ternary_corner_sequence
 class mhx_ternary_stress_sequence extends mhx_ternary_base_sequence;
   `uvm_object_utils(mhx_ternary_stress_sequence)
   
-  constraint c_num_transactions { num_transactions == cfg.num_transactions * 5; } // 5x normal load
+  constraint num_transactions_c { num_transactions == cfg.num_transactions * 5; } // 5x normal load
   
   function new(string name = "mhx_ternary_stress_sequence");
     super.new(name);
@@ -729,7 +731,9 @@ class mhx_ternary_stress_sequence extends mhx_ternary_base_sequence;
   virtual task body();
     mhx_ternary_transaction tr;
     
-    `uvm_info("SEQ", $sformatf("Starting stress sequence with %0d transactions", num_transactions), UVM_LOW);
+    `uvm_info("SEQ",
+        $sformatf("Starting stress sequence with %0d transactions",
+            num_transactions), UVM_LOW);
     
     fork
       // High-frequency ternary operations
@@ -781,7 +785,7 @@ class mhx_ternary_coverage_sequence extends mhx_ternary_base_sequence;
   `uvm_object_utils(mhx_ternary_coverage_sequence)
   
   // Coverage-specific constraints
-  constraint c_coverage_focused {
+  constraint coverage_focused_c {
     num_transactions inside {[500:2000]};
   }
   
@@ -794,7 +798,9 @@ class mhx_ternary_coverage_sequence extends mhx_ternary_base_sequence;
     int coverage_transactions = 0;
     real target_coverage = cfg.coverage_goal;
     
-    `uvm_info("SEQ", $sformatf("Starting coverage-driven sequence (target: %0.1f%%)", target_coverage), UVM_LOW);
+    `uvm_info("SEQ",
+        $sformatf("Starting coverage-driven sequence (target: %0.1f%%)",
+            target_coverage), UVM_LOW);
     
     // Run until coverage goal is met or max transactions reached
     while (coverage_transactions < num_transactions) begin
@@ -812,11 +818,15 @@ class mhx_ternary_coverage_sequence extends mhx_ternary_base_sequence;
       
       // Check coverage periodically
       if (coverage_transactions % 100 == 0) begin
-        `uvm_info("SEQ", $sformatf("Coverage sequence progress: %0d transactions", coverage_transactions), UVM_MEDIUM);
+        `uvm_info("SEQ",
+            $sformatf("Coverage sequence progress: %0d transactions",
+                coverage_transactions), UVM_MEDIUM);
       end
     end
     
-    `uvm_info("SEQ", $sformatf("Coverage sequence completed with %0d transactions", coverage_transactions), UVM_LOW);
+    `uvm_info("SEQ",
+        $sformatf("Coverage sequence completed with %0d transactions",
+            coverage_transactions), UVM_LOW);
   endtask
   
   // Focus on scenarios that might not be well covered
