@@ -225,10 +225,10 @@ This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENS
 If you use the MHX Core in your research, please cite:
 
 ```bibtex
-@misc{mhx_core_2024,
-  title={MHX Core: Ternary RISC-V Extensions for Accelerated AI},
+@misc{mhx_core_2025,
+  title={MHX Core: Ternary Chips for Accelerated AI},
   author={MHX Development Team},
-  year={2024},
+  year={2025},
   howpublished={\url{https://github.com/TheusHen/ternary-ibex}}
 }
 ```
@@ -241,4 +241,4 @@ If you use the MHX Core in your research, please cite:
 
 ---
 
-**The MHX Core: Where RISC-V meets Ternary AI 🚀**
+**The MHX T1 Core: Where RISC-V meets Ternary AI**
