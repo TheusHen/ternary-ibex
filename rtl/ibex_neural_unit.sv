@@ -59,38 +59,57 @@ module ibex_neural_unit import ibex_pkg::*; (
     end
   endfunction
 
-  // Ternary multiply-accumulate for neural computation
+  // Optimized ternary multiply-accumulate for neural computation
+  // - Skip-zero optimization: if either trit is zero, contribution is zero (no adder toggle)
+  // - Reduction tree: sum partial products in a balanced way to reduce combinational depth
   always_comb begin
-    logic signed [NEURAL_ACCUMULATOR_WIDTH-1:0] accumulator_temp;
-    logic [TERNARY_BITS_PER_TRIT-1:0] bias_trit;
-    logic signed [1:0] bias_int;
+  logic signed [NEURAL_ACCUMULATOR_WIDTH-1:0] level0   [TERNARY_TRITS_PER_REG];
+  logic signed [NEURAL_ACCUMULATOR_WIDTH-1:0] level1   [TERNARY_TRITS_PER_REG/2];
+  logic signed [NEURAL_ACCUMULATOR_WIDTH-1:0] level2   [TERNARY_TRITS_PER_REG/4];
+  logic signed [NEURAL_ACCUMULATOR_WIDTH-1:0] level3   [TERNARY_TRITS_PER_REG/8];
+    logic signed [NEURAL_ACCUMULATOR_WIDTH-1:0] level4;
 
-    accumulator_temp = '0;
-
-    // Multiply all weight-input pairs and accumulate
+    // Map each trit pair to -1, 0, or +1 contribution with skip-zero
     for (int i = 0; i < TERNARY_TRITS_PER_REG; i++) begin
-      logic [TERNARY_BITS_PER_TRIT-1:0] weight;
-      logic [TERNARY_BITS_PER_TRIT-1:0] input_val;
-      logic signed [1:0] weight_int;
-      logic signed [1:0] input_int;
-      logic signed [3:0] product;
+      logic [TERNARY_BITS_PER_TRIT-1:0] weight_trit;
+      logic [TERNARY_BITS_PER_TRIT-1:0] input_trit;
 
-      weight = weights_i[i*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT];
-      input_val = inputs_i[i*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT];
-      weight_int = trit_to_int(weight);
-      input_int = trit_to_int(input_val);
-      product = $signed(weight_int) * $signed(input_int);
-      // Sign extend and accumulate
-      accumulator_temp += {{NEURAL_ACCUMULATOR_WIDTH-4{product[3]}}, product};
+      weight_trit = weights_i[i*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT];
+      input_trit  = inputs_i[i*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT];
+
+      // Default zero contribution
+      level0[i] = '0;
+
+      // If both non-zero, contribution is +1 when equal, -1 when different
+      if ((weight_trit != TRIT_ZERO) && (input_trit != TRIT_ZERO)) begin
+        if (weight_trit == input_trit) begin
+          level0[i] = {{NEURAL_ACCUMULATOR_WIDTH-1{1'b0}}, 1'b1}; // +1
+        end else begin
+          level0[i] = -{{NEURAL_ACCUMULATOR_WIDTH-1{1'b0}}, 1'b1}; // -1
+        end
+      end
     end
 
-    // Add bias (extract ternary value from bias input)
-    bias_trit = bias_i[TERNARY_BITS_PER_TRIT-1:0];
-    bias_int = trit_to_int(bias_trit);
-    // Sign extend bias and add
-    accumulator_temp += {{NEURAL_ACCUMULATOR_WIDTH-2{bias_int[1]}}, bias_int};
+    // Balanced reduction tree (assumes TERNARY_TRITS_PER_REG == 16)
+    for (int i = 0; i < (TERNARY_TRITS_PER_REG/2); i++) begin
+      level1[i] = level0[2*i] + level0[2*i+1];
+    end
+    for (int i = 0; i < (TERNARY_TRITS_PER_REG/4); i++) begin
+      level2[i] = level1[2*i] + level1[2*i+1];
+    end
+    for (int i = 0; i < (TERNARY_TRITS_PER_REG/8); i++) begin
+      level3[i] = level2[2*i] + level2[2*i+1];
+    end
+    // Final level
+    level4 = level3[0];
 
-    next_accumulator = accumulator_temp;
+    // Add bias (extract ternary value from bias input, use only LSB trit)
+    logic [TERNARY_BITS_PER_TRIT-1:0] bias_trit;
+    logic signed [1:0]                bias_int;
+    bias_trit = bias_i[TERNARY_BITS_PER_TRIT-1:0];
+    bias_int  = trit_to_int(bias_trit);
+
+    next_accumulator = level4 + {{NEURAL_ACCUMULATOR_WIDTH-2{bias_int[1]}}, bias_int};
   end
 
   // Main neural processing logic

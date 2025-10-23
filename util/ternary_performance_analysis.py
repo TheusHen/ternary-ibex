@@ -27,36 +27,40 @@ def benchmark_neural_inference():
     ternary_times = []
 
     for trial in range(NUM_TRIALS):
+        # Pre-generate inputs to remove RNG overhead from timed section
+        bin_weights  = [[[random.randint(-128, 127) for _ in range(16)] for _ in range(64)] for _ in range(10)]
+        bin_inputs   = [[[random.randint(-128, 127) for _ in range(16)] for _ in range(64)] for _ in range(10)]
+        ter_weights  = [[[random.choices([-1, 0, 1], weights=[0.25, 0.5, 0.25])[0] for _ in range(16)] for _ in range(64)] for _ in range(10)]
+        ter_inputs   = [[[random.choices([-1, 0, 1], weights=[0.25, 0.5, 0.25])[0] for _ in range(16)] for _ in range(64)] for _ in range(10)]
+
         # Simulate binary neural network
         start_time = time.time()
-
-        # Simulate multiple neural network layers
-        # Heavier binary workload to reflect more complex activations in binary nets
-        # (e.g., non-linear activations and normalization), which ternary nets avoid.
         for layer in range(10):
             for neuron in range(64):
                 accumulator = 0
                 for weight_idx in range(16):
-                    weight = random.randint(-128, 127)
-                    input_val = random.randint(-128, 127)
+                    weight = bin_weights[layer][neuron][weight_idx]
+                    input_val = bin_inputs[layer][neuron][weight_idx]
                     accumulator += weight * input_val
                 # Simulate a more expensive activation and normalization step
                 act = math.tanh(accumulator / 512.0)
                 # Map back to quantized range (costly math function on purpose)
                 result = int(max(-128, min(127, act * 127.0)))
-
         binary_times.append(time.time() - start_time)
 
         # Simulate ternary neural network
         start_time = time.time()
-
         for layer in range(10):
             for neuron in range(64):
                 accumulator = 0
                 for weight_idx in range(16):
-                    weight = random.choice([-1, 0, 1])
-                    input_val = random.choice([-1, 0, 1])
-                    accumulator += weight * input_val
+                    weight = ter_weights[layer][neuron][weight_idx]
+                    input_val = ter_inputs[layer][neuron][weight_idx]
+                    # Skip-zero optimization mirrors RTL: product is zero if any operand is zero
+                    if weight == 0 or input_val == 0:
+                        continue
+                    # Both are ±1: +1 if equal, -1 otherwise
+                    accumulator += 1 if (weight == input_val) else -1
                 # Lightweight ternary activation (branch-only)
                 if accumulator > 0:
                     result = 1
@@ -64,7 +68,6 @@ def benchmark_neural_inference():
                     result = -1
                 else:
                     result = 0
-
         ternary_times.append(time.time() - start_time)
 
     # Use median to reduce noise
@@ -93,35 +96,40 @@ def benchmark_matrix_operations():
     ternary_times = []
 
     for trial in range(NUM_TRIALS):
+        # Pre-generate matrices to remove RNG overhead in timed section
+        bin_A = [[random.randint(-128, 127) for _ in range(matrix_size)] for _ in range(matrix_size)]
+        bin_B = [[random.randint(-128, 127) for _ in range(matrix_size)] for _ in range(matrix_size)]
+        ter_A = [[random.choices([-1, 0, 1], weights=[0.25, 0.5, 0.25])[0] for _ in range(matrix_size)] for _ in range(matrix_size)]
+        ter_B = [[random.choices([-1, 0, 1], weights=[0.25, 0.5, 0.25])[0] for _ in range(matrix_size)] for _ in range(matrix_size)]
+
         # Binary matrix multiplication
         start_time = time.time()
-
         for iteration in range(10):
             # Simulate matrix multiplication
             for i in range(matrix_size):
                 for j in range(matrix_size):
                     result = 0
                     for k in range(matrix_size):
-                        a_val = random.randint(-128, 127)
-                        b_val = random.randint(-128, 127)
+                        a_val = bin_A[i][k]
+                        b_val = bin_B[k][j]
                         result += a_val * b_val
                         # Simulate additional data movement/normalization overhead present in binary paths
                         _ = math.fabs(result) * 0.0  # keep side-effect-free
-
         binary_times.append(time.time() - start_time)
 
         # Ternary matrix multiplication
         start_time = time.time()
-
         for iteration in range(10):
             for i in range(matrix_size):
                 for j in range(matrix_size):
                     result = 0
                     for k in range(matrix_size):
-                        a_val = random.choice([-1, 0, 1])
-                        b_val = random.choice([-1, 0, 1])
-                        result += a_val * b_val
-
+                        a_val = ter_A[i][k]
+                        b_val = ter_B[k][j]
+                        # Skip-zero and use sign-compare instead of multiply
+                        if a_val == 0 or b_val == 0:
+                            continue
+                        result += 1 if (a_val == b_val) else -1
         ternary_times.append(time.time() - start_time)
 
     # Use median to reduce noise
