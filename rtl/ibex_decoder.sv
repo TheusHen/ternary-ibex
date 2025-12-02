@@ -683,9 +683,10 @@ module ibex_decoder #(
         endcase
 
         // Extract ternary register addresses (5 bits each for T0-T31)
-        ternary_raddr_a_o = instr[20:16];  // rs1 (ternary source 1)
-        ternary_raddr_b_o = instr[25:21];  // rs2 (ternary source 2)
-        ternary_waddr_o   = instr[11:7];   // rd (ternary destination)
+        // Using rs1, rs2, rd fields from instruction for ternary addressing
+        ternary_raddr_a_o = instr[19:15];  // rs1 (ternary source 1) - 5 bits
+        ternary_raddr_b_o = instr[24:20];  // rs2 (ternary source 2) - 5 bits
+        ternary_waddr_o   = instr[11:7];   // rd (ternary destination) - 5 bits
       end
 
       OPCODE_NEURAL: begin // MHX Neural Operations
@@ -706,9 +707,9 @@ module ibex_decoder #(
         endcase
 
         // Extract ternary register addresses for neural operations (5 bits each)
-        ternary_raddr_a_o = instr[20:16];  // weights register
-        ternary_raddr_b_o = instr[25:21];  // inputs register
-        ternary_waddr_o   = instr[11:7];   // result register
+        ternary_raddr_a_o = instr[19:15];  // weights register - 5 bits
+        ternary_raddr_b_o = instr[24:20];  // inputs register - 5 bits  
+        ternary_waddr_o   = instr[11:7];   // result register - 5 bits
       end
 
       default: begin

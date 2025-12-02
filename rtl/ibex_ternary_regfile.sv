@@ -35,9 +35,9 @@ module ibex_ternary_regfile import ibex_pkg::*; (
   // Ternary register array
   logic [TERNARY_REG_WIDTH-1:0] ternary_regs [TERNARY_NUM_REGISTERS];
 
-  // Read logic (asynchronous)
-  assign rdata_a_o = ternary_regs[raddr_a_i];
-  assign rdata_b_o = ternary_regs[raddr_b_i];
+  // Read logic (asynchronous) - T0 always reads as zero (RISC-V convention)
+  assign rdata_a_o = (raddr_a_i == '0) ? TERNARY_RESET_VALUE : ternary_regs[raddr_a_i];
+  assign rdata_b_o = (raddr_b_i == '0) ? TERNARY_RESET_VALUE : ternary_regs[raddr_b_i];
 
   // Write logic (synchronous)
   always_ff @(posedge clk_i or negedge rst_ni) begin
@@ -46,7 +46,7 @@ module ibex_ternary_regfile import ibex_pkg::*; (
       for (int i = 0; i < TERNARY_NUM_REGISTERS; i++) begin
         ternary_regs[i] <= TERNARY_RESET_VALUE;
       end
-    end else if (we_i) begin
+    end else if (we_i && waddr_i != '0) begin  // Prevent writes to T0
       ternary_regs[waddr_i] <= wdata_i;
     end
   end

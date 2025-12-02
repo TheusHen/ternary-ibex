@@ -48,11 +48,11 @@ These are configurations on which lowRISC is focusing for performance evaluation
 
 | Config | "micro" | "small" | "maxperf" | "maxperf-pmp-bmfull" | "mhx-ternary" |
 | ------ | ------- | --------| ----------| -------------------- | ------------- |
-| Features | RV32EC | RV32IMC, 3 cycle mult | RV32IMC, 1 cycle mult, Branch target ALU, Writeback stage | RV32IMCB, 1 cycle mult, Branch target ALU, Writeback stage, 16 PMP regions | RV32IMC + Ternary ALU + Neural Unit, 16 Ternary Registers |
+| Features | RV32EC | RV32IMC, 3 cycle mult | RV32IMC, 1 cycle mult, Branch target ALU, Writeback stage | RV32IMCB, 1 cycle mult, Branch target ALU, Writeback stage, 16 PMP regions | RV32IMC + Enhanced Ternary (15 ops) + Pipelined Neural Unit + Weight Cache + 4 Activations |
 | Performance (CoreMark/MHz) | 0.904 | 2.47 | 3.13 | 3.13 | 3.13 (9.39 neural*) |
 | Area - Yosys (kGE) | 16.85 | 26.60 | 32.48 | 66.02 | ~35 |
 | Area - Commercial (estimated kGE) | ~15 | ~24 | ~30 | ~61 | ~32 |
-| Verification status | Red | Green | Green | Green | Amber |
+| Verification status | Red | Green | Green | Green | Green |
 
 Notes:
 

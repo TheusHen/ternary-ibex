@@ -63,11 +63,13 @@ module ibex_neural_unit import ibex_pkg::*; (
   // - Skip-zero optimization: if either trit is zero, contribution is zero (no adder toggle)
   // - Reduction tree: sum partial products in a balanced way to reduce combinational depth
   always_comb begin
-  logic signed [NEURAL_ACCUMULATOR_WIDTH-1:0] level0   [TERNARY_TRITS_PER_REG];
-  logic signed [NEURAL_ACCUMULATOR_WIDTH-1:0] level1   [TERNARY_TRITS_PER_REG/2];
-  logic signed [NEURAL_ACCUMULATOR_WIDTH-1:0] level2   [TERNARY_TRITS_PER_REG/4];
-  logic signed [NEURAL_ACCUMULATOR_WIDTH-1:0] level3   [TERNARY_TRITS_PER_REG/8];
+    logic signed [NEURAL_ACCUMULATOR_WIDTH-1:0] level0   [TERNARY_TRITS_PER_REG];
+    logic signed [NEURAL_ACCUMULATOR_WIDTH-1:0] level1   [TERNARY_TRITS_PER_REG/2];
+    logic signed [NEURAL_ACCUMULATOR_WIDTH-1:0] level2   [TERNARY_TRITS_PER_REG/4];
+    logic signed [NEURAL_ACCUMULATOR_WIDTH-1:0] level3   [TERNARY_TRITS_PER_REG/8];
     logic signed [NEURAL_ACCUMULATOR_WIDTH-1:0] level4;
+    logic [TERNARY_BITS_PER_TRIT-1:0] bias_trit;
+    logic signed [1:0]                bias_int;
 
     // Map each trit pair to -1, 0, or +1 contribution with skip-zero
     for (int i = 0; i < TERNARY_TRITS_PER_REG; i++) begin
@@ -104,8 +106,6 @@ module ibex_neural_unit import ibex_pkg::*; (
     level4 = level3[0];
 
     // Add bias (extract ternary value from bias input, use only LSB trit)
-    logic [TERNARY_BITS_PER_TRIT-1:0] bias_trit;
-    logic signed [1:0]                bias_int;
     bias_trit = bias_i[TERNARY_BITS_PER_TRIT-1:0];
     bias_int  = trit_to_int(bias_trit);
 
