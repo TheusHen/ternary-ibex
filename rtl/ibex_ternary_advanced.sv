@@ -275,12 +275,12 @@ module ibex_ternary_advanced import ibex_pkg::*; #(
   `ASSERT_INIT(ManhattanNonNegative,
     (advanced_op_i == TERNARY_ADV_MANHATTAN) |->
     (scalar_result_o[7] == 1'b0))
-  
+
   // Hamming distance bounded by number of trits
   `ASSERT_INIT(HammingBounded,
     (advanced_op_i == TERNARY_ADV_HAMMING) |->
     (scalar_result_o <= NumTrits))
-  
+
   // Leading zeros count bounded
   `ASSERT_INIT(CLZBounded,
     (advanced_op_i == TERNARY_ADV_CLZ) |->

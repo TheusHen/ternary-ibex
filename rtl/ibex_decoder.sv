@@ -1,4 +1,4 @@
-// Copyright lowRISC contributors.
+/ Copyright lowRISC contributors.
 // Copyright 2025 MHX Neural.
 // Copyright 2018 ETH Zurich and University of Bologna, see also CREDITS.md.
 // Licensed under the Apache License, Version 2.0, see LICENSE for details.
@@ -708,7 +708,7 @@ module ibex_decoder #(
 
         // Extract ternary register addresses for neural operations (5 bits each)
         ternary_raddr_a_o = instr[19:15];  // weights register - 5 bits
-        ternary_raddr_b_o = instr[24:20];  // inputs register - 5 bits  
+        ternary_raddr_b_o = instr[24:20];  // inputs register - 5 bits
         ternary_waddr_o   = instr[11:7];   // result register - 5 bits
       end
 
