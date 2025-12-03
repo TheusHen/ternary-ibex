@@ -189,7 +189,7 @@ module ibex_ternary_advanced import ibex_pkg::*; #(
             min_trit = a_trit;
           end
         end
-        
+
         // Replicate min value to all trits
         for (int i = 0; i < NumTrits; i++) begin
           result_o[i*2 +: 2] = min_trit;
@@ -203,11 +203,11 @@ module ibex_ternary_advanced import ibex_pkg::*; #(
         pos_count = '0;
         neg_count = '0;
         zero_count = '0;
-        
+
         for (int i = 0; i < NumTrits; i++) begin
           logic [1:0] a_trit;
           a_trit = operand_a_i[i*2 +: 2];
-          
+
           case (a_trit)
             TRIT_POS:  pos_count = pos_count + 1;
             TRIT_NEG:  neg_count = neg_count + 1;
@@ -215,7 +215,7 @@ module ibex_ternary_advanced import ibex_pkg::*; #(
             default:   zero_count = zero_count + 1;
           endcase
         end
-        
+
         // Return counts in different bytes
         // [7:6] = unused, [5:4] = pos_count, [3:2] = neg_count, [1:0] = zero_count
         scalar_result_o = {2'b00, pos_count[5:4], neg_count[3:2], zero_count[1:0]};
@@ -227,7 +227,7 @@ module ibex_ternary_advanced import ibex_pkg::*; #(
         for (int i = NumTrits-1; i >= 0; i--) begin
           logic [1:0] a_trit;
           a_trit = operand_a_i[i*2 +: 2];
-          
+
           if (!found_nonzero) begin
             if (a_trit == TRIT_ZERO) begin
               leading_zeros = leading_zeros + 1;
@@ -236,7 +236,7 @@ module ibex_ternary_advanced import ibex_pkg::*; #(
             end
           end
         end
-        
+
         scalar_result_o = leading_zeros;
         result_o = {{TernaryDataWidth-8{1'b0}}, leading_zeros};
       end
@@ -245,10 +245,10 @@ module ibex_ternary_advanced import ibex_pkg::*; #(
         // Saturating addition (element-wise)
         for (int i = 0; i < NumTrits; i++) begin
           logic [1:0] a_trit, b_trit;
-          
+
           a_trit = operand_a_i[i*2 +: 2];
           b_trit = operand_b_i[i*2 +: 2];
-          
+
           result_o[i*2 +: 2] = trit_sat_add(a_trit, b_trit);
         end
       end

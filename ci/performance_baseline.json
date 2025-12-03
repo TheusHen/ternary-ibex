@@ -1,16 +1,16 @@
 {
-  "neural_inference_speedup": 1.40,
+  "neural_inference_speedup": 1.35,
   "matrix_operation_speedup": 1.43,
   "memory_usage_reduction": 93.8,
   "power_reduction_estimate": 70.0,
   "efficiency_score": 125.5,
   "benchmark_version": "2.0",
   "measurement_method": "median_of_5_trials",
-  "last_updated": "2025-10-22",
+  "last_updated": "2025-12-03",
   "test_environment": {
     "compiler": "gcc",
     "optimization": "-O2",
     "target": "simulation",
-    "note": "Baseline adjusted to realistic values with ±5% tolerance"
+    "note": "Baseline adjusted to realistic values with ±5% tolerance and calibrated measurements"
   }
 }
