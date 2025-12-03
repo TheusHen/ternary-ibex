@@ -352,7 +352,7 @@ module mhx_comprehensive_test;
     neural_inputs  = 32'hAAAAAAAA;
     @(posedge clk);
     repeat(4) @(posedge clk);
-    
+
     if (sparsity_ratio == 100) begin
       $display("✓ PASS: 100%% sparsity detected (all-zero weights)");
       pass_count++;
@@ -421,7 +421,7 @@ module mhx_comprehensive_test;
     $display("║  Passed:       %4d                                      ║", pass_count);
     $display("║  Failed:       %4d                                      ║", fail_count);
     $display("╠══════════════════════════════════════════════════════════╣");
-    
+
     if (fail_count == 0) begin
       $display("║  STATUS: ✓ ALL TESTS PASSED                             ║");
       $display("║  VERIFICATION LEVEL: GREEN                               ║");
@@ -429,7 +429,7 @@ module mhx_comprehensive_test;
       $display("║  STATUS: ✗ SOME TESTS FAILED                            ║");
       $display("║  VERIFICATION LEVEL: AMBER                               ║");
     end
-    
+
     $display("╚══════════════════════════════════════════════════════════╝");
     $display("\n");
 
