@@ -98,7 +98,7 @@ if [ ! -f "$TOP_WRAPPER_FILE" ]; then
 
 /**
  * MHX Simple System FPGA Top Level
- * 
+ *
  * This module provides the top-level interface for FPGA implementation,
  * including clock generation, reset handling, and I/O mapping.
  */
@@ -107,16 +107,16 @@ module mhx_simple_system_top (
     // Clock and reset
     input  logic clk_100mhz,
     input  logic rst_n,
-    
+
     // UART interface
     output logic uart_tx,
     input  logic uart_rx,
-    
+
     // GPIO interface (LEDs and buttons)
     output logic [7:0] led,
     input  logic [3:0] btn,
     input  logic [3:0] sw,
-    
+
     // Optional SPI interface
     output logic spi_sck,
     output logic spi_mosi,
@@ -127,10 +127,10 @@ module mhx_simple_system_top (
     // Clock and reset signals
     logic clk_sys;
     logic rst_sys_n;
-    
+
     // Clock generation (for now, just use input clock)
     assign clk_sys = clk_100mhz;
-    
+
     // Reset synchronization
     logic [2:0] rst_sync;
     always_ff @(posedge clk_sys or negedge rst_n) begin
@@ -141,30 +141,30 @@ module mhx_simple_system_top (
         end
     end
     assign rst_sys_n = rst_sync[2];
-    
+
     // GPIO mapping
     logic [7:0] gpio_out;
     logic [7:0] gpio_in;
     logic [7:0] gpio_oe;
-    
+
     // Map buttons and switches to GPIO inputs
     assign gpio_in = {sw, btn};
-    
+
     // Map GPIO outputs to LEDs
     assign led = gpio_out;
-    
+
     // Instantiate MHX Simple System
     mhx_simple_system u_mhx_simple_system (
         .IO_CLK     (clk_sys),
         .IO_RST_N   (rst_sys_n),
-        
+
         .uart_tx    (uart_tx),
         .uart_rx    (uart_rx),
-        
+
         .gpio_out   (gpio_out),
         .gpio_in    (gpio_in),
         .gpio_oe    (gpio_oe),
-        
+
         .spi_sck    (spi_sck),
         .spi_mosi   (spi_mosi),
         .spi_miso   (spi_miso),

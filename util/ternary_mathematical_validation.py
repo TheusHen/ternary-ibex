@@ -14,7 +14,7 @@ import random
 def encode_trit(val):
     """Encode ternary value (-1, 0, 1) to 2-bit representation"""
     if val == -1: return 0b00
-    elif val == 0: return 0b01  
+    elif val == 0: return 0b01
     elif val == 1: return 0b10
     else: raise ValueError(f"Invalid trit value: {val}")
 
@@ -78,7 +78,7 @@ def ternary_operation_register(a_encoded, b_encoded, operation):
     a_trits = decode_ternary_register(a_encoded)
     b_trits = decode_ternary_register(b_encoded)
     result_trits = []
-    
+
     for i in range(16):
         if operation == "add":
             result_trits.append(ternary_add_trit(a_trits[i], b_trits[i]))
@@ -92,7 +92,7 @@ def ternary_operation_register(a_encoded, b_encoded, operation):
             result_trits.append(ternary_xor_trit(a_trits[i], b_trits[i]))
         else:
             raise ValueError(f"Unknown operation: {operation}")
-    
+
     return encode_ternary_register(result_trits)
 
 # Neural network operations
@@ -100,11 +100,11 @@ def neural_multiply_accumulate(weights_encoded, inputs_encoded):
     """Neural MAC operation: dot product of weights and inputs"""
     weights = decode_ternary_register(weights_encoded)
     inputs = decode_ternary_register(inputs_encoded)
-    
+
     accumulator = 0
     for i in range(16):
         accumulator += weights[i] * inputs[i]
-    
+
     return accumulator
 
 def neural_activate(value, threshold=0):
@@ -140,11 +140,11 @@ def test_arithmetic_operations():
     for a_trits, b_trits in test_cases:
         a = encode_ternary_register(a_trits)
         b = encode_ternary_register(b_trits)
-        
+
         for op in operations:
             result = ternary_operation_register(a, b, op)
             result_trits = decode_ternary_register(result)
-            
+
             # Verify manually for first few elements
             if op == "add":
                 expected = ternary_add_trit(a_trits[0], b_trits[0])
@@ -180,7 +180,7 @@ def test_neural_operations():
     else:
         print("✗ FAIL: Neural activation function")
         return False
-    
+
     return True
 
 def test_edge_cases():
@@ -202,7 +202,7 @@ def test_edge_cases():
         else:
             print(f"✗ FAIL: Saturation test {a} + {b} = {result}, expected {expected}")
             return False
-    
+
     return True
 
 def main():
@@ -211,7 +211,7 @@ def main():
     print("Running comprehensive ternary validation...")
 
     all_tests_passed = True
-    
+
     # Run all test suites
     tests = [
         test_encoding_decoding,
@@ -219,11 +219,11 @@ def main():
         test_neural_operations,
         test_edge_cases
     ]
-    
+
     for test_func in tests:
         if not test_func():
             all_tests_passed = False
-    
+
     if all_tests_passed:
         print("\n=== ALL TERNARY MATHEMATICAL VALIDATIONS PASSED! ===")
         return 0

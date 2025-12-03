@@ -8,7 +8,7 @@ MHX Ternary Extension Test Results
 
 === Code Quality Tests ===
 ✓ PASS: Verilator lint on ternary RTL
-✓ PASS: Verible lint on ternary RTL  
+✓ PASS: Verible lint on ternary RTL
 
 === Unit Tests ===
 ✓ PASS: Ternary encoding/decoding consistency

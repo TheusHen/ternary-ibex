@@ -9,6 +9,34 @@
 
 set -e
 
+# Parse command line arguments
+JSON_OUTPUT=false
+REGRESSION=false
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        --json)
+            JSON_OUTPUT=true
+            shift
+            ;;
+        --regression)
+            # Accept --regression as a no-op alias for running the default suite
+            REGRESSION=true
+            shift
+            ;;
+        *)
+            echo "Unknown option: $1"
+            echo "Usage: $0 [--json] [--regression]"
+            exit 1
+            ;;
+    esac
+done
+
+# If JSON output requested, emit only JSON and exit early to keep stdout clean
+if [ "$JSON_OUTPUT" = true ]; then
+    python3 util/ternary_performance_analysis.py --json
+    exit $?
+fi
+
 echo "========================================"
 echo "MHX Ternary Extension Test Runner"
 echo "========================================"
@@ -94,7 +122,7 @@ cat > build/manual_test/test_report.md << EOF
 
 ### RTL Implementation
 - ✅ Ternary ALU: $(wc -l < rtl/ibex_ternary_alu.sv) lines implemented
-- ✅ Neural Unit: $(wc -l < rtl/ibex_neural_unit.sv) lines implemented  
+- ✅ Neural Unit: $(wc -l < rtl/ibex_neural_unit.sv) lines implemented
 - ✅ Register File: $(wc -l < rtl/ibex_ternary_regfile.sv) lines implemented
 - ✅ Configuration: MHX config integrated
 
@@ -112,6 +140,7 @@ EOF
 
 echo "✅ Test report generated: build/manual_test/test_report.md"
 
+# Output results
 echo "========================================"
 echo "Basic validation completed successfully!"
 echo "Check build/manual_test/ for results"

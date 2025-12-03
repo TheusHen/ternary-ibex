@@ -7,7 +7,7 @@
 # This script converts all SystemVerilog RTL files to Verilog
 # using sv2v and then runs LEC (Cadence Conformal) to check if
 # the generated Verilog is logically equivalent to the original
-# SystemVerilog.  A similar script is used in OpenTitan, any updates 
+# SystemVerilog.  A similar script is used in OpenTitan, any updates
 # or fixes here may need to be reflected in the OpenTitan script as well
 # https://github.com/lowRISC/opentitan/blob/master/util/syn_yosys.sh
 #

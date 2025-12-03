@@ -25,7 +25,7 @@ jobs:
   ternary_lint:
     name: Ternary Code Quality
     runs-on: ubuntu-22.04
-    
+
     steps:
       - uses: actions/checkout@v4
         with:
@@ -65,7 +65,7 @@ jobs:
     name: Ternary Unit Tests
     runs-on: ubuntu-22.04
     needs: ternary_lint
-    
+
     steps:
       - uses: actions/checkout@v4
         with:
@@ -101,13 +101,13 @@ jobs:
         run: |
           echo "=== Running Hardware Ternary Tests ==="
           cd build/lowrisc_ibex_mhx_ternary_test_0.1/sim-verilator
-          
+
           # Run the test with timeout
           timeout 300s ./Vmhx_ternary_test +MAX_CYCLES=50000 || {
             echo "::error::Hardware ternary test failed or timed out"
             exit 1
           }
-          
+
           echo "✓ Hardware ternary tests passed"
 
       - name: Run Ternary Mathematical Validation
@@ -131,7 +131,7 @@ jobs:
     name: Ternary Integration Tests
     runs-on: ubuntu-22.04
     needs: ternary_unit_tests
-    
+
     steps:
       - uses: actions/checkout@v4
         with:
@@ -173,10 +173,10 @@ jobs:
           echo "✓ Integration tests completed"
 
   ternary_performance_tests:
-    name: Ternary Performance Analysis  
+    name: Ternary Performance Analysis
     runs-on: ubuntu-22.04
     needs: ternary_integration_tests
-    
+
     steps:
       - uses: actions/checkout@v4
         with:
@@ -194,7 +194,7 @@ jobs:
         run: |
           echo "=== Running Comprehensive Performance Analysis ==="
           python3 util/ternary_performance_analysis.py
-          
+
           echo "✓ Performance analysis completed"
 
   generate_report:
@@ -202,7 +202,7 @@ jobs:
     runs-on: ubuntu-22.04
     needs: [ternary_lint, ternary_unit_tests, ternary_integration_tests, ternary_performance_tests]
     if: always()
-    
+
     steps:
       - uses: actions/checkout@v4
 
@@ -219,7 +219,7 @@ jobs:
           python3 util/generate_ternary_report.py \
             --test-results build/ \
             --output ternary_test_report.md
-          
+
           echo "✓ Test report generated"
 
       - name: Upload Complete Test Results
@@ -240,12 +240,12 @@ jobs:
             echo "✅ All ternary math tests completed successfully"
             echo "📊 Comprehensive test report generated"
             echo "🚀 MHX Core ready for deployment"
-            
+
             # Show key metrics from report
             echo ""
             echo "Key Performance Metrics:"
             echo "- Neural inference: 3.2x speedup"
-            echo "- Matrix operations: 2.8x speedup"  
+            echo "- Matrix operations: 2.8x speedup"
             echo "- Memory usage: 93.75% reduction"
             echo "- Power efficiency: 70% improvement"
           else

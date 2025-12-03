@@ -11,7 +11,7 @@
  *
  * Features:
  * - Walking bit patterns
- * - Address pattern tests  
+ * - Address pattern tests
  * - Data pattern tests
  * - March tests (March C-)
  * - Ternary pattern tests (for MHX extensions)
@@ -60,16 +60,16 @@ _start:
 main:
     # Initialize system
     call init_system
-    
+
     # Print startup message
     call print_startup
-    
+
     # Run memory tests
     call run_memory_tests
-    
+
     # Print results summary
     call print_summary
-    
+
     # Infinite loop
     j hang
 
@@ -79,22 +79,22 @@ main:
 init_system:
     addi sp, sp, -4
     sw ra, 0(sp)
-    
+
     # Set stack pointer to safe area (top of RAM - 1KB for test data)
     li sp, (RAM_BASE + RAM_SIZE - 1024)
-    
+
     # Initialize UART
     call init_uart
-    
+
     # Initialize GPIO for status
     call init_gpio
-    
+
     # Initialize timer for benchmarks
     call init_timer
-    
+
     # Initialize test variables
     call init_test_vars
-    
+
     lw ra, 0(sp)
     addi sp, sp, 4
     ret
@@ -148,13 +148,13 @@ init_test_vars:
 print_startup:
     addi sp, sp, -4
     sw ra, 0(sp)
-    
+
     la a0, startup_msg
     call uart_print_string
-    
+
     # Show memory map
     call print_memory_map
-    
+
     lw ra, 0(sp)
     addi sp, sp, 4
     ret
@@ -165,10 +165,10 @@ print_startup:
 print_memory_map:
     addi sp, sp, -4
     sw ra, 0(sp)
-    
+
     la a0, memmap_msg
     call uart_print_string
-    
+
     # ROM info
     la a0, rom_info_msg
     call uart_print_string
@@ -179,7 +179,7 @@ print_memory_map:
     li a0, (ROM_BASE + ROM_SIZE - 1)
     call uart_print_hex
     call uart_print_newline
-    
+
     # RAM info
     la a0, ram_info_msg
     call uart_print_string
@@ -191,7 +191,7 @@ print_memory_map:
     call uart_print_hex
     call uart_print_newline
     call uart_print_newline
-    
+
     lw ra, 0(sp)
     addi sp, sp, 4
     ret
@@ -202,55 +202,55 @@ print_memory_map:
 run_memory_tests:
     addi sp, sp, -4
     sw ra, 0(sp)
-    
+
     # Test 1: ROM Read Test
     la a0, test1_msg
     call uart_print_string
     call rom_read_test
     call print_test_result
-    
+
     # Test 2: RAM Basic Read/Write
     la a0, test2_msg
     call uart_print_string
     call ram_basic_test
     call print_test_result
-    
+
     # Test 3: Walking Bit Test
     la a0, test3_msg
     call uart_print_string
     call walking_bit_test
     call print_test_result
-    
+
     # Test 4: Address Pattern Test
     la a0, test4_msg
     call uart_print_string
     call address_pattern_test
     call print_test_result
-    
+
     # Test 5: Data Pattern Test
     la a0, test5_msg
     call uart_print_string
     call data_pattern_test
     call print_test_result
-    
+
     # Test 6: March Test
     la a0, test6_msg
     call uart_print_string
     call march_test
     call print_test_result
-    
+
     # Test 7: Ternary Pattern Test (MHX specific)
     la a0, test7_msg
     call uart_print_string
     call ternary_pattern_test
     call print_test_result
-    
+
     # Test 8: Memory Speed Benchmark
     la a0, test8_msg
     call uart_print_string
     call memory_speed_test
     call print_test_result
-    
+
     lw ra, 0(sp)
     addi sp, sp, 4
     ret
@@ -262,24 +262,24 @@ rom_read_test:
     li t0, ROM_BASE
     li t1, ROM_SIZE / 4  # Number of words
     li t2, 0             # Error count
-    
+
     # Update test count
     call increment_test_count
-    
+
 rom_read_loop:
     lw t3, 0(t0)
     # For now, just verify we can read without bus error
     # In real test, would verify against known good data
-    
+
     addi t0, t0, 4
     addi t1, t1, -1
     bnez t1, rom_read_loop
-    
+
     # Test passed if no errors
     beqz t2, rom_read_pass
     call increment_failed_count
     ret
-    
+
 rom_read_pass:
     call increment_passed_count
     ret
@@ -291,22 +291,22 @@ ram_basic_test:
     li t0, RAM_BASE
     li t1, (RAM_SIZE / 4) - 256  # Leave space for stack
     li t2, 0                     # Error count
-    
+
     call increment_test_count
-    
+
     # Test pattern: write address as data
 ram_basic_loop:
     # Write address as data
     sw t0, 0(t0)
-    
+
     # Read back and verify
     lw t3, 0(t0)
     bne t0, t3, ram_basic_error
-    
+
     addi t0, t0, 4
     addi t1, t1, -1
     bnez t1, ram_basic_loop
-    
+
     beqz t2, ram_basic_pass
     call increment_failed_count
     ret
@@ -317,10 +317,10 @@ ram_basic_error:
     addi t0, t0, 4
     addi t1, t1, -1
     bnez t1, ram_basic_loop
-    
+
     call increment_failed_count
     ret
-    
+
 ram_basic_pass:
     call increment_passed_count
     ret
@@ -332,30 +332,30 @@ walking_bit_test:
     li t0, RAM_BASE
     li t1, 32            # 32 bit positions
     li t2, 0             # Error count
-    
+
     call increment_test_count
-    
+
 walking_bit_loop:
     # Create walking bit pattern
     li t3, 1
     sll t3, t3, t1
-    
+
     # Write pattern
     sw t3, 0(t0)
-    
+
     # Read back and verify
     lw t4, 0(t0)
     bne t3, t4, walking_bit_error
-    
+
     # Test inverse pattern
     not t3, t3
     sw t3, 0(t0)
     lw t4, 0(t0)
     bne t3, t4, walking_bit_error
-    
+
     addi t1, t1, -1
     bnez t1, walking_bit_loop
-    
+
     beqz t2, walking_bit_pass
     call increment_failed_count
     ret
@@ -366,7 +366,7 @@ walking_bit_error:
     bnez t1, walking_bit_loop
     call increment_failed_count
     ret
-    
+
 walking_bit_pass:
     call increment_passed_count
     ret
@@ -378,9 +378,9 @@ address_pattern_test:
     li t0, RAM_BASE
     li t1, (RAM_SIZE / 4) - 256
     li t2, 0
-    
+
     call increment_test_count
-    
+
     # Phase 1: Write address pattern
     mv t3, t0
 addr_write_loop:
@@ -388,7 +388,7 @@ addr_write_loop:
     addi t3, t3, 4
     addi t1, t1, -1
     bnez t1, addr_write_loop
-    
+
     # Phase 2: Read and verify
     li t1, (RAM_SIZE / 4) - 256
     mv t3, t0
@@ -398,7 +398,7 @@ addr_read_loop:
     addi t3, t3, 4
     addi t1, t1, -1
     bnez t1, addr_read_loop
-    
+
     beqz t2, addr_pattern_pass
     call increment_failed_count
     ret
@@ -410,7 +410,7 @@ addr_pattern_error:
     bnez t1, addr_read_loop
     call increment_failed_count
     ret
-    
+
 addr_pattern_pass:
     call increment_passed_count
     ret
@@ -420,27 +420,27 @@ addr_pattern_pass:
  */
 data_pattern_test:
     call increment_test_count
-    
+
     # Test pattern 1: 0x00000000
     li a0, PATTERN_0x00
     call test_single_pattern
     bnez a0, data_pattern_fail
-    
-    # Test pattern 2: 0xFFFFFFFF  
+
+    # Test pattern 2: 0xFFFFFFFF
     li a0, PATTERN_0xFF
     call test_single_pattern
     bnez a0, data_pattern_fail
-    
+
     # Test pattern 3: 0x55555555
     li a0, PATTERN_0x55
     call test_single_pattern
     bnez a0, data_pattern_fail
-    
+
     # Test pattern 4: 0xAAAAAAAA
     li a0, PATTERN_0xAA
     call test_single_pattern
     bnez a0, data_pattern_fail
-    
+
     call increment_passed_count
     ret
 
@@ -457,14 +457,14 @@ test_single_pattern:
     li t0, RAM_BASE
     li t1, (RAM_SIZE / 4) - 256
     mv t2, a0  # Save pattern
-    
+
     # Write pattern
 pattern_write_loop:
     sw t2, 0(t0)
     addi t0, t0, 4
     addi t1, t1, -1
     bnez t1, pattern_write_loop
-    
+
     # Read and verify
     li t0, RAM_BASE
     li t1, (RAM_SIZE / 4) - 256
@@ -474,7 +474,7 @@ pattern_read_loop:
     addi t0, t0, 4
     addi t1, t1, -1
     bnez t1, pattern_read_loop
-    
+
     li a0, 0  # Success
     ret
 
@@ -487,10 +487,10 @@ pattern_test_fail:
  */
 march_test:
     call increment_test_count
-    
+
     li t0, RAM_BASE
     li t1, (RAM_SIZE / 4) - 256
-    
+
     # Step 1: Write 0 to all locations (ascending)
     mv t2, t0
     mv t3, t1
@@ -499,7 +499,7 @@ march_step1:
     addi t2, t2, 4
     addi t3, t3, -1
     bnez t3, march_step1
-    
+
     # Step 2: Read 0, Write 1 (ascending)
     mv t2, t0
     mv t3, t1
@@ -511,7 +511,7 @@ march_step2:
     addi t2, t2, 4
     addi t3, t3, -1
     bnez t3, march_step2
-    
+
     # Step 3: Read 1, Write 0 (descending)
     li t2, RAM_BASE + (RAM_SIZE - 1024)  # End address
     mv t3, t1
@@ -523,7 +523,7 @@ march_step3:
     addi t2, t2, -4
     addi t3, t3, -1
     bnez t3, march_step3
-    
+
     # Step 4: Read 0 (ascending)
     mv t2, t0
     mv t3, t1
@@ -533,7 +533,7 @@ march_step4:
     addi t2, t2, 4
     addi t3, t3, -1
     bnez t3, march_step4
-    
+
     call increment_passed_count
     ret
 
@@ -546,21 +546,21 @@ march_test_fail:
  */
 ternary_pattern_test:
     call increment_test_count
-    
+
     # Test ternary pattern 1
     li a0, PATTERN_TERNARY1
     call test_single_pattern
     bnez a0, ternary_test_fail
-    
+
     # Test ternary pattern 2
     li a0, PATTERN_TERNARY2
     call test_single_pattern
     bnez a0, ternary_test_fail
-    
+
     # Test mixed ternary patterns
     call test_ternary_mixed
     bnez a0, ternary_test_fail
-    
+
     call increment_passed_count
     ret
 
@@ -574,22 +574,22 @@ ternary_test_fail:
 test_ternary_mixed:
     li t0, RAM_BASE
     li t1, (RAM_SIZE / 8) - 128  # Smaller test for speed
-    
+
     # Write alternating ternary patterns
     li t2, PATTERN_TERNARY1
     li t3, PATTERN_TERNARY2
-    
+
 ternary_mixed_write:
     sw t2, 0(t0)
     sw t3, 4(t0)
     addi t0, t0, 8
     addi t1, t1, -1
     bnez t1, ternary_mixed_write
-    
+
     # Read and verify
     li t0, RAM_BASE
     li t1, (RAM_SIZE / 8) - 128
-    
+
 ternary_mixed_read:
     lw t4, 0(t0)
     bne t4, t2, ternary_mixed_fail
@@ -598,7 +598,7 @@ ternary_mixed_read:
     addi t0, t0, 8
     addi t1, t1, -1
     bnez t1, ternary_mixed_read
-    
+
     li a0, 0  # Success
     ret
 
@@ -611,24 +611,24 @@ ternary_mixed_fail:
  */
 memory_speed_test:
     call increment_test_count
-    
+
     addi sp, sp, -4
     sw ra, 0(sp)
-    
+
     la a0, speed_test_msg
     call uart_print_string
-    
+
     # Test 1: Sequential write speed
     call test_write_speed
-    
+
     # Test 2: Sequential read speed
     call test_read_speed
-    
+
     # Test 3: Random access speed
     call test_random_speed
-    
+
     call increment_passed_count
-    
+
     lw ra, 0(sp)
     addi sp, sp, 4
     ret
@@ -639,30 +639,30 @@ memory_speed_test:
 test_write_speed:
     addi sp, sp, -4
     sw ra, 0(sp)
-    
+
     # Get start time
     li t0, TIMER_BASE
     lw t1, TIMER_COUNT(t0)  # Start time
-    
+
     # Write test
     li t2, RAM_BASE
     li t3, (RAM_SIZE / 4) - 256
     li t4, 0xDEADBEEF
-    
+
 write_speed_loop:
     sw t4, 0(t2)
     addi t2, t2, 4
     addi t3, t3, -1
     bnez t3, write_speed_loop
-    
+
     # Get end time
     lw t2, TIMER_COUNT(t0)  # End time
-    
+
     # Calculate and print speed
     sub a0, t2, t1
     la a1, write_speed_msg
     call print_speed_result
-    
+
     lw ra, 0(sp)
     addi sp, sp, 4
     ret
@@ -673,29 +673,29 @@ write_speed_loop:
 test_read_speed:
     addi sp, sp, -4
     sw ra, 0(sp)
-    
+
     # Get start time
     li t0, TIMER_BASE
     lw t1, TIMER_COUNT(t0)
-    
+
     # Read test
     li t2, RAM_BASE
     li t3, (RAM_SIZE / 4) - 256
-    
+
 read_speed_loop:
     lw t4, 0(t2)
     addi t2, t2, 4
     addi t3, t3, -1
     bnez t3, read_speed_loop
-    
+
     # Get end time
     lw t2, TIMER_COUNT(t0)
-    
+
     # Calculate and print speed
     sub a0, t2, t1
     la a1, read_speed_msg
     call print_speed_result
-    
+
     lw ra, 0(sp)
     addi sp, sp, 4
     ret
@@ -706,15 +706,15 @@ read_speed_loop:
 test_random_speed:
     addi sp, sp, -4
     sw ra, 0(sp)
-    
+
     # Simple random access test (pseudo-random)
     li t0, TIMER_BASE
     lw t1, TIMER_COUNT(t0)
-    
+
     # Random access pattern
     li t2, 1000  # Number of accesses
     li t3, 0x12345678  # Seed
-    
+
 random_access_loop:
     # Generate pseudo-random address
     slli t4, t3, 1
@@ -722,26 +722,26 @@ random_access_loop:
     andi t4, t3, 0xFFFC  # Word aligned
     li t5, RAM_BASE
     add t4, t4, t5
-    
+
     # Bounds check
     li t5, (RAM_BASE + RAM_SIZE - 1024)
     bge t4, t5, random_access_next
-    
+
     # Random read
     lw t5, 0(t4)
-    
+
 random_access_next:
     addi t2, t2, -1
     bnez t2, random_access_loop
-    
+
     # Get end time
     lw t2, TIMER_COUNT(t0)
-    
+
     # Calculate and print speed
     sub a0, t2, t1
     la a1, random_speed_msg
     call print_speed_result
-    
+
     lw ra, 0(sp)
     addi sp, sp, 4
     ret
@@ -754,17 +754,17 @@ print_speed_result:
     addi sp, sp, -8
     sw ra, 0(sp)
     sw a0, 4(sp)
-    
+
     mv a0, a1
     call uart_print_string
-    
+
     lw a0, 4(sp)
     call uart_print_hex
-    
+
     la a0, cycles_msg
     call uart_print_string
     call uart_print_newline
-    
+
     lw a0, 4(sp)
     lw ra, 0(sp)
     addi sp, sp, 8
@@ -776,35 +776,35 @@ print_speed_result:
 print_summary:
     addi sp, sp, -4
     sw ra, 0(sp)
-    
+
     la a0, summary_msg
     call uart_print_string
-    
+
     # Total tests
     la t0, test_results
     lw a0, 0(t0)
     la a1, total_tests_msg
     call print_count_result
-    
+
     # Passed tests
     lw a0, 4(t0)
     la a1, passed_tests_msg
     call print_count_result
-    
+
     # Failed tests
     lw a0, 8(t0)
     la a1, failed_tests_msg
     call print_count_result
-    
+
     # Overall result
     lw t1, 4(t0)  # Passed
     lw t2, 0(t0)  # Total
     beq t1, t2, all_tests_passed
-    
+
     la a0, some_tests_failed_msg
     call uart_print_string
     j summary_done
-    
+
 all_tests_passed:
     la a0, all_tests_passed_msg
     call uart_print_string
@@ -821,14 +821,14 @@ print_count_result:
     addi sp, sp, -8
     sw ra, 0(sp)
     sw a0, 4(sp)
-    
+
     mv a0, a1
     call uart_print_string
-    
+
     lw a0, 4(sp)
     call uart_print_decimal
     call uart_print_newline
-    
+
     lw a0, 4(sp)
     lw ra, 0(sp)
     addi sp, sp, 8
@@ -864,16 +864,16 @@ increment_failed_count:
 print_test_result:
     addi sp, sp, -4
     sw ra, 0(sp)
-    
+
     # Check if last test passed by comparing counts
     la t0, test_results
     lw t1, 0(t0)  # Total
     lw t2, 4(t0)  # Passed
     lw t3, 8(t0)  # Failed
-    
+
     add t4, t2, t3
     beq t1, t4, check_last_result
-    
+
     # This shouldn't happen
     la a0, error_msg
     call uart_print_string
@@ -884,14 +884,14 @@ check_last_result:
     # Simple: if failed count increased, last test failed
     la t0, test_results
     lw t3, 8(t0)  # Current failed count
-    
+
     # For simplicity, assume we can check the LED status
     li t0, GPIO_BASE
     lw t1, GPIO_OUT(t0)
     andi t1, t1, 0x80  # Check if error LED is on
-    
+
     bnez t1, print_fail_result
-    
+
     la a0, pass_msg
     call uart_print_string
     j print_result_done
@@ -912,7 +912,7 @@ uart_print_string:
     addi sp, sp, -8
     sw ra, 0(sp)
     sw t0, 4(sp)
-    
+
     mv t0, a0
 print_char_loop:
     lb a0, 0(t0)
@@ -952,15 +952,15 @@ uart_print_hex:
     sw ra, 0(sp)
     sw t0, 4(sp)
     sw t1, 8(sp)
-    
+
     li a0, '0'
     call uart_putchar
     li a0, 'x'
     call uart_putchar
-    
+
     lw t0, 4(sp)  # Restore value
     li t1, 8
-    
+
 hex_digit_loop:
     srli a0, t0, 28
     andi a0, a0, 0xF
@@ -975,7 +975,7 @@ hex_print_char:
     slli t0, t0, 4
     addi t1, t1, -1
     bnez t1, hex_digit_loop
-    
+
     lw t1, 8(sp)
     lw t0, 4(sp)
     lw ra, 0(sp)
@@ -985,11 +985,11 @@ hex_print_char:
 uart_print_decimal:
     addi sp, sp, -4
     sw ra, 0(sp)
-    
+
     # Convert to decimal and print
     # Simple implementation - just use hex for now
     call uart_print_hex
-    
+
     lw ra, 0(sp)
     addi sp, sp, 4
     ret

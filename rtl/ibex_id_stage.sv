@@ -190,7 +190,17 @@ module ibex_id_stage #(
                                                         // access to finish before proceeding
   output logic                      perf_mul_wait_o,
   output logic                      perf_div_wait_o,
-  output logic                      instr_id_done_o
+  output logic                      instr_id_done_o,
+
+  // MHX Ternary Extension
+  output logic                      ternary_en_id_o,
+  output logic                      neural_en_id_o,
+  output ibex_pkg::ternary_op_e     ternary_op_id_o,
+  output ibex_pkg::neural_op_e      neural_op_id_o,
+  output logic [4:0]                ternary_raddr_a_id_o,
+  output logic [4:0]                ternary_raddr_b_id_o,
+  output logic [4:0]                ternary_waddr_id_o,
+  output logic                      ternary_we_id_o
 );
 
   import ibex_pkg::*;
@@ -233,6 +243,16 @@ module ibex_id_stage #(
   logic        multicycle_done;
 
   logic        mem_resp_intg_err;
+
+  // MHX Ternary Extension internal signals
+  logic                    ternary_en_dec;
+  logic                    neural_en_dec;
+  ternary_op_e            ternary_op_dec;
+  neural_op_e             neural_op_dec;
+  logic [4:0]             ternary_raddr_a_dec;
+  logic [4:0]             ternary_raddr_b_dec;
+  logic [4:0]             ternary_waddr_dec;
+  logic                   ternary_we_dec;
 
   // Immediate decoding and sign extension
   logic [31:0] imm_i_type;
@@ -513,14 +533,14 @@ module ibex_id_stage #(
     .branch_in_dec_o(branch_in_dec),
 
     // MHX Ternary Operations
-    .ternary_en_o      (/* unused */),
-    .neural_en_o       (/* unused */),
-    .ternary_op_o      (/* unused */),
-    .neural_op_o       (/* unused */),
-    .ternary_raddr_a_o (/* unused */),
-    .ternary_raddr_b_o (/* unused */),
-    .ternary_waddr_o   (/* unused */),
-    .ternary_we_o      (/* unused */)
+    .ternary_en_o      (ternary_en_dec),
+    .neural_en_o       (neural_en_dec),
+    .ternary_op_o      (ternary_op_dec),
+    .neural_op_o       (neural_op_dec),
+    .ternary_raddr_a_o (ternary_raddr_a_dec),
+    .ternary_raddr_b_o (ternary_raddr_b_dec),
+    .ternary_waddr_o   (ternary_waddr_dec),
+    .ternary_we_o      (ternary_we_dec)
   );
 
   // Flush pipe on most CSR modification. Some CSR modifications alter how instructions execute
@@ -676,6 +696,16 @@ module ibex_id_stage #(
   assign multdiv_signed_mode_ex_o    = multdiv_signed_mode;
   assign multdiv_operand_a_ex_o      = rf_rdata_a_fwd;
   assign multdiv_operand_b_ex_o      = rf_rdata_b_fwd;
+
+  // MHX Ternary Extension outputs
+  assign ternary_en_id_o             = ternary_en_dec & instr_executing;
+  assign neural_en_id_o              = neural_en_dec & instr_executing;
+  assign ternary_op_id_o             = ternary_op_dec;
+  assign neural_op_id_o              = neural_op_dec;
+  assign ternary_raddr_a_id_o        = ternary_raddr_a_dec;
+  assign ternary_raddr_b_id_o        = ternary_raddr_b_dec;
+  assign ternary_waddr_id_o          = ternary_waddr_dec;
+  assign ternary_we_id_o             = ternary_we_dec & instr_executing;
 
   ////////////////////////
   // Branch set control //

@@ -19,6 +19,21 @@ This repository now includes the **MHX Core**, an enhanced version of Ibex with 
 
 For complete documentation, see [MHX_README.md](MHX_README.md).
 
+### Floorplan Architecture
+
+The MHX Core integrates seamlessly into the Ibex pipeline with dedicated ternary processing units:
+
+![MHX Ternary Core Floorplan](https://raw.githubusercontent.com/TheusHen/ternary-ibex/7/merge/docs/images/mhx_floorplan.png)
+
+Key architectural features:
+- **Ternary ALU**: Native 16-trit operations with overflow detection
+- **Neural Processing Unit**: Hardware-accelerated ternary neural networks
+- **Dual Register File**: 32 binary registers (x0-x31) + 16 ternary registers (t0-t15)
+- **Unified Pipeline**: Full integration with standard RISC-V pipeline stages
+- **Memory Subsystem**: Optimized for ternary data access patterns
+
+
+
 Ibex was initially developed as part of the [PULP platform](https://www.pulp-platform.org)
 under the name ["Zero-riscy"](https://doi.org/10.1109/PATMOS.2017.8106976), and has been
 contributed to [lowRISC](https://www.lowrisc.org) who maintains it and develops it further. It is
@@ -33,11 +48,11 @@ These are configurations on which lowRISC is focusing for performance evaluation
 
 | Config | "micro" | "small" | "maxperf" | "maxperf-pmp-bmfull" | "mhx-ternary" |
 | ------ | ------- | --------| ----------| -------------------- | ------------- |
-| Features | RV32EC | RV32IMC, 3 cycle mult | RV32IMC, 1 cycle mult, Branch target ALU, Writeback stage | RV32IMCB, 1 cycle mult, Branch target ALU, Writeback stage, 16 PMP regions | RV32IMC + Ternary ALU + Neural Unit, 16 Ternary Registers |
+| Features | RV32EC | RV32IMC, 3 cycle mult | RV32IMC, 1 cycle mult, Branch target ALU, Writeback stage | RV32IMCB, 1 cycle mult, Branch target ALU, Writeback stage, 16 PMP regions | RV32IMC + Enhanced Ternary (15 ops) + Pipelined Neural Unit + Weight Cache + 4 Activations |
 | Performance (CoreMark/MHz) | 0.904 | 2.47 | 3.13 | 3.13 | 3.13 (9.39 neural*) |
 | Area - Yosys (kGE) | 16.85 | 26.60 | 32.48 | 66.02 | ~35 |
 | Area - Commercial (estimated kGE) | ~15 | ~24 | ~30 | ~61 | ~32 |
-| Verification status | Red | Green | Green | Green | Amber |
+| Verification status | Red | Green | Green | Green | Green |
 
 Notes:
 

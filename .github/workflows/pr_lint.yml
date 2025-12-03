@@ -17,6 +17,11 @@ on:
     branches:
       - "*"
 
+permissions:
+  contents: read
+  pull-requests: write
+  checks: write
+
 jobs:
   verible-lint:
     runs-on: ubuntu-latest

@@ -4,10 +4,10 @@
 
 ###############################################################################
 # Description:
-#   Setting mseccfg.mml 1 and mseccfg.rlb 0/1 with different PMP.LXWR 
+#   Setting mseccfg.mml 1 and mseccfg.rlb 0/1 with different PMP.LXWR
 # permissions and check R/w access to that specific region. Access is
 # at start, mid and end of the PMP region.
-#   Target of test is to achieve functional coverage for rewriting 
+#   Target of test is to achieve functional coverage for rewriting
 # permissions in PMP regions with RLB 0/1.
 #   Test accesses in both M-mode and U-mode.
 
