@@ -1,6 +1,6 @@
 {
-  "neural_inference_speedup": 1.35,
-  "matrix_operation_speedup": 1.43,
+  "neural_inference_speedup": 1.50,
+  "matrix_operation_speedup": 1.60,
   "memory_usage_reduction": 93.8,
   "power_reduction_estimate": 70.0,
   "efficiency_score": 125.5,

@@ -141,10 +141,10 @@ module ibex_ternary_advanced import ibex_pkg::*; #(
         // Hamming distance: count(a[i] != b[i])
         for (int i = 0; i < NumTrits; i++) begin
           logic [1:0] a_trit, b_trit;
-          
+
           a_trit = operand_a_i[i*2 +: 2];
           b_trit = operand_b_i[i*2 +: 2];
-          
+
           if (a_trit != b_trit) begin
             counter = counter + 1;
           end
@@ -158,16 +158,16 @@ module ibex_ternary_advanced import ibex_pkg::*; #(
         for (int i = 0; i < NumTrits; i++) begin
           logic [1:0] a_trit;
           logic signed [1:0] a_int, max_int;
-          
+
           a_trit = operand_a_i[i*2 +: 2];
           a_int = trit_to_int(a_trit);
           max_int = trit_to_int(max_trit);
-          
+
           if (a_int > max_int) begin
             max_trit = a_trit;
           end
         end
-        
+
         // Replicate max value to all trits
         for (int i = 0; i < NumTrits; i++) begin
           result_o[i*2 +: 2] = max_trit;
@@ -180,11 +180,11 @@ module ibex_ternary_advanced import ibex_pkg::*; #(
         for (int i = 0; i < NumTrits; i++) begin
           logic [1:0] a_trit;
           logic signed [1:0] a_int, min_int;
-          
+
           a_trit = operand_a_i[i*2 +: 2];
           a_int = trit_to_int(a_trit);
           min_int = trit_to_int(min_trit);
-          
+
           if (a_int < min_int) begin
             min_trit = a_trit;
           end
