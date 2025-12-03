@@ -194,7 +194,7 @@ module mhx_comprehensive_test;
     // ===== TEST 1: Register File T0 Protection =====
     $display("\n[TEST SUITE 1] Register File T0 Protection");
     $display("------------------------------------------------------------");
-    
+
     write_treg(5'd0, 32'hAAAAAAAA);  // Try to write to T0
     read_treg(5'd0, 5'd1);
     @(posedge clk);
@@ -203,16 +203,16 @@ module mhx_comprehensive_test;
     // ===== TEST 2: Register File R/W =====
     $display("\n[TEST SUITE 2] Register File Read/Write");
     $display("------------------------------------------------------------");
-    
+
     write_treg(5'd1, 32'hAAAAAAAA);
     write_treg(5'd2, 32'h55555555);
     write_treg(5'd31, 32'hA5A5A5A5);
-    
+
     read_treg(5'd1, 5'd2);
     @(posedge clk);
     check_result("RegFile: T1 read", trf_rdata_a, 32'hAAAAAAAA);
     check_result("RegFile: T2 read", trf_rdata_b, 32'h55555555);
-    
+
     read_treg(5'd31, 5'd0);
     @(posedge clk);
     check_result("RegFile: T31 read", trf_rdata_a, 32'hA5A5A5A5);
@@ -307,9 +307,9 @@ module mhx_comprehensive_test;
     neural_inputs  = 32'hAAAAAAAA;
     neural_bias    = 32'h55555555;
     neural_op      = NEURAL_MULTIPLY;
-    
+
     repeat(5) @(posedge clk);  // Wait for pipeline
-    
+
     if (enhanced_valid) begin
       $display("✓ PASS: Enhanced Neural (pipelined) - result valid after 3 cycles");
       pass_count++;
@@ -330,10 +330,10 @@ module mhx_comprehensive_test;
     @(posedge clk);
     cache_we = 1'b0;
     @(posedge clk);
-    
+
     neural_weights = 32'h00000000;  // Change weights
     @(posedge clk);
-    
+
     if (cache_hit) begin
       $display("✓ PASS: Weight cache HIT");
       pass_count++;

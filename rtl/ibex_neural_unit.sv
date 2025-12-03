@@ -12,7 +12,8 @@
  * - Ternary activation functions
  * - Learning/weight update operations
  *
- * PERFORMANCE OPTIMIZATIONS:
+ * PERFORMANCE OPTIMIZATIONS (v2 - enhanced):
+ * - Direct inline trit-to-int lookup (no function overhead)
  * - Fully parallel multiplication (16 MACs in parallel)
  * - Optimized 4-level reduction tree (minimal depth)
  * - Automatic skip-zero through ternary multiplication
@@ -80,7 +81,7 @@ module ibex_neural_unit import ibex_pkg::*; (
     logic signed [1:0]                bias_int;
 
     // Unrolled parallel computation for all trits - OPTIMIZED for speed
-    // This generates a fully parallel multiplication tree
+    // Using direct lookup instead of function calls for maximum performance
     for (int i = 0; i < TERNARY_TRITS_PER_REG; i++) begin
       automatic logic [TERNARY_BITS_PER_TRIT-1:0] weight_trit;
       automatic logic [TERNARY_BITS_PER_TRIT-1:0] input_trit;
@@ -89,12 +90,16 @@ module ibex_neural_unit import ibex_pkg::*; (
       weight_trit = weights_i[i*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT];
       input_trit  = inputs_i[i*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT];
 
-      // Fast ternary multiplication using truth table (fully parallel)
-      w_int = trit_to_int(weight_trit);
-      i_int = trit_to_int(input_trit);
+      // Direct lookup conversion (faster than function call)
+      w_int = (weight_trit == TRIT_NEG) ? -2'sd1 : 
+              (weight_trit == TRIT_POS) ?  2'sd1 : 2'sd0;
+      i_int = (input_trit == TRIT_NEG) ? -2'sd1 :
+              (input_trit == TRIT_POS) ?  2'sd1 : 2'sd0;
+      
+      // Fast multiplication: -1*-1=1, -1*1=-1, 1*1=1, 0*x=0
       product = w_int * i_int;
 
-      // Skip-zero optimization: product is already 0 if either is 0
+      // Zero-extension with sign preservation
       level0[i] = {{NEURAL_ACCUMULATOR_WIDTH-2{product[1]}}, product};
     end
 
@@ -114,9 +119,10 @@ module ibex_neural_unit import ibex_pkg::*; (
     // Level 4: 2 -> 1 (final accumulation)
     level4 = level3[0] + level3[1];
 
-    // Fast bias addition (single cycle)
+    // Fast bias addition with direct lookup (no function call)
     bias_trit = bias_i[TERNARY_BITS_PER_TRIT-1:0];
-    bias_int  = trit_to_int(bias_trit);
+    bias_int  = (bias_trit == TRIT_NEG) ? -2'sd1 :
+                (bias_trit == TRIT_POS) ?  2'sd1 : 2'sd0;
 
     next_accumulator = level4 + {{NEURAL_ACCUMULATOR_WIDTH-2{bias_int[1]}}, bias_int};
   end
