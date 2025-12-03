@@ -265,12 +265,12 @@ module ibex_ternary_advanced import ibex_pkg::*; #(
   ///////////////////////////
 
   `ASSERT(AlwaysReady, ready_o === 1'b1)
-  
+
   // Dot product commutativity
   `ASSERT_INIT(DotProductCommutative,
     (advanced_op_i == TERNARY_ADV_DOT) |->
     (scalar_result_o == scalar_result_o))  // Self-consistent
-  
+
   // Manhattan distance is always non-negative
   `ASSERT_INIT(ManhattanNonNegative,
     (advanced_op_i == TERNARY_ADV_MANHATTAN) |->

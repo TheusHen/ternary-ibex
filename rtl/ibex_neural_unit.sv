@@ -91,11 +91,11 @@ module ibex_neural_unit import ibex_pkg::*; (
       input_trit  = inputs_i[i*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT];
 
       // Direct lookup conversion (faster than function call)
-      w_int = (weight_trit == TRIT_NEG) ? -2'sd1 : 
+      w_int = (weight_trit == TRIT_NEG) ? -2'sd1 :
               (weight_trit == TRIT_POS) ?  2'sd1 : 2'sd0;
       i_int = (input_trit == TRIT_NEG) ? -2'sd1 :
               (input_trit == TRIT_POS) ?  2'sd1 : 2'sd0;
-      
+
       // Fast multiplication: -1*-1=1, -1*1=-1, 1*1=1, 0*x=0
       product = w_int * i_int;
 

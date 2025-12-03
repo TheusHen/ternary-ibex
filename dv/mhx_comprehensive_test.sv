@@ -162,7 +162,11 @@ module mhx_comprehensive_test;
     @(posedge clk);
   endtask
 
-  task automatic check_result(input string test_name, input logic [31:0] got, input logic [31:0] expected);
+  task automatic check_result(
+    input string test_name,
+    input logic [31:0] got,
+    input logic [31:0] expected
+  );
     test_count++;
     if (got == expected) begin
       $display("✓ PASS: %s", test_name);
