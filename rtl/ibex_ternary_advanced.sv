@@ -65,7 +65,7 @@ module ibex_ternary_advanced import ibex_pkg::*; #(
   function automatic logic [1:0] trit_sat_add(logic [1:0] a, logic [1:0] b);
     logic signed [2:0] sum;
     sum = trit_to_int(a) + trit_to_int(b);
-    
+
     if (sum > 1) return TRIT_POS;
     else if (sum < -1) return TRIT_NEG;
     else if (sum == 0) return TRIT_ZERO;
@@ -76,9 +76,9 @@ module ibex_ternary_advanced import ibex_pkg::*; #(
   function automatic logic [1:0] trit_abs_diff(logic [1:0] a, logic [1:0] b);
     logic signed [2:0] diff;
     diff = trit_to_int(a) - trit_to_int(b);
-    
+
     if (diff < 0) diff = -diff;
-    
+
     if (diff == 0) return TRIT_ZERO;
     else if (diff == 1) return TRIT_POS;
     else return 2'b10; // +1 is max in ternary, so 2 maps to +1
@@ -90,7 +90,7 @@ module ibex_ternary_advanced import ibex_pkg::*; #(
     logic [1:0] max_trit, min_trit;
     logic [7:0] leading_zeros;
     logic found_nonzero;
-    
+
     // Initialize outputs
     result_o = '0;
     scalar_result_o = '0;
@@ -108,10 +108,10 @@ module ibex_ternary_advanced import ibex_pkg::*; #(
         for (int i = 0; i < NumTrits; i++) begin
           logic [1:0] a_trit, b_trit;
           logic signed [1:0] product;
-          
+
           a_trit = operand_a_i[i*2 +: 2];
           b_trit = operand_b_i[i*2 +: 2];
-          
+
           product = trit_to_int(a_trit) * trit_to_int(b_trit);
           accumulator = accumulator + product;
         end
@@ -124,13 +124,13 @@ module ibex_ternary_advanced import ibex_pkg::*; #(
         for (int i = 0; i < NumTrits; i++) begin
           logic [1:0] a_trit, b_trit;
           logic signed [2:0] diff;
-          
+
           a_trit = operand_a_i[i*2 +: 2];
           b_trit = operand_b_i[i*2 +: 2];
-          
+
           diff = trit_to_int(a_trit) - trit_to_int(b_trit);
           if (diff < 0) diff = -diff;
-          
+
           counter = counter + diff[1:0];
         end
         scalar_result_o = counter;

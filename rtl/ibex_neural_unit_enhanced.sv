@@ -28,7 +28,7 @@ module ibex_neural_unit_enhanced import ibex_pkg::*; (
   input  logic [TERNARY_REG_WIDTH-1:0] inputs_i,        // Ternary inputs
   input  logic [TERNARY_REG_WIDTH-1:0] bias_i,          // Bias value
   input  neural_op_e                   operation_i,     // Neural operation
-  
+
   // Enhanced controls
   input  logic [1:0]                   activation_sel_i, // 00=Sign, 01=ReLU, 10=Sigmoid, 11=Tanh
   input  logic                         cache_enable_i,   // Enable weight caching
@@ -49,12 +49,12 @@ module ibex_neural_unit_enhanced import ibex_pkg::*; (
   ///////////////////////////
   // Weight Cache          //
   ///////////////////////////
-  
+
   logic [TERNARY_REG_WIDTH-1:0] weight_cache [16];
   logic [15:0]                  cache_valid;
   logic [TERNARY_REG_WIDTH-1:0] cached_weights;
   logic                         cache_hit;
-  
+
   always_ff @(posedge clk_i or negedge rst_ni) begin
     if (!rst_ni) begin
       cache_valid <= '0;
@@ -66,7 +66,7 @@ module ibex_neural_unit_enhanced import ibex_pkg::*; (
       cache_valid[cache_addr_i] <= 1'b1;
     end
   end
-  
+
   assign cache_hit = cache_enable_i && cache_valid[cache_addr_i];
   assign cached_weights = cache_hit ? weight_cache[cache_addr_i] : weights_i;
   assign cache_hit_o = cache_hit;
@@ -74,38 +74,38 @@ module ibex_neural_unit_enhanced import ibex_pkg::*; (
   ///////////////////////////
   // Sparsity Detector     //
   ///////////////////////////
-  
+
   logic [7:0] zero_count;
   logic [7:0] sparsity;
-  
+
   always_comb begin
     zero_count = '0;
     for (int i = 0; i < TERNARY_TRITS_PER_REG; i++) begin
       logic [TERNARY_BITS_PER_TRIT-1:0] w_trit, i_trit;
       w_trit = cached_weights[i*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT];
       i_trit = inputs_i[i*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT];
-      
+
       if (sparse_enable_i && (w_trit == TRIT_ZERO || i_trit == TRIT_ZERO)) begin
         zero_count = zero_count + 1;
       end
     end
     sparsity = (zero_count * 100) / TERNARY_TRITS_PER_REG;
   end
-  
+
   assign sparsity_ratio_o = sparsity;
 
   ///////////////////////////
   // Pipeline Stage 1      //
   // Multiply-Accumulate   //
   ///////////////////////////
-  
+
   logic signed [NEURAL_ACCUMULATOR_WIDTH-1:0] stage1_accumulator;
   logic [1:0]                                 stage1_activation_sel;
   logic                                       stage1_valid;
   logic [TERNARY_REG_WIDTH-1:0]               stage1_bias;
   logic                                       stage1_normalize_en;
   logic [7:0]                                 stage1_dropout_mask;
-  
+
   // Convert trit encoding to signed integer
   function automatic logic signed [1:0] trit_to_int(logic [1:0] trit);
     case (trit)
@@ -115,7 +115,7 @@ module ibex_neural_unit_enhanced import ibex_pkg::*; (
       default:   return 0;
     endcase
   endfunction
-  
+
   // Optimized ternary multiply-accumulate with pipelining
   always_ff @(posedge clk_i or negedge rst_ni) begin
     if (!rst_ni) begin
@@ -133,16 +133,16 @@ module ibex_neural_unit_enhanced import ibex_pkg::*; (
       logic signed [NEURAL_ACCUMULATOR_WIDTH-1:0] level4;
       logic [TERNARY_BITS_PER_TRIT-1:0] bias_trit;
       logic signed [1:0] bias_int;
-      
+
       // Level 0: Multiply with skip-zero optimization
       for (int i = 0; i < TERNARY_TRITS_PER_REG; i++) begin
         logic [TERNARY_BITS_PER_TRIT-1:0] weight_trit, input_trit;
-        
+
         weight_trit = cached_weights[i*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT];
         input_trit  = inputs_i[i*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT];
-        
+
         level0[i] = '0;
-        
+
         // Skip-zero optimization
         if ((weight_trit != TRIT_ZERO) && (input_trit != TRIT_ZERO)) begin
           if (weight_trit == input_trit) begin
@@ -152,7 +152,7 @@ module ibex_neural_unit_enhanced import ibex_pkg::*; (
           end
         end
       end
-      
+
       // Reduction tree (pipelined to Stage 1)
       for (int i = 0; i < (TERNARY_TRITS_PER_REG/2); i++) begin
         level1[i] = level0[2*i] + level0[2*i+1];
@@ -164,11 +164,11 @@ module ibex_neural_unit_enhanced import ibex_pkg::*; (
         level3[i] = level2[2*i] + level2[2*i+1];
       end
       level4 = level3[0];
-      
+
       // Add bias
       bias_trit = bias_i[TERNARY_BITS_PER_TRIT-1:0];
       bias_int  = trit_to_int(bias_trit);
-      
+
       stage1_accumulator <= level4 + {{NEURAL_ACCUMULATOR_WIDTH-2{bias_int[1]}}, bias_int};
       stage1_activation_sel <= activation_sel_i;
       stage1_valid <= (operation_i inside {NEURAL_MULTIPLY, NEURAL_ACCUMULATE, NEURAL_ACTIVATE});
@@ -182,12 +182,12 @@ module ibex_neural_unit_enhanced import ibex_pkg::*; (
   // Pipeline Stage 2      //
   // Activation Function   //
   ///////////////////////////
-  
+
   logic signed [NEURAL_ACCUMULATOR_WIDTH-1:0] stage2_result;
   logic                                        stage2_valid;
   logic [7:0]                                  stage2_dropout_mask;
   logic                                        stage2_normalize_en;
-  
+
   // Multiple activation functions
   function automatic logic signed [NEURAL_ACCUMULATOR_WIDTH-1:0] apply_activation(
     logic signed [NEURAL_ACCUMULATOR_WIDTH-1:0] acc,
@@ -215,9 +215,10 @@ module ibex_neural_unit_enhanced import ibex_pkg::*; (
         else if (acc < 0) return -{{NEURAL_ACCUMULATOR_WIDTH-2{1'b0}}, 2'b01}; // -0.5 approx
         else return '0;
       end
+      default: return '0; // Default to zero activation
     endcase
   endfunction
-  
+
   always_ff @(posedge clk_i or negedge rst_ni) begin
     if (!rst_ni) begin
       stage2_result <= '0;
@@ -236,10 +237,10 @@ module ibex_neural_unit_enhanced import ibex_pkg::*; (
   // Pipeline Stage 3      //
   // Dropout & Normalize   //
   ///////////////////////////
-  
+
   logic signed [NEURAL_ACCUMULATOR_WIDTH-1:0] stage3_result;
   logic                                        stage3_valid;
-  
+
   // Dropout application
   function automatic logic signed [NEURAL_ACCUMULATOR_WIDTH-1:0] apply_dropout(
     logic signed [NEURAL_ACCUMULATOR_WIDTH-1:0] val,
@@ -249,7 +250,7 @@ module ibex_neural_unit_enhanced import ibex_pkg::*; (
     if (mask[0]) return val;
     else return '0;
   endfunction
-  
+
   // Batch normalization (simplified)
   function automatic logic signed [NEURAL_ACCUMULATOR_WIDTH-1:0] normalize(
     logic signed [NEURAL_ACCUMULATOR_WIDTH-1:0] val
@@ -257,22 +258,22 @@ module ibex_neural_unit_enhanced import ibex_pkg::*; (
     // Simplified: divide by 2 (shift right)
     return val >>> 1;
   endfunction
-  
+
   always_ff @(posedge clk_i or negedge rst_ni) begin
     if (!rst_ni) begin
       stage3_result <= '0;
       stage3_valid <= 1'b0;
     end else begin
       logic signed [NEURAL_ACCUMULATOR_WIDTH-1:0] temp_result;
-      
+
       // Apply dropout
       temp_result = apply_dropout(stage2_result, stage2_dropout_mask);
-      
+
       // Apply normalization if enabled
       if (stage2_normalize_en) begin
         temp_result = normalize(temp_result);
       end
-      
+
       stage3_result <= temp_result;
       stage3_valid <= stage2_valid;
     end
@@ -281,7 +282,7 @@ module ibex_neural_unit_enhanced import ibex_pkg::*; (
   ///////////////////////////
   // Output Stage          //
   ///////////////////////////
-  
+
   always_comb begin
     // Convert accumulator result to ternary encoding
     result_o = {{TERNARY_REG_WIDTH-NEURAL_ACCUMULATOR_WIDTH{1'b0}}, stage3_result};
@@ -291,17 +292,17 @@ module ibex_neural_unit_enhanced import ibex_pkg::*; (
   ///////////////////////////
   // Formal Verification   //
   ///////////////////////////
-  
+
   // Pipeline stages must always have valid relationships
   `ASSERT(PipelineValidity, stage1_valid |=> ##1 stage2_valid, clk_i, !rst_ni)
   `ASSERT(PipelineValidity2, stage2_valid |=> ##1 stage3_valid, clk_i, !rst_ni)
-  
+
   // Cache must be valid when hit is asserted
   `ASSERT(CacheHitValid, cache_hit_o |-> cache_valid[cache_addr_i], clk_i, !rst_ni)
-  
+
   // Sparsity ratio must be in valid range [0, 100]
   `ASSERT_INIT(SparsityRange, sparsity_ratio_o <= 100)
-  
+
   // Reset behavior
   `ASSERT(ResetClearsCache, !rst_ni |=> cache_valid == '0, clk_i, 1'b1)
 
