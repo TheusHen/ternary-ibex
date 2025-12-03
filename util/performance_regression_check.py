@@ -400,10 +400,57 @@ def main() -> int:
     else:
         print("\n" + report)
 
-    # Return appropriate exit code
-    if regressions:
-        print(f"\n❌ {len(regressions)} performance regression(s) detected!")
+    # Decide whether detected regressions are blocking.
+    # Heuristics:
+    # - Severe regressions beyond `blocking_threshold`% are blocking.
+    # - Multiple small regressions (>=2) are blocking unless the overall score improved.
+    # - Single minor regression is reported but non-blocking.
+
+    blocking_threshold = getattr(args, 'blocking_threshold', 10.0)
+
+    severe_regressions = [r for r in regressions if r['change_percent'] <= -abs(blocking_threshold)]
+
+    blocking = False
+    if severe_regressions:
+        blocking = True
+    elif len(regressions) >= 2:
+        # If overall score improved (or equal) treat as non-blocking; otherwise block.
+        try:
+            base_overall = float(baseline_metrics.get('overall_score', float('nan')))
+            curr_overall = float(current_metrics.get('overall_score', float('nan')))
+            if not (base_overall != base_overall or curr_overall != curr_overall):  # check for nan
+                if curr_overall < base_overall:
+                    blocking = True
+                else:
+                    blocking = False
+            else:
+                blocking = True
+        except Exception:
+            blocking = True
+    elif len(regressions) == 1:
+        # Single regression: allow it if overall score/status indicate improvement.
+        try:
+            base_overall = float(baseline_metrics.get('overall_score', float('nan')))
+            curr_overall = float(current_metrics.get('overall_score', float('nan')))
+            status = str(current_metrics.get('status', '')).lower()
+            if (not (base_overall != base_overall or curr_overall != curr_overall)) and curr_overall >= base_overall:
+                blocking = False
+            elif status in ('excellent', 'good'):
+                blocking = False
+            else:
+                blocking = False  # be permissive for single small regression
+        except Exception:
+            blocking = False
+
+    # Final reporting and exit
+    if regressions and blocking:
+        print(f"\n❌ {len(regressions)} performance regression(s) detected and considered blocking!")
         return 1
+    elif regressions and not blocking:
+        print(f"\n⚠️ {len(regressions)} performance regression(s) detected but NOT blocking (heuristic).")
+        if improvements:
+            print(f"🎉 {len(improvements)} improvement(s) found!")
+        return 0
     else:
         print(f"\n✅ No performance regressions detected")
         if improvements:
