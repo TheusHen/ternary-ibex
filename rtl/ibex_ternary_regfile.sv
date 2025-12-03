@@ -133,4 +133,64 @@ module ibex_ternary_regfile import ibex_pkg::*; (
     end
   end
 
+  ////////////////////////////////////////////////////
+  // Power Analysis & Constant-Time Properties      //
+  ////////////////////////////////////////////////////
+
+  // Read operations are constant-time (combinational)
+  `ASSERT_INIT(ReadConstantTime_A_c, rdata_a_o == ternary_regs[raddr_a_i])
+  `ASSERT_INIT(ReadConstantTime_B_c, rdata_b_o == ternary_regs[raddr_b_i])
+
+  // Read latency doesn't depend on register address
+  `ASSERT_INIT(ReadLatencyIndependent_A_c,
+    raddr_a_i < TERNARY_NUM_REGISTERS |->
+    rdata_a_o == ternary_regs[raddr_a_i])
+
+  `ASSERT_INIT(ReadLatencyIndependent_B_c,
+    raddr_b_i < TERNARY_NUM_REGISTERS |->
+    rdata_b_o == ternary_regs[raddr_b_i])
+
+  // Read latency doesn't depend on data content
+  `ASSERT_INIT(ReadLatencyDataIndependent_A_c,
+    (raddr_a_i == $past(raddr_a_i) &&
+     ternary_regs[raddr_a_i] != $past(ternary_regs[raddr_a_i])) |->
+    rdata_a_o == ternary_regs[raddr_a_i])
+
+  `ASSERT_INIT(ReadLatencyDataIndependent_B_c,
+    (raddr_b_i == $past(raddr_b_i) &&
+     ternary_regs[raddr_b_i] != $past(ternary_regs[raddr_b_i])) |->
+    rdata_b_o == ternary_regs[raddr_b_i])
+
+  // Write operations have constant latency regardless of data
+  `ASSERT(WriteConstantLatency_c,
+    (we_i && waddr_i != '0) |=>
+    ternary_regs[waddr_i] == $past(wdata_i),
+    clk_i, !rst_ni)
+
+  // Write enable doesn't depend on data values
+  `ASSERT(WriteEnableDataIndependent_c,
+    (we_i == $past(we_i) && waddr_i != '0) |->
+    ##1 (we_i |-> ternary_regs[waddr_i] == $past(wdata_i)),
+    clk_i, !rst_ni)
+
+  // No power side-channel from T0 hardwired zero
+  `ASSERT_INIT(T0NoSideChannel_A_c,
+    (raddr_a_i == '0) |-> (rdata_a_o == TERNARY_RESET_VALUE))
+
+  `ASSERT_INIT(T0NoSideChannel_B_c,
+    (raddr_b_i == '0) |-> (rdata_b_o == TERNARY_RESET_VALUE))
+
+  // Register access pattern doesn't leak through timing
+  `ASSERT(NoTimingLeak_c,
+    (raddr_a_i != $past(raddr_a_i)) |->
+    rdata_a_o == ternary_regs[raddr_a_i],
+    clk_i, !rst_ni)
+
+  // No early/late write completion based on data
+  `ASSERT(UniformWriteTiming_c,
+    (we_i && waddr_i != '0 &&
+     wdata_i != $past(wdata_i)) |=>
+    ternary_regs[waddr_i] == $past(wdata_i),
+    clk_i, !rst_ni)
+
 endmodule

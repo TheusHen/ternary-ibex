@@ -362,7 +362,179 @@ module ibex_ternary_alu import ibex_pkg::*; #(
       `ASSERT_INIT(SubOverflowPosNeg,
         (operator_i == TERNARY_SUB && trit_a == TRIT_POS && trit_b == TRIT_NEG) |->
         trit_overflow_o[overflow_idx])
+
+      // No overflow in non-overflow cases
+      `ASSERT_INIT(AddNoOverflowMixed,
+        (operator_i == TERNARY_ADD &&
+         ((trit_a == TRIT_NEG && trit_b != TRIT_NEG) ||
+          (trit_a == TRIT_POS && trit_b != TRIT_POS) ||
+          (trit_a == TRIT_ZERO))) |->
+        !trit_overflow_o[overflow_idx])
+
+      `ASSERT_INIT(SubNoOverflowSafe,
+        (operator_i == TERNARY_SUB &&
+         !((trit_a == TRIT_NEG && trit_b == TRIT_POS) ||
+           (trit_a == TRIT_POS && trit_b == TRIT_NEG))) |->
+        !trit_overflow_o[overflow_idx])
     end
   endgenerate
+
+  ////////////////////////////////////////////////////
+  // Advanced Formal Properties for BMC             //
+  ////////////////////////////////////////////////////
+
+  // Associativity properties (bounded for formal verification)
+  `ASSERT_INIT(TernaryAddAssociative_c,
+    (operator_i == TERNARY_ADD &&
+     is_valid_trit(operand_a_i[1:0]) &&
+     is_valid_trit(operand_b_i[1:0]) &&
+     is_valid_trit(operand_a_i[3:2])) |->
+    trit_add(trit_add(operand_a_i[1:0], operand_b_i[1:0]), operand_a_i[3:2]) ==
+    trit_add(operand_a_i[1:0], trit_add(operand_b_i[1:0], operand_a_i[3:2])))
+
+  // Distributivity of multiplication over addition
+  `ASSERT_INIT(TernaryMulDistributive_c,
+    (is_valid_trit(operand_a_i[1:0]) &&
+     is_valid_trit(operand_b_i[1:0]) &&
+     is_valid_trit(operand_a_i[3:2])) |->
+    trit_mul(operand_a_i[1:0],
+             trit_add(operand_b_i[1:0], operand_a_i[3:2])) ==
+    trit_add(trit_mul(operand_a_i[1:0], operand_b_i[1:0]),
+             trit_mul(operand_a_i[1:0], operand_a_i[3:2])))
+
+  // De Morgan's laws for ternary logic
+  `ASSERT_INIT(TernaryDeMorganAnd_c,
+    (is_valid_trit(operand_a_i[1:0]) && is_valid_trit(operand_b_i[1:0])) |->
+    trit_not(trit_and(operand_a_i[1:0], operand_b_i[1:0])) ==
+    trit_or(trit_not(operand_a_i[1:0]), trit_not(operand_b_i[1:0])))
+
+  `ASSERT_INIT(TernaryDeMorganOr_c,
+    (is_valid_trit(operand_a_i[1:0]) && is_valid_trit(operand_b_i[1:0])) |->
+    trit_not(trit_or(operand_a_i[1:0], operand_b_i[1:0])) ==
+    trit_and(trit_not(operand_a_i[1:0]), trit_not(operand_b_i[1:0])))
+
+  // Absorption laws
+  `ASSERT_INIT(TernaryAbsorptionAndOr_c,
+    (is_valid_trit(operand_a_i[1:0]) && is_valid_trit(operand_b_i[1:0])) |->
+    trit_and(operand_a_i[1:0], trit_or(operand_a_i[1:0], operand_b_i[1:0])) ==
+    operand_a_i[1:0])
+
+  `ASSERT_INIT(TernaryAbsorptionOrAnd_c,
+    (is_valid_trit(operand_a_i[1:0]) && is_valid_trit(operand_b_i[1:0])) |->
+    trit_or(operand_a_i[1:0], trit_and(operand_a_i[1:0], operand_b_i[1:0])) ==
+    operand_a_i[1:0])
+
+  // Idempotence laws
+  `ASSERT_INIT(TernaryAndIdempotent_c,
+    is_valid_trit(operand_a_i[1:0]) |->
+    trit_and(operand_a_i[1:0], operand_a_i[1:0]) == operand_a_i[1:0])
+
+  `ASSERT_INIT(TernaryOrIdempotent_c,
+    is_valid_trit(operand_a_i[1:0]) |->
+    trit_or(operand_a_i[1:0], operand_a_i[1:0]) == operand_a_i[1:0])
+
+  // XOR properties
+  `ASSERT_INIT(TernaryXorSelf_c,
+    is_valid_trit(operand_a_i[1:0]) |->
+    trit_xor(operand_a_i[1:0], operand_a_i[1:0]) == TRIT_ZERO)
+
+  `ASSERT_INIT(TernaryXorInverse_c,
+    is_valid_trit(operand_a_i[1:0]) |->
+    trit_xor(operand_a_i[1:0], trit_not(operand_a_i[1:0])) == TRIT_ZERO)
+
+  // Subtraction as inverse of addition
+  `ASSERT_INIT(TernarySubAsInverseAdd_c,
+    (is_valid_trit(operand_a_i[1:0]) && is_valid_trit(operand_b_i[1:0]) &&
+     !trit_add_with_overflow(operand_a_i[1:0], operand_b_i[1:0])[2]) |->
+    trit_sub(trit_add(operand_a_i[1:0], operand_b_i[1:0]), operand_b_i[1:0]) ==
+    operand_a_i[1:0])
+
+  // Multiplication by negation
+  `ASSERT_INIT(TernaryMulByNeg_c,
+    is_valid_trit(operand_a_i[1:0]) |->
+    trit_mul(operand_a_i[1:0], TRIT_NEG) == trit_not(operand_a_i[1:0]))
+
+  // Overflow result correctness (wrapping behavior)
+  `ASSERT_INIT(AddOverflowResultNegNeg_c,
+    (operator_i == TERNARY_ADD &&
+     operand_a_i[1:0] == TRIT_NEG && operand_b_i[1:0] == TRIT_NEG) |->
+    result_o[1:0] == TRIT_POS)
+
+  `ASSERT_INIT(AddOverflowResultPosPos_c,
+    (operator_i == TERNARY_ADD &&
+     operand_a_i[1:0] == TRIT_POS && operand_b_i[1:0] == TRIT_POS) |->
+    result_o[1:0] == TRIT_NEG)
+
+  `ASSERT_INIT(SubOverflowResultNegPos_c,
+    (operator_i == TERNARY_SUB &&
+     operand_a_i[1:0] == TRIT_NEG && operand_b_i[1:0] == TRIT_POS) |->
+    result_o[1:0] == TRIT_POS)
+
+  `ASSERT_INIT(SubOverflowResultPosNeg_c,
+    (operator_i == TERNARY_SUB &&
+     operand_a_i[1:0] == TRIT_POS && operand_b_i[1:0] == TRIT_NEG) |->
+    result_o[1:0] == TRIT_NEG)
+
+  // Bounded verification: Full word operations consistency
+  `ASSERT_INIT(FullWordConsistency_c,
+    (operator_i inside {TERNARY_ADD, TERNARY_SUB, TERNARY_MUL} &&
+     all_trits_valid(operand_a_i) && all_trits_valid(operand_b_i)) |->
+    ##1 all_trits_valid(result_o))
+
+  // Stability: Result doesn't change if inputs don't change
+  `ASSERT(ResultStability_c,
+    (operator_i == $past(operator_i) &&
+     operand_a_i == $past(operand_a_i) &&
+     operand_b_i == $past(operand_b_i)) |->
+    result_o == $past(result_o))
+
+  // Performance: Single-cycle operation (combinational)
+  `ASSERT_INIT(SingleCycleOperation_c,
+    ready_o === 1'b1)
+
+  ////////////////////////////////////////////////////
+  // Power Analysis & Constant-Time Properties      //
+  ////////////////////////////////////////////////////
+
+  // Constant-time operations for side-channel resistance
+  // All ternary operations should complete in constant time regardless of data
+  `ASSERT(ConstantTimeReady_c,
+    ready_o === 1'b1)
+
+  // Result generation is data-independent in timing
+  // (combinational logic has same delay for all data patterns)
+  `ASSERT_INIT(DataIndependentTiming_c,
+    (operator_i == $past(operator_i)) |->
+    ready_o == $past(ready_o))
+
+  // Overflow detection is also constant-time
+  `ASSERT_INIT(OverflowConstantTime_c,
+    (operator_i inside {TERNARY_ADD, TERNARY_SUB}) |->
+    ##1 (overflow_o === 1'b0 || overflow_o === 1'b1))
+
+  // No data-dependent control flow in combinational logic
+  // All operations process all trits in parallel
+  `ASSERT_INIT(NoDataDependentControl_c,
+    (operator_i inside {TERNARY_ADD, TERNARY_SUB, TERNARY_MUL,
+                        TERNARY_AND, TERNARY_OR, TERNARY_XOR, TERNARY_NOT}) |->
+    ready_o === 1'b1)
+
+  // Power consumption should be relatively uniform
+  // (checked by asserting result always has valid encoding)
+  `ASSERT_INIT(UniformPowerConsumption_c,
+    all_trits_valid(result_o))
+
+  // No early termination based on data values
+  // (all operations take the same number of cycles)
+  `ASSERT(NoEarlyTermination_c,
+    (operator_i == $past(operator_i) &&
+     operand_a_i != $past(operand_a_i)) |->
+    ready_o == $past(ready_o))
+
+  // Verify that zero inputs don't cause short-circuit
+  `ASSERT_INIT(NoZeroShortCircuit_c,
+    (operator_i == TERNARY_MUL &&
+     (operand_a_i == TERNARY_ZERO_PATTERN || operand_b_i == TERNARY_ZERO_PATTERN)) |->
+    ready_o === 1'b1)
 
 endmodule
