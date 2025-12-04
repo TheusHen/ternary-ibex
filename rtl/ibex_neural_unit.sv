@@ -58,8 +58,7 @@ module ibex_neural_unit import ibex_pkg::*; (
     if (sum > 1) return TRIT_POS;
     else if (sum < -1) return TRIT_NEG;
     else if (sum == 0) return TRIT_ZERO;
-    else if (sum > 0) return TRIT_POS;
-    else return TRIT_NEG;
+    else return int_to_trit(sum);
   endfunction
 
   // Multiply-accumulate logic
