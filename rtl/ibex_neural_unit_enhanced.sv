@@ -136,7 +136,7 @@ module ibex_neural_unit_enhanced import ibex_pkg::*; (
 
       // Level 0: Multiply with skip-zero optimization
       for (int i = 0; i < TERNARY_TRITS_PER_REG; i++) begin
-        logic [TERNARY_BITS_PER_TRIT-1:0] weight_trit, input_trit;
+        automatic logic [TERNARY_BITS_PER_TRIT-1:0] weight_trit, input_trit;
 
         weight_trit = cached_weights[i*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT];
         input_trit  = inputs_i[i*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT];
@@ -167,7 +167,7 @@ module ibex_neural_unit_enhanced import ibex_pkg::*; (
 
       // Add bias
       bias_trit = bias_i[TERNARY_BITS_PER_TRIT-1:0];
-      bias_int  = trit_to_int(bias_trit);
+      bias_int = trit_to_int(bias_trit);
 
       stage1_accumulator <= level4 + {{NEURAL_ACCUMULATOR_WIDTH-2{bias_int[1]}}, bias_int};
       stage1_activation_sel <= activation_sel_i;
@@ -264,7 +264,7 @@ module ibex_neural_unit_enhanced import ibex_pkg::*; (
       stage3_result <= '0;
       stage3_valid <= 1'b0;
     end else begin
-      logic signed [NEURAL_ACCUMULATOR_WIDTH-1:0] temp_result;
+      automatic logic signed [NEURAL_ACCUMULATOR_WIDTH-1:0] temp_result;
 
       // Apply dropout
       temp_result = apply_dropout(stage2_result, stage2_dropout_mask);

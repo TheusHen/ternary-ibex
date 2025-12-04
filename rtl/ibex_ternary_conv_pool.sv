@@ -308,7 +308,7 @@ module ibex_ternary_conv_pool import ibex_pkg::*; #(
 
       // Pipeline stage 2: Sum partial results + bias
       if (valid_pipe[0]) begin
-        logic signed [15:0] sum;
+        automatic logic signed [15:0] sum;
         sum = 0;
         for (int i = 0; i < 8; i++) begin
           sum = sum + pipe_stage1[i];
@@ -377,8 +377,7 @@ module ibex_ternary_conv_pool import ibex_pkg::*; #(
   `ASSERT(ReadyWhenEmpty, ready_o |-> !(|valid_pipe[1:0]), clk_i, !rst_ni)
 
   // Result is valid ternary encoding
-  `ASSERT(ResultValidTernary, 
+  `ASSERT(ResultValidTernary,
     (forall (int i = 0; i < 16; i++) result_o[i*2 +: 2] inside {TRIT_NEG, TRIT_ZERO, TRIT_POS}),
     clk_i, !rst_ni)
-
 endmodule

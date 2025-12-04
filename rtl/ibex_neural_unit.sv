@@ -20,7 +20,9 @@
 module ibex_neural_unit import ibex_pkg::*; (
   input  logic [TERNARY_REG_WIDTH-1:0] weights_i,   // Ternary weights
   input  logic [TERNARY_REG_WIDTH-1:0] inputs_i,    // Ternary inputs
-  input  logic [TERNARY_REG_WIDTH-1:0] bias_i,      // Bias value
+  /* verilator lint_off UNUSED */
+  input  logic [TERNARY_REG_WIDTH-1:0] bias_i,      // Bias value (only lower 2 bits used)
+  /* verilator lint_on UNUSED */
   input  neural_op_e                   operation_i, // Neural operation
 
   output logic [TERNARY_REG_WIDTH-1:0] result_o,    // Neural result

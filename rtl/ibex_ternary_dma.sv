@@ -232,7 +232,7 @@ module ibex_ternary_dma import ibex_pkg::*; #(
       // Round-robin channel selection
       if (!any_active || channel_state[active_channel] == DMA_IDLE) begin
         for (int i = 0; i < NumChannels; i++) begin
-          int next_ch;
+          automatic int next_ch;
           next_ch = (active_channel + i + 1) % NumChannels;
           if (channel_cfg[next_ch].enable) begin
             active_channel <= next_ch[$clog2(NumChannels)-1:0];
@@ -243,7 +243,7 @@ module ibex_ternary_dma import ibex_pkg::*; #(
 
       // Configuration write handling
       if (cfg_we_i) begin
-        logic [3:0] ch_idx;
+        automatic logic [3:0] ch_idx;
         // Prevent underflow: if cfg_addr_i[7:4] < 1, set ch_idx to invalid value (NumChannels)
         if (cfg_addr_i[7:4] >= 4'h1) begin
           ch_idx = cfg_addr_i[7:4] - 4'h1;
@@ -365,7 +365,6 @@ module ibex_ternary_dma import ibex_pkg::*; #(
 
   // Only one channel can use memory at a time
   `ASSERT(SingleMemAccess, mem_req_o |-> $onehot(channel_busy_o), clk_i, !rst_ni)
-  
   // State machine valid transitions
   `ASSERT(ValidStateTransition,
     channel_state[0] inside {DMA_IDLE, DMA_LOAD_SRC, DMA_WAIT_SRC, DMA_CONVERT,
