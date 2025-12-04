@@ -274,10 +274,11 @@ module ibex_ternary_debug import ibex_pkg::*; #(
 
           DBG_BP_CTRL: begin
             bp_select_q <= dmi_req_data_i[1:0];
-            bp_enabled_q[dmi_req_data_i[1:0]] <= dmi_req_data_i[8];
-            bp_read_q[dmi_req_data_i[1:0]] <= dmi_req_data_i[9];
-            bp_write_q[dmi_req_data_i[1:0]] <= dmi_req_data_i[10];
-          end
+            if (dmi_req_data_i[1:0] < NumBreakpoints) begin
+              bp_enabled_q[dmi_req_data_i[1:0]] <= dmi_req_data_i[8];
+              bp_read_q[dmi_req_data_i[1:0]] <= dmi_req_data_i[9];
+              bp_write_q[dmi_req_data_i[1:0]] <= dmi_req_data_i[10];
+            end
 
           DBG_BP_ADDR: begin
             bp_addr_q[bp_select_q] <= dmi_req_data_i[4:0];
