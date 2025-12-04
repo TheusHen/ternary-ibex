@@ -117,11 +117,11 @@ module mhx_ternary_test;
     $display("Testing ternary ADD: %h + %h = %h (expected %h)", a, b, talu_result, expected);
 
     // Write operands to registers
-    write_ternary_reg(4'd0, a);
-    write_ternary_reg(4'd1, b);
+    write_ternary_reg(5'd0, a);
+    write_ternary_reg(5'd1, b);
 
     // Read operands
-    read_ternary_reg(4'd0, 4'd1);
+    read_ternary_reg(5'd0, 5'd1);
 
     // Perform addition
     talu_op = TERNARY_ADD;
@@ -147,11 +147,11 @@ module mhx_ternary_test;
     $display("Testing ternary MUL: %h * %h = %h (expected %h)", a, b, talu_result, expected);
 
     // Write operands to registers
-    write_ternary_reg(4'd0, a);
-    write_ternary_reg(4'd1, b);
+    write_ternary_reg(5'd0, a);
+    write_ternary_reg(5'd1, b);
 
     // Read operands
-    read_ternary_reg(4'd0, 4'd1);
+    read_ternary_reg(5'd0, 5'd1);
 
     // Perform multiplication
     talu_op = TERNARY_MUL;
@@ -221,6 +221,76 @@ module mhx_ternary_test;
     test_count++;
   endtask
 
+  task automatic test_register_boundaries();
+    logic [31:0] test_data_t0, test_data_t31, test_data_t15;
+    logic        all_passed;
+    
+    $display("Testing register boundary conditions (T0, T15, T31)");
+    all_passed = 1'b1;
+
+    // Test T0 (lowest boundary)
+    test_data_t0 = 32'h12345678;
+    $display("  Testing T0 (address 0)...");
+    write_ternary_reg(5'd0, test_data_t0);
+    read_ternary_reg(5'd0, 5'd0);
+    
+    if (trf_rdata_a == test_data_t0) begin
+      $display("  ✓ PASS: T0 write/read test");
+    end else begin
+      $display("  ✗ FAIL: T0 write/read test - got %h, expected %h", trf_rdata_a, test_data_t0);
+      all_passed = 1'b0;
+    end
+
+    // Test T15 (middle boundary)
+    test_data_t15 = 32'h9ABCDEF0;
+    $display("  Testing T15 (address 15)...");
+    write_ternary_reg(5'd15, test_data_t15);
+    read_ternary_reg(5'd15, 5'd15);
+    
+    if (trf_rdata_a == test_data_t15) begin
+      $display("  ✓ PASS: T15 write/read test");
+    end else begin
+      $display("  ✗ FAIL: T15 write/read test - got %h, expected %h", trf_rdata_a, test_data_t15);
+      all_passed = 1'b0;
+    end
+
+    // Test T31 (highest boundary)
+    test_data_t31 = 32'hFEDCBA98;
+    $display("  Testing T31 (address 31)...");
+    write_ternary_reg(5'd31, test_data_t31);
+    read_ternary_reg(5'd31, 5'd31);
+    
+    if (trf_rdata_a == test_data_t31) begin
+      $display("  ✓ PASS: T31 write/read test");
+    end else begin
+      $display("  ✗ FAIL: T31 write/read test - got %h, expected %h", trf_rdata_a, test_data_t31);
+      all_passed = 1'b0;
+    end
+
+    // Test simultaneous read from T0 and T31
+    $display("  Testing simultaneous read from T0 and T31...");
+    read_ternary_reg(5'd0, 5'd31);
+    
+    if (trf_rdata_a == test_data_t0 && trf_rdata_b == test_data_t31) begin
+      $display("  ✓ PASS: Simultaneous T0/T31 read test");
+    end else begin
+      $display("  ✗ FAIL: Simultaneous T0/T31 read test");
+      $display("    T0: got %h, expected %h", trf_rdata_a, test_data_t0);
+      $display("    T31: got %h, expected %h", trf_rdata_b, test_data_t31);
+      all_passed = 1'b0;
+    end
+
+    if (all_passed) begin
+      $display("✓ PASS: All register boundary tests passed");
+      test_passed = 1'b1;
+    end else begin
+      $display("✗ FAIL: Some register boundary tests failed");
+      test_passed = 1'b0;
+    end
+
+    test_count++;
+  endtask
+
   ////////////////////////////////////////////////
   // Main Test Sequence                         //
   ////////////////////////////////////////////////
@@ -254,8 +324,8 @@ module mhx_ternary_test;
 
     // Test register write/read
     $display("Testing register write/read...");
-    write_ternary_reg(4'd5, 32'hDEADBEEF);
-    read_ternary_reg(4'd5, 4'd0);
+    write_ternary_reg(5'd5, 32'hDEADBEEF);
+    read_ternary_reg(5'd5, 5'd0);
 
     if (trf_rdata_a == 32'hDEADBEEF) begin
       $display("✓ PASS: Register file write/read test");
@@ -263,6 +333,9 @@ module mhx_ternary_test;
       $display("✗ FAIL: Register file write/read test");
     end
     test_count++;
+
+    // Test register boundary conditions
+    test_register_boundaries();
 
     $display("\n--- Testing Ternary ALU ---");
 
@@ -274,6 +347,32 @@ module mhx_ternary_test;
 
     // Test MUL: 1 * 1 = 1 (in ternary encoding)
     test_ternary_mul(32'hAAAAAAAA, 32'hAAAAAAAA, 32'hAAAAAAAA);
+
+    // Test ALU operations with boundary registers (T0 and T31)
+    $display("Testing ALU with boundary registers T0 and T31...");
+    write_ternary_reg(5'd0, 32'h12345678);   // T0 = test value
+    write_ternary_reg(5'd31, 32'h87654321);  // T31 = test value
+    read_ternary_reg(5'd0, 5'd31);
+    
+    // Verify registers were read correctly before ALU operation
+    if (trf_rdata_a == 32'h12345678 && trf_rdata_b == 32'h87654321) begin
+      // Perform any ALU operation to verify boundary registers work with ALU
+      talu_op = TERNARY_ADD;
+      repeat(2) @(posedge clk);
+      
+      // Just verify ALU produces a result - we're testing addressing, not arithmetic correctness
+      if (talu_ready) begin
+        $display("✓ PASS: ALU operation with T0 and T31 boundary registers");
+        test_passed = 1'b1;
+      end else begin
+        $display("✗ FAIL: ALU not ready for boundary register operation");
+        test_passed = 1'b0;
+      end
+    end else begin
+      $display("✗ FAIL: Boundary registers not read correctly for ALU operation");
+      test_passed = 1'b0;
+    end
+    test_count++;
 
     $display("\n--- Testing Neural Unit ---");
 
