@@ -244,7 +244,12 @@ module ibex_ternary_dma import ibex_pkg::*; #(
       // Configuration write handling
       if (cfg_we_i) begin
         logic [3:0] ch_idx;
-        ch_idx = (cfg_addr_i[7:4] - 4'h1);  // Channel index from address
+        // Prevent underflow: if cfg_addr_i[7:4] < 1, set ch_idx to invalid value (NumChannels)
+        if (cfg_addr_i[7:4] >= 4'h1) begin
+          ch_idx = cfg_addr_i[7:4] - 4'h1;
+        end else begin
+          ch_idx = NumChannels; // Invalid index, will fail bounds check
+        end
 
         case (cfg_addr_i[7:0])
           REG_CTRL: begin
