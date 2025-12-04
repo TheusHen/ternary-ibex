@@ -326,7 +326,7 @@ module ibex_ternary_dma import ibex_pkg::*; #(
 
   // Ternary register file interface
   // Use channel index as base register address (simplified mapping)
-  assign treg_waddr_o = {3'b0, active_channel};  // Pad to 5 bits
+  assign treg_waddr_o = {(5-$clog2(NumChannels)){1'b0}, active_channel};  // Pad to 5 bits, parameterized
   assign treg_wdata_o = data_buffer[active_channel];
   assign treg_we_o    = any_active &&
                         channel_state[active_channel] == DMA_STORE_DST &&
