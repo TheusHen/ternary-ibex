@@ -93,6 +93,19 @@ module ibex_ternary_dma import ibex_pkg::*; #(
   logic [$clog2(NumChannels)-1:0] active_channel;
   logic                           any_active;
 
+  // Channel index for configuration
+  logic [3:0] ch_idx;
+
+  // Calculate ch_idx combinationally
+  always_comb begin
+    // Prevent underflow: if cfg_addr_i[7:4] < 1, set ch_idx to invalid value (NumChannels)
+    if (cfg_addr_i[7:4] >= 4'h1) begin
+      ch_idx = cfg_addr_i[7:4] - 4'h1;
+    end else begin
+      ch_idx = NumChannels; // Invalid index, will fail bounds check
+    end
+  end
+
   // Configuration register addresses
   localparam logic [7:0] REG_CTRL        = 8'h00;  // Control register
   localparam logic [7:0] REG_STATUS      = 8'h04;  // Status register
@@ -232,10 +245,8 @@ module ibex_ternary_dma import ibex_pkg::*; #(
       // Round-robin channel selection
       if (!any_active || channel_state[active_channel] == DMA_IDLE) begin
         for (int i = 0; i < NumChannels; i++) begin
-          automatic int next_ch;
-          next_ch = (active_channel + i + 1) % NumChannels;
-          if (channel_cfg[next_ch].enable) begin
-            active_channel <= next_ch[$clog2(NumChannels)-1:0];
+          if (channel_cfg[(active_channel + i + 1) % NumChannels].enable) begin
+            active_channel <= (active_channel + i + 1) % NumChannels;
             break;
           end
         end
@@ -243,14 +254,6 @@ module ibex_ternary_dma import ibex_pkg::*; #(
 
       // Configuration write handling
       if (cfg_we_i) begin
-        automatic logic [3:0] ch_idx;
-        // Prevent underflow: if cfg_addr_i[7:4] < 1, set ch_idx to invalid value (NumChannels)
-        if (cfg_addr_i[7:4] >= 4'h1) begin
-          ch_idx = cfg_addr_i[7:4] - 4'h1;
-        end else begin
-          ch_idx = NumChannels; // Invalid index, will fail bounds check
-        end
-
         case (cfg_addr_i[7:0])
           REG_CTRL: begin
             // Global control

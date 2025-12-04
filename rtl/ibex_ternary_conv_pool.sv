@@ -74,6 +74,16 @@ module ibex_ternary_conv_pool import ibex_pkg::*; #(
   logic signed [15:0] pipe_stage3;
   logic [PipeDepth-1:0] valid_pipe;
 
+  // Combinational logic for pipeline stage 2
+  logic signed [15:0] pipe_stage2_next;
+
+  always_comb begin
+    pipe_stage2_next = bias_i[7:0]; // Start with bias (sign-extended)
+    for (int i = 0; i < 8; i++) begin
+      pipe_stage2_next = pipe_stage2_next + pipe_stage1[i];
+    end
+  end
+
   // Trit to integer conversion
   function automatic logic signed [1:0] trit_to_int(logic [1:0] trit);
     case (trit)
@@ -308,12 +318,7 @@ module ibex_ternary_conv_pool import ibex_pkg::*; #(
 
       // Pipeline stage 2: Sum partial results + bias
       if (valid_pipe[0]) begin
-        automatic logic signed [15:0] sum;
-        sum = 0;
-        for (int i = 0; i < 8; i++) begin
-          sum = sum + pipe_stage1[i];
-        end
-        pipe_stage2 <= sum + {{8{bias_i[7]}}, bias_i};
+        pipe_stage2 <= pipe_stage2_next;
       end
 
       // Pipeline stage 3: Apply activation
