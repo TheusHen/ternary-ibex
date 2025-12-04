@@ -121,6 +121,42 @@ MHX Core (RV32IMC + Ternary Extension):
 │   │       ├── Percentage calculation
 │   │       └── Performance reporting
 │   │
+│   ├── Convolution/Pooling Unit (ibex_ternary_conv_pool.sv) ✅ NEW
+│   │   ├── 3×3 2D Convolution
+│   │   │   ├── Skip-zero optimization
+│   │   │   ├── Pipelined architecture
+│   │   │   └── Multiple output positions
+│   │   │
+│   │   ├── Pooling Operations
+│   │   │   ├── Max pooling (2×2)
+│   │   │   ├── Average pooling (2×2)
+│   │   │   └── Min pooling (2×2)
+│   │   │
+│   │   └── Strided convolution support
+│   │
+│   ├── DMA Controller (ibex_ternary_dma.sv) ✅ NEW
+│   │   ├── 4 independent channels
+│   │   ├── Binary ↔ Ternary conversion
+│   │   ├── Scatter-gather support
+│   │   └── Interrupt on completion
+│   │
+│   ├── Ternary LSU (ibex_ternary_lsu.sv) ✅ NEW
+│   │   ├── Native ternary load/store
+│   │   ├── Burst transfer support
+│   │   └── Automatic alignment
+│   │
+│   ├── Performance Counters (ibex_ternary_perf_counters.sv) ✅ NEW
+│   │   ├── 12 CSR counters (0xB00-0xB0B)
+│   │   ├── Operation counting
+│   │   ├── Cache statistics
+│   │   └── Cycle counting
+│   │
+│   ├── Debug Module (ibex_ternary_debug.sv) ✅ NEW
+│   │   ├── JTAG/DMI interface
+│   │   ├── Ternary register access
+│   │   ├── Single-step execution
+│   │   └── 4 hardware breakpoints
+│   │
 │   └── Instruction Decoder Extensions
 │       ├── OPCODE_TERNARY (0x0B)
 │       ├── OPCODE_NEURAL (0x2B)
@@ -314,24 +350,44 @@ ternary-ibex/
 │   ├── ibex_decoder.sv                    # Decoder (ternary opcode support)
 │   ├── ibex_pkg.sv                        # Package (ternary types & constants)
 │   │
+│   ├── ibex_ternary_alu.sv               # Ternary ALU ✅ NEW
+│   │   └── 7 ops, overflow detection, formal verification
+│   │
 │   ├── ibex_ternary_regfile.sv           # Ternary register file
 │   │   └── 32 registers, dual-port, T0=0
-│   │
-│   ├── ibex_ternary_alu.sv               # Ternary ALU
-│   │   └── 7 ops, overflow detection
 │   │
 │   ├── ibex_ternary_advanced.sv          # Advanced operations
 │   │   └── DOT, distances, reductions
 │   │
-│   ├── ibex_neural_unit.sv               # Basic neural unit
+│   ├── ibex_ternary_conv_pool.sv         # Convolution/Pooling ✅ NEW
+│   │   └── 2D conv, max/avg/min pooling
+│   │
+│   ├── ibex_ternary_lsu.sv               # Ternary Load/Store ✅ NEW
+│   │   └── Burst transfers, native addressing
+│   │
+│   ├── ibex_ternary_dma.sv               # DMA Controller ✅ NEW
+│   │   └── 4-channel, format conversion
+│   │
+│   ├── ibex_ternary_perf_counters.sv     # Performance Counters ✅ NEW
+│   │   └── 12 CSR counters for profiling
+│   │
+│   ├── ibex_ternary_debug.sv             # Debug Module ✅ NEW
+│   │   └── JTAG interface, breakpoints
+│   │
+│   ├── ibex_neural_unit.sv               # Basic neural unit ✅ NEW
 │   │   └── Simple MAC, single activation
 │   │
 │   └── ibex_neural_unit_enhanced.sv      # Enhanced neural unit
 │       └── 3-stage pipeline, cache, multi-activation
 │
+├── util/toolchain/                        # Toolchain Support ✅ NEW
+│   ├── mhx_ternary.h                     # C intrinsics header
+│   └── setup_ternary_toolchain.sh        # Toolchain setup script
+│
 ├── dv/                                    # Design verification
 │   ├── mhx_ternary_test.sv               # Ternary operation tests
 │   ├── mhx_comprehensive_test.sv         # Full integration tests
+│   ├── mhx_ternary_fault_injection_tb.sv # Fault injection tests
 │   └── mhx_ternary_test_main.cpp         # C++ testbench driver
 │
 ├── examples/                              # Example code
@@ -339,15 +395,26 @@ ternary-ibex/
 │   └── mhx_simple_system/                # Simple SoC integration
 │
 ├── doc/                                   # Documentation
+│   ├── integration_guide.md              # SoC integration guide
 │   ├── mhx_ternary_formal_spec.md        # Formal specification
 │   ├── mhx_ternary_debug_guide.md        # Debugging guide
-│   └── mhx_ternary_security_analysis.md  # Security analysis
+│   ├── mhx_ternary_security_analysis.md  # Security analysis
+│   └── application_notes/                # Programming guides
+│
+├── ci/                                    # CI/CD Automation
+│   ├── run-formal-verification.sh        # Formal verification
+│   ├── run-security-audit.sh             # Security testing
+│   ├── run-performance-benchmarks.sh     # Performance validation
+│   ├── optimize-timing.sh                # Timing optimization
+│   ├── optimize-power.sh                 # Power optimization
+│   └── optimize-area.sh                  # Area optimization
 │
 ├── lint/                                  # Linting waivers
 │   ├── verilator_waiver.vlt              # Verilator waivers
 │   └── mhx_ternary_test.vlt              # Test-specific waivers
 │
 ├── MHX_README.md                          # This file
+├── COMPREHENSIVE_PROFESSIONAL_REVIEW.md  # Project review & TODOs
 ├── ibex_ternary_*.core                    # FuseSoC core files
 ├── run_ternary_tests.sh                   # Test runner script
 └── validate_*.sh                          # Validation scripts
@@ -373,14 +440,60 @@ ternary-ibex/
 | Power Consumption | 250mW | 100mW | 2.5x lower |
 | Memory Usage | 2MB | 500KB | 4x reduction |
 
-## Future Enhancements
+## Implementation Status
 
-- [ ] **Toolchain Support**: GCC/LLVM compiler integration
-- [ ] **Advanced Neural Operations**: Convolution, pooling layers
-- [ ] **Ternary Memory Interface**: Native ternary load/store instructions
-- [ ] **Debugging Support**: JTAG debug for ternary registers
-- [ ] **Performance Counters**: Ternary operation profiling
-- [ ] **DMA Support**: Direct memory access for ternary data
+### ✅ Completed Features
+
+- [x] **Ternary ALU** (`ibex_ternary_alu.sv`): 7 core operations with overflow detection
+- [x] **Ternary Register File** (`ibex_ternary_regfile.sv`): 32 registers, 16 trits each
+- [x] **Neural Unit Basic** (`ibex_neural_unit.sv`): MAC operations with activation
+- [x] **Neural Unit Enhanced** (`ibex_neural_unit_enhanced.sv`): 3-stage pipeline, caching
+- [x] **Advanced Operations** (`ibex_ternary_advanced.sv`): DOT, distance, reductions
+- [x] **Decoder Integration**: Full ternary/neural opcode support in `ibex_decoder.sv`
+- [x] **Toolchain Headers** (`util/toolchain/mhx_ternary.h`): C intrinsics definitions
+- [x] **Convolution/Pooling** (`ibex_ternary_conv_pool.sv`): 2D conv, max/avg/min pooling
+- [x] **Performance Counters** (`ibex_ternary_perf_counters.sv`): 12 CSR counters
+- [x] **DMA Controller** (`ibex_ternary_dma.sv`): 4-channel with format conversion
+- [x] **Ternary LSU** (`ibex_ternary_lsu.sv`): Native load/store with burst support
+- [x] **Debug Module** (`ibex_ternary_debug.sv`): JTAG interface with breakpoints
+
+### 🔧 Toolchain Status
+
+| Component | Status | File |
+|-----------|--------|------|
+| C Header | ✅ Complete | `util/toolchain/mhx_ternary.h` |
+| Type Definitions | ✅ Complete | `ternary_t`, `trit_t` types |
+| Intrinsics | ✅ Declared | Stub implementations |
+| Setup Script | ✅ Complete | `setup_ternary_toolchain.sh` |
+| GCC Integration | 🔄 Pending | Requires binutils patches |
+| LLVM Integration | 🔄 Pending | Requires backend work |
+
+### 📊 New Hardware Modules
+
+#### Performance Counters (CSR Addresses 0xB00-0xB0B)
+- `mhpmcounter_ternary_ops`: Total ternary ALU operations
+- `mhpmcounter_neural_ops`: Total neural operations  
+- `mhpmcounter_cache_hits`: Weight cache hits
+- `mhpmcounter_cache_misses`: Weight cache misses
+- `mhpmcounter_sparse_skips`: Zero-skip optimizations
+- `mhpmcounter_overflow_count`: Overflow events
+- `mhpmcounter_ternary_cycles`: Cycles in ternary ops
+- `mhpmcounter_neural_cycles`: Cycles in neural ops
+- Per-operation counters: TADD, TSUB, TMUL, TLOGIC
+
+#### DMA Controller Features
+- 4 independent channels
+- Scatter-gather support
+- Binary ↔ Ternary format conversion
+- Interrupt on completion/error
+- Burst transfers up to 16 words
+
+#### Convolution/Pooling Unit
+- 3×3 2D convolution with skip-zero
+- Max/Average/Min pooling (2×2)
+- Strided convolution support
+- 4 activation functions
+- 3-stage pipelined architecture
 
 ## Contributing
 

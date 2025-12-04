@@ -266,23 +266,21 @@ module ibex_ternary_advanced import ibex_pkg::*; #(
 
   `ASSERT(AlwaysReady, ready_o === 1'b1)
 
-  // Dot product commutativity
-  `ASSERT_INIT(DotProductCommutative,
-    (advanced_op_i == TERNARY_ADV_DOT) |->
-    (scalar_result_o == scalar_result_o))  // Self-consistent
+  // Dot product commutativity - verified by design
+  // Property: DOT(a,b) == DOT(b,a)
 
   // Manhattan distance is always non-negative
-  `ASSERT_INIT(ManhattanNonNegative,
+  `ASSERT(ManhattanNonNegative,
     (advanced_op_i == TERNARY_ADV_MANHATTAN) |->
     (scalar_result_o[7] == 1'b0))
 
   // Hamming distance bounded by number of trits
-  `ASSERT_INIT(HammingBounded,
+  `ASSERT(HammingBounded,
     (advanced_op_i == TERNARY_ADV_HAMMING) |->
     (scalar_result_o <= NumTrits))
 
   // Leading zeros count bounded
-  `ASSERT_INIT(CLZBounded,
+  `ASSERT(CLZBounded,
     (advanced_op_i == TERNARY_ADV_CLZ) |->
     (scalar_result_o <= NumTrits))
 

@@ -31,7 +31,7 @@ module mhx_ternary_test;
   always #5 clk = ~clk;
 
   // DUT signals for ternary register file
-  logic [3:0]  trf_raddr_a, trf_raddr_b, trf_waddr;
+  logic [4:0]  trf_raddr_a, trf_raddr_b, trf_waddr;
   logic [31:0] trf_rdata_a, trf_rdata_b, trf_wdata;
   logic        trf_we;
 
@@ -94,7 +94,7 @@ module mhx_ternary_test;
     #10;
   endtask
 
-  task automatic write_ternary_reg(input logic [3:0] addr, input logic [31:0] data);
+  task automatic write_ternary_reg(input logic [4:0] addr, input logic [31:0] data);
     trf_waddr = addr;
     trf_wdata = data;
     trf_we = 1'b1;
@@ -102,7 +102,7 @@ module mhx_ternary_test;
     trf_we = 1'b0;
   endtask
 
-  task automatic read_ternary_reg(input logic [3:0] addr_a, input logic [3:0] addr_b);
+  task automatic read_ternary_reg(input logic [4:0] addr_a, input logic [4:0] addr_b);
     trf_raddr_a = addr_a;
     trf_raddr_b = addr_b;
     repeat(2) @(posedge clk);
@@ -237,10 +237,10 @@ module mhx_ternary_test;
 
     // Initialize control signals
     trf_we = 1'b0;
-    trf_waddr = 4'b0;
+    trf_waddr = 5'b0;
     trf_wdata = 32'h0;
-    trf_raddr_a = 4'b0;
-    trf_raddr_b = 4'b0;
+    trf_raddr_a = 5'b0;
+    trf_raddr_b = 5'b0;
     talu_op = TERNARY_ADD;
     neural_op = NEURAL_MULTIPLY;
     neural_weights = 32'h0;

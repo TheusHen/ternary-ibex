@@ -75,6 +75,41 @@ else
     exit 1
 fi
 
+echo "Checking advanced ternary operations..."
+if [ -f "rtl/ibex_ternary_advanced.sv" ]; then
+    echo "✅ Ternary advanced ops found ($(wc -l < rtl/ibex_ternary_advanced.sv) lines)"
+else
+    echo "⚠️  Ternary advanced ops not found (optional)"
+fi
+
+echo "Checking performance counters..."
+if [ -f "rtl/ibex_ternary_perf_counters.sv" ]; then
+    echo "✅ Performance counters found ($(wc -l < rtl/ibex_ternary_perf_counters.sv) lines)"
+else
+    echo "⚠️  Performance counters not found (optional)"
+fi
+
+echo "Checking DMA controller..."
+if [ -f "rtl/ibex_ternary_dma.sv" ]; then
+    echo "✅ DMA controller found ($(wc -l < rtl/ibex_ternary_dma.sv) lines)"
+else
+    echo "⚠️  DMA controller not found (optional)"
+fi
+
+echo "Checking convolution/pooling unit..."
+if [ -f "rtl/ibex_ternary_conv_pool.sv" ]; then
+    echo "✅ Conv/Pool unit found ($(wc -l < rtl/ibex_ternary_conv_pool.sv) lines)"
+else
+    echo "⚠️  Conv/Pool unit not found (optional)"
+fi
+
+echo "Checking debug module..."
+if [ -f "rtl/ibex_ternary_debug.sv" ]; then
+    echo "✅ Debug module found ($(wc -l < rtl/ibex_ternary_debug.sv) lines)"
+else
+    echo "⚠️  Debug module not found (optional)"
+fi
+
 echo "2. Validating configuration..."
 if grep -q "mhx:" ibex_configs.yaml; then
     echo "✅ MHX configuration found in ibex_configs.yaml"
