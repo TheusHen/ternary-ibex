@@ -377,6 +377,8 @@ module ibex_ternary_conv_pool import ibex_pkg::*; #(
   `ASSERT(ReadyWhenEmpty, ready_o |-> !(|valid_pipe[1:0]), clk_i, !rst_ni)
 
   // Result is valid ternary encoding
-  `ASSERT(ResultValidTernary, result_o[1:0] inside {TRIT_NEG, TRIT_ZERO, TRIT_POS})
+  `ASSERT(ResultValidTernary, 
+    (forall (int i = 0; i < 16; i++) result_o[i*2 +: 2] inside {TRIT_NEG, TRIT_ZERO, TRIT_POS}),
+    clk_i, !rst_ni)
 
 endmodule
