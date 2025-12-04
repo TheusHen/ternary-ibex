@@ -53,11 +53,10 @@ module ibex_neural_unit import ibex_pkg::*; (
 
   // Compute saturated ternary addition for learning
   function automatic logic [1:0] sat_trit_add(logic [1:0] a, logic [1:0] b);
-    logic signed [2:0] sum;
+    logic signed [AccWidth-1:0] sum;
     sum = trit_to_int(a) + trit_to_int(b);
     if (sum > 1) return TRIT_POS;
     else if (sum < -1) return TRIT_NEG;
-    else if (sum == 0) return TRIT_ZERO;
     else return int_to_trit(sum);
   endfunction
 
@@ -65,7 +64,7 @@ module ibex_neural_unit import ibex_pkg::*; (
   always_comb begin
     logic signed [AccWidth-1:0] mac_result;
     logic [1:0] bias_trit;
-    logic signed [1:0] bias_int;
+    logic signed [AccWidth-1:0] bias_int;
 
     mac_result = 0;
 
@@ -73,7 +72,7 @@ module ibex_neural_unit import ibex_pkg::*; (
     for (int i = 0; i < TERNARY_TRITS_PER_REG; i++) begin
       logic [1:0] w_trit, i_trit;
       logic signed [1:0] w_int, i_int;
-      logic signed [2:0] product;
+      logic signed [AccWidth-1:0] product;
 
       w_trit = weights_i[i*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT];
       i_trit = inputs_i[i*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT];

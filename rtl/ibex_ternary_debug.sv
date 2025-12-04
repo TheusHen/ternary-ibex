@@ -148,6 +148,13 @@ module ibex_ternary_debug import ibex_pkg::*; #(
     halt_req_o = 1'b0;
     resume_req_o = 1'b0;
 
+    // Handle halt/resume control register writes
+    if (dmi_req_valid_i && dmi_req_op_i == DMI_OP_WRITE &&
+        dmi_req_addr_i == DBG_TERNARY_CTRL) begin
+      halt_req_o = dmi_req_data_i[0];
+      resume_req_o = dmi_req_data_i[1];
+    end
+
     case (state_q)
       DBG_IDLE: begin
         dmi_req_ready_o = 1'b1;
@@ -279,6 +286,7 @@ module ibex_ternary_debug import ibex_pkg::*; #(
               bp_read_q[dmi_req_data_i[1:0]] <= dmi_req_data_i[9];
               bp_write_q[dmi_req_data_i[1:0]] <= dmi_req_data_i[10];
             end
+          end
 
           DBG_BP_ADDR: begin
             bp_addr_q[bp_select_q] <= dmi_req_data_i[4:0];
@@ -334,18 +342,6 @@ module ibex_ternary_debug import ibex_pkg::*; #(
       assign bp_on_write_o[i] = bp_write_q[i];
     end
   endgenerate
-
-  // Halt/Resume based on control register writes
-  always_comb begin
-    halt_req_o = 1'b0;
-    resume_req_o = 1'b0;
-
-    if (dmi_req_valid_i && dmi_req_op_i == DMI_OP_WRITE &&
-        dmi_req_addr_i == DBG_TERNARY_CTRL) begin
-      halt_req_o = dmi_req_data_i[0];
-      resume_req_o = dmi_req_data_i[1];
-    end
-  end
 
   ///////////////////////////
   // Formal Verification   //
