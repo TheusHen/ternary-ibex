@@ -363,8 +363,8 @@ module ibex_ternary_dma import ibex_pkg::*; #(
   ///////////////////////////
 
   // Only one channel can use memory at a time
-  `ASSERT(SingleMemAccess, $onehot0(channel_busy_o) || !mem_req_o, clk_i, !rst_ni)
-
+  `ASSERT(SingleMemAccess, mem_req_o |-> $onehot(channel_busy_o), clk_i, !rst_ni)
+  
   // State machine valid transitions
   `ASSERT(ValidStateTransition,
     channel_state[0] inside {DMA_IDLE, DMA_LOAD_SRC, DMA_WAIT_SRC, DMA_CONVERT,
