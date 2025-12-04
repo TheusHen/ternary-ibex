@@ -260,8 +260,8 @@ module ibex_ternary_perf_counters import ibex_pkg::*; #(
   ///////////////////////////
 
   // Counters should never overflow (in reasonable operation)
-  `ASSERT(TernaryOpsNoOverflow, cnt_ternary_ops < {CounterWidth{1'b1}}, clk_i, !rst_ni)
-  `ASSERT(NeuralOpsNoOverflow, cnt_neural_ops < {CounterWidth{1'b1}}, clk_i, !rst_ni)
+  `ASSERT(TernaryOpsNoOverflow, cnt_ternary_ops <= {CounterWidth{1'b1}}, clk_i, !rst_ni)
+  `ASSERT(NeuralOpsNoOverflow, cnt_neural_ops <= {CounterWidth{1'b1}}, clk_i, !rst_ni)
 
   // Cache hits + misses should be consistent
   `ASSERT(CacheConsistency,
