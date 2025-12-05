@@ -62,7 +62,8 @@ module ibex_neural_unit import ibex_pkg::*; (
     sum = {{AccWidth-2{a_int[1]}}, a_int} + {{AccWidth-2{b_int[1]}}, b_int};
     if (sum > 1) return TRIT_POS;
     else if (sum < -1) return TRIT_NEG;
-    else return int_to_trit(sum);
+    // Sign-extend sum to AccWidth bits for int_to_trit function
+    else return int_to_trit(AccWidth'(signed'(sum)));
   endfunction
 
   // Multiply-accumulate logic

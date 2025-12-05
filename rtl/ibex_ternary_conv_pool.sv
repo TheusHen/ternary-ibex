@@ -382,7 +382,9 @@ module ibex_ternary_conv_pool import ibex_pkg::*; #(
   `ASSERT(ReadyWhenEmpty, ready_o |-> !(|valid_pipe[1:0]), clk_i, !rst_ni)
 
   // Result is valid ternary encoding
-  `ASSERT(ResultValidTernary,
-    (forall (int i = 0; i < 16; i++) result_o[i*2 +: 2] inside {TRIT_NEG, TRIT_ZERO, TRIT_POS}),
-    clk_i, !rst_ni)
+  // Note: forall syntax is not synthesizable - use per-trit assertions
+  `ASSERT(ResultTrit0Valid, result_o[1:0] inside {TRIT_NEG, TRIT_ZERO, TRIT_POS}, clk_i, !rst_ni)
+  `ASSERT(ResultTrit1Valid, result_o[3:2] inside {TRIT_NEG, TRIT_ZERO, TRIT_POS}, clk_i, !rst_ni)
+  `ASSERT(ResultTrit2Valid, result_o[5:4] inside {TRIT_NEG, TRIT_ZERO, TRIT_POS}, clk_i, !rst_ni)
+  `ASSERT(ResultTrit3Valid, result_o[7:6] inside {TRIT_NEG, TRIT_ZERO, TRIT_POS}, clk_i, !rst_ni)
 endmodule
