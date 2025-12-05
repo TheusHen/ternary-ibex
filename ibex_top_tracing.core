@@ -13,6 +13,10 @@ filesets:
       - rtl/ibex_top_tracing.sv
     file_type: systemVerilogSource
 
+  files_lint_verible:
+    files:
+      - lint/verible_waiver.vbw: {file_type: veribleLintWaiver}
+
 parameters:
   # The tracer uses the RISC-V Formal Interface (RVFI) to collect trace signals.
   RVFI:
@@ -128,6 +132,7 @@ parameters:
 targets:
   default: &default_target
     filesets:
+      - tool_veriblelint ? (files_lint_verible)
       - files_rtl
     parameters:
       - RVFI=true

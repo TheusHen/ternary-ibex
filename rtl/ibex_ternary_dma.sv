@@ -93,6 +93,19 @@ module ibex_ternary_dma import ibex_pkg::*; #(
   logic [$clog2(NumChannels)-1:0] active_channel;
   logic                           any_active;
 
+  // Channel index for configuration
+  logic [3:0] ch_idx;
+
+  // Calculate ch_idx combinationally
+  always_comb begin
+    // Prevent underflow: if cfg_addr_i[7:4] < 1, set ch_idx to invalid value (NumChannels)
+    if (cfg_addr_i[7:4] >= 4'h1) begin
+      ch_idx = cfg_addr_i[7:4] - 4'h1;
+    end else begin
+      ch_idx = NumChannels; // Invalid index, will fail bounds check
+    end
+  end
+
   // Configuration register addresses
   localparam logic [7:0] REG_CTRL        = 8'h00;  // Control register
   localparam logic [7:0] REG_STATUS      = 8'h04;  // Status register
@@ -232,10 +245,8 @@ module ibex_ternary_dma import ibex_pkg::*; #(
       // Round-robin channel selection
       if (!any_active || channel_state[active_channel] == DMA_IDLE) begin
         for (int i = 0; i < NumChannels; i++) begin
-          int next_ch;
-          next_ch = (active_channel + i + 1) % NumChannels;
-          if (channel_cfg[next_ch].enable) begin
-            active_channel <= next_ch[$clog2(NumChannels)-1:0];
+          if (channel_cfg[(active_channel + i + 1) % NumChannels].enable) begin
+            active_channel <= (active_channel + i + 1) % NumChannels;
             break;
           end
         end
@@ -243,14 +254,6 @@ module ibex_ternary_dma import ibex_pkg::*; #(
 
       // Configuration write handling
       if (cfg_we_i) begin
-        logic [3:0] ch_idx;
-        // Prevent underflow: if cfg_addr_i[7:4] < 1, set ch_idx to invalid value (NumChannels)
-        if (cfg_addr_i[7:4] >= 4'h1) begin
-          ch_idx = cfg_addr_i[7:4] - 4'h1;
-        end else begin
-          ch_idx = NumChannels; // Invalid index, will fail bounds check
-        end
-
         case (cfg_addr_i[7:0])
           REG_CTRL: begin
             // Global control
@@ -326,7 +329,8 @@ module ibex_ternary_dma import ibex_pkg::*; #(
 
   // Ternary register file interface
   // Use channel index as base register address (simplified mapping)
-  assign treg_waddr_o = {(5-$clog2(NumChannels)){1'b0}, active_channel};  // Pad to 5 bits, parameterized
+  localparam int PadWidth = 5 - $clog2(NumChannels);
+  assign treg_waddr_o = {{PadWidth{1'b0}}, active_channel};  // Pad to 5 bits, parameterized
   assign treg_wdata_o = data_buffer[active_channel];
   assign treg_we_o    = any_active &&
                         channel_state[active_channel] == DMA_STORE_DST &&
@@ -364,7 +368,6 @@ module ibex_ternary_dma import ibex_pkg::*; #(
 
   // Only one channel can use memory at a time
   `ASSERT(SingleMemAccess, mem_req_o |-> $onehot(channel_busy_o), clk_i, !rst_ni)
-  
   // State machine valid transitions
   `ASSERT(ValidStateTransition,
     channel_state[0] inside {DMA_IDLE, DMA_LOAD_SRC, DMA_WAIT_SRC, DMA_CONVERT,
