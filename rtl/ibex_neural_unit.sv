@@ -92,7 +92,11 @@ module ibex_neural_unit import ibex_pkg::*; (
 
     // Add bias
     bias_trit = bias_i[TERNARY_BITS_PER_TRIT-1:0];
-    bias_int = {{AccWidth-2{trit_to_int(bias_trit)[1]}}, trit_to_int(bias_trit)};
+    begin
+      logic signed [1:0] bias_trit_int;
+      bias_trit_int = trit_to_int(bias_trit);
+      bias_int = {{AccWidth-2{bias_trit_int[1]}}, bias_trit_int};
+    end
     accumulator = mac_result + bias_int;
   end
 
