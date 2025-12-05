@@ -381,8 +381,13 @@ module ibex_ternary_conv_pool import ibex_pkg::*; #(
   // Ready when pipeline empty
   `ASSERT(ReadyWhenEmpty, ready_o |-> !(|valid_pipe[1:0]), clk_i, !rst_ni)
 
-  // Result is valid ternary encoding
-  `ASSERT(ResultValidTernary,
-    (forall (int i = 0; i < 16; i++) result_o[i*2 +: 2] inside {TRIT_NEG, TRIT_ZERO, TRIT_POS}),
-    clk_i, !rst_ni)
+  // Result is valid ternary encoding - generate assertions for each trit
+  genvar trit_idx;
+  generate
+    for (trit_idx = 0; trit_idx < 16; trit_idx++) begin : g_result_valid_assertions
+      `ASSERT(ResultValidTernary,
+        result_o[trit_idx*2 +: 2] inside {TRIT_NEG, TRIT_ZERO, TRIT_POS},
+        clk_i, !rst_ni)
+    end
+  endgenerate
 endmodule
