@@ -216,7 +216,8 @@ module ibex_ternary_lsu import ibex_pkg::*; (
   `ASSERT(BurstCountBounded, burst_cnt_q <= burst_len_q, clk_i, !rst_ni)
 
   // Register index valid (32 ternary registers: T0-T31)
-  `ASSERT(RegIdxValid, reg_idx_q < 5'd32, clk_i, !rst_ni)
+  // Note: reg_idx_q is 5-bit, so values 0-31 are always valid by construction
+  `ASSERT(RegIdxValid, reg_idx_q < 6'd32, clk_i, !rst_ni)
 
   // Done and error mutually exclusive
   `ASSERT(DoneErrorExclusive, !(done_o && error_o), clk_i, !rst_ni)
