@@ -90,7 +90,8 @@ targets:
         mode: cc
         verilator_options:
           - '--trace'
-          - '-CFLAGS "-std=c++11"'
+          - '--timing'
+          - '-CFLAGS "-std=c++20"'
 
   lint:
     filesets:
