@@ -3,7 +3,7 @@
 # Copyright 2025 MHX Neural
 # SPDX-License-Identifier: Apache-2.0
 
-set -e
+# Note: Not using 'set -e' to allow the script to check all files even if some fail
 
 echo "========================================"
 echo "MHX Ternary Extension Verilator Linting"
