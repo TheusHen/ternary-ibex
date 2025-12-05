@@ -89,7 +89,7 @@ module ibex_neural_unit_enhanced import ibex_pkg::*; (
         zero_count = zero_count + 1;
       end
     end
-    sparsity = (zero_count * 100) / TERNARY_TRITS_PER_REG;
+    sparsity = 8'((zero_count * 100) / TERNARY_TRITS_PER_REG);
   end
 
   assign sparsity_ratio_o = sparsity;

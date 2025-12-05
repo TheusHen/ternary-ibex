@@ -69,7 +69,7 @@ module ibex_ternary_advanced import ibex_pkg::*; #(
     if (sum > 1) return TRIT_POS;
     else if (sum < -1) return TRIT_NEG;
     else if (sum == 0) return TRIT_ZERO;
-    else return int_to_trit(sum);
+    else return int_to_trit(8'(signed'(sum)));
   endfunction
 
   // Absolute difference
@@ -113,7 +113,7 @@ module ibex_ternary_advanced import ibex_pkg::*; #(
           b_trit = operand_b_i[i*2 +: 2];
 
           product = trit_to_int(a_trit) * trit_to_int(b_trit);
-          accumulator = accumulator + product;
+          accumulator = accumulator + 8'(signed'(product));
         end
         scalar_result_o = accumulator;
         result_o = {{TernaryDataWidth-8{1'b0}}, accumulator};
@@ -131,7 +131,7 @@ module ibex_ternary_advanced import ibex_pkg::*; #(
           diff = trit_to_int(a_trit) - trit_to_int(b_trit);
           if (diff < 0) diff = -diff;
 
-          counter = counter + diff[1:0];
+          counter = counter + 8'(diff[1:0]);
         end
         scalar_result_o = counter;
         result_o = {{TernaryDataWidth-8{1'b0}}, counter};

@@ -78,7 +78,7 @@ module ibex_ternary_conv_pool import ibex_pkg::*; #(
   logic signed [15:0] pipe_stage2_next;
 
   always_comb begin
-    pipe_stage2_next = bias_i[7:0]; // Start with bias (sign-extended)
+    pipe_stage2_next = 16'(signed'(bias_i[7:0])); // Start with bias (sign-extended)
     for (int i = 0; i < 8; i++) begin
       pipe_stage2_next = pipe_stage2_next + pipe_stage1[i];
     end
@@ -140,7 +140,7 @@ module ibex_ternary_conv_pool import ibex_pkg::*; #(
           // Skip-zero optimization
           if (i_val != 0 && k_val != 0) begin
             product = i_val * k_val;
-            acc = acc + product;
+            acc = acc + 16'(signed'(product));
           end
         end
       end
@@ -239,7 +239,7 @@ module ibex_ternary_conv_pool import ibex_pkg::*; #(
         idx = start_idx + px;
         if (idx >= 0 && idx < TERNARY_TRITS_PER_REG) begin
           trit = inp_row[idx*2 +: 2];
-          sum = sum + trit_to_int(trit);
+          sum = sum + 4'(signed'(trit_to_int(trit)));
         end
       end
     end

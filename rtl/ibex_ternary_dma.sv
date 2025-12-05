@@ -102,7 +102,7 @@ module ibex_ternary_dma import ibex_pkg::*; #(
     if (cfg_addr_i[7:4] >= 4'h1) begin
       ch_idx = cfg_addr_i[7:4] - 4'h1;
     end else begin
-      ch_idx = NumChannels; // Invalid index, will fail bounds check
+      ch_idx = 4'(NumChannels); // Invalid index, will fail bounds check
     end
   end
 
@@ -245,8 +245,8 @@ module ibex_ternary_dma import ibex_pkg::*; #(
       // Round-robin channel selection
       if (!any_active || channel_state[active_channel] == DMA_IDLE) begin
         for (int i = 0; i < NumChannels; i++) begin
-          if (channel_cfg[(active_channel + i + 1) % NumChannels].enable) begin
-            active_channel <= (active_channel + i + 1) % NumChannels;
+          if (channel_cfg[(32'(active_channel) + i + 1) % NumChannels].enable) begin
+            active_channel <= 2'((32'(active_channel) + i + 1) % NumChannels);
             break;
           end
         end
@@ -267,29 +267,29 @@ module ibex_ternary_dma import ibex_pkg::*; #(
           end
 
           REG_CH0_SRC, 8'h20, 8'h30, 8'h40: begin
-            if (ch_idx < NumChannels) begin
-              channel_cfg[ch_idx].src_addr <= cfg_wdata_i;
+            if (4'(ch_idx) < 4'(NumChannels)) begin
+              channel_cfg[2'(ch_idx)].src_addr <= cfg_wdata_i;
             end
           end
 
           REG_CH0_DST, 8'h24, 8'h34, 8'h44: begin
-            if (ch_idx < NumChannels) begin
-              channel_cfg[ch_idx].dst_addr <= cfg_wdata_i;
+            if (4'(ch_idx) < 4'(NumChannels)) begin
+              channel_cfg[2'(ch_idx)].dst_addr <= cfg_wdata_i;
             end
           end
 
           REG_CH0_LEN, 8'h28, 8'h38, 8'h48: begin
-            if (ch_idx < NumChannels) begin
-              channel_cfg[ch_idx].transfer_len <= cfg_wdata_i[15:0];
+            if (4'(ch_idx) < 4'(NumChannels)) begin
+              channel_cfg[2'(ch_idx)].transfer_len <= cfg_wdata_i[15:0];
             end
           end
 
           REG_CH0_CFG, 8'h2C, 8'h3C, 8'h4C: begin
-            if (ch_idx < NumChannels) begin
-              channel_cfg[ch_idx].enable         <= cfg_wdata_i[0];
-              channel_cfg[ch_idx].src_is_ternary <= cfg_wdata_i[1];
-              channel_cfg[ch_idx].dst_is_ternary <= cfg_wdata_i[2];
-              channel_cfg[ch_idx].auto_convert   <= cfg_wdata_i[3];
+            if (4'(ch_idx) < 4'(NumChannels)) begin
+              channel_cfg[2'(ch_idx)].enable         <= cfg_wdata_i[0];
+              channel_cfg[2'(ch_idx)].src_is_ternary <= cfg_wdata_i[1];
+              channel_cfg[2'(ch_idx)].dst_is_ternary <= cfg_wdata_i[2];
+              channel_cfg[2'(ch_idx)].auto_convert   <= cfg_wdata_i[3];
             end
           end
 

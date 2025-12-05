@@ -281,7 +281,7 @@ module ibex_ternary_debug import ibex_pkg::*; #(
 
           DBG_BP_CTRL: begin
             bp_select_q <= dmi_req_data_i[1:0];
-            if (dmi_req_data_i[1:0] < NumBreakpoints) begin
+            if (32'(dmi_req_data_i[1:0]) < NumBreakpoints) begin
               bp_enabled_q[dmi_req_data_i[1:0]] <= dmi_req_data_i[8];
               bp_read_q[dmi_req_data_i[1:0]] <= dmi_req_data_i[9];
               bp_write_q[dmi_req_data_i[1:0]] <= dmi_req_data_i[10];
