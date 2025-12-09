@@ -1,0 +1,203 @@
+---
+import DocsLayout from '../../layouts/DocsLayout.astro';
+---
+
+<DocsLayout title="Integration Guide">
+  <div class="prose dark:prose-invert max-w-none">
+    <h1>Integration Guide</h1>
+    
+    <p class="lead text-lg text-gray-600 dark:text-gray-300">
+      How to integrate the MHX Ternary RISC-V Core into your System-on-Chip design.
+    </p>
+    
+    <h2>Overview</h2>
+    
+    <p>
+      The MHX Ternary Ibex core is designed as a drop-in replacement for the standard Ibex core, 
+      with additional interfaces for ternary memory access and neural unit configuration.
+    </p>
+    
+    <h2>Top-Level Interface</h2>
+    
+    <p>The core exposes the following key interfaces:</p>
+    
+    <h3>Standard Ibex Interfaces</h3>
+    
+    <ul>
+      <li><strong>Instruction memory interface</strong> - Standard 32-bit instruction fetch</li>
+      <li><strong>Data memory interface</strong> - Standard 32-bit data load/store</li>
+      <li><strong>Interrupt interface</strong> - External, timer, and software interrupts</li>
+      <li><strong>Debug interface</strong> - RISC-V debug specification compliant</li>
+    </ul>
+    
+    <h3>MHX Extension Interfaces</h3>
+    
+    <pre><code class="language-systemverilog">module ibex_core #(
+  // Standard Ibex parameters
+  parameter bit          PMPEnable        = 1'b0,
+  parameter int unsigned PMPGranularity   = 0,
+  parameter int unsigned PMPNumRegions    = 4,
+  // ... other standard params
+  
+  // MHX Extension parameters
+  parameter bit          TernarySupport   = 1'b1,
+  parameter bit          NeuralSupport    = 1'b1,
+  parameter int unsigned TernaryRegCount  = 16,
+  parameter int unsigned NeuralMacUnits   = 4
+) (
+  // Standard interfaces
+  input  logic        clk_i,
+  input  logic        rst_ni,
+  
+  // Instruction memory interface
+  output logic        instr_req_o,
+  input  logic        instr_gnt_i,
+  // ...
+  
+  // Data memory interface
+  output logic        data_req_o,
+  input  logic        data_gnt_i,
+  // ...
+  
+  // MHX Ternary memory interface (optional)
+  output logic        ternary_mem_req_o,
+  output logic [31:0] ternary_mem_addr_o,
+  output logic [31:0] ternary_mem_wdata_o,
+  input  logic [31:0] ternary_mem_rdata_i,
+  input  logic        ternary_mem_gnt_i,
+  
+  // Neural unit configuration
+  input  logic [7:0]  neural_config_i,
+  output logic        neural_busy_o
+);</code></pre>
+    
+    <h2>Configuration Parameters</h2>
+    
+    <div class="not-prose overflow-x-auto mb-8">
+      <table class="min-w-full border-collapse">
+        <thead>
+          <tr class="bg-gray-100 dark:bg-gray-800">
+            <th class="px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700">Parameter</th>
+            <th class="px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700">Type</th>
+            <th class="px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700">Default</th>
+            <th class="px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700">Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="bg-white dark:bg-gray-900">
+            <td class="px-4 py-3 text-sm font-mono text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700">TernarySupport</td>
+            <td class="px-4 py-3 text-sm text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-700">bit</td>
+            <td class="px-4 py-3 text-sm font-mono text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-700">1'b1</td>
+            <td class="px-4 py-3 text-sm text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-700">Enable ternary ALU and register file</td>
+          </tr>
+          <tr class="bg-gray-50 dark:bg-gray-800/50">
+            <td class="px-4 py-3 text-sm font-mono text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700">NeuralSupport</td>
+            <td class="px-4 py-3 text-sm text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-700">bit</td>
+            <td class="px-4 py-3 text-sm font-mono text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-700">1'b1</td>
+            <td class="px-4 py-3 text-sm text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-700">Enable neural processing unit</td>
+          </tr>
+          <tr class="bg-white dark:bg-gray-900">
+            <td class="px-4 py-3 text-sm font-mono text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700">TernaryRegCount</td>
+            <td class="px-4 py-3 text-sm text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-700">int</td>
+            <td class="px-4 py-3 text-sm font-mono text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-700">16</td>
+            <td class="px-4 py-3 text-sm text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-700">Number of ternary registers (8 or 16)</td>
+          </tr>
+          <tr class="bg-gray-50 dark:bg-gray-800/50">
+            <td class="px-4 py-3 text-sm font-mono text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700">NeuralMacUnits</td>
+            <td class="px-4 py-3 text-sm text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-700">int</td>
+            <td class="px-4 py-3 text-sm font-mono text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-700">4</td>
+            <td class="px-4 py-3 text-sm text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-700">Number of parallel MAC units</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    
+    <h2>Memory Map</h2>
+    
+    <p>The ternary extension uses memory-mapped CSRs for configuration and status:</p>
+    
+    <pre><code class="language-text">0x7C0 - TERNARY_STATUS  : Ternary unit status register
+0x7C1 - TERNARY_CTRL    : Ternary unit control register
+0x7C2 - NEURAL_STATUS   : Neural unit status register
+0x7C3 - NEURAL_CTRL     : Neural unit control register
+0x7C4 - NEURAL_CONFIG   : Neural unit configuration</code></pre>
+    
+    <h2>Integration Steps</h2>
+    
+    <h3>1. Add Source Files</h3>
+    
+    <p>Include the following RTL files in your build:</p>
+    
+    <pre><code class="language-text">rtl/ibex_ternary_alu.sv
+rtl/ibex_ternary_regfile.sv
+rtl/ibex_neural_unit.sv
+rtl/ibex_pkg.sv (modified)
+rtl/ibex_decoder.sv (modified)
+rtl/ibex_core.sv (modified)</code></pre>
+    
+    <h3>2. Connect Interfaces</h3>
+    
+    <pre><code class="language-systemverilog">ibex_core #(
+  .TernarySupport(1'b1),
+  .NeuralSupport(1'b1)
+) u_ibex_core (
+  .clk_i(clk),
+  .rst_ni(rst_n),
+  
+  // Standard connections
+  .instr_req_o(instr_req),
+  .instr_gnt_i(instr_gnt),
+  // ...
+  
+  // Optional: dedicated ternary memory
+  .ternary_mem_req_o(ternary_mem_req),
+  .ternary_mem_addr_o(ternary_mem_addr),
+  // ...
+);</code></pre>
+    
+    <h3>3. Synthesis Constraints</h3>
+    
+    <p>For optimal timing, add the following constraints:</p>
+    
+    <pre><code class="language-tcl"># Ternary ALU is the critical path
+set_max_delay 5.0 -from [get_pins u_ibex_core/u_ternary_alu/*] \
+                  -to [get_pins u_ibex_core/u_ternary_regfile/*]
+
+# Neural MAC units can be pipelined
+set_multicycle_path 2 -setup -from [get_pins u_ibex_core/u_neural_unit/mac_*]</code></pre>
+    
+    <h2>Area and Timing Estimates</h2>
+    
+    <div class="not-prose grid sm:grid-cols-2 gap-4 my-8">
+      <div class="p-4 rounded-xl bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700">
+        <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Area Overhead</h4>
+        <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-400">
+          <li>Ternary ALU: ~2,500 gates</li>
+          <li>Ternary Register File: ~4,000 gates</li>
+          <li>Neural Unit (4 MACs): ~8,000 gates</li>
+          <li><strong>Total: ~15,000 gates (~40% of base Ibex)</strong></li>
+        </ul>
+      </div>
+      <div class="p-4 rounded-xl bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700">
+        <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Timing (Sky130)</h4>
+        <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-400">
+          <li>Target frequency: 50 MHz</li>
+          <li>Critical path: Ternary multiply</li>
+          <li>Setup slack: ~2ns @ 50MHz</li>
+          <li>Hold slack: ~0.5ns</li>
+        </ul>
+      </div>
+    </div>
+    
+    <h2>Verification Checklist</h2>
+    
+    <ul>
+      <li>✅ Run <code>fusesoc ... --TernarySupport=true</code> lint checks</li>
+      <li>✅ Execute ternary unit tests</li>
+      <li>✅ Run formal verification on ternary ALU</li>
+      <li>✅ Verify neural unit with known test vectors</li>
+      <li>✅ Check timing with synthesis tools</li>
+      <li>✅ Validate power estimates</li>
+    </ul>
+  </div>
+</DocsLayout>

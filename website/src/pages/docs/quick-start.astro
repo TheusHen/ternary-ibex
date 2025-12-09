@@ -1,0 +1,106 @@
+---
+import DocsLayout from '../../layouts/DocsLayout.astro';
+---
+
+<DocsLayout title="Quick Start">
+  <div class="prose dark:prose-invert max-w-none">
+    <h1>Quick Start Guide</h1>
+    
+    <p class="lead text-lg text-gray-600 dark:text-gray-300">
+      Get the MHX Ternary RISC-V Core running in simulation in under 10 minutes.
+    </p>
+    
+    <h2>Prerequisites</h2>
+    
+    <p>Before you begin, ensure you have the following installed:</p>
+    
+    <ul>
+      <li><strong>Verilator 4.210+</strong> - For RTL simulation</li>
+      <li><strong>Python 3.8+</strong> - For build scripts and analysis tools</li>
+      <li><strong>FuseSoC 2.0+</strong> - For build management</li>
+      <li><strong>RISC-V Toolchain</strong> - For compiling test programs</li>
+    </ul>
+    
+    <h2>Installation</h2>
+    
+    <h3>1. Clone the Repository</h3>
+    
+    <pre><code class="language-bash">git clone https://github.com/TheusHen/ternary-ibex.git
+cd ternary-ibex
+git submodule update --init --recursive</code></pre>
+    
+    <h3>2. Install Dependencies</h3>
+    
+    <pre><code class="language-bash"># On Ubuntu/Debian
+sudo apt-get update
+sudo apt-get install -y verilator python3-pip
+
+# Install Python dependencies
+pip3 install -r python-requirements.txt
+
+# Install FuseSoC
+pip3 install fusesoc</code></pre>
+    
+    <h3>3. Setup FuseSoC</h3>
+    
+    <pre><code class="language-bash"># Add required libraries
+fusesoc library add fusesoc_cores https://github.com/fusesoc/fusesoc-cores</code></pre>
+    
+    <h2>Running Simulation</h2>
+    
+    <h3>Basic Ternary Test</h3>
+    
+    <pre><code class="language-bash"># Build and run the ternary test suite
+fusesoc --cores-root . run --target=sim --tool=verilator lowrisc:ibex:mhx_ternary_test</code></pre>
+    
+    <h3>Running Individual Test Suites</h3>
+    
+    <pre><code class="language-bash"># ALU tests only
+./run_ternary_tests.sh --suite alu
+
+# Neural unit tests
+./run_ternary_tests.sh --suite neural
+
+# Full integration tests
+./run_ternary_tests.sh --suite integration</code></pre>
+    
+    <h2>Running Lint Checks</h2>
+    
+    <pre><code class="language-bash"># Verilator lint
+fusesoc --cores-root . run --target=lint --tool=verilator lowrisc:ibex:mhx_ternary_test
+
+# Verible lint
+fusesoc --cores-root . run --target=lint --tool=veriblelint lowrisc:ibex:mhx_ternary_test</code></pre>
+    
+    <h2>Example: Ternary Addition</h2>
+    
+    <p>Here's a simple assembly example demonstrating ternary operations:</p>
+    
+    <pre><code class="language-asm"># Load ternary values into registers
+t.li    t0, 0x0001      # Load ternary 1 (positive)
+t.li    t1, 0xFFFF      # Load ternary -1 (negative)
+
+# Ternary addition
+t.add   t2, t0, t1      # t2 = t0 + t1 = 0
+
+# Neural MAC operation
+n.mac   t3, t0, t1, t2  # t3 = t0 * t1 + t2</code></pre>
+    
+    <h2>Next Steps</h2>
+    
+    <ul>
+      <li><a href="/ternary-ibex/architecture">Explore the architecture</a> - Understand the core design</li>
+      <li><a href="/ternary-ibex/docs/instruction-set">ISA Reference</a> - Complete instruction documentation</li>
+      <li><a href="/ternary-ibex/docs/integration">Integration Guide</a> - Integrate into your SoC</li>
+    </ul>
+    
+    <div class="mt-8 p-6 rounded-xl bg-primary-50 dark:bg-primary-900/20 border border-primary-200 dark:border-primary-800">
+      <h3 class="text-primary-800 dark:text-primary-200 mt-0">Need Help?</h3>
+      <p class="mb-0 text-primary-700 dark:text-primary-300">
+        If you encounter any issues, please check the 
+        <a href="https://github.com/TheusHen/ternary-ibex/issues" class="text-primary-600 dark:text-primary-400">GitHub Issues</a> 
+        or open a new issue with your problem description.
+      </p>
+    </div>
+  </div>
+</DocsLayout>

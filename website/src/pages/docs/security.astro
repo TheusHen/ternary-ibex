@@ -1,0 +1,191 @@
+---
+import DocsLayout from '../../layouts/DocsLayout.astro';
+---
+
+<DocsLayout title="Security Analysis">
+  <div class="prose dark:prose-invert max-w-none">
+    <h1>Security Analysis</h1>
+    
+    <p class="lead text-lg text-gray-600 dark:text-gray-300">
+      Security considerations, threat model, and mitigations for the MHX Ternary RISC-V Core.
+    </p>
+    
+    <div class="not-prose mb-8 p-4 rounded-xl bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800">
+      <div class="flex items-start gap-3">
+        <svg class="w-6 h-6 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+        </svg>
+        <div>
+          <p class="font-semibold text-red-800 dark:text-red-200">Security Notice</p>
+          <p class="text-sm text-red-700 dark:text-red-300">
+            This core is currently in development and has NOT undergone formal security certification. 
+            Do not use in production security-critical applications without thorough review.
+          </p>
+        </div>
+      </div>
+    </div>
+    
+    <h2>Threat Model</h2>
+    
+    <p>
+      The MHX Ternary extension introduces new attack surfaces that must be considered in security-sensitive applications.
+    </p>
+    
+    <h3>Asset Identification</h3>
+    
+    <ul>
+      <li><strong>Neural network weights</strong> - Proprietary trained models in ternary format</li>
+      <li><strong>Inference data</strong> - Input data to neural network operations</li>
+      <li><strong>Ternary register contents</strong> - May contain sensitive intermediate values</li>
+      <li><strong>Execution integrity</strong> - Correct execution of ternary/neural operations</li>
+    </ul>
+    
+    <h3>Potential Threats</h3>
+    
+    <div class="not-prose space-y-4 my-8">
+      <div class="p-4 rounded-xl border border-gray-200 dark:border-gray-700">
+        <div class="flex items-center gap-3 mb-2">
+          <span class="px-2 py-1 text-xs font-semibold rounded bg-red-100 dark:bg-red-900/50 text-red-800 dark:text-red-200">HIGH</span>
+          <h4 class="font-semibold text-gray-900 dark:text-white m-0">Timing Side Channels</h4>
+        </div>
+        <p class="text-sm text-gray-600 dark:text-gray-400 m-0">
+          Ternary multiplication timing may vary based on operand values, potentially leaking information about neural network weights.
+        </p>
+      </div>
+      
+      <div class="p-4 rounded-xl border border-gray-200 dark:border-gray-700">
+        <div class="flex items-center gap-3 mb-2">
+          <span class="px-2 py-1 text-xs font-semibold rounded bg-yellow-100 dark:bg-yellow-900/50 text-yellow-800 dark:text-yellow-200">MEDIUM</span>
+          <h4 class="font-semibold text-gray-900 dark:text-white m-0">Power Analysis</h4>
+        </div>
+        <p class="text-sm text-gray-600 dark:text-gray-400 m-0">
+          Neural MAC operations have data-dependent power consumption that could reveal weights through DPA attacks.
+        </p>
+      </div>
+      
+      <div class="p-4 rounded-xl border border-gray-200 dark:border-gray-700">
+        <div class="flex items-center gap-3 mb-2">
+          <span class="px-2 py-1 text-xs font-semibold rounded bg-yellow-100 dark:bg-yellow-900/50 text-yellow-800 dark:text-yellow-200">MEDIUM</span>
+          <h4 class="font-semibold text-gray-900 dark:text-white m-0">Fault Injection</h4>
+        </div>
+        <p class="text-sm text-gray-600 dark:text-gray-400 m-0">
+          Glitching attacks could corrupt ternary computations, leading to incorrect inference results with security implications.
+        </p>
+      </div>
+      
+      <div class="p-4 rounded-xl border border-gray-200 dark:border-gray-700">
+        <div class="flex items-center gap-3 mb-2">
+          <span class="px-2 py-1 text-xs font-semibold rounded bg-blue-100 dark:bg-blue-900/50 text-blue-800 dark:text-blue-200">LOW</span>
+          <h4 class="font-semibold text-gray-900 dark:text-white m-0">Register Leakage</h4>
+        </div>
+        <p class="text-sm text-gray-600 dark:text-gray-400 m-0">
+          Ternary registers may retain sensitive values after context switches if not properly cleared.
+        </p>
+      </div>
+    </div>
+    
+    <h2>Mitigations</h2>
+    
+    <h3>Constant-Time Operations</h3>
+    
+    <p>
+      The ternary ALU is designed with constant-time execution for all operations:
+    </p>
+    
+    <pre><code class="language-verilog">{`// Constant-time ternary multiplication (simplified)
+always_comb begin
+  // All paths take same number of cycles regardless of operand values
+  for (int i = 0; i < TRIT_WIDTH; i++) begin
+    // Lookup table approach - constant time
+    mult_result[i] = TRIT_MULT_TABLE[op_a[i]][op_b[i]];
+  end
+end`}</code></pre>
+    
+    <h3>Register Clearing</h3>
+    
+    <p>
+      Software should clear ternary registers before context switches:
+    </p>
+    
+    <pre><code class="language-asm"># Clear all ternary registers before context switch
+t.li t1, 0
+t.li t2, 0
+# ... repeat for all registers
+t.li t15, 0</code></pre>
+    
+    <h3>Fault Detection</h3>
+    
+    <p>
+      The neural unit includes optional redundancy checking:
+    </p>
+    
+    <ul>
+      <li>Dual-rail encoding for critical operations</li>
+      <li>Result parity checking</li>
+      <li>Instruction sequence monitoring</li>
+    </ul>
+    
+    <h2>Security CSRs</h2>
+    
+    <div class="not-prose overflow-x-auto mb-8">
+      <table class="min-w-full border-collapse">
+        <thead>
+          <tr class="bg-gray-100 dark:bg-gray-800">
+            <th class="px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700">CSR</th>
+            <th class="px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700">Address</th>
+            <th class="px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700">Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="bg-white dark:bg-gray-900">
+            <td class="px-4 py-3 text-sm font-mono text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700">TSEC_CTRL</td>
+            <td class="px-4 py-3 text-sm font-mono text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-700">0x7D0</td>
+            <td class="px-4 py-3 text-sm text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-700">Ternary security control (enable constant-time mode)</td>
+          </tr>
+          <tr class="bg-gray-50 dark:bg-gray-800/50">
+            <td class="px-4 py-3 text-sm font-mono text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700">TSEC_STATUS</td>
+            <td class="px-4 py-3 text-sm font-mono text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-700">0x7D1</td>
+            <td class="px-4 py-3 text-sm text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-700">Ternary security status (fault detected, etc.)</td>
+          </tr>
+          <tr class="bg-white dark:bg-gray-900">
+            <td class="px-4 py-3 text-sm font-mono text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700">NSEC_CTRL</td>
+            <td class="px-4 py-3 text-sm font-mono text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-700">0x7D2</td>
+            <td class="px-4 py-3 text-sm text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-700">Neural unit security control</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    
+    <h2>Recommendations</h2>
+    
+    <div class="not-prose grid sm:grid-cols-2 gap-4 my-8">
+      <div class="p-4 rounded-xl bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800">
+        <h4 class="font-semibold text-green-800 dark:text-green-200 mb-2">✅ Do</h4>
+        <ul class="text-sm text-green-700 dark:text-green-300 space-y-1 list-disc list-inside">
+          <li>Enable constant-time mode for sensitive operations</li>
+          <li>Clear ternary registers on context switch</li>
+          <li>Use hardware fault detection when available</li>
+          <li>Implement proper access control to neural weights</li>
+        </ul>
+      </div>
+      <div class="p-4 rounded-xl bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800">
+        <h4 class="font-semibold text-red-800 dark:text-red-200 mb-2">❌ Don't</h4>
+        <ul class="text-sm text-red-700 dark:text-red-300 space-y-1 list-disc list-inside">
+          <li>Store cryptographic keys in ternary registers</li>
+          <li>Use in safety-critical applications without review</li>
+          <li>Assume ternary operations are inherently secure</li>
+          <li>Ignore power/timing side channels in threat model</li>
+        </ul>
+      </div>
+    </div>
+    
+    <h2>Future Work</h2>
+    
+    <ul>
+      <li>Formal verification of constant-time properties</li>
+      <li>Hardware randomization of neural computations</li>
+      <li>Integration with Ibex lockstep mode</li>
+      <li>Side-channel resistant activation functions</li>
+    </ul>
+  </div>
+</DocsLayout>
