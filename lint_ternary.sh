@@ -55,7 +55,8 @@ for file in "${TERNARY_FILES[@]}"; do
     if [ -f "$file" ]; then
         echo -n "Linting $file... "
         # Run verilator with ibex_pkg first, then the module
-        # Note: grep -q returns 0 when 'Error' is found, so we check for error presence
+        # Temporarily disable exit-on-error for grep check
+        set +e
         LINT_OUTPUT=$(verilator --lint-only \
             -Wall \
             -Wno-DECLFILENAME \
@@ -65,17 +66,20 @@ for file in "${TERNARY_FILES[@]}"; do
             "${INCLUDE_PATHS[@]}" \
             rtl/ibex_pkg.sv \
             "$file" 2>&1)
-        if echo "$LINT_OUTPUT" | grep -q "%Error"; then
+        echo "$LINT_OUTPUT" | grep -q "%Error"
+        HAS_ERROR=$?
+        if [ $HAS_ERROR -eq 0 ]; then
             echo "❌ FAIL"
             echo "$LINT_OUTPUT" | head -30
-            ((ERRORS++))
+            ERRORS=$((ERRORS + 1))
         else
             echo "✅ PASS"
-            ((PASSED++))
+            PASSED=$((PASSED + 1))
         fi
+        set -e
     else
         echo "❌ File not found: $file"
-        ((ERRORS++))
+        ERRORS=$((ERRORS + 1))
     fi
 done
 

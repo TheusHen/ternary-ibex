@@ -87,7 +87,7 @@ module ibex_neural_unit import ibex_pkg::*; (
       i_int = trit_to_int(i_trit);
 
       // Ternary multiplication: result is always in {-1, 0, +1}
-      product = w_int * i_int;
+      product = AccWidth'(signed'(w_int * i_int));
       mac_result = mac_result + product;
     end
 
@@ -98,7 +98,7 @@ module ibex_neural_unit import ibex_pkg::*; (
       bias_trit_int = trit_to_int(bias_trit);
       bias_int = {{AccWidth-2{bias_trit_int[1]}}, bias_trit_int};
     end
-    accumulator = mac_result + bias_int;
+    accumulator = mac_result + AccWidth'(signed'(bias_int));
   end
 
   // Activation function (sign)
