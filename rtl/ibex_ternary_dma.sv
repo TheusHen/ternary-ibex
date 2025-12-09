@@ -244,9 +244,8 @@ module ibex_ternary_dma import ibex_pkg::*; #(
 
       // Round-robin channel selection
       if (!any_active || channel_state[active_channel] == DMA_IDLE) begin
-        int unsigned next_ch;
         for (int i = 0; i < NumChannels; i++) begin
-          next_ch = (active_channel + i + 1) % NumChannels;
+          automatic int unsigned next_ch = (active_channel + i + 1) % NumChannels;
           if (channel_cfg[next_ch].enable) begin
             active_channel <= next_ch;
             break;
