@@ -30,7 +30,7 @@ jobs:
   # ============================================================================
   collect-data:
     name: Collect CI Data
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -110,7 +110,7 @@ jobs:
   # ============================================================================
   build:
     name: Build Website
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs: collect-data
     steps:
       - name: Checkout repository
@@ -160,7 +160,7 @@ jobs:
   # ============================================================================
   deploy:
     name: Deploy to GitHub Pages
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs: build
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     environment:
@@ -189,7 +189,7 @@ jobs:
   # ============================================================================
   summary:
     name: Generate Summary
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs: [collect-data, build, deploy]
     if: always()
     steps:

@@ -23,7 +23,7 @@ env:
 jobs:
   generate-floorplan:
     name: "Generate Floorplan Image"
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     steps:
       - name: Checkout repository
@@ -441,7 +441,7 @@ jobs:
 
   lint-check:
     name: "Verify Lint Fixes"
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs: generate-floorplan
 
     steps:

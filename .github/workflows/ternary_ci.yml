@@ -34,7 +34,7 @@ env:
 jobs:
   ternary_lint_and_format:
     name: Ternary Code Quality
-    runs-on: ubuntu-22.04
+    runs-on: self-hosted
 
     steps:
       - uses: actions/checkout@v4
@@ -101,7 +101,7 @@ jobs:
 
   ternary_formal_verification:
     name: Formal Verification
-    runs-on: ubuntu-22.04
+    runs-on: self-hosted
     needs: ternary_lint_and_format
 
     steps:
@@ -167,7 +167,7 @@ jobs:
 
   ternary_unit_tests:
     name: Unit Tests
-    runs-on: ubuntu-22.04
+    runs-on: self-hosted
     needs: ternary_lint_and_format
 
     strategy:
@@ -248,7 +248,7 @@ jobs:
 
   ternary_performance_tests:
     name: Performance Validation
-    runs-on: ubuntu-22.04
+    runs-on: self-hosted
     needs: ternary_unit_tests
 
     steps:
@@ -287,7 +287,7 @@ jobs:
 
   ternary_regression_tests:
     name: Regression Tests
-    runs-on: ubuntu-22.04
+    runs-on: self-hosted
     needs: [ternary_formal_verification, ternary_performance_tests]
     if: github.event_name == 'pull_request'
 
@@ -320,7 +320,7 @@ jobs:
 
   ternary_security_scan:
     name: Security Scan
-    runs-on: ubuntu-22.04
+    runs-on: self-hosted
     needs: ternary_lint_and_format
 
     steps:
@@ -342,7 +342,7 @@ jobs:
 
   generate_report:
     name: Generate CI Report
-    runs-on: ubuntu-22.04
+    runs-on: self-hosted
     needs: [ternary_formal_verification, ternary_unit_tests, ternary_performance_tests, ternary_security_scan]
     if: always()
 
