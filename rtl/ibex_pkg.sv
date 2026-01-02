@@ -736,7 +736,7 @@ package ibex_pkg;
   // See the Ibex Reference Guide (Custom Reset Values under Physical Memory
   // Protection) for more information.
 
-  localparam pmp_cfg_t PmpCfgRst[16] = '{
+  parameter pmp_cfg_t PmpCfgRst[16] = '{
     '{lock: 1'b0, mode: PMP_MODE_OFF, exec: 1'b0, write: 1'b0, read: 1'b0}, // region 0
     '{lock: 1'b0, mode: PMP_MODE_OFF, exec: 1'b0, write: 1'b0, read: 1'b0}, // region 1
     '{lock: 1'b0, mode: PMP_MODE_OFF, exec: 1'b0, write: 1'b0, read: 1'b0}, // region 2
@@ -758,7 +758,7 @@ package ibex_pkg;
   // Addresses are given in byte granularity for readability. A minimum of two
   // bits will be stripped off the bottom (PMPGranularity == 0) with more stripped
   // off at coarser granularities.
-  localparam logic [33:0] PmpAddrRst[16] = '{
+  parameter logic [33:0] PmpAddrRst[16] = '{
     34'h0, // region 0
     34'h0, // region 1
     34'h0, // region 2
@@ -777,5 +777,5 @@ package ibex_pkg;
     34'h0  // region 15
   };
 
-  localparam pmp_mseccfg_t PmpMseccfgRst = '{rlb : 1'b0, mmwp: 1'b0, mml: 1'b0};
+  parameter pmp_mseccfg_t PmpMseccfgRst = '{rlb : 1'b0, mmwp: 1'b0, mml: 1'b0};
 endpackage
