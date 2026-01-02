@@ -1,0 +1,1 @@
+/workspaces/ternary-ibex/syn/asic/build/ibex_ternary_alu_stripped.sv:26: ERROR: syntax error, unexpected TOK_ID, expecting ',' or '=' or ')'

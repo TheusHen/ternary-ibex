@@ -1,0 +1,1 @@
+/workspaces/ternary-ibex/syn/asic/../../rtl/ibex_pkg.sv:402: ERROR: syntax error, unexpected OP_CAST
