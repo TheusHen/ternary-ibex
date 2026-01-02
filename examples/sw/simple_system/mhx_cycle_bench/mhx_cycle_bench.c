@@ -8,11 +8,11 @@
 
 // RISC-V R-type encoder.
 #define ENCODE_R(funct7, rs2, rs1, funct3, rd, opcode) \
-  ((uint32_t)((((uint32_t)(funct7) & 0x7f) << 25) |    \
-              (((uint32_t)(rs2) & 0x1f) << 20) |       \
-              (((uint32_t)(rs1) & 0x1f) << 15) |       \
-              (((uint32_t)(funct3) & 0x7) << 12) |     \
-              (((uint32_t)(rd) & 0x1f) << 7) | ((uint32_t)(opcode) & 0x7f)))
+  ((uint32_t)((((uint32_t)(funct7)&0x7f) << 25) |      \
+              (((uint32_t)(rs2)&0x1f) << 20) |         \
+              (((uint32_t)(rs1)&0x1f) << 15) |         \
+              (((uint32_t)(funct3)&0x7) << 12) |       \
+              (((uint32_t)(rd)&0x1f) << 7) | ((uint32_t)(opcode)&0x7f)))
 
 // MHX custom opcodes (see rtl/ibex_pkg.sv)
 #define OPCODE_TERNARY 0x0B
