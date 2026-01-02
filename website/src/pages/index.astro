@@ -142,15 +142,19 @@ const perf = performance.default;
             </div>
             <div class="flex items-center gap-3">
               <div class="w-4 h-4 rounded bg-green-500"></div>
-              <span class="text-sm text-gray-700 dark:text-gray-300">Ternary ALU (16-trit operations)</span>
+              <span class="text-sm text-gray-700 dark:text-gray-300">Ternary ALU (15 operations, 16-trit)</span>
             </div>
             <div class="flex items-center gap-3">
               <div class="w-4 h-4 rounded bg-yellow-500"></div>
-              <span class="text-sm text-gray-700 dark:text-gray-300">Neural Processing Unit</span>
+              <span class="text-sm text-gray-700 dark:text-gray-300">Neural Processing Unit (3-stage pipelined)</span>
             </div>
             <div class="flex items-center gap-3">
               <div class="w-4 h-4 rounded bg-red-500"></div>
-              <span class="text-sm text-gray-700 dark:text-gray-300">Dual Register File (32 binary + 16 ternary)</span>
+              <span class="text-sm text-gray-700 dark:text-gray-300">Dual Register File (32 binary + 32 ternary)</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <div class="w-4 h-4 rounded bg-purple-500"></div>
+              <span class="text-sm text-gray-700 dark:text-gray-300">Weight Cache (16 entries, LRU)</span>
             </div>
           </div>
           

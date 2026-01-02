@@ -127,23 +127,35 @@ const baseUrl = import.meta.env.BASE_URL;
           </tr>
           <tr class="bg-gray-50 dark:bg-gray-800/50">
             <td class="px-4 py-3 text-sm font-medium text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700">Ternary Registers</td>
-            <td class="px-4 py-3 text-sm text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-700">16 × 16 trits (48 bits equivalent)</td>
+            <td class="px-4 py-3 text-sm text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-700">32 registers (T0-T31) × 16 trits each (32 bits per register)</td>
           </tr>
           <tr class="bg-white dark:bg-gray-900">
-            <td class="px-4 py-3 text-sm font-medium text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700">Neural MAC Units</td>
-            <td class="px-4 py-3 text-sm text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-700">4 parallel units (configurable)</td>
+            <td class="px-4 py-3 text-sm font-medium text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700">Ternary Operations</td>
+            <td class="px-4 py-3 text-sm text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-700">15 operations (7 core + 8 advanced)</td>
+          </tr>
+          <tr class="bg-gray-50 dark:bg-gray-800/50">
+            <td class="px-4 py-3 text-sm font-medium text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700">Neural Unit Pipeline</td>
+            <td class="px-4 py-3 text-sm text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-700">3-stage pipelined (MAC, activation, normalization)</td>
+          </tr>
+          <tr class="bg-white dark:bg-gray-900">
+            <td class="px-4 py-3 text-sm font-medium text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700">Weight Cache</td>
+            <td class="px-4 py-3 text-sm text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-700">16-entry LRU cache (70% bandwidth reduction)</td>
           </tr>
           <tr class="bg-gray-50 dark:bg-gray-800/50">
             <td class="px-4 py-3 text-sm font-medium text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700">Target Frequency</td>
-            <td class="px-4 py-3 text-sm text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-700">50 MHz (Sky130 PDK)</td>
+            <td class="px-4 py-3 text-sm text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-700">Up to 250 MHz (pipelined design)</td>
           </tr>
           <tr class="bg-white dark:bg-gray-900">
             <td class="px-4 py-3 text-sm font-medium text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700">Area Overhead</td>
-            <td class="px-4 py-3 text-sm text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-700">~15,000 gates (~40% of base Ibex)</td>
+            <td class="px-4 py-3 text-sm text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-700">~0.15 mm² @ 65nm (complete ternary extension)</td>
           </tr>
           <tr class="bg-gray-50 dark:bg-gray-800/50">
             <td class="px-4 py-3 text-sm font-medium text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700">Power (estimated)</td>
-            <td class="px-4 py-3 text-sm text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-700">&lt; 5 mW @ 1.8V, 50 MHz</td>
+            <td class="px-4 py-3 text-sm text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-700">~15 mW @ 100 MHz (neural inference)</td>
+          </tr>
+          <tr class="bg-white dark:bg-gray-900">
+            <td class="px-4 py-3 text-sm font-medium text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700">Throughput</td>
+            <td class="px-4 py-3 text-sm text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-700">16 ternary MACs per cycle</td>
           </tr>
         </tbody>
       </table>
@@ -170,7 +182,7 @@ const baseUrl = import.meta.env.BASE_URL;
     </ul>
     
     <p>
-      This encoding enables 93.8% memory savings compared to 32-bit representation while maintaining 
+      This encoding enables 93.75% memory savings compared to 32-bit representation while maintaining 
       fast access times.
     </p>
   </div>
