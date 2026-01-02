@@ -33,10 +33,10 @@ const currentPath = Astro.url.pathname;
       <div class="hidden md:flex items-center gap-1">
         {navItems.map((item) => (
           <a
-            href={`${baseUrl}${item.href.slice(1)}`}
+            href={item.href === '/' ? baseUrl : `${baseUrl}${item.href}`}
             class:list={[
               'px-4 py-2 rounded-lg text-sm font-medium transition-colors',
-              currentPath === `${baseUrl}${item.href.slice(1)}` || (item.href === '/' && currentPath === baseUrl)
+              currentPath === (item.href === '/' ? baseUrl : `${baseUrl}${item.href}`) || (item.href === '/' && currentPath === baseUrl)
                 ? 'bg-primary-100 dark:bg-primary-900/50 text-primary-700 dark:text-primary-300'
                 : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white'
             ]}
@@ -99,10 +99,10 @@ const currentPath = Astro.url.pathname;
     <div class="px-4 py-3 space-y-1">
       {navItems.map((item) => (
         <a
-          href={`${baseUrl}${item.href.slice(1)}`}
+          href={item.href === '/' ? baseUrl : `${baseUrl}${item.href}`}
           class:list={[
             'block px-4 py-2 rounded-lg text-sm font-medium transition-colors',
-            currentPath === `${baseUrl}${item.href.slice(1)}` || (item.href === '/' && currentPath === baseUrl)
+            currentPath === (item.href === '/' ? baseUrl : `${baseUrl}${item.href}`) || (item.href === '/' && currentPath === baseUrl)
               ? 'bg-primary-100 dark:bg-primary-900/50 text-primary-700 dark:text-primary-300'
               : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800'
           ]}

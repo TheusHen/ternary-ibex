@@ -51,10 +51,10 @@ const currentPath = Astro.url.pathname;
           {section.items.map((item) => (
             <li>
               <a
-                href={`${baseUrl}${item.href.slice(1)}`}
+                href={`${baseUrl}${item.href}`}
                 class:list={[
                   'block px-3 py-2 rounded-lg text-sm transition-colors',
-                  currentPath === `${baseUrl}${item.href.slice(1)}`
+                  currentPath === `${baseUrl}${item.href}`
                     ? 'bg-primary-100 dark:bg-primary-900/50 text-primary-700 dark:text-primary-300 font-medium'
                     : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white'
                 ]}
@@ -79,7 +79,7 @@ const currentPath = Astro.url.pathname;
 
 <script>
   // Load build info
-  fetch(import.meta.env.BASE_URL + 'data/build-info.json')
+  fetch(import.meta.env.BASE_URL + '/data/build-info.json')
     .then(res => res.json())
     .then(data => {
       const el = document.getElementById('last-updated');
