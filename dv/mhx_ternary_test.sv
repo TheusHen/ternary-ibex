@@ -224,7 +224,7 @@ module mhx_ternary_test;
   task automatic test_register_boundaries();
     logic [31:0] test_data_t0, test_data_t31, test_data_t15;
     logic        all_passed;
-    
+
     $display("Testing register boundary conditions (T0, T15, T31)");
     all_passed = 1'b1;
 
@@ -233,7 +233,7 @@ module mhx_ternary_test;
     $display("  Testing T0 (address 0)...");
     write_ternary_reg(5'd0, test_data_t0);
     read_ternary_reg(5'd0, 5'd0);
-    
+
     if (trf_rdata_a == test_data_t0) begin
       $display("  ✓ PASS: T0 write/read test");
     end else begin
@@ -246,7 +246,7 @@ module mhx_ternary_test;
     $display("  Testing T15 (address 15)...");
     write_ternary_reg(5'd15, test_data_t15);
     read_ternary_reg(5'd15, 5'd15);
-    
+
     if (trf_rdata_a == test_data_t15) begin
       $display("  ✓ PASS: T15 write/read test");
     end else begin
@@ -259,7 +259,7 @@ module mhx_ternary_test;
     $display("  Testing T31 (address 31)...");
     write_ternary_reg(5'd31, test_data_t31);
     read_ternary_reg(5'd31, 5'd31);
-    
+
     if (trf_rdata_a == test_data_t31) begin
       $display("  ✓ PASS: T31 write/read test");
     end else begin
@@ -270,7 +270,7 @@ module mhx_ternary_test;
     // Test simultaneous read from T0 and T31
     $display("  Testing simultaneous read from T0 and T31...");
     read_ternary_reg(5'd0, 5'd31);
-    
+
     if (trf_rdata_a == test_data_t0 && trf_rdata_b == test_data_t31) begin
       $display("  ✓ PASS: Simultaneous T0/T31 read test");
     end else begin
@@ -353,13 +353,13 @@ module mhx_ternary_test;
     write_ternary_reg(5'd0, 32'h12345678);   // T0 = test value
     write_ternary_reg(5'd31, 32'h87654321);  // T31 = test value
     read_ternary_reg(5'd0, 5'd31);
-    
+
     // Verify registers were read correctly before ALU operation
     if (trf_rdata_a == 32'h12345678 && trf_rdata_b == 32'h87654321) begin
       // Perform any ALU operation to verify boundary registers work with ALU
       talu_op = TERNARY_ADD;
       repeat(2) @(posedge clk);
-      
+
       // Just verify ALU produces a result - we're testing addressing, not arithmetic correctness
       if (talu_ready) begin
         $display("✓ PASS: ALU operation with T0 and T31 boundary registers");
