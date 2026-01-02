@@ -140,7 +140,7 @@ module mhx_fpga_top (
   logic [3:0] btn_edge;
 
   // Button debouncing
-  logic [19:0] debounce_cnt [3:0];
+  logic [19:0] debounce_cnt [4];
   genvar i;
   generate
     for (i = 0; i < 4; i++) begin : g_debounce

@@ -245,9 +245,15 @@ module neural_unit_formal import ibex_pkg::*; (
   cover_learn:      cover property (operation == NEURAL_LEARN && valid);
 
   // Cover activation outputs
-  cover_activate_pos:  cover property (operation == NEURAL_ACTIVATE && valid && result[1:0] == TRIT_POS);
-  cover_activate_neg:  cover property (operation == NEURAL_ACTIVATE && valid && result[1:0] == TRIT_NEG);
-  cover_activate_zero: cover property (operation == NEURAL_ACTIVATE && valid && result[1:0] == TRIT_ZERO);
+  cover_activate_pos: cover property (
+    operation == NEURAL_ACTIVATE && valid && result[1:0] == TRIT_POS
+  );
+  cover_activate_neg: cover property (
+    operation == NEURAL_ACTIVATE && valid && result[1:0] == TRIT_NEG
+  );
+  cover_activate_zero: cover property (
+    operation == NEURAL_ACTIVATE && valid && result[1:0] == TRIT_ZERO
+  );
 
   // Cover edge cases
   cover_all_zero_inputs:  cover property (inputs == TERNARY_ZERO_PATTERN);
