@@ -24,7 +24,7 @@ permissions:
 
 jobs:
   verible-lint:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     env:
       verible_config: "vendor/lowrisc_ip/lint/tools/veriblelint/lowrisc-styleguide.rules.verible_lint"
     steps:

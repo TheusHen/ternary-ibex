@@ -21,7 +21,7 @@ permissions:
 jobs:
   trigger:
     name: Trigger Private CI
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Trigger Private CI
         run: |

@@ -26,16 +26,10 @@ if [ -z "$GITHUB_ACTIONS" ]; then
 fi
 
 # Use non-default mirror for Ubuntu packages, because the default mirror currently have problems.
-# Ubuntu 24.04+ uses /etc/apt/sources.list.d/ubuntu.sources instead of /etc/apt/sources.list
-if [ -f /etc/apt/sources.list ]; then
-  $SUDO_CMD sed -i -E -e 's!http://(archive|security).ubuntu.com!http://europe-west2.gce.archive.ubuntu.com!g' /etc/apt/sources.list
-fi
-if [ -f /etc/apt/sources.list.d/ubuntu.sources ]; then
-  $SUDO_CMD sed -i -E -e 's!http://(archive|security).ubuntu.com!http://europe-west2.gce.archive.ubuntu.com!g' /etc/apt/sources.list.d/ubuntu.sources
-fi
+$SUDO_CMD sed -i -E -e 's!http://(archive|security).ubuntu.com!http://europe-west2.gce.archive.ubuntu.com!g' /etc/apt/sources.list
 
 case "$ID-$VERSION_ID" in
-  ubuntu-20.04|ubuntu-22.04|ubuntu-24.04)
+  ubuntu-20.04|ubuntu-22.04)
     # Curl must be available to get the repo key below.
     $SUDO_CMD apt-get update
     $SUDO_CMD apt-get install -y curl
@@ -83,17 +77,9 @@ case "$ID-$VERSION_ID" in
     # an older version of a package must be used for a certain Python version.
     # If that information is not read, pip installs the latest version, which
     # then fails to run.
-    #
-    # Ubuntu 24.04+ uses PEP 668 externally managed Python, so we need
-    # --break-system-packages to install packages system-wide.
-    PIP_FLAGS=""
-    if [ "$VERSION_ID" = "24.04" ]; then
-      PIP_FLAGS="--break-system-packages"
-    fi
-    $SUDO_CMD pip3 install $PIP_FLAGS -U pip "setuptools<66.0.0" || \
-      $SUDO_CMD pip3 install $PIP_FLAGS -U "setuptools<66.0.0"
+    $SUDO_CMD pip3 install -U pip "setuptools<66.0.0"
 
-    $SUDO_CMD pip3 install $PIP_FLAGS -r python-requirements.txt
+    $SUDO_CMD pip3 install -r python-requirements.txt
 
     # Install Verible
     mkdir -p build/verible
