@@ -26,10 +26,16 @@ if [ -z "$GITHUB_ACTIONS" ]; then
 fi
 
 # Use non-default mirror for Ubuntu packages, because the default mirror currently have problems.
-$SUDO_CMD sed -i -E -e 's!http://(archive|security).ubuntu.com!http://europe-west2.gce.archive.ubuntu.com!g' /etc/apt/sources.list
+# Ubuntu 24.04+ uses /etc/apt/sources.list.d/ubuntu.sources instead of /etc/apt/sources.list
+if [ -f /etc/apt/sources.list ]; then
+  $SUDO_CMD sed -i -E -e 's!http://(archive|security).ubuntu.com!http://europe-west2.gce.archive.ubuntu.com!g' /etc/apt/sources.list
+fi
+if [ -f /etc/apt/sources.list.d/ubuntu.sources ]; then
+  $SUDO_CMD sed -i -E -e 's!http://(archive|security).ubuntu.com!http://europe-west2.gce.archive.ubuntu.com!g' /etc/apt/sources.list.d/ubuntu.sources
+fi
 
 case "$ID-$VERSION_ID" in
-  ubuntu-20.04|ubuntu-22.04)
+  ubuntu-20.04|ubuntu-22.04|ubuntu-24.04)
     # Curl must be available to get the repo key below.
     $SUDO_CMD apt-get update
     $SUDO_CMD apt-get install -y curl
