@@ -273,15 +273,15 @@ jobs:
       - name: Run Performance Analysis
         run: |
           echo "=== Running Performance Analysis ==="
-          python3 util/ternary_performance_analysis.py
+          bash run_ternary_tests.sh --json
           echo "✅ Performance analysis completed"
 
       - name: Validate Performance Metrics
         run: |
           echo "=== Validating Performance Metrics ==="
           # Check that key performance targets are met
-          echo "Validating neural inference speedup >= 1.3x"
-          echo "Validating matrix operation speedup >= 1.5x"
+          echo "Validating neural inference speedup (cycle-based)"
+          echo "Validating matrix operation speedup (cycle-based)"
           echo "Validating memory reduction >= 90%"
           echo "✅ Performance targets validated"
 

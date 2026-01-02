@@ -23,7 +23,7 @@ env:
 jobs:
   generate-floorplan:
     name: "Generate Floorplan Image"
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     steps:
       - name: Checkout repository
@@ -441,7 +441,7 @@ jobs:
 
   lint-check:
     name: "Verify Lint Fixes"
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     needs: generate-floorplan
 
     steps:
@@ -482,9 +482,12 @@ jobs:
       - name: Run Verible Lint
         run: |
           # Install verible
-          wget https://github.com/chipsalliance/verible/releases/download/v0.0-3428-gcfcbb82b/verible-v0.0-3428-gcfcbb82b-Ubuntu-22.04-jammy-x86_64.tar.gz
-          tar -xzf verible-v0.0-3428-gcfcbb82b-Ubuntu-22.04-jammy-x86_64.tar.gz
-          export PATH=$PATH:$PWD/verible-v0.0-3428-gcfcbb82b/bin
+          wget https://github.com/chipsalliance/verible/releases/download/v0.0-4051-g9fdb4057/verible-v0.0-4051-g9fdb4057-linux-static-x86_64.tar.gz || { echo "Download failed. Check URL or network."; exit 1; }
+          if [ ! -f verible-v0.0-4051-g9fdb4057-linux-static-x86_64.tar.gz ]; then
+            echo "File not found after download. Exiting.";
+            exit 1;
+          fi
+          tar -xzf verible-v0.0-4051-g9fdb4057-linux-static-x86_64.tar.gz || { echo "Extraction failed. Ensure the file is valid."; exit 1; }
 
           # Lint all SystemVerilog files
           verible-verilog-lint \

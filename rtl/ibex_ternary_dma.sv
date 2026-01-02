@@ -245,8 +245,9 @@ module ibex_ternary_dma import ibex_pkg::*; #(
       // Round-robin channel selection
       if (!any_active || channel_state[active_channel] == DMA_IDLE) begin
         for (int i = 0; i < NumChannels; i++) begin
-          if (channel_cfg[(active_channel + i + 1) % NumChannels].enable) begin
-            active_channel <= (active_channel + i + 1) % NumChannels;
+          automatic int unsigned next_ch = (active_channel + i + 1) % NumChannels;
+          if (channel_cfg[next_ch].enable) begin
+            active_channel <= next_ch;
             break;
           end
         end
@@ -329,8 +330,8 @@ module ibex_ternary_dma import ibex_pkg::*; #(
 
   // Ternary register file interface
   // Use channel index as base register address (simplified mapping)
-  localparam int PadWidth = 5 - $clog2(NumChannels);
-  assign treg_waddr_o = {{PadWidth{1'b0}}, active_channel};  // Pad to 5 bits, parameterized
+  // Pad active_channel to 5 bits using conditional assignment based on NumChannels
+  assign treg_waddr_o = 5'(active_channel);  // Type cast to 5 bits (zero-extends automatically)
   assign treg_wdata_o = data_buffer[active_channel];
   assign treg_we_o    = any_active &&
                         channel_state[active_channel] == DMA_STORE_DST &&
