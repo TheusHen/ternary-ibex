@@ -8,23 +8,26 @@
 
 // RISC-V R-type encoder.
 #define ENCODE_R(funct7, rs2, rs1, funct3, rd, opcode) \
-  ((uint32_t)((((uint32_t)(funct7)&0x7f) << 25) | (((uint32_t)(rs2)&0x1f) << 20) | \
-              (((uint32_t)(rs1)&0x1f) << 15) | (((uint32_t)(funct3)&0x7) << 12) | \
-              (((uint32_t)(rd)&0x1f) << 7) | ((uint32_t)(opcode)&0x7f)))
+  ((uint32_t)((((uint32_t)(funct7) & 0x7f) << 25) |    \
+              (((uint32_t)(rs2) & 0x1f) << 20) |       \
+              (((uint32_t)(rs1) & 0x1f) << 15) |       \
+              (((uint32_t)(funct3) & 0x7) << 12) |     \
+              (((uint32_t)(rd) & 0x1f) << 7) | ((uint32_t)(opcode) & 0x7f)))
 
 // MHX custom opcodes (see rtl/ibex_pkg.sv)
 #define OPCODE_TERNARY 0x0B
-#define OPCODE_NEURAL  0x2B
+#define OPCODE_NEURAL 0x2B
 
 // funct3 encodings (see rtl/ibex_decoder.sv)
-#define FUNCT3_TADD   0x0
+#define FUNCT3_TADD 0x0
 #define FUNCT3_NEURON 0x0
 
 // Fixed instruction encodings using ternary registers T1, T2, T3.
 // Note: These occupy the standard rs1/rs2/rd fields but are interpreted by MHX
 // as ternary register indices.
-#define INS_TADD_T3_T1_T2   ENCODE_R(0x00, 2, 1, FUNCT3_TADD, 3, OPCODE_TERNARY)
-#define INS_NEURON_T3_T1_T2 ENCODE_R(0x00, 2, 1, FUNCT3_NEURON, 3, OPCODE_NEURAL)
+#define INS_TADD_T3_T1_T2 ENCODE_R(0x00, 2, 1, FUNCT3_TADD, 3, OPCODE_TERNARY)
+#define INS_NEURON_T3_T1_T2 \
+  ENCODE_R(0x00, 2, 1, FUNCT3_NEURON, 3, OPCODE_NEURAL)
 
 static void puthex64(uint64_t v) {
   puthex((uint32_t)(v >> 32));
@@ -33,9 +36,12 @@ static void puthex64(uint64_t v) {
 
 static inline int trit_to_int(uint32_t trit2b) {
   // 00=-1, 01=0, 10=+1, 11=invalid (treat as 0 for safety)
-  if (trit2b == 0x0) return -1;
-  if (trit2b == 0x1) return 0;
-  if (trit2b == 0x2) return 1;
+  if (trit2b == 0x0)
+    return -1;
+  if (trit2b == 0x1)
+    return 0;
+  if (trit2b == 0x2)
+    return 1;
   return 0;
 }
 
@@ -109,27 +115,17 @@ int main(int argc, char **argv) {
   t1 = get_mcycle();
   uint64_t matrix_mhx_cycles = t1 - t0;
 
-  // Fixed-point speedup in milli-x (x1000).
-  uint32_t neural_speedup_x1000 =
-      (neural_mhx_cycles == 0) ? 0u : (uint32_t)((neural_baseline_cycles * 1000ull) / neural_mhx_cycles);
-  uint32_t matrix_speedup_x1000 =
-      (matrix_mhx_cycles == 0) ? 0u : (uint32_t)((matrix_baseline_cycles * 1000ull) / matrix_mhx_cycles);
-
   // Emit parseable results.
   puts("MHX_CYCLE_BENCH neural_baseline_cycles=0x");
   puthex64(neural_baseline_cycles);
   puts(" neural_mhx_cycles=0x");
   puthex64(neural_mhx_cycles);
-  puts(" neural_speedup_x1000=0x");
-  puthex(neural_speedup_x1000);
   puts("\n");
 
   puts("MHX_CYCLE_BENCH matrix_baseline_cycles=0x");
   puthex64(matrix_baseline_cycles);
   puts(" matrix_mhx_cycles=0x");
   puthex64(matrix_mhx_cycles);
-  puts(" matrix_speedup_x1000=0x");
-  puthex(matrix_speedup_x1000);
   puts("\n");
 
   // Keep sink live.

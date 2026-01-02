@@ -24,13 +24,11 @@ from typing import Any
 
 RE_NEURAL = re.compile(
     r"MHX_CYCLE_BENCH\s+neural_baseline_cycles=0x(?P<base>[0-9A-Fa-f]{16})\s+"
-    r"neural_mhx_cycles=0x(?P<mhx>[0-9A-Fa-f]{16})\s+"
-    r"neural_speedup_x1000=0x(?P<spd>[0-9A-Fa-f]{8})"
+    r"neural_mhx_cycles=0x(?P<mhx>[0-9A-Fa-f]{16})"
 )
 RE_MATRIX = re.compile(
     r"MHX_CYCLE_BENCH\s+matrix_baseline_cycles=0x(?P<base>[0-9A-Fa-f]{16})\s+"
-    r"matrix_mhx_cycles=0x(?P<mhx>[0-9A-Fa-f]{16})\s+"
-    r"matrix_speedup_x1000=0x(?P<spd>[0-9A-Fa-f]{8})"
+    r"matrix_mhx_cycles=0x(?P<mhx>[0-9A-Fa-f]{16})"
 )
 
 
@@ -38,11 +36,18 @@ RE_MATRIX = re.compile(
 class BenchResult:
     baseline_cycles: int
     mhx_cycles: int
-    speedup_x1000: int
 
     @property
     def speedup(self) -> float:
-        return self.speedup_x1000 / 1000.0
+        if self.mhx_cycles == 0:
+            return 0.0
+        return self.baseline_cycles / self.mhx_cycles
+
+    @property
+    def speedup_x1000(self) -> int:
+        if self.mhx_cycles == 0:
+            return 0
+        return (self.baseline_cycles * 1000) // self.mhx_cycles
 
 
 def _run(cmd: list[str], cwd: Path, env: dict[str, str] | None = None) -> None:
@@ -62,7 +67,6 @@ def _parse_log(log_text: str) -> tuple[BenchResult, BenchResult]:
         return BenchResult(
             baseline_cycles=int(m.group("base"), 16),
             mhx_cycles=int(m.group("mhx"), 16),
-            speedup_x1000=int(m.group("spd"), 16),
         )
 
     return _mk(m_neural), _mk(m_matrix)
