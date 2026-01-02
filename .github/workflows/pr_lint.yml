@@ -40,5 +40,9 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           reviewdog_reporter: github-pr-check
           suggest_fixes: "false"
+          # The action's "latest" resolver searches for an Ubuntu-20.04 asset in the
+          # latest Verible release. Newer Verible releases no longer publish that
+          # artifact, which makes the resolved download URL empty and breaks CI.
+          verible_version: "v0.0-3100-gd75b1c47"
           config_file: ${{ env.verible_config }}
           extra_args: "--waiver_files lint/verible_waiver.vbw"
