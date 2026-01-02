@@ -261,7 +261,12 @@ jobs:
           from PIL import Image
 
           img = Image.open('build/floorplan/mhx_floorplan.png')
-          img.thumbnail((800, 800), Image.Resampling.LANCZOS)
+          # Use backward-compatible resampling (Image.LANCZOS works in older PIL versions)
+          try:
+              resample = Image.Resampling.LANCZOS
+          except AttributeError:
+              resample = Image.LANCZOS
+          img.thumbnail((800, 800), resample)
           img.save('build/floorplan/mhx_floorplan_thumb.png', 'PNG', optimize=True)
           print("✅ Thumbnail generated")
 

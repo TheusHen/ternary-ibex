@@ -103,17 +103,18 @@ jobs:
       - name: Lint Core with Ternary Extensions
         run: |
           echo "::group::Linting Core with Ternary Extensions"
-          verilator --lint-only -Wall -Wno-UNUSED -Wno-PINCONNECTEMPTY \
+          verilator --lint-only -Wall -Wno-UNUSED -Wno-PINCONNECTEMPTY -Wno-DECLFILENAME \
             --top-module ibex_core \
             -y rtl \
             -y vendor/lowrisc_ip/ip/prim/rtl \
             -y vendor/lowrisc_ip/dv/sv/dv_utils \
+            -y dv/uvm/core_ibex/common/prim \
             +incdir+rtl \
             +incdir+vendor/lowrisc_ip/ip/prim/rtl \
             +incdir+vendor/lowrisc_ip/dv/sv/dv_utils \
             +define+SYNTHESIS \
             rtl/ibex_pkg.sv \
-             vendor/lowrisc_ip/ip/prim/rtl/prim_cipher_pkg.sv \
+            vendor/lowrisc_ip/ip/prim/rtl/prim_cipher_pkg.sv \
             rtl/ibex_ternary_*.sv \
             rtl/ibex_neural_unit.sv \
             rtl/ibex_decoder.sv \
