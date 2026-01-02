@@ -339,6 +339,11 @@ cd dv
 
 # Run neural processing tests
 ./run_neural_tests.sh
+
+# Cycle-accurate performance metrics (recommended)
+# Emits the same JSON keys consumed by CI regression checks.
+cd ..
+./run_ternary_tests.sh --json
 ```
 
 ## File Structure

@@ -33,6 +33,13 @@ done
 
 # If JSON output requested, emit only JSON and exit early to keep stdout clean
 if [ "$JSON_OUTPUT" = true ]; then
+    # Prefer cycle-accurate metrics from Verilator when available.
+    if command -v fusesoc >/dev/null 2>&1 && command -v verilator >/dev/null 2>&1 && command -v riscv32-unknown-elf-gcc >/dev/null 2>&1; then
+        python3 util/verilator_cycle_bench.py --json
+        exit $?
+    fi
+
+    # Fallback to the synthetic Python benchmark if toolchain/simulator aren't present.
     python3 util/ternary_performance_analysis.py --json
     exit $?
 fi

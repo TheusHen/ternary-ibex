@@ -239,6 +239,7 @@ def compare_metrics(
     current: Dict,
     regression_threshold_percent: float = -5.0,
     improvement_threshold_percent: float = 2.0,
+    key_metrics: Optional[List[str]] = None,
 ) -> Tuple[List[Dict], List[Dict]]:
     """Compare performance metrics and detect regressions/improvements.
 
@@ -248,12 +249,13 @@ def compare_metrics(
     regressions: List[Dict] = []
     improvements: List[Dict] = []
 
-    key_metrics = [
-        'neural_inference_speedup',
-        'matrix_operation_speedup',
-        'memory_usage_reduction_percent',
-        'power_efficiency_improvement_percent',
-    ]
+    if key_metrics is None:
+        key_metrics = [
+            'neural_inference_speedup',
+            'matrix_operation_speedup',
+            'memory_usage_reduction_percent',
+            'power_efficiency_improvement_percent',
+        ]
 
     for metric in key_metrics:
         if metric in baseline and metric in current:
@@ -297,6 +299,16 @@ def generate_report(
     """Generate a human-readable comparison report."""
     lines: List[str] = []
     lines.append("=== Performance Comparison ===")
+
+    # Show benchmark metadata if available
+    bver = baseline.get('benchmark_version')
+    cver = current.get('benchmark_version')
+    if bver is not None or cver is not None:
+        lines.append(f"benchmark_version: baseline={bver} current={cver}")
+    bsrc = baseline.get('__source')
+    csrc = current.get('__source')
+    if bsrc is not None or csrc is not None:
+        lines.append(f"metric_source: baseline={bsrc} current={csrc}")
 
     key_metrics = [
         'neural_inference_speedup',
@@ -362,6 +374,12 @@ def main() -> int:
         "--threshold", type=float, default=5.0,
         help="Regression threshold in percent (e.g., 5 means -5% or worse is a regression)"
     )
+    parser.add_argument(
+        "--blocking-threshold",
+        type=float,
+        default=10.0,
+        help="Blocking regression threshold in percent (e.g., 10 means -10% or worse blocks)",
+    )
 
     args = parser.parse_args()
 
@@ -384,10 +402,27 @@ def main() -> int:
 
     # Compare metrics
     regression_threshold = -abs(args.threshold)
+
+    # If both baseline and current declare benchmark versions and they differ,
+    # skip speedup metrics: comparing two different benchmark methodologies is misleading.
+    speed_metrics = ['neural_inference_speedup', 'matrix_operation_speedup']
+    non_speed_metrics = ['memory_usage_reduction_percent', 'power_efficiency_improvement_percent']
+    key_metrics = speed_metrics + non_speed_metrics
+
+    bver = baseline_metrics.get('benchmark_version')
+    cver = current_metrics.get('benchmark_version')
+    if bver is not None and cver is not None and str(bver) != str(cver):
+        print(
+            f"⚠️  Benchmark version mismatch (baseline={bver}, current={cver}). "
+            "Skipping speedup regressions to avoid false negatives; only checking memory/power."
+        )
+        key_metrics = non_speed_metrics
+
     regressions, improvements = compare_metrics(
         baseline_metrics, current_metrics,
         regression_threshold_percent=regression_threshold,
         improvement_threshold_percent=2.0,
+        key_metrics=key_metrics,
     )
 
     # Generate report
@@ -406,7 +441,7 @@ def main() -> int:
     # - Multiple small regressions (>=2) are blocking unless the overall score improved.
     # - Single minor regression is reported but non-blocking.
 
-    blocking_threshold = getattr(args, 'blocking_threshold', 10.0)
+    blocking_threshold = float(args.blocking_threshold)
 
     severe_regressions = [r for r in regressions if r['change_percent'] <= -abs(blocking_threshold)]
 
