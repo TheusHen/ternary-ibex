@@ -21,7 +21,7 @@ permissions:
 jobs:
   trigger:
     name: Trigger Private CI
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - name: Trigger Private CI
         run: |
