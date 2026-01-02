@@ -116,6 +116,55 @@ module ibex_neural_unit_enhanced import ibex_pkg::*; (
     endcase
   endfunction
 
+  // Combinational logic for multiply-accumulate
+  logic signed [NEURAL_ACCUMULATOR_WIDTH-1:0] level0 [TERNARY_TRITS_PER_REG];
+  logic signed [NEURAL_ACCUMULATOR_WIDTH-1:0] level1 [TERNARY_TRITS_PER_REG/2];
+  logic signed [NEURAL_ACCUMULATOR_WIDTH-1:0] level2 [TERNARY_TRITS_PER_REG/4];
+  logic signed [NEURAL_ACCUMULATOR_WIDTH-1:0] level3 [TERNARY_TRITS_PER_REG/8];
+  logic signed [NEURAL_ACCUMULATOR_WIDTH-1:0] level4;
+  logic [TERNARY_BITS_PER_TRIT-1:0] bias_trit;
+  logic signed [1:0] bias_int;
+  logic signed [NEURAL_ACCUMULATOR_WIDTH-1:0] stage1_next_accumulator;
+
+  always_comb begin
+    // Level 0: Multiply with skip-zero optimization
+    for (int i = 0; i < TERNARY_TRITS_PER_REG; i++) begin
+      logic [TERNARY_BITS_PER_TRIT-1:0] weight_trit, input_trit;
+
+      weight_trit = cached_weights[i*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT];
+      input_trit  = inputs_i[i*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT];
+
+      level0[i] = '0;
+
+      // Skip-zero optimization
+      if ((weight_trit != TRIT_ZERO) && (input_trit != TRIT_ZERO)) begin
+        if (weight_trit == input_trit) begin
+          level0[i] = {{NEURAL_ACCUMULATOR_WIDTH-1{1'b0}}, 1'b1}; // +1
+        end else begin
+          level0[i] = -{{NEURAL_ACCUMULATOR_WIDTH-1{1'b0}}, 1'b1}; // -1
+        end
+      end
+    end
+
+    // Reduction tree (pipelined to Stage 1)
+    for (int i = 0; i < (TERNARY_TRITS_PER_REG/2); i++) begin
+      level1[i] = level0[2*i] + level0[2*i+1];
+    end
+    for (int i = 0; i < (TERNARY_TRITS_PER_REG/4); i++) begin
+      level2[i] = level1[2*i] + level1[2*i+1];
+    end
+    for (int i = 0; i < (TERNARY_TRITS_PER_REG/8); i++) begin
+      level3[i] = level2[2*i] + level2[2*i+1];
+    end
+    level4 = level3[0];
+
+    // Add bias
+    bias_trit = bias_i[TERNARY_BITS_PER_TRIT-1:0];
+    bias_int = trit_to_int(bias_trit);
+
+    stage1_next_accumulator = level4 + {{NEURAL_ACCUMULATOR_WIDTH-2{bias_int[1]}}, bias_int};
+  end
+
   // Optimized ternary multiply-accumulate with pipelining
   always_ff @(posedge clk_i or negedge rst_ni) begin
     if (!rst_ni) begin
@@ -126,50 +175,7 @@ module ibex_neural_unit_enhanced import ibex_pkg::*; (
       stage1_normalize_en <= 1'b0;
       stage1_dropout_mask <= '0;
     end else begin
-      logic signed [NEURAL_ACCUMULATOR_WIDTH-1:0] level0 [TERNARY_TRITS_PER_REG];
-      logic signed [NEURAL_ACCUMULATOR_WIDTH-1:0] level1 [TERNARY_TRITS_PER_REG/2];
-      logic signed [NEURAL_ACCUMULATOR_WIDTH-1:0] level2 [TERNARY_TRITS_PER_REG/4];
-      logic signed [NEURAL_ACCUMULATOR_WIDTH-1:0] level3 [TERNARY_TRITS_PER_REG/8];
-      logic signed [NEURAL_ACCUMULATOR_WIDTH-1:0] level4;
-      logic [TERNARY_BITS_PER_TRIT-1:0] bias_trit;
-      logic signed [1:0] bias_int;
-
-      // Level 0: Multiply with skip-zero optimization
-      for (int i = 0; i < TERNARY_TRITS_PER_REG; i++) begin
-        logic [TERNARY_BITS_PER_TRIT-1:0] weight_trit, input_trit;
-
-        weight_trit = cached_weights[i*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT];
-        input_trit  = inputs_i[i*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT];
-
-        level0[i] = '0;
-
-        // Skip-zero optimization
-        if ((weight_trit != TRIT_ZERO) && (input_trit != TRIT_ZERO)) begin
-          if (weight_trit == input_trit) begin
-            level0[i] = {{NEURAL_ACCUMULATOR_WIDTH-1{1'b0}}, 1'b1}; // +1
-          end else begin
-            level0[i] = -{{NEURAL_ACCUMULATOR_WIDTH-1{1'b0}}, 1'b1}; // -1
-          end
-        end
-      end
-
-      // Reduction tree (pipelined to Stage 1)
-      for (int i = 0; i < (TERNARY_TRITS_PER_REG/2); i++) begin
-        level1[i] = level0[2*i] + level0[2*i+1];
-      end
-      for (int i = 0; i < (TERNARY_TRITS_PER_REG/4); i++) begin
-        level2[i] = level1[2*i] + level1[2*i+1];
-      end
-      for (int i = 0; i < (TERNARY_TRITS_PER_REG/8); i++) begin
-        level3[i] = level2[2*i] + level2[2*i+1];
-      end
-      level4 = level3[0];
-
-      // Add bias
-      bias_trit = bias_i[TERNARY_BITS_PER_TRIT-1:0];
-      bias_int  = trit_to_int(bias_trit);
-
-      stage1_accumulator <= level4 + {{NEURAL_ACCUMULATOR_WIDTH-2{bias_int[1]}}, bias_int};
+      stage1_accumulator <= stage1_next_accumulator;
       stage1_activation_sel <= activation_sel_i;
       stage1_valid <= (operation_i inside {NEURAL_MULTIPLY, NEURAL_ACCUMULATE, NEURAL_ACTIVATE});
       stage1_bias <= bias_i;
@@ -259,22 +265,29 @@ module ibex_neural_unit_enhanced import ibex_pkg::*; (
     return val >>> 1;
   endfunction
 
+  // Combinational logic for stage 3
+  logic signed [NEURAL_ACCUMULATOR_WIDTH-1:0] stage3_next_result;
+
+  always_comb begin
+    logic signed [NEURAL_ACCUMULATOR_WIDTH-1:0] temp_result;
+
+    // Apply dropout
+    temp_result = apply_dropout(stage2_result, stage2_dropout_mask);
+
+    // Apply normalization if enabled
+    if (stage2_normalize_en) begin
+      stage3_next_result = normalize(temp_result);
+    end else begin
+      stage3_next_result = temp_result;
+    end
+  end
+
   always_ff @(posedge clk_i or negedge rst_ni) begin
     if (!rst_ni) begin
       stage3_result <= '0;
       stage3_valid <= 1'b0;
     end else begin
-      logic signed [NEURAL_ACCUMULATOR_WIDTH-1:0] temp_result;
-
-      // Apply dropout
-      temp_result = apply_dropout(stage2_result, stage2_dropout_mask);
-
-      // Apply normalization if enabled
-      if (stage2_normalize_en) begin
-        temp_result = normalize(temp_result);
-      end
-
-      stage3_result <= temp_result;
+      stage3_result <= stage3_next_result;
       stage3_valid <= stage2_valid;
     end
   end

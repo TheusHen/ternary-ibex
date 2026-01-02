@@ -8,6 +8,23 @@ name: lowrisc:ibex:mhx_ternary_test:0.1
 description: MHX Ternary Extension Testbench
 
 filesets:
+  files_rtl_only:
+    depend:
+      - lowrisc:prim:assert
+      - lowrisc:ibex:ibex_pkg
+    files:
+      - rtl/ibex_ternary_regfile.sv
+      - rtl/ibex_ternary_alu.sv
+      - rtl/ibex_ternary_advanced.sv
+      - rtl/ibex_neural_unit.sv
+      - rtl/ibex_neural_unit_enhanced.sv
+      - rtl/ibex_ternary_perf_counters.sv
+      - rtl/ibex_ternary_dma.sv
+      - rtl/ibex_ternary_lsu.sv
+      - rtl/ibex_ternary_conv_pool.sv
+      - rtl/ibex_ternary_debug.sv
+    file_type: systemVerilogSource
+
   files_rtl:
     depend:
       - lowrisc:prim:assert
@@ -15,7 +32,14 @@ filesets:
     files:
       - rtl/ibex_ternary_regfile.sv
       - rtl/ibex_ternary_alu.sv
+      - rtl/ibex_ternary_advanced.sv
       - rtl/ibex_neural_unit.sv
+      - rtl/ibex_neural_unit_enhanced.sv
+      - rtl/ibex_ternary_perf_counters.sv
+      - rtl/ibex_ternary_dma.sv
+      - rtl/ibex_ternary_lsu.sv
+      - rtl/ibex_ternary_conv_pool.sv
+      - rtl/ibex_ternary_debug.sv
       - dv/mhx_ternary_test.sv
     file_type: systemVerilogSource
 
@@ -69,13 +93,21 @@ targets:
           - '-CFLAGS "-std=c++11"'
 
   lint:
-    <<: *default_target
+    filesets:
+      - tool_verilator ? (files_verilator_waiver)
+      - tool_ascentlint ? (files_ascentlint_waiver)
+      - tool_veriblelint ? (files_veriblelint_waiver)
+      - files_rtl_only
+    toplevel: ibex_ternary_alu
     default_tool: verilator
     tools:
       verilator:
         mode: lint-only
         verilator_options:
           - "-Wall"
+          - "-Wno-DECLFILENAME"
+          - "-Wno-UNUSED"
+          - "-Wno-MULTITOP"
       veriblelint:
         rules:
           - "-line-length"

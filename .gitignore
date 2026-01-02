@@ -8,6 +8,8 @@ build
 tags
 *~
 
+*venv*
+
 # ibex_tracer log file
 trace_core_*.log
 
@@ -25,3 +27,30 @@ modelsim.ini
 # Verible linter
 verible-*/
 verible*.tar.gz
+
+# Website Node Modules
+website/node_modules/
+website/dist/
+website/.astro/
+
+# Generated data files (will be created during build)
+website/src/data/*.json
+website/public/data/*.json
+website/public/images/*
+!website/public/images/.gitkeep
+!website/src/data/.gitkeep
+!website/public/data/.gitkeep
+
+# Temporary files
+website/.DS_Store
+website/Thumbs.db
+
+# Logs
+website/npm-debug.log*
+website/yarn-debug.log*
+website/yarn-error.log*
+website/pnpm-debug.log*
+
+# Lock files (keep package-lock.json for reproducibility)
+website/yarn.lock
+website/pnpm-lock.yaml

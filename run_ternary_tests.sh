@@ -33,6 +33,13 @@ done
 
 # If JSON output requested, emit only JSON and exit early to keep stdout clean
 if [ "$JSON_OUTPUT" = true ]; then
+    # Prefer cycle-accurate metrics from Verilator when available.
+    if command -v fusesoc >/dev/null 2>&1 && command -v verilator >/dev/null 2>&1 && command -v riscv32-unknown-elf-gcc >/dev/null 2>&1; then
+        python3 util/verilator_cycle_bench.py --json
+        exit $?
+    fi
+
+    # Fallback to the synthetic Python benchmark if toolchain/simulator aren't present.
     python3 util/ternary_performance_analysis.py --json
     exit $?
 fi
@@ -73,6 +80,41 @@ if [ -f "rtl/ibex_ternary_regfile.sv" ]; then
 else
     echo "❌ Ternary register file not found"
     exit 1
+fi
+
+echo "Checking advanced ternary operations..."
+if [ -f "rtl/ibex_ternary_advanced.sv" ]; then
+    echo "✅ Ternary advanced ops found ($(wc -l < rtl/ibex_ternary_advanced.sv) lines)"
+else
+    echo "⚠️  Ternary advanced ops not found (optional)"
+fi
+
+echo "Checking performance counters..."
+if [ -f "rtl/ibex_ternary_perf_counters.sv" ]; then
+    echo "✅ Performance counters found ($(wc -l < rtl/ibex_ternary_perf_counters.sv) lines)"
+else
+    echo "⚠️  Performance counters not found (optional)"
+fi
+
+echo "Checking DMA controller..."
+if [ -f "rtl/ibex_ternary_dma.sv" ]; then
+    echo "✅ DMA controller found ($(wc -l < rtl/ibex_ternary_dma.sv) lines)"
+else
+    echo "⚠️  DMA controller not found (optional)"
+fi
+
+echo "Checking convolution/pooling unit..."
+if [ -f "rtl/ibex_ternary_conv_pool.sv" ]; then
+    echo "✅ Conv/Pool unit found ($(wc -l < rtl/ibex_ternary_conv_pool.sv) lines)"
+else
+    echo "⚠️  Conv/Pool unit not found (optional)"
+fi
+
+echo "Checking debug module..."
+if [ -f "rtl/ibex_ternary_debug.sv" ]; then
+    echo "✅ Debug module found ($(wc -l < rtl/ibex_ternary_debug.sv) lines)"
+else
+    echo "⚠️  Debug module not found (optional)"
 fi
 
 echo "2. Validating configuration..."

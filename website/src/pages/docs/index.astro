@@ -1,0 +1,148 @@
+---
+import DocsLayout from '../../layouts/DocsLayout.astro';
+
+const baseUrl = import.meta.env.BASE_URL;
+---
+
+<DocsLayout title="Documentation">
+  <div class="prose dark:prose-invert max-w-none">
+    <div class="mb-8 p-6 rounded-2xl bg-gradient-to-r from-primary-50 to-accent-50 dark:from-primary-900/20 dark:to-accent-900/20 border border-primary-100 dark:border-primary-800">
+      <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2 mt-0">MHX Ternary RISC-V Core</h1>
+      <p class="text-gray-600 dark:text-gray-300 mb-0">
+        Comprehensive documentation for the Ternary Ibex core extension.
+      </p>
+    </div>
+    
+    <div class="grid md:grid-cols-2 gap-6 mb-12">
+      <a href={`${baseUrl}docs/quick-start`} class="group block p-6 rounded-xl border border-gray-200 dark:border-gray-800 hover:border-primary-500 dark:hover:border-primary-400 transition-colors no-underline">
+        <div class="flex items-center gap-4">
+          <div class="w-12 h-12 rounded-lg bg-primary-100 dark:bg-primary-900/50 flex items-center justify-center group-hover:scale-110 transition-transform">
+            <svg class="w-6 h-6 text-primary-600 dark:text-primary-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+          </div>
+          <div>
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white m-0">Quick Start</h3>
+            <p class="text-sm text-gray-600 dark:text-gray-400 m-0">Get up and running in minutes</p>
+          </div>
+        </div>
+      </a>
+      
+      <a href={`${baseUrl}architecture`} class="group block p-6 rounded-xl border border-gray-200 dark:border-gray-800 hover:border-accent-500 dark:hover:border-accent-400 transition-colors no-underline">
+        <div class="flex items-center gap-4">
+          <div class="w-12 h-12 rounded-lg bg-accent-100 dark:bg-accent-900/50 flex items-center justify-center group-hover:scale-110 transition-transform">
+            <svg class="w-6 h-6 text-accent-600 dark:text-accent-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+            </svg>
+          </div>
+          <div>
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white m-0">Architecture</h3>
+            <p class="text-sm text-gray-600 dark:text-gray-400 m-0">Deep dive into core design</p>
+          </div>
+        </div>
+      </a>
+      
+      <a href={`${baseUrl}docs/instruction-set`} class="group block p-6 rounded-xl border border-gray-200 dark:border-gray-800 hover:border-neural-500 dark:hover:border-neural-400 transition-colors no-underline">
+        <div class="flex items-center gap-4">
+          <div class="w-12 h-12 rounded-lg bg-neural-100 dark:bg-neural-900/50 flex items-center justify-center group-hover:scale-110 transition-transform">
+            <svg class="w-6 h-6 text-neural-600 dark:text-neural-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+            </svg>
+          </div>
+          <div>
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white m-0">Instruction Set</h3>
+            <p class="text-sm text-gray-600 dark:text-gray-400 m-0">Complete ISA reference</p>
+          </div>
+        </div>
+      </a>
+      
+      <a href={`${baseUrl}docs/integration`} class="group block p-6 rounded-xl border border-gray-200 dark:border-gray-800 hover:border-red-500 dark:hover:border-red-400 transition-colors no-underline">
+        <div class="flex items-center gap-4">
+          <div class="w-12 h-12 rounded-lg bg-red-100 dark:bg-red-900/50 flex items-center justify-center group-hover:scale-110 transition-transform">
+            <svg class="w-6 h-6 text-red-600 dark:text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1H4a2 2 0 110-4h1a1 1 0 001-1V7a1 1 0 011-1h3a1 1 0 001-1V4z" />
+            </svg>
+          </div>
+          <div>
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white m-0">Integration Guide</h3>
+            <p class="text-sm text-gray-600 dark:text-gray-400 m-0">SoC integration steps</p>
+          </div>
+        </div>
+      </a>
+    </div>
+    
+    <h2>About the Project</h2>
+    
+    <p>
+      The MHX Ternary RISC-V Core extends the lowRISC Ibex processor with native support for 
+      ternary (base-3) computing and hardware-accelerated neural network operations. This extension 
+      enables efficient processing of ternary neural networks (TNNs) directly in hardware, providing 
+      significant performance and energy efficiency improvements for edge AI applications.
+    </p>
+    
+    <h3>Key Features</h3>
+    
+    <ul>
+      <li><strong>Ternary ALU</strong>: Native support for 16-trit arithmetic operations (ADD, SUB, MUL)</li>
+      <li><strong>Ternary Logic</strong>: Full set of ternary logical operations (AND, OR, XOR, NOT)</li>
+      <li><strong>Neural Processing Unit</strong>: Hardware MAC arrays with activation functions (ReLU, sigmoid, tanh)</li>
+      <li><strong>Dual Register File</strong>: 32 binary registers (x0-x31) + 16 ternary registers (t0-t15)</li>
+      <li><strong>Full Pipeline Integration</strong>: Seamless integration with standard RISC-V pipeline</li>
+      <li><strong>Formal Verification</strong>: Comprehensive formal proofs for all ternary operations</li>
+    </ul>
+    
+    <h3>Performance Highlights</h3>
+    
+    <div class="not-prose grid sm:grid-cols-3 gap-4 my-8">
+      <div class="p-4 rounded-xl bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 text-center">
+        <p class="text-3xl font-bold text-green-600 dark:text-green-400">1.5x</p>
+        <p class="text-sm text-green-700 dark:text-green-300">Neural Inference Speedup</p>
+      </div>
+      <div class="p-4 rounded-xl bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 text-center">
+        <p class="text-3xl font-bold text-blue-600 dark:text-blue-400">93.8%</p>
+        <p class="text-sm text-blue-700 dark:text-blue-300">Memory Reduction</p>
+      </div>
+      <div class="p-4 rounded-xl bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 text-center">
+        <p class="text-3xl font-bold text-purple-600 dark:text-purple-400">70%</p>
+        <p class="text-sm text-purple-700 dark:text-purple-300">Power Savings</p>
+      </div>
+    </div>
+    
+    <h3>Documentation Sections</h3>
+    
+    <table>
+      <thead>
+        <tr>
+          <th>Section</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><a href={`${baseUrl}docs/quick-start`}>Quick Start</a></td>
+          <td>Get the core running in simulation</td>
+        </tr>
+        <tr>
+          <td><a href={`${baseUrl}architecture`}>Architecture</a></td>
+          <td>Detailed architectural documentation</td>
+        </tr>
+        <tr>
+          <td><a href={`${baseUrl}docs/instruction-set`}>Instruction Set</a></td>
+          <td>Complete ISA reference</td>
+        </tr>
+        <tr>
+          <td><a href={`${baseUrl}docs/integration`}>Integration Guide</a></td>
+          <td>How to integrate into your SoC</td>
+        </tr>
+        <tr>
+          <td><a href={`${baseUrl}docs/security`}>Security Analysis</a></td>
+          <td>Security considerations and mitigations</td>
+        </tr>
+        <tr>
+          <td><a href={`${baseUrl}verification`}>Verification</a></td>
+          <td>Test results and coverage reports</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</DocsLayout>

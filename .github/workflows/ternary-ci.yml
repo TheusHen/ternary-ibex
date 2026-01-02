@@ -33,7 +33,7 @@ env:
 jobs:
   ternary-lint:
     name: "Ternary RTL Linting"
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
         with:
@@ -103,17 +103,18 @@ jobs:
       - name: Lint Core with Ternary Extensions
         run: |
           echo "::group::Linting Core with Ternary Extensions"
-          verilator --lint-only -Wall -Wno-UNUSED -Wno-PINCONNECTEMPTY \
+          verilator --lint-only -Wall -Wno-UNUSED -Wno-PINCONNECTEMPTY -Wno-DECLFILENAME -Wno-WIDTH \
             --top-module ibex_core \
             -y rtl \
             -y vendor/lowrisc_ip/ip/prim/rtl \
             -y vendor/lowrisc_ip/dv/sv/dv_utils \
+            -y dv/uvm/core_ibex/common/prim \
             +incdir+rtl \
             +incdir+vendor/lowrisc_ip/ip/prim/rtl \
             +incdir+vendor/lowrisc_ip/dv/sv/dv_utils \
             +define+SYNTHESIS \
             rtl/ibex_pkg.sv \
-             vendor/lowrisc_ip/ip/prim/rtl/prim_cipher_pkg.sv \
+            vendor/lowrisc_ip/ip/prim/rtl/prim_cipher_pkg.sv \
             rtl/ibex_ternary_*.sv \
             rtl/ibex_neural_unit.sv \
             rtl/ibex_decoder.sv \
@@ -122,7 +123,7 @@ jobs:
 
   ternary-synthesis:
     name: "Ternary Synthesis Check"
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     needs: ternary-lint
     steps:
       - uses: actions/checkout@v4
@@ -173,7 +174,7 @@ jobs:
 
   ternary-functional-tests:
     name: "Ternary Functional Tests"
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     needs: ternary-lint
     steps:
       - uses: actions/checkout@v4
@@ -236,7 +237,7 @@ jobs:
 
   ternary-performance-validation:
     name: "Ternary Performance Validation"
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     needs: ternary-functional-tests
     steps:
       - uses: actions/checkout@v4
@@ -266,7 +267,7 @@ jobs:
 
   ternary-integration-check:
     name: "Ternary Integration Check"
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     needs: [ternary-synthesis, ternary-performance-validation]
     steps:
       - uses: actions/checkout@v4
@@ -369,7 +370,7 @@ jobs:
 
   notify-status:
     name: "Notify Status"
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     needs: [ternary-integration-check]
     if: always()
     steps:

@@ -1,0 +1,236 @@
+---
+import DocsLayout from '../../layouts/DocsLayout.astro';
+
+// Ternary ALU instructions
+const ternaryAluInstructions = [
+  { mnemonic: 't.add', operands: 'td, ts1, ts2', description: 'Ternary addition with overflow detection', opcode: '0x0B / 0x00' },
+  { mnemonic: 't.sub', operands: 'td, ts1, ts2', description: 'Ternary subtraction with borrow handling', opcode: '0x0B / 0x01' },
+  { mnemonic: 't.mul', operands: 'td, ts1, ts2', description: 'Ternary multiplication (16-trit)', opcode: '0x0B / 0x02' },
+  { mnemonic: 't.and', operands: 'td, ts1, ts2', description: 'Ternary logical AND (min operation)', opcode: '0x0B / 0x03' },
+  { mnemonic: 't.or', operands: 'td, ts1, ts2', description: 'Ternary logical OR (max operation)', opcode: '0x0B / 0x04' },
+  { mnemonic: 't.xor', operands: 'td, ts1, ts2', description: 'Ternary logical XOR', opcode: '0x0B / 0x05' },
+  { mnemonic: 't.not', operands: 'td, ts1', description: 'Ternary logical NOT (negation)', opcode: '0x0B / 0x06' },
+];
+
+// Neural unit instructions
+const neuralInstructions = [
+  { mnemonic: 'n.mac', operands: 'td, ts1, ts2, ts3', description: 'Multiply-accumulate: td = ts1 * ts2 + ts3', opcode: '0x2B / 0x00' },
+  { mnemonic: 'n.relu', operands: 'td, ts1', description: 'ReLU activation: td = max(0, ts1)', opcode: '0x2B / 0x01' },
+  { mnemonic: 'n.sigmoid', operands: 'td, ts1', description: 'Sigmoid activation (LUT-based)', opcode: '0x2B / 0x02' },
+  { mnemonic: 'n.tanh', operands: 'td, ts1', description: 'Tanh activation (LUT-based)', opcode: '0x2B / 0x03' },
+  { mnemonic: 'n.bias', operands: 'td, ts1, imm', description: 'Add bias: td = ts1 + imm', opcode: '0x2B / 0x04' },
+];
+
+// Register file
+const ternaryRegisters = [
+  { name: 't0', alias: 'tzero', description: 'Hardwired to zero (16 trits of 0)' },
+  { name: 't1-t7', alias: 'ta0-ta6', description: 'Argument/return registers' },
+  { name: 't8-t11', alias: 'ts0-ts3', description: 'Saved registers' },
+  { name: 't12-t15', alias: 'tt0-tt3', description: 'Temporary registers' },
+];
+---
+
+<DocsLayout title="Instruction Set Reference">
+  <div class="prose dark:prose-invert max-w-none">
+    <h1>Instruction Set Reference</h1>
+    
+    <p class="lead text-lg text-gray-600 dark:text-gray-300">
+      Complete reference for MHX ternary and neural extension instructions.
+    </p>
+    
+    <div class="not-prose mb-8 p-4 rounded-xl bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800">
+      <div class="flex items-start gap-3">
+        <svg class="w-6 h-6 text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+        </svg>
+        <div>
+          <p class="font-semibold text-amber-800 dark:text-amber-200">Custom Extension</p>
+          <p class="text-sm text-amber-700 dark:text-amber-300">
+            These instructions use RISC-V custom opcode space (custom-0 and custom-1) and are not part of the standard RISC-V ISA.
+          </p>
+        </div>
+      </div>
+    </div>
+    
+    <h2>Ternary Register File</h2>
+    
+    <p>
+      The MHX extension adds 16 ternary registers (t0-t15), each holding 16 trits (ternary digits). 
+      Each trit can hold values -1, 0, or +1.
+    </p>
+    
+    <div class="not-prose overflow-x-auto mb-8">
+      <table class="min-w-full border-collapse">
+        <thead>
+          <tr class="bg-gray-100 dark:bg-gray-800">
+            <th class="px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700">Register</th>
+            <th class="px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700">ABI Name</th>
+            <th class="px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700">Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          {ternaryRegisters.map((reg, i) => (
+            <tr class={i % 2 === 0 ? 'bg-white dark:bg-gray-900' : 'bg-gray-50 dark:bg-gray-800/50'}>
+              <td class="px-4 py-3 text-sm font-mono text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700">{reg.name}</td>
+              <td class="px-4 py-3 text-sm font-mono text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-700">{reg.alias}</td>
+              <td class="px-4 py-3 text-sm text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-700">{reg.description}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    
+    <h2>Ternary ALU Instructions</h2>
+    
+    <p>
+      Basic ternary arithmetic and logical operations. All operations work on 16-trit values with 
+      proper overflow/underflow handling.
+    </p>
+    
+    <div class="not-prose overflow-x-auto mb-8">
+      <table class="min-w-full border-collapse">
+        <thead>
+          <tr class="bg-gray-100 dark:bg-gray-800">
+            <th class="px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700">Mnemonic</th>
+            <th class="px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700">Operands</th>
+            <th class="px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700">Description</th>
+            <th class="px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700">Opcode</th>
+          </tr>
+        </thead>
+        <tbody>
+          {ternaryAluInstructions.map((inst, i) => (
+            <tr class={i % 2 === 0 ? 'bg-white dark:bg-gray-900' : 'bg-gray-50 dark:bg-gray-800/50'}>
+              <td class="px-4 py-3 text-sm font-mono font-semibold text-primary-600 dark:text-primary-400 border border-gray-200 dark:border-gray-700">{inst.mnemonic}</td>
+              <td class="px-4 py-3 text-sm font-mono text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-700">{inst.operands}</td>
+              <td class="px-4 py-3 text-sm text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-700">{inst.description}</td>
+              <td class="px-4 py-3 text-sm font-mono text-gray-500 dark:text-gray-500 border border-gray-200 dark:border-gray-700">{inst.opcode}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    
+    <h3>Instruction Details</h3>
+    
+    <h4>t.add - Ternary Addition</h4>
+    
+    <pre><code class="language-asm">t.add td, ts1, ts2    # td = ts1 + ts2</code></pre>
+    
+    <p>
+      Performs trit-by-trit addition with carry propagation. Each trit result is clamped to the range [-1, +1] 
+      with overflow detection. The overflow flag is set in the CSR if the result exceeds representable range.
+    </p>
+    
+    <div class="not-prose p-4 rounded-lg bg-gray-100 dark:bg-gray-800 font-mono text-sm mb-6">
+      <p class="text-gray-600 dark:text-gray-400 mb-2"># Addition truth table for single trit:</p>
+      <p class="text-gray-800 dark:text-gray-200">-1 + -1 = -1 (overflow)</p>
+      <p class="text-gray-800 dark:text-gray-200">-1 +  0 = -1</p>
+      <p class="text-gray-800 dark:text-gray-200">-1 + +1 =  0</p>
+      <p class="text-gray-800 dark:text-gray-200"> 0 +  0 =  0</p>
+      <p class="text-gray-800 dark:text-gray-200"> 0 + +1 = +1</p>
+      <p class="text-gray-800 dark:text-gray-200">+1 + +1 = +1 (overflow)</p>
+    </div>
+    
+    <h4>t.mul - Ternary Multiplication</h4>
+    
+    <pre><code class="language-asm">t.mul td, ts1, ts2    # td = ts1 * ts2</code></pre>
+    
+    <p>
+      Performs ternary multiplication. For single trits, this follows the simple rule:
+    </p>
+    
+    <ul>
+      <li><code>-1 × -1 = +1</code></li>
+      <li><code>-1 × 0 = 0</code></li>
+      <li><code>-1 × +1 = -1</code></li>
+      <li><code>0 × anything = 0</code></li>
+      <li><code>+1 × +1 = +1</code></li>
+    </ul>
+    
+    <h2>Neural Unit Instructions</h2>
+    
+    <p>
+      Hardware-accelerated neural network operations optimized for ternary neural networks (TNNs).
+    </p>
+    
+    <div class="not-prose overflow-x-auto mb-8">
+      <table class="min-w-full border-collapse">
+        <thead>
+          <tr class="bg-gray-100 dark:bg-gray-800">
+            <th class="px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700">Mnemonic</th>
+            <th class="px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700">Operands</th>
+            <th class="px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700">Description</th>
+            <th class="px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700">Opcode</th>
+          </tr>
+        </thead>
+        <tbody>
+          {neuralInstructions.map((inst, i) => (
+            <tr class={i % 2 === 0 ? 'bg-white dark:bg-gray-900' : 'bg-gray-50 dark:bg-gray-800/50'}>
+              <td class="px-4 py-3 text-sm font-mono font-semibold text-accent-600 dark:text-accent-400 border border-gray-200 dark:border-gray-700">{inst.mnemonic}</td>
+              <td class="px-4 py-3 text-sm font-mono text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-700">{inst.operands}</td>
+              <td class="px-4 py-3 text-sm text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-700">{inst.description}</td>
+              <td class="px-4 py-3 text-sm font-mono text-gray-500 dark:text-gray-500 border border-gray-200 dark:border-gray-700">{inst.opcode}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    
+    <h3>Instruction Details</h3>
+    
+    <h4>n.mac - Multiply-Accumulate</h4>
+    
+    <pre><code class="language-asm">n.mac td, ts1, ts2, ts3    # td = ts1 * ts2 + ts3</code></pre>
+    
+    <p>
+      The core neural network operation. Performs a fused multiply-accumulate in a single cycle, 
+      essential for efficient matrix operations and convolutions.
+    </p>
+    
+    <h4>n.relu - ReLU Activation</h4>
+    
+    <pre><code class="language-asm">n.relu td, ts1    # td = max(0, ts1)</code></pre>
+    
+    <p>
+      Applies the Rectified Linear Unit activation function. For ternary values, this maps:
+    </p>
+    
+    <ul>
+      <li><code>-1 → 0</code></li>
+      <li><code>0 → 0</code></li>
+      <li><code>+1 → +1</code></li>
+    </ul>
+    
+    <h2>Encoding Format</h2>
+    
+    <p>
+      MHX instructions use the RISC-V R-type encoding format in the custom opcode space:
+    </p>
+    
+    <div class="not-prose p-4 rounded-lg bg-gray-900 text-gray-100 font-mono text-sm mb-6 overflow-x-auto">
+      <pre>31       25 24   20 19   15 14  12 11    7 6      0
+┌──────────┬───────┬───────┬──────┬───────┬────────┐
+│  funct7  │  rs2  │  rs1  │funct3│   rd  │ opcode │
+│  7 bits  │5 bits │5 bits │3 bits│5 bits │ 7 bits │
+└──────────┴───────┴───────┴──────┴───────┴────────┘
+
+Ternary ALU: opcode = 0x0B (custom-0)
+Neural Unit: opcode = 0x2B (custom-1)</pre>
+    </div>
+    
+    <h2>Example Code</h2>
+    
+    <pre><code class="language-asm"># Simple ternary neural network layer
+# Input: t1, Weights: t2, Bias: t3
+# Output: t4
+
+# Multiply-accumulate
+n.mac   t4, t1, t2, t3    # t4 = t1 * t2 + t3
+
+# Apply ReLU activation
+n.relu  t4, t4            # t4 = max(0, t4)
+
+# Store result
+t.mv    t5, t4            # Copy to output register</code></pre>
+  </div>
+</DocsLayout>

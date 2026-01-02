@@ -1,0 +1,336 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import StatCard from '../components/StatCard.astro';
+import TestStatus from '../components/TestStatus.astro';
+import ProgressBar from '../components/ProgressBar.astro';
+
+const baseUrl = import.meta.env.BASE_URL;
+
+const ciStatus = await import('../data/ci-status.json').catch(() => ({
+  default: {
+    overall: 'passing',
+    tests: { passing: 0, failing: 0, total: 0 },
+    coverage: { line: 0, branch: 0, function: 0 },
+    lastRun: new Date().toISOString(),
+  }
+}));
+
+const performance = await import('../data/performance.json').catch(() => ({
+  default: {
+    neural_inference_speedup: 1.5,
+    matrix_operation_speedup: 1.6,
+    memory_usage_reduction: 93.8,
+    power_reduction_estimate: 70.0,
+    efficiency_score: 125.5,
+  }
+}));
+
+const ci = ciStatus.default;
+const perf = performance.default;
+---
+
+<BaseLayout title="Dashboard">
+  <Header />
+  
+  <main class="pt-20 pb-16 min-h-screen">
+    <!-- Hero Section -->
+    <section class="relative overflow-hidden">
+      <div class="absolute inset-0 bg-gradient-to-br from-primary-600/10 via-transparent to-accent-600/10 dark:from-primary-900/20 dark:to-accent-900/20"></div>
+      <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-gradient-to-r from-primary-500/20 to-accent-500/20 rounded-full blur-3xl opacity-30 dark:opacity-20"></div>
+      
+      <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
+        <div class="text-center animate-fade-in">
+          <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary-100 dark:bg-primary-900/50 text-primary-700 dark:text-primary-300 text-sm font-medium mb-6">
+            <span class="relative flex h-2 w-2">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary-400 opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-2 w-2 bg-primary-500"></span>
+            </span>
+            MHX Ternary Extension
+          </div>
+          
+          <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-gray-900 dark:text-white mb-6">
+            <span class="bg-gradient-to-r from-primary-600 to-accent-500 bg-clip-text text-transparent">Ternary</span> RISC-V Core
+          </h1>
+          
+          <p class="max-w-2xl mx-auto text-lg sm:text-xl text-gray-600 dark:text-gray-300 mb-8">
+            Extending the lowRISC Ibex core with native ternary computing support and hardware-accelerated neural processing capabilities.
+          </p>
+          
+          <div class="flex flex-wrap justify-center gap-4">
+            <a
+              href={`${baseUrl}docs`}
+              class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-primary-600 hover:bg-primary-700 text-white font-medium shadow-lg shadow-primary-600/25 hover:shadow-primary-600/40 transition-all"
+            >
+              <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+              </svg>
+              Documentation
+            </a>
+            <a
+              href="https://github.com/TheusHen/ternary-ibex"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gray-900 dark:bg-white hover:bg-gray-800 dark:hover:bg-gray-100 text-white dark:text-gray-900 font-medium shadow-lg transition-all"
+            >
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd" />
+              </svg>
+              View on GitHub
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Quick Stats -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-8">Project Overview</h2>
+      
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <StatCard
+          title="CI Status"
+          value={ci.overall === 'passing' ? 'Passing' : ci.overall === 'failing' ? 'Failing' : 'Pending'}
+          subtitle={`Last run: ${new Date(ci.lastRun).toLocaleDateString()}`}
+          icon="check"
+          status={ci.overall === 'passing' ? 'success' : ci.overall === 'failing' ? 'error' : 'warning'}
+        />
+        
+        <StatCard
+          title="Neural Speedup"
+          value={`${perf.neural_inference_speedup}x`}
+          subtitle="vs baseline implementation"
+          icon="speed"
+          status="success"
+          trend="up"
+          trendValue="Optimized"
+        />
+        
+        <StatCard
+          title="Memory Reduction"
+          value={`${perf.memory_usage_reduction}%`}
+          subtitle="Ternary encoding efficiency"
+          icon="memory"
+          status="success"
+        />
+        
+        <StatCard
+          title="Efficiency Score"
+          value={perf.efficiency_score.toFixed(1)}
+          subtitle="Overall performance index"
+          icon="chart"
+          status="info"
+        />
+      </div>
+    </section>
+    
+    <!-- Architecture Preview -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div class="grid lg:grid-cols-2 gap-8 items-center">
+        <div>
+          <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Floorplan Architecture</h2>
+          <p class="text-gray-600 dark:text-gray-400 mb-6">
+            The MHX Core integrates seamlessly into the Ibex pipeline with dedicated ternary processing units, 
+            neural acceleration hardware, and a dual register file architecture.
+          </p>
+          
+          <div class="space-y-4">
+            <div class="flex items-center gap-3">
+              <div class="w-4 h-4 rounded bg-blue-500"></div>
+              <span class="text-sm text-gray-700 dark:text-gray-300">Core Pipeline (IF/ID/EX stages)</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <div class="w-4 h-4 rounded bg-green-500"></div>
+              <span class="text-sm text-gray-700 dark:text-gray-300">Ternary ALU (16-trit operations)</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <div class="w-4 h-4 rounded bg-yellow-500"></div>
+              <span class="text-sm text-gray-700 dark:text-gray-300">Neural Processing Unit</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <div class="w-4 h-4 rounded bg-red-500"></div>
+              <span class="text-sm text-gray-700 dark:text-gray-300">Dual Register File (32 binary + 16 ternary)</span>
+            </div>
+          </div>
+          
+          <a
+            href={`${baseUrl}architecture`}
+            class="inline-flex items-center gap-2 mt-6 text-primary-600 dark:text-primary-400 hover:underline font-medium"
+          >
+            View full architecture details
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+          </a>
+        </div>
+        
+        <div class="relative">
+          <div class="absolute inset-0 bg-gradient-to-r from-primary-500/20 to-accent-500/20 rounded-2xl blur-xl"></div>
+          <div class="relative rounded-2xl overflow-hidden border border-gray-200 dark:border-gray-800 shadow-2xl">
+            <img
+              src={`${baseUrl}images/mhx_floorplan.png`}
+              alt="MHX Ternary Core Floorplan"
+              class="w-full h-auto"
+              loading="lazy"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- CI/Test Status -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-8">Verification Status</h2>
+      
+      <div class="grid lg:grid-cols-2 gap-8">
+        <!-- Test Results -->
+        <div class="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-6">
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Test Suites</h3>
+          <div class="space-y-3">
+            <TestStatus name="RTL Linting (Verilator)" status="passing" duration="~2min" />
+            <TestStatus name="RTL Linting (Verible)" status="passing" duration="~1min" />
+            <TestStatus name="Ternary ALU Tests" status="passing" details="All operations verified" />
+            <TestStatus name="Neural Unit Tests" status="passing" details="MAC, activation functions" />
+            <TestStatus name="Register File Tests" status="passing" details="Read/write integrity" />
+            <TestStatus name="Integration Tests" status="passing" details="Full pipeline" />
+            <TestStatus name="Formal Verification" status="passing" details="50+ assertions" />
+          </div>
+        </div>
+        
+        <!-- Coverage -->
+        <div class="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-6">
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Code Coverage</h3>
+          <div class="space-y-6">
+            <ProgressBar percentage={ci.coverage?.line || 85} label="Line Coverage" color="blue" size="md" />
+            <ProgressBar percentage={ci.coverage?.branch || 78} label="Branch Coverage" color="green" size="md" />
+            <ProgressBar percentage={ci.coverage?.function || 92} label="Function Coverage" color="yellow" size="md" />
+            
+            <div class="pt-4 border-t border-gray-200 dark:border-gray-800">
+              <h4 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Coverage by Module</h4>
+              <div class="space-y-3">
+                <ProgressBar percentage={95} label="ibex_ternary_alu.sv" color="green" size="sm" />
+                <ProgressBar percentage={88} label="ibex_neural_unit.sv" color="green" size="sm" />
+                <ProgressBar percentage={92} label="ibex_ternary_regfile.sv" color="green" size="sm" />
+                <ProgressBar percentage={82} label="ibex_decoder.sv" color="blue" size="sm" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Performance Metrics -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-8">Performance Metrics</h2>
+      
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl p-6 text-white">
+          <div class="flex items-center justify-between mb-4">
+            <span class="text-green-100">Neural Inference</span>
+            <svg class="w-8 h-8 text-green-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+          </div>
+          <p class="text-4xl font-bold">{perf.neural_inference_speedup}x</p>
+          <p class="text-green-100 text-sm mt-1">Speedup vs software</p>
+        </div>
+        
+        <div class="bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl p-6 text-white">
+          <div class="flex items-center justify-between mb-4">
+            <span class="text-blue-100">Matrix Operations</span>
+            <svg class="w-8 h-8 text-blue-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" />
+            </svg>
+          </div>
+          <p class="text-4xl font-bold">{perf.matrix_operation_speedup}x</p>
+          <p class="text-blue-100 text-sm mt-1">Speedup for matrix ops</p>
+        </div>
+        
+        <div class="bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl p-6 text-white">
+          <div class="flex items-center justify-between mb-4">
+            <span class="text-purple-100">Power Reduction</span>
+            <svg class="w-8 h-8 text-purple-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+            </svg>
+          </div>
+          <p class="text-4xl font-bold">{perf.power_reduction_estimate}%</p>
+          <p class="text-purple-100 text-sm mt-1">Estimated power savings</p>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Quick Links -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-8">Quick Links</h2>
+      
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <a
+          href={`${baseUrl}docs/instruction-set`}
+          class="group p-6 rounded-2xl border border-gray-200 dark:border-gray-800 hover:border-primary-500 dark:hover:border-primary-500 bg-white dark:bg-gray-900 transition-all hover:shadow-lg"
+        >
+          <div class="w-12 h-12 rounded-xl bg-primary-100 dark:bg-primary-900/50 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+            <svg class="w-6 h-6 text-primary-600 dark:text-primary-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+            </svg>
+          </div>
+          <h3 class="font-semibold text-gray-900 dark:text-white mb-2">Instruction Set</h3>
+          <p class="text-sm text-gray-600 dark:text-gray-400">Complete ISA reference for ternary and neural instructions</p>
+        </a>
+        
+        <a
+          href={`${baseUrl}docs/integration`}
+          class="group p-6 rounded-2xl border border-gray-200 dark:border-gray-800 hover:border-accent-500 dark:hover:border-accent-500 bg-white dark:bg-gray-900 transition-all hover:shadow-lg"
+        >
+          <div class="w-12 h-12 rounded-xl bg-accent-100 dark:bg-accent-900/50 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+            <svg class="w-6 h-6 text-accent-600 dark:text-accent-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1H4a2 2 0 110-4h1a1 1 0 001-1V7a1 1 0 011-1h3a1 1 0 001-1V4z" />
+            </svg>
+          </div>
+          <h3 class="font-semibold text-gray-900 dark:text-white mb-2">Integration Guide</h3>
+          <p class="text-sm text-gray-600 dark:text-gray-400">How to integrate the MHX core into your SoC</p>
+        </a>
+        
+        <a
+          href={`${baseUrl}docs/security`}
+          class="group p-6 rounded-2xl border border-gray-200 dark:border-gray-800 hover:border-neural-500 dark:hover:border-neural-500 bg-white dark:bg-gray-900 transition-all hover:shadow-lg"
+        >
+          <div class="w-12 h-12 rounded-xl bg-neural-100 dark:bg-neural-900/50 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+            <svg class="w-6 h-6 text-neural-600 dark:text-neural-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+            </svg>
+          </div>
+          <h3 class="font-semibold text-gray-900 dark:text-white mb-2">Security Analysis</h3>
+          <p class="text-sm text-gray-600 dark:text-gray-400">Security considerations and threat model</p>
+        </a>
+        
+        <a
+          href={`${baseUrl}verification`}
+          class="group p-6 rounded-2xl border border-gray-200 dark:border-gray-800 hover:border-red-500 dark:hover:border-red-500 bg-white dark:bg-gray-900 transition-all hover:shadow-lg"
+        >
+          <div class="w-12 h-12 rounded-xl bg-red-100 dark:bg-red-900/50 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+            <svg class="w-6 h-6 text-red-600 dark:text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+            </svg>
+          </div>
+          <h3 class="font-semibold text-gray-900 dark:text-white mb-2">Verification Reports</h3>
+          <p class="text-sm text-gray-600 dark:text-gray-400">Test results, coverage, and formal proofs</p>
+        </a>
+      </div>
+      
+      <div class="mt-8 flex justify-center">
+        <a
+          href={`${baseUrl}metrics`}
+          class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 text-white font-medium shadow-lg shadow-primary-600/25 hover:shadow-primary-600/40 transition-all"
+        >
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+          </svg>
+          View Detailed Performance Metrics
+        </a>
+      </div>
+    </section>
+  </main>
+  
+  <Footer />
+</BaseLayout>

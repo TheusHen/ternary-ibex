@@ -1,0 +1,177 @@
+---
+import DocsLayout from '../layouts/DocsLayout.astro';
+
+const baseUrl = import.meta.env.BASE_URL;
+---
+
+<DocsLayout title="Architecture">
+  <div class="prose dark:prose-invert max-w-none">
+    <h1>Architecture Overview</h1>
+    
+    <p class="lead text-lg text-gray-600 dark:text-gray-300">
+      Deep dive into the MHX Ternary RISC-V Core architecture and design decisions.
+    </p>
+    
+    <h2>Floorplan</h2>
+    
+    <div class="not-prose my-8">
+      <div class="relative rounded-2xl overflow-hidden border border-gray-200 dark:border-gray-800 shadow-xl">
+        <img
+          src={`${baseUrl}images/mhx_floorplan.png`}
+          alt="MHX Ternary Core Floorplan"
+          class="w-full h-auto"
+        />
+      </div>
+      <p class="text-sm text-gray-600 dark:text-gray-400 mt-4 text-center">
+        Complete floorplan showing all major functional blocks and interconnections
+      </p>
+    </div>
+    
+    <h2>Core Components</h2>
+    
+    <div class="not-prose grid md:grid-cols-2 gap-6 my-8">
+      <a href={`${baseUrl}architecture/ternary-alu`} class="group block p-6 rounded-xl border-2 border-green-200 dark:border-green-800 hover:border-green-500 dark:hover:border-green-500 bg-green-50 dark:bg-green-900/20 transition-all">
+        <div class="flex items-center gap-3 mb-3">
+          <div class="w-12 h-12 rounded-lg bg-green-500 flex items-center justify-center">
+            <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold text-gray-900 dark:text-white">Ternary ALU</h3>
+        </div>
+        <p class="text-gray-700 dark:text-gray-300">
+          Native 16-trit arithmetic and logic unit with overflow detection
+        </p>
+      </a>
+      
+      <a href={`${baseUrl}architecture/neural-unit`} class="group block p-6 rounded-xl border-2 border-yellow-200 dark:border-yellow-800 hover:border-yellow-500 dark:hover:border-yellow-500 bg-yellow-50 dark:bg-yellow-900/20 transition-all">
+        <div class="flex items-center gap-3 mb-3">
+          <div class="w-12 h-12 rounded-lg bg-yellow-500 flex items-center justify-center">
+            <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold text-gray-900 dark:text-white">Neural Unit</h3>
+        </div>
+        <p class="text-gray-700 dark:text-gray-300">
+          Hardware-accelerated neural network operations with MAC arrays
+        </p>
+      </a>
+      
+      <a href={`${baseUrl}architecture/register-file`} class="group block p-6 rounded-xl border-2 border-red-200 dark:border-red-800 hover:border-red-500 dark:hover:border-red-500 bg-red-50 dark:bg-red-900/20 transition-all">
+        <div class="flex items-center gap-3 mb-3">
+          <div class="w-12 h-12 rounded-lg bg-red-500 flex items-center justify-center">
+            <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold text-gray-900 dark:text-white">Register File</h3>
+        </div>
+        <p class="text-gray-700 dark:text-gray-300">
+          Dual register file: 32 binary + 16 ternary registers
+        </p>
+      </a>
+      
+      <div class="p-6 rounded-xl border-2 border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-900/20">
+        <div class="flex items-center gap-3 mb-3">
+          <div class="w-12 h-12 rounded-lg bg-blue-500 flex items-center justify-center">
+            <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M3 9h2m-2 6h2m14-6h2m-2 6h2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold text-gray-900 dark:text-white">Pipeline Integration</h3>
+        </div>
+        <p class="text-gray-700 dark:text-gray-300">
+          Seamless integration with standard Ibex 2-stage pipeline
+        </p>
+      </div>
+    </div>
+    
+    <h2>Design Philosophy</h2>
+    
+    <h3>1. Minimal Impact on Base Core</h3>
+    
+    <p>
+      The MHX extension is designed to minimize changes to the base Ibex core. All ternary 
+      functionality is isolated in separate modules that can be conditionally included.
+    </p>
+    
+    <h3>2. Native Ternary Operations</h3>
+    
+    <p>
+      Rather than emulating ternary logic in binary, the core implements true ternary arithmetic 
+      at the hardware level, enabling significant efficiency gains.
+    </p>
+    
+    <h3>3. Neural Network Acceleration</h3>
+    
+    <p>
+      The neural unit provides hardware acceleration for the most common TNN operations, achieving 
+      up to 3x speedup compared to software implementations.
+    </p>
+    
+    <h2>Key Specifications</h2>
+    
+    <div class="not-prose overflow-x-auto my-8">
+      <table class="min-w-full border-collapse">
+        <thead>
+          <tr class="bg-gray-100 dark:bg-gray-800">
+            <th class="px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700">Feature</th>
+            <th class="px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700">Specification</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="bg-white dark:bg-gray-900">
+            <td class="px-4 py-3 text-sm font-medium text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700">Base ISA</td>
+            <td class="px-4 py-3 text-sm text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-700">RV32IMC</td>
+          </tr>
+          <tr class="bg-gray-50 dark:bg-gray-800/50">
+            <td class="px-4 py-3 text-sm font-medium text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700">Ternary Registers</td>
+            <td class="px-4 py-3 text-sm text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-700">16 × 16 trits (48 bits equivalent)</td>
+          </tr>
+          <tr class="bg-white dark:bg-gray-900">
+            <td class="px-4 py-3 text-sm font-medium text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700">Neural MAC Units</td>
+            <td class="px-4 py-3 text-sm text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-700">4 parallel units (configurable)</td>
+          </tr>
+          <tr class="bg-gray-50 dark:bg-gray-800/50">
+            <td class="px-4 py-3 text-sm font-medium text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700">Target Frequency</td>
+            <td class="px-4 py-3 text-sm text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-700">50 MHz (Sky130 PDK)</td>
+          </tr>
+          <tr class="bg-white dark:bg-gray-900">
+            <td class="px-4 py-3 text-sm font-medium text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700">Area Overhead</td>
+            <td class="px-4 py-3 text-sm text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-700">~15,000 gates (~40% of base Ibex)</td>
+          </tr>
+          <tr class="bg-gray-50 dark:bg-gray-800/50">
+            <td class="px-4 py-3 text-sm font-medium text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700">Power (estimated)</td>
+            <td class="px-4 py-3 text-sm text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-700">&lt; 5 mW @ 1.8V, 50 MHz</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    
+    <h2>Memory Subsystem</h2>
+    
+    <p>
+      The core supports both traditional binary memory access and optional optimized ternary memory 
+      interface for efficient storage of ternary data.
+    </p>
+    
+    <h3>Ternary Data Encoding</h3>
+    
+    <p>
+      Ternary values are encoded using 2 bits per trit in memory:
+    </p>
+    
+    <ul>
+      <li><code>00</code> = -1 (negative)</li>
+      <li><code>01</code> = 0 (zero)</li>
+      <li><code>10</code> = +1 (positive)</li>
+      <li><code>11</code> = reserved</li>
+    </ul>
+    
+    <p>
+      This encoding enables 93.8% memory savings compared to 32-bit representation while maintaining 
+      fast access times.
+    </p>
+  </div>
+</DocsLayout>
