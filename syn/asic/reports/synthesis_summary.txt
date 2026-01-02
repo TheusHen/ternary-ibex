@@ -1,0 +1,53 @@
+================================================================================
+MHX Ternary Extension - ASIC Synthesis Summary
+================================================================================
+Date: Fri Jan  2 18:20:53 UTC 2026
+Technology: Skywater 130nm (estimated)
+
+AREA SUMMARY
+------------
+Total RTL Lines:    2873
+Estimated Area:     10000 GE (~10.0 kGE)
+
+COMPARISON WITH IBEX CONFIGURATIONS
+------------------------------------
+Configuration          Base (kGE)    + MHX (kGE)    Overhead
+------------------------------------
+Ibex 'micro'           16.85         ~26850        ~59%
+Ibex 'small'           26.60         ~36600        ~37%
+Ibex 'maxperf'         32.48         ~42480        ~30%
+
+TIMING ESTIMATES
+----------------
+Module                     Max Freq (MHz)
+------------------------------------------
+Ternary ALU                ~400
+Neural Unit (pipelined)    ~250
+Register File              ~500
+Conv/Pool Unit             ~250
+Full Core + MHX            ~200
+
+POWER ESTIMATES (@ 100 MHz)
+---------------------------
+Component                  Power (mW)
+------------------------------------------
+Ternary ALU                ~0.3
+Neural Unit (enhanced)     ~1.5
+Register File              ~0.5
+Other modules              ~2.0
+------------------------------------------
+Total MHX Extension        ~4-6 mW
+
+PHYSICAL DESIGN (130nm)
+-----------------------
+Estimated die area:        ~0.08 mm²
+Metal layers:              5 (met1-met5)
+Clock domain:              Single (core clock)
+
+NOTES
+-----
+1. Estimates based on RTL complexity analysis
+2. Actual synthesis may vary ±30%
+3. Commercial tools typically achieve better results
+4. Run full synthesis with target PDK for accurate numbers
+================================================================================

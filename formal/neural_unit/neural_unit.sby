@@ -1,0 +1,32 @@
+[tasks]
+prove
+cover
+bmc
+
+[options]
+prove: mode prove
+prove: depth 20
+
+cover: mode cover
+cover: depth 30
+
+bmc: mode bmc
+bmc: depth 50
+
+[engines]
+prove: smtbmc z3
+cover: smtbmc z3
+bmc: smtbmc yices
+
+[script]
+read -formal -sv ../../rtl/ibex_pkg.sv
+read -formal -sv ../../vendor/lowrisc_ip/ip/prim/rtl/prim_assert.sv
+read -formal -sv ../../rtl/ibex_neural_unit.sv
+read -formal -sv neural_unit_formal.sv
+prep -top neural_unit_formal
+
+[files]
+../../rtl/ibex_pkg.sv
+../../vendor/lowrisc_ip/ip/prim/rtl/prim_assert.sv
+../../rtl/ibex_neural_unit.sv
+neural_unit_formal.sv

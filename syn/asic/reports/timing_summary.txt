@@ -1,0 +1,31 @@
+=== MHX Ternary Timing Estimation ===
+Technology: Skywater 130nm
+
+Target Frequencies:
+- Conservative: 100 MHz (10 ns period)
+- Aggressive:   250 MHz (4 ns period)
+
+Critical Paths (estimated):
+1. Ternary ALU (combinational): ~2-3 ns
+2. Neural Unit MAC tree: ~4-5 ns
+3. Register File read: ~1 ns
+4. Register File write: ~2 ns
+
+Pipeline Stages:
+- ibex_neural_unit_enhanced: 3 stages
+- ibex_ternary_conv_pool: 2 stages
+
+Maximum Frequency Estimation:
+- Ternary ALU standalone: ~300 MHz
+- Neural Unit (pipelined): ~250 MHz
+- Full core with ternary: ~200 MHz
+
+Power Estimation (@ 100 MHz, typical):
+- Ternary ALU: ~0.5 mW
+- Neural Unit: ~2.0 mW
+- Register File: ~0.3 mW
+- Full extension: ~5.0 mW
+
+Notes:
+- Based on similar designs in Sky130
+- Actual numbers require full STA
