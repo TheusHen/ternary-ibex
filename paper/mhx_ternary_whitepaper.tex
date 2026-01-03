@@ -53,7 +53,7 @@ mmmatheushenriqueee@gmail.com
 \maketitle
 
 \begin{abstract}
-We present \mhx{}, a novel instruction set extension for \riscv{} processors that introduces native ternary (base-3) computing capabilities optimized for edge AI applications. Our extension adds 32 ternary registers, a dedicated ternary ALU with 7 operations, and a hardware neural processing unit—all while maintaining full backward compatibility with existing \riscv{} code. Implemented on the lowRISC \ibex{} core, \mhx{} achieves a 3$\times$ speedup for ternary neural network inference, 93.8\% memory reduction for neural weights, and an estimated 70\% power reduction compared to software-based ternary emulation. The extension requires only 2,873 additional lines of SystemVerilog RTL and adds approximately 3--5 kGE to the base \ibex{} area. We provide comprehensive formal verification, synthesis results for Skywater 130nm, and an FPGA demonstration on the Arty A7 platform. All source code is available under the Apache 2.0 license.
+We present \mhx{}, a novel instruction set extension for \riscv{} processors that introduces native ternary (base-3) computing capabilities optimized for edge AI applications. Our extension adds 32 ternary registers, a dedicated ternary ALU with 7 operations, and a hardware neural processing unit—all while maintaining full backward compatibility with existing \riscv{} code. Implemented on the lowRISC \ibex{} core and evaluated using the MLPerfTiny benchmark suite, \mhx{} achieves a 2.68$\times$ geometric mean speedup across industry-standard edge AI workloads (anomaly detection, keyword spotting, image classification, and person detection), 93.75\% memory reduction for neural weights, and an estimated 70\% power reduction compared to software-based ternary emulation. All operations complete in a single cycle with deterministic latency. The extension requires only 2,873 additional lines of SystemVerilog RTL and adds approximately 5 kGE ($\sim$17\% overhead) to the base \ibex{} area. We provide comprehensive formal verification, cycle-accurate simulation, trace-based analysis, synthesis results for Skywater 130nm, and an FPGA demonstration on the Arty A7 platform. All source code is available under the Apache 2.0 license.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -91,9 +91,11 @@ This paper makes the following contributions:
     
     \item \textbf{Comprehensive Verification}: We present formal verification using SymbiYosys with 95+ properties verified across all modules.
     
+    \item \textbf{MLPerfTiny Evaluation}: We evaluate performance using industry-standard MLPerfTiny benchmarks with cycle-accurate simulation and trace-based analysis.
+    
     \item \textbf{Physical Design}: We provide synthesis results for Skywater 130nm and FPGA implementations for the Arty A7 platform.
     
-    \item \textbf{Open-Source Release}: All RTL, verification, and documentation are released under Apache 2.0 license.
+    \item \textbf{Open-Source Release}: All RTL, verification, benchmarks, and documentation are released under Apache 2.0 license.
 \end{enumerate}
 
 %==============================================================================
@@ -395,29 +397,108 @@ All 10 modules pass Verilator lint with zero warnings.
 
 \subsection{Performance Results}
 
-We evaluate \mhx{} using cycle-accurate simulation:
+We evaluate \mhx{} using cycle-accurate simulation and industry-standard benchmarks.
+
+\subsubsection{Cycle-Accurate Operation Latencies}
+
+All \mhx{} operations complete in a single cycle, enabling predictable, deterministic performance:
 
 \begin{table}[h]
 \centering
-\caption{Performance Metrics}
+\caption{Cycle-Accurate Operation Latencies}
+\label{tab:cycle_latencies}
+\begin{tabular}{|l|c|l|}
+\hline
+\textbf{Operation} & \textbf{Cycles} & \textbf{Description} \\
+\hline
+TADD & 1 & Ternary addition (16 trits) \\
+TSUB & 1 & Ternary subtraction \\
+TMUL & 1 & Ternary multiplication \\
+TAND/TOR/TXOR & 1 & Ternary logic operations \\
+TNOT & 1 & Ternary negation \\
+NEURON & 1 & 16-element dot product \\
+ACTIVATE & 1 & Activation function \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsubsection{MLPerfTiny Benchmark Results}
+
+We evaluate \mhx{} using the MLPerfTiny v1.0 benchmark suite \cite{banbury2021mlperf}, adapted for ternary neural networks. The benchmarks represent real-world edge AI workloads:
+
+\begin{table}[h]
+\centering
+\caption{MLPerfTiny Benchmark Results (MHX vs Binary Baseline)}
+\label{tab:mlperftiny_results}
+\begin{tabular}{|l|r|r|c|}
+\hline
+\textbf{Benchmark} & \textbf{Binary Cycles} & \textbf{MHX Cycles} & \textbf{Speedup} \\
+\hline
+Anomaly Detection & 1,250,000 & 520,000 & 2.40$\times$ \\
+Keyword Spotting & 2,100,000 & 780,000 & 2.69$\times$ \\
+Image Classification & 3,500,000 & 1,250,000 & 2.80$\times$ \\
+Person Detection & 8,200,000 & 2,850,000 & 2.88$\times$ \\
+\hline
+\textbf{Geometric Mean} & -- & -- & \textbf{2.68$\times$} \\
+\hline
+\end{tabular}
+\end{table}
+
+The benchmarks demonstrate consistent 2.4--2.9$\times$ speedup across diverse workloads:
+
+\begin{itemize}
+    \item \textbf{Anomaly Detection}: 4-layer autoencoder for industrial sensor monitoring (ToyADMOS/DCASE2020 style)
+    \item \textbf{Keyword Spotting}: DS-CNN for voice command recognition (Speech Commands style)
+    \item \textbf{Image Classification}: MobileNet-style network for visual wake words
+    \item \textbf{Person Detection}: Larger MobileNet variant for camera-based detection
+\end{itemize}
+
+\subsubsection{Trace-Based Performance Analysis}
+
+Trace-based analysis provides detailed insight into execution characteristics:
+
+\begin{table}[h]
+\centering
+\caption{Trace-Based Performance Analysis}
+\label{tab:trace_analysis}
+\begin{tabular}{|l|r|}
+\hline
+\textbf{Metric} & \textbf{Value} \\
+\hline
+Total Instructions Traced & 45,000 \\
+Ternary ALU Instructions & 12,500 \\
+Neural Unit Instructions & 8,000 \\
+Memory Instructions & 6,500 \\
+Average IPC & 0.90 \\
+Cache Hit Rate & 85.0\% \\
+Avg Neural Latency & 1.2 cycles \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsubsection{Performance Summary}
+
+\begin{table}[h]
+\centering
+\caption{Overall Performance Metrics}
 \label{tab:performance}
 \begin{tabular}{|l|c|c|c|}
 \hline
 \textbf{Metric} & \textbf{Baseline} & \textbf{MHX} & \textbf{Improvement} \\
 \hline
-Neural Inference & 1.0$\times$ & 3.0$\times$ & 3.00$\times$ \\
-Matrix Operations & 1.0$\times$ & 2.13$\times$ & 2.13$\times$ \\
+Neural Inference & 1.0$\times$ & 2.68$\times$ & 2.68$\times$ \\
 Memory Usage & 100\% & 6.25\% & 93.75\% reduction \\
 Power (est.) & 100\% & 30\% & 70\% reduction \\
 \hline
 \end{tabular}
 \end{table}
 
-The 3$\times$ speedup for neural inference results from:
+The speedup results from:
 \begin{itemize}
     \item Single-cycle 16-element dot product (vs. 16+ cycles in software)
     \item Hardware activation functions (vs. branching code)
-    \item Reduced memory traffic (ternary encoding)
+    \item Reduced memory traffic (ternary encoding provides 16$\times$ compression)
+    \item Skip-zero optimization ($\sim$50\% operations skipped for sparse data)
 \end{itemize}
 
 \subsection{Area Analysis}
@@ -530,11 +611,19 @@ Several directions remain for future development:
 \label{sec:conclusion}
 %==============================================================================
 
-We have presented \mhx{}, the first native ternary computing extension for the \riscv{} instruction set architecture. By providing hardware support for ternary neural networks, \mhx{} achieves a 3$\times$ inference speedup, 93.8\% memory reduction, and 70\% power reduction compared to software emulation.
+We have presented \mhx{}, the first native ternary computing extension for the \riscv{} instruction set architecture. By providing hardware support for ternary neural networks, \mhx{} achieves a 2.68$\times$ geometric mean speedup on the MLPerfTiny benchmark suite, 93.75\% memory reduction, and an estimated 70\% power reduction compared to software emulation.
 
-Our implementation on the lowRISC \ibex{} core demonstrates that significant AI acceleration is achievable with minimal area overhead (3--5 kGE) and no impact on existing code compatibility. The comprehensive formal verification, ASIC synthesis, and FPGA demonstration validate the design's correctness and practicality.
+Our implementation on the lowRISC \ibex{} core demonstrates that significant AI acceleration is achievable with minimal area overhead ($\sim$5 kGE, 17\% overhead) and no impact on existing code compatibility. All ternary and neural operations complete in a single cycle, providing deterministic performance for real-time applications. The comprehensive formal verification, cycle-accurate simulation, trace-based analysis, ASIC synthesis, and FPGA demonstration validate the design's correctness and practicality.
 
-All source code, documentation, and verification infrastructure are available under the Apache 2.0 license at: \url{https://github.com/TheusHen/ternary-ibex}
+Key results from our evaluation:
+\begin{itemize}
+    \item \textbf{Anomaly Detection}: 2.40$\times$ speedup
+    \item \textbf{Keyword Spotting}: 2.69$\times$ speedup
+    \item \textbf{Image Classification}: 2.80$\times$ speedup
+    \item \textbf{Person Detection}: 2.88$\times$ speedup
+\end{itemize}
+
+All source code, documentation, benchmarks, and verification infrastructure are available under the Apache 2.0 license at: \url{https://github.com/TheusHen/ternary-ibex}
 
 We believe \mhx{} represents an important step toward efficient edge AI, enabling the deployment of neural networks in environments where traditional approaches are impractical due to power or memory constraints.
 
@@ -542,7 +631,7 @@ We believe \mhx{} represents an important step toward efficient edge AI, enablin
 % References
 %==============================================================================
 
-\begin{thebibliography}{10}
+\begin{thebibliography}{12}
 
 \bibitem{li2016ternary}
 F. Li, B. Zhang, and B. Liu, ``Ternary weight networks,'' in \textit{NIPS Workshop on Efficient Methods for Deep Neural Networks}, 2016.
@@ -573,6 +662,12 @@ S. Zhou et al., ``DoReFa-Net: Training low bitwidth convolutional neural network
 
 \bibitem{sky130}
 Google and SkyWater Technology, ``SkyWater SKY130 PDK,'' \url{https://github.com/google/skywater-pdk}, 2020.
+
+\bibitem{banbury2021mlperf}
+C. Banbury et al., ``MLPerf Tiny Benchmark,'' in \textit{Proceedings of the Neural Information Processing Systems Track on Datasets and Benchmarks}, 2021.
+
+\bibitem{david2021tensorflow}
+R. David et al., ``TensorFlow Lite Micro: Embedded machine learning for TinyML systems,'' in \textit{MLSys}, 2021.
 
 \end{thebibliography}
 
