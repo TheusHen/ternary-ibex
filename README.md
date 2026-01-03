@@ -78,6 +78,53 @@ The Ibex user manual can be
 [read online at ReadTheDocs](https://ibex-core.readthedocs.io/en/latest/). It is also contained in
 the `doc` folder of this repository.
 
+## Reproducibility & Verification
+
+### One-command verification (recommended)
+
+Run the same checks used by CI (tool version checks, RTL lint, core tests, mypy, benchmark data generation, and pytest):
+
+```bash
+make verify
+```
+
+### Generate benchmark data (JSON/LaTeX/Markdown)
+
+This regenerates the structured outputs used for documentation and paper tables:
+
+```bash
+python3 util/generate_benchmark_data.py --output build/benchmark_data --format all
+```
+
+Outputs:
+- `build/benchmark_data/benchmark_data.json`
+- `build/benchmark_data/benchmark_tables.tex`
+- `build/benchmark_data/benchmark_report.md`
+
+### Reproduce the paper tables
+
+1) Generate LaTeX tables:
+
+```bash
+python3 util/generate_benchmark_data.py --output build/benchmark_data --format latex
+```
+
+2) Build the PDF:
+
+```bash
+make -C paper pdf
+```
+
+### Run MLPerfTiny benchmark (simulation)
+
+If you have the simulator + toolchain available, you can run the MLPerfTiny runner:
+
+```bash
+python3 util/mlperftiny_benchmark.py --json
+```
+
+By default, the simulator writes the run log to `ibex_simple_system.log` at the repository root.
+
 ## Examples
 
 The Ibex repository includes [Simple System](examples/simple_system/README.md).

@@ -21,6 +21,10 @@ portalocker
 pydantic >= 2
 svg.py
 
+# Dev/test tooling (pinned for reproducibility)
+pytest ~= 8.3
+mypy ~= 1.13
+
 # Needed by dvsim.py (not actually used in Ibex)
 hjson
 mistletoe>=0.7.2

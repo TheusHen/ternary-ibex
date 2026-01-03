@@ -87,3 +87,7 @@ test-cfg:
 .PHONY: python-lint
 python-lint:
 	$(MAKE) -C util lint
+
+.PHONY: verify
+verify:
+	./ci/verify.sh
