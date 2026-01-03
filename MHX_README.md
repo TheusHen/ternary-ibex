@@ -517,10 +517,10 @@ This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENS
 If you use the MHX™ Core in your research, please cite:
 
 ```bibtex
-@misc{mhx_core_2025,
+@misc{mhx_T1_core,
   title={MHX™ Core: Ternary Chips for Accelerated AI},
   author={MHX™ Development Team},
-  year={2025},
+  year={2025-2026},
   howpublished={\url{https://github.com/TheusHen/ternary-ibex}}
 }
 ```
