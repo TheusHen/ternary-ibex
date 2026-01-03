@@ -1,4 +1,4 @@
-// MHX Ternary UVM Coverage Collector
+// MHX™ Ternary UVM Coverage Collector
 // Collects functional coverage for ternary operations
 
 class mhx_ternary_coverage extends uvm_subscriber #(mhx_ternary_transaction);

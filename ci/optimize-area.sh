@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 # Copyright lowRISC contributors.
-# Copyright 2025 MHX Neural.
+# Copyright 2025 MHX™ Neural.
 # Licensed under the Apache License, Version 2.0, see LICENSE for details.
 # SPDX-License-Identifier: Apache-2.0
 
 ################################################################################
-# Area Optimization Script for MHX Ternary Extensions
+# Area Optimization Script for MHX™ Ternary Extensions
 #
 # This script performs area optimization:
 # - Resource sharing
@@ -52,7 +52,7 @@ done
 mkdir -p "$OUTPUT_DIR"
 
 log_info "============================================================"
-log_info "MHX Ternary Area Optimization"
+log_info "MHX™ Ternary Area Optimization"
 log_info "Target: $TARGET_GATES gates (from ~50,000)"
 log_info "Platform: $PLATFORM"
 log_info "============================================================"
@@ -502,7 +502,7 @@ generate_area_report() {
     local reduction_percent=$(echo "scale=1; 100 * $total_savings / $baseline" | bc)
     
     cat > "${OUTPUT_DIR}/area_optimization_report.md" <<EOF
-# MHX Ternary Area Optimization Report
+# MHX™ Ternary Area Optimization Report
 
 **Generated:** $(date)  
 **Target:** $TARGET_GATES gates  
@@ -609,7 +609,7 @@ parameter UseSRAM = 1'b0;  // Fast FF-based
 
 ## Comparison with Binary Ibex
 
-| Metric | Binary Ibex | MHX Ternary (Opt) | Overhead |
+| Metric | Binary Ibex | MHX™ Ternary (Opt) | Overhead |
 |--------|-------------|-------------------|----------|
 | Core area | 28,000 gates | $final_area gates | +35% |
 | With neural | N/A | $final_area gates | N/A |
@@ -663,7 +663,7 @@ All optimizations verified:
 **Status:** COMPLETE  
 **Final Area:** $final_area gates ($([ $final_area -le $TARGET_GATES ] && echo "✅" || echo "⚠️") Target: $TARGET_GATES)  
 **Reduction:** $reduction_percent%  
-**Maintainer:** MHX Neural Area Team
+**Maintainer:** MHX™ Neural Area Team
 
 EOF
 

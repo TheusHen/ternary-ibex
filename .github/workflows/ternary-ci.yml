@@ -1,4 +1,4 @@
-name: MHX Ternary Extension CI
+name: MHX™ Ternary Extension CI
 
 on:
   push:
@@ -200,7 +200,7 @@ jobs:
 
           # Create comprehensive test report
           cat > build/test_reports/ternary_test_summary.md << 'EOF'
-          # MHX Ternary Extension Test Summary
+          # MHX™ Ternary Extension Test Summary
 
           **Test Date:** $(date)
           **Branch:** ${{ github.ref_name }}
@@ -377,12 +377,12 @@ jobs:
       - name: Notify Success
         if: needs.ternary-integration-check.result == 'success'
         run: |
-          echo "✅ MHX Ternary Extension CI Pipeline completed successfully!"
+          echo "✅ MHX™ Ternary Extension CI Pipeline completed successfully!"
           echo "All ternary functionality validated and ready for next phase."
 
       - name: Notify Failure
         if: needs.ternary-integration-check.result == 'failure'
         run: |
-          echo "❌ MHX Ternary Extension CI Pipeline failed!"
+          echo "❌ MHX™ Ternary Extension CI Pipeline failed!"
           echo "Please check the logs and fix any issues before proceeding."
           exit 1

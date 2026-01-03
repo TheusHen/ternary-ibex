@@ -1,5 +1,5 @@
 // Copyright lowRISC contributors.
-// Copyright 2025 MHX Neural.
+// Copyright 2025 MHX™ Neural.
 // Copyright 2018 ETH Zurich and University of Bologna, see also CREDITS.md.
 // Licensed under the Apache License, Version 2.0, see LICENSE for details.
 // SPDX-License-Identifier: Apache-2.0
@@ -192,7 +192,7 @@ module ibex_id_stage #(
   output logic                      perf_div_wait_o,
   output logic                      instr_id_done_o,
 
-  // MHX Ternary Extension
+  // MHX™ Ternary Extension
   output logic                      ternary_en_id_o,
   output logic                      neural_en_id_o,
   output ibex_pkg::ternary_op_e     ternary_op_id_o,
@@ -244,7 +244,7 @@ module ibex_id_stage #(
 
   logic        mem_resp_intg_err;
 
-  // MHX Ternary Extension internal signals
+  // MHX™ Ternary Extension internal signals
   logic                    ternary_en_dec;
   logic                    neural_en_dec;
   ternary_op_e            ternary_op_dec;
@@ -532,7 +532,7 @@ module ibex_id_stage #(
     .jump_in_dec_o  (jump_in_dec),
     .branch_in_dec_o(branch_in_dec),
 
-    // MHX Ternary Operations
+    // MHX™ Ternary Operations
     .ternary_en_o      (ternary_en_dec),
     .neural_en_o       (neural_en_dec),
     .ternary_op_o      (ternary_op_dec),
@@ -697,7 +697,7 @@ module ibex_id_stage #(
   assign multdiv_operand_a_ex_o      = rf_rdata_a_fwd;
   assign multdiv_operand_b_ex_o      = rf_rdata_b_fwd;
 
-  // MHX Ternary Extension outputs
+  // MHX™ Ternary Extension outputs
   assign ternary_en_id_o             = ternary_en_dec & instr_executing;
   assign neural_en_id_o              = neural_en_dec & instr_executing;
   assign ternary_op_id_o             = ternary_op_dec;

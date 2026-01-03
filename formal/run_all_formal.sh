@@ -1,6 +1,6 @@
 #!/bin/bash
-# MHX Ternary Extension - Run All Formal Verification
-# Copyright 2025 MHX Neural
+# MHX™ Ternary Extension - Run All Formal Verification
+# Copyright 2025 MHX™ Neural
 
 set -e
 
@@ -17,7 +17,7 @@ NC='\033[0m' # No Color
 mkdir -p "${RESULTS_DIR}"
 
 echo "========================================"
-echo "MHX Ternary Formal Verification Suite"
+echo "MHX™ Ternary Formal Verification Suite"
 echo "========================================"
 echo ""
 

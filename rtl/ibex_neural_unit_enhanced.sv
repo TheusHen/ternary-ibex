@@ -1,10 +1,10 @@
 // Copyright lowRISC contributors.
-// Copyright 2025 MHX Neural.
+// Copyright 2025 MHX™ Neural.
 // Licensed under the Apache License, Version 2.0, see LICENSE for details.
 // SPDX-License-Identifier: Apache-2.0
 
 /**
- * Enhanced Neural Processing Unit for MHX Core
+ * Enhanced Neural Processing Unit for MHX™ Core
  *
  * OPTIMIZATIONS FOR AI:
  * - Pipelined architecture (3 stages)

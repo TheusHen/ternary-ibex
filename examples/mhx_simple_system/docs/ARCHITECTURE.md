@@ -1,32 +1,32 @@
-# MHX Simple System Architecture
+# MHX™ Simple System Architecture
 
 ## Overview
 
-The MHX Simple System is a minimal but powerful System-on-Chip (SoC) designed to showcase the MHX core's ternary processing capabilities. It provides a complete development platform with essential peripherals, firmware examples, and FPGA implementation flows.
+The MHX™ Simple System is a minimal but powerful System-on-Chip (SoC) designed to showcase the MHX™ core's ternary processing capabilities. It provides a complete development platform with essential peripherals, firmware examples, and FPGA implementation flows.
 
 ## System Architecture
 
 ```
-                    MHX Simple System Architecture
+                    MHX™ Simple System Architecture
                    ┌─────────────────────────────────┐
                    │          FPGA Top Level         │
                    │    (Clock, Reset, I/O Mapping) │
                    └─────────────┬───────────────────┘
                                  │
                    ┌─────────────▼───────────────────┐
-                   │       MHX Simple System        │
+                   │       MHX™ Simple System        │
                    │    (SoC with Bus Interconnect) │
                    └─────────────┬───────────────────┘
                                  │
         ┌────────────────────────┼────────────────────────┐
         │                        │                        │
 ┌───────▼────────┐    ┌─────────▼────────┐    ┌─────────▼────────┐
-│   MHX Core     │    │   Memory System  │    │   Peripherals    │
+│   MHX™ Core     │    │   Memory System  │    │   Peripherals    │
 │  (CPU + TExt)  │    │   (ROM + RAM)    │    │ (UART,GPIO,etc.) │
 └────────────────┘    └──────────────────┘    └──────────────────┘
 ```
 
-## MHX Core Features
+## MHX™ Core Features
 
 ### Standard RISC-V (RV32IMC)
 - **I**: Integer base instruction set
@@ -36,7 +36,7 @@ The MHX Simple System is a minimal but powerful System-on-Chip (SoC) designed to
 - **CSR**: Control and Status Registers
 - **Interrupts**: Machine-level interrupt handling
 
-### Ternary Extensions (MHX)
+### Ternary Extensions (MHX™)
 - **16 Ternary Registers (T0-T15)**: Each 32 bits (16 trits)
 - **Ternary ALU**: Native base-3 arithmetic and logic
 - **Neural Processing Unit**: Specialized ML acceleration

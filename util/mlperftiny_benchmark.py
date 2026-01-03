@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 # Copyright lowRISC contributors.
-# Copyright 2025 MHX Neural.
+# Copyright 2025 MHX™ Neural.
 # Licensed under the Apache License, Version 2.0, see LICENSE for details.
 # SPDX-License-Identifier: Apache-2.0
 
 """
-MLPerfTiny Benchmark Runner and Parser for MHX Ternary Extensions
+MLPerfTiny Benchmark Runner and Parser for MHX™ Ternary Extensions
 
 This script runs the MLPerfTiny benchmark suite under Verilator simulation
 and parses the results to generate comprehensive performance metrics.
@@ -121,7 +121,7 @@ class MLPerfTinyResults:
 
     def to_dict(self) -> Dict[str, Any]:
         return {
-            "benchmark_suite": "MLPerfTiny v1.0 (MHX Ternary)",
+            "benchmark_suite": "MLPerfTiny v1.0 (MHX™ Ternary)",
             "timestamp": self.timestamp,
             "benchmarks": {
                 "anomaly_detection": self.anomaly_detection.to_dict() if self.anomaly_detection else None,
@@ -261,7 +261,7 @@ def print_report(results: MLPerfTinyResults) -> None:
     """Print human-readable benchmark report."""
     print()
     print("=" * 70)
-    print("MLPerfTiny Benchmark Results for MHX Ternary Extensions")
+    print("MLPerfTiny Benchmark Results for MHX™ Ternary Extensions")
     print("=" * 70)
     print()
 
@@ -269,7 +269,7 @@ def print_report(results: MLPerfTinyResults) -> None:
         print(f"{bench.name}:")
         print(f"  Description:    {bench.description}")
         print(f"  Binary cycles:  {bench.binary_cycles:,}")
-        print(f"  MHX cycles:     {bench.mhx_cycles:,}")
+        print(f"  MHX™ cycles:     {bench.mhx_cycles:,}")
         print(f"  Speedup:        {bench.speedup:.2f}x")
         print(f"  Efficiency:     {bench.efficiency_percent:.1f}%")
         print()
@@ -285,7 +285,7 @@ def print_report(results: MLPerfTinyResults) -> None:
 
 def main() -> int:
     parser = argparse.ArgumentParser(
-        description="Run MLPerfTiny benchmarks for MHX Ternary Extensions"
+        description="Run MLPerfTiny benchmarks for MHX™ Ternary Extensions"
     )
     parser.add_argument(
         "--json",

@@ -1,6 +1,6 @@
-# MHX Ternary Extension - FPGA Demo
+# MHX™ Ternary Extension - FPGA Demo
 
-This directory contains the FPGA implementation of the MHX Ternary Extension demonstration.
+This directory contains the FPGA implementation of the MHX™ Ternary Extension demonstration.
 
 ## Supported Boards
 

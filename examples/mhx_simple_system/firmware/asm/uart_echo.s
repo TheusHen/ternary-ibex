@@ -1,5 +1,5 @@
 # Copyright lowRISC contributors.
-# Copyright 2025 MHX Neural.
+# Copyright 2025 MHX™ Neural.
 # Licensed under the Apache License, Version 2.0, see LICENSE for details.
 # SPDX-License-Identifier: Apache-2.0
 
@@ -662,8 +662,8 @@ cmd_length:      .word 0
 .section .rodata
 
 welcome_msg:
-    .ascii "MHX Simple System UART Echo Test\n"
-    .ascii "Copyright 2025 MHX Neural\n"
+    .ascii "MHX™ Simple System UART Echo Test\n"
+    .ascii "Copyright 2025 MHX™ Neural\n"
     .ascii "================================\n\0"
 
 help_msg:
@@ -674,7 +674,7 @@ help_msg:
     .ascii "  reset  - Reset system\n\n\0"
 
 prompt_msg:
-    .ascii "MHX> \0"
+    .ascii "MHX™> \0"
 
 unknown_cmd_msg:
     .ascii "Unknown command. Type 'help' for help.\n\0"

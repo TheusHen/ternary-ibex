@@ -1,12 +1,12 @@
 # Copyright lowRISC contributors.
-# Copyright 2025 MHX Neural.
+# Copyright 2025 MHX™ Neural.
 # Licensed under the Apache License, Version 2.0, see LICENSE for details.
 # SPDX-License-Identifier: Apache-2.0
 
 /**
  * Memory Test - Assembly Implementation
  *
- * This program performs comprehensive memory testing on the MHX Simple System.
+ * This program performs comprehensive memory testing on the MHX™ Simple System.
  * It tests both ROM (read-only) and RAM with various patterns and algorithms.
  *
  * Features:
@@ -14,7 +14,7 @@
  * - Address pattern tests
  * - Data pattern tests
  * - March tests (March C-)
- * - Ternary pattern tests (for MHX extensions)
+ * - Ternary pattern tests (for MHX™ extensions)
  * - Memory speed benchmarks
  */
 
@@ -50,8 +50,8 @@
 .equ PATTERN_0xFF,    0xFFFFFFFF
 .equ PATTERN_0x55,    0x55555555
 .equ PATTERN_0xAA,    0xAAAAAAAA
-.equ PATTERN_TERNARY1, 0xAAAA5555  # MHX ternary pattern
-.equ PATTERN_TERNARY2, 0x5555AAAA  # MHX ternary pattern
+.equ PATTERN_TERNARY1, 0xAAAA5555  # MHX™ ternary pattern
+.equ PATTERN_TERNARY2, 0x5555AAAA  # MHX™ ternary pattern
 
 /**
  * Main entry point
@@ -239,7 +239,7 @@ run_memory_tests:
     call march_test
     call print_test_result
 
-    # Test 7: Ternary Pattern Test (MHX specific)
+    # Test 7: Ternary Pattern Test (MHX™ specific)
     la a0, test7_msg
     call uart_print_string
     call ternary_pattern_test
@@ -542,7 +542,7 @@ march_test_fail:
     ret
 
 /**
- * Ternary Pattern Test (MHX specific)
+ * Ternary Pattern Test (MHX™ specific)
  */
 ternary_pattern_test:
     call increment_test_count
@@ -1018,8 +1018,8 @@ test_results:
 .section .rodata
 
 startup_msg:
-    .ascii "MHX Simple System Memory Test\n"
-    .ascii "Copyright 2025 MHX Neural\n"
+    .ascii "MHX™ Simple System Memory Test\n"
+    .ascii "Copyright 2025 MHX™ Neural\n"
     .ascii "=============================\n\n\0"
 
 memmap_msg:

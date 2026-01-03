@@ -1,18 +1,18 @@
-# MHX Ternary Extension - Formal Specification
+# MHX™ Ternary Extension - Formal Specification
 
 **Version:** 1.0
 **Date:** September 29, 2025
-**Authors:** MHX Neural Team
+**Authors:** MHX™ Neural Team
 
 ## 1. Overview
 
-This document provides the formal specification for the MHX Ternary Extension to the Ibex RISC-V core, covering all ternary arithmetic operations, neural processing units, and edge case behaviors.
+This document provides the formal specification for the MHX™ Ternary Extension to the Ibex RISC-V core, covering all ternary arithmetic operations, neural processing units, and edge case behaviors.
 
 ## 2. Ternary Number System
 
 ### 2.1 Basic Definitions
 
-The MHX ternary system uses balanced ternary notation with three possible values per digit (trit):
+The MHX™ ternary system uses balanced ternary notation with three possible values per digit (trit):
 
 - **TRIT_NEG** (`2'b00`): Represents -1
 - **TRIT_ZERO** (`2'b01`): Represents 0

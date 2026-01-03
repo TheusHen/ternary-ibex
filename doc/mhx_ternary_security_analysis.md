@@ -1,13 +1,13 @@
-# MHX Ternary Extension - Security Analysis and Implications
+# MHX™ Ternary Extension - Security Analysis and Implications
 
 **Version:** 1.0
 **Date:** September 29, 2025
 **Classification:** Internal - Security Review
-**Authors:** MHX Neural Security Team
+**Authors:** MHX™ Neural Security Team
 
 ## Executive Summary
 
-This document analyzes the security implications of the MHX Ternary Extension to the Ibex RISC-V core, identifying potential attack vectors, vulnerabilities, and recommended mitigations. The analysis covers side-channel attacks, fault injection, and neural network specific threats.
+This document analyzes the security implications of the MHX™ Ternary Extension to the Ibex RISC-V core, identifying potential attack vectors, vulnerabilities, and recommended mitigations. The analysis covers side-channel attacks, fault injection, and neural network specific threats.
 
 **Security Assessment:** MEDIUM RISK
 **Recommended Security Level:** Suitable for non-critical applications with additional mitigations for sensitive deployments.
@@ -424,7 +424,7 @@ typedef struct packed {
 
 ## 9. Conclusion
 
-The MHX Ternary Extension introduces novel security considerations due to its unique ternary arithmetic and neural processing capabilities. While the current implementation includes basic security measures, additional protections are recommended for security-sensitive deployments.
+The MHX™ Ternary Extension introduces novel security considerations due to its unique ternary arithmetic and neural processing capabilities. While the current implementation includes basic security measures, additional protections are recommended for security-sensitive deployments.
 
 **Key Recommendations:**
 1. Implement comprehensive side-channel protections for high-security applications

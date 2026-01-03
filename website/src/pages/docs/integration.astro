@@ -7,13 +7,13 @@ import DocsLayout from '../../layouts/DocsLayout.astro';
     <h1>Integration Guide</h1>
     
     <p class="lead text-lg text-gray-600 dark:text-gray-300">
-      How to integrate the MHX Ternary RISC-V Core into your System-on-Chip design.
+      How to integrate the MHX™ Ternary RISC-V Core into your System-on-Chip design.
     </p>
     
     <h2>Overview</h2>
     
     <p>
-      The MHX Ternary Ibex core is designed as a drop-in replacement for the standard Ibex core, 
+      The MHX™ Ternary Ibex core is designed as a drop-in replacement for the standard Ibex core, 
       with additional interfaces for ternary memory access and neural unit configuration.
     </p>
     
@@ -30,7 +30,7 @@ import DocsLayout from '../../layouts/DocsLayout.astro';
       <li><strong>Debug interface</strong> - RISC-V debug specification compliant</li>
     </ul>
     
-    <h3>MHX Extension Interfaces</h3>
+    <h3>MHX™ Extension Interfaces</h3>
     
     <pre><code class="language-systemverilog">module ibex_core #(
   // Standard Ibex parameters
@@ -39,7 +39,7 @@ import DocsLayout from '../../layouts/DocsLayout.astro';
   parameter int unsigned PMPNumRegions    = 4,
   // ... other standard params
   
-  // MHX Extension parameters
+  // MHX™ Extension parameters
   parameter bit          TernarySupport   = 1'b1,
   parameter bit          NeuralSupport    = 1'b1,
   parameter int unsigned TernaryRegCount  = 16,
@@ -59,7 +59,7 @@ import DocsLayout from '../../layouts/DocsLayout.astro';
   input  logic        data_gnt_i,
   // ...
   
-  // MHX Ternary memory interface (optional)
+  // MHX™ Ternary memory interface (optional)
   output logic        ternary_mem_req_o,
   output logic [31:0] ternary_mem_addr_o,
   output logic [31:0] ternary_mem_wdata_o,

@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 # Copyright lowRISC contributors.
-# Copyright 2025 MHX Neural.
+# Copyright 2025 MHX™ Neural.
 # Licensed under the Apache License, Version 2.0, see LICENSE for details.
 # SPDX-License-Identifier: Apache-2.0
 
 ################################################################################
-# Security Audit Script for MHX Ternary Extensions
+# Security Audit Script for MHX™ Ternary Extensions
 #
 # This script performs comprehensive security analysis including:
 # - Side-channel vulnerability detection
@@ -77,7 +77,7 @@ done
 mkdir -p "$OUTPUT_DIR"
 
 log_info "============================================================"
-log_info "MHX Ternary Security Audit"
+log_info "MHX™ Ternary Security Audit"
 log_info "============================================================"
 log_info "Start time: $(date)"
 log_info "Output directory: $OUTPUT_DIR"
@@ -443,7 +443,7 @@ generate_audit_report() {
                         severity_counts["low"] * 2))
     
     cat > "$report_file" <<EOF
-# MHX Ternary Security Audit Report
+# MHX™ Ternary Security Audit Report
 
 **Generated:** $(date)  
 **Auditor:** Automated Security Analysis Tool  
@@ -453,7 +453,7 @@ generate_audit_report() {
 
 ## Executive Summary
 
-This report presents the results of a comprehensive security audit of the MHX Ternary extensions for the Ibex RISC-V core.
+This report presents the results of a comprehensive security audit of the MHX™ Ternary extensions for the Ibex RISC-V core.
 
 ### Risk Assessment
 
@@ -473,7 +473,7 @@ EOF
 
     if [ $risk_score -lt 20 ]; then
         cat >> "$report_file" <<EOF
-✅ **The MHX Ternary implementation demonstrates strong security posture.**
+✅ **The MHX™ Ternary implementation demonstrates strong security posture.**
 
 - Constant-time operations verified
 - Power analysis resistance confirmed
@@ -484,14 +484,14 @@ Minor improvements recommended in areas identified below.
 EOF
     elif [ $risk_score -lt 50 ]; then
         cat >> "$report_file" <<EOF
-⚠️ **The MHX Ternary implementation has moderate security concerns.**
+⚠️ **The MHX™ Ternary implementation has moderate security concerns.**
 
 Several medium-priority issues require attention before production deployment.
 Address the findings in the "Recommendations" section.
 EOF
     else
         cat >> "$report_file" <<EOF
-🚨 **The MHX Ternary implementation has significant security concerns.**
+🚨 **The MHX™ Ternary implementation has significant security concerns.**
 
 Critical and high-priority vulnerabilities detected. **DO NOT deploy to production**
 until all critical issues are resolved.
@@ -648,19 +648,19 @@ EOF
 
     if [ $risk_score -lt 20 ]; then
         cat >> "$report_file" <<EOF
-The MHX Ternary implementation demonstrates a **strong security foundation**. The design includes appropriate protections against timing attacks, power analysis, and fault injection.
+The MHX™ Ternary implementation demonstrates a **strong security foundation**. The design includes appropriate protections against timing attacks, power analysis, and fault injection.
 
 **Recommendation:** APPROVED for production deployment after addressing minor findings.
 EOF
     elif [ $risk_score -lt 50 ]; then
         cat >> "$report_file" <<EOF
-The MHX Ternary implementation has **moderate security concerns** that should be addressed before production deployment.
+The MHX™ Ternary implementation has **moderate security concerns** that should be addressed before production deployment.
 
 **Recommendation:** Complete remediation of medium-priority findings, then re-audit.
 EOF
     else
         cat >> "$report_file" <<EOF
-The MHX Ternary implementation has **significant security vulnerabilities** that must be resolved.
+The MHX™ Ternary implementation has **significant security vulnerabilities** that must be resolved.
 
 **Recommendation:** DO NOT deploy to production. Conduct thorough remediation and re-audit.
 EOF
@@ -683,13 +683,13 @@ EOF
 **Report Status:** COMPLETE  
 **Risk Score:** $risk_score / 100  
 **Audit Date:** $(date)  
-**Maintainer:** MHX Neural Security Team
+**Maintainer:** MHX™ Neural Security Team
 
 ---
 
 ## Appendix: Security Resources
 
-- [MHX Ternary Security Analysis](../doc/mhx_ternary_security_analysis.md)
+- [MHX™ Ternary Security Analysis](../doc/mhx_ternary_security_analysis.md)
 - [RISC-V Security Extensions Spec](https://github.com/riscv/riscv-security-extensions)
 - [Ibex Security Documentation](https://ibex-core.readthedocs.io/en/latest/03_reference/security.html)
 - [Side-Channel Attack Mitigation](https://www.rambus.com/blogs/side-channel-attacks/)

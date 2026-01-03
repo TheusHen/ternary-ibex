@@ -1,4 +1,4 @@
-=== MHX Ternary Timing Estimation ===
+=== MHX™ Ternary Timing Estimation ===
 Technology: Skywater 130nm
 
 Target Frequencies:

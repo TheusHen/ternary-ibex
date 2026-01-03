@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 # Copyright lowRISC contributors.
-# Copyright 2025 MHX Neural.
+# Copyright 2025 MHX™ Neural.
 # Licensed under the Apache License, Version 2.0, see LICENSE for details.
 # SPDX-License-Identifier: Apache-2.0
 
 ################################################################################
-# Nightly Regression Test Suite for MHX Ternary Extensions
+# Nightly Regression Test Suite for MHX™ Ternary Extensions
 #
 # This script runs extensive regression tests overnight including:
 # - Full UVM test suite with all configurations
@@ -71,7 +71,7 @@ mkdir -p "$RESULTS_DIR"
 START_TIME=$(date +%s)
 
 log_info "============================================================"
-log_info "MHX Ternary Ibex Nightly Regression Suite"
+log_info "MHX™ Ternary Ibex Nightly Regression Suite"
 log_info "============================================================"
 log_info "Start time: $(date)"
 log_info "Results directory: $RESULTS_DIR"
@@ -140,7 +140,7 @@ DURATION_MINS=$(( (DURATION % 3600) / 60 ))
 
 cat > "${RESULTS_DIR}/summary.txt" <<EOF
 ========================================
-MHX Ternary Ibex Nightly Regression
+MHX™ Ternary Ibex Nightly Regression
 ========================================
 Date: $(date)
 Duration: ${DURATION_HOURS}h ${DURATION_MINS}m
@@ -171,9 +171,9 @@ cat "${RESULTS_DIR}/summary.txt"
 # Send email notification if configured
 if [ -n "$EMAIL_TO" ]; then
     if [ $failed_tests -eq 0 ]; then
-        SUBJECT="✓ MHX Nightly Tests PASSED"
+        SUBJECT="✓ MHX™ Nightly Tests PASSED"
     else
-        SUBJECT="✗ MHX Nightly Tests FAILED ($failed_tests failures)"
+        SUBJECT="✗ MHX™ Nightly Tests FAILED ($failed_tests failures)"
     fi
     
     if command -v mail &> /dev/null; then

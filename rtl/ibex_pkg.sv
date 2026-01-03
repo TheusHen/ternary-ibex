@@ -1,5 +1,5 @@
 // Copyright lowRISC contributors.
-// Copyright 2025 MHX Neural.
+// Copyright 2025 MHX™ Neural.
 // Copyright 2017 ETH Zurich and University of Bologna, see also CREDITS.md.
 // Licensed under the Apache License, Version 2.0, see LICENSE for details.
 // SPDX-License-Identifier: Apache-2.0
@@ -77,7 +77,7 @@ package ibex_pkg;
     OPCODE_JALR     = 7'h67,
     OPCODE_JAL      = 7'h6f,
     OPCODE_SYSTEM   = 7'h73,
-    // MHX Ternary Extensions
+    // MHX™ Ternary Extensions
     OPCODE_TERNARY  = 7'h0b,  // Custom-0 opcode for ternary operations
     OPCODE_NEURAL   = 7'h2b   // Custom-1 opcode for neural operations
   } opcode_e;
@@ -195,7 +195,7 @@ package ibex_pkg;
     ALU_CRC32_W,
     ALU_CRC32C_W,
 
-    // MHX Ternary Operations
+    // MHX™ Ternary Operations
     ALU_TERNARY_ADD,
     ALU_TERNARY_SUB,
     ALU_TERNARY_MUL,
@@ -214,7 +214,7 @@ package ibex_pkg;
   } md_op_e;
 
   ////////////////////////////
-  // MHX Ternary Operations //
+  // MHX™ Ternary Operations //
   ////////////////////////////
 
   typedef enum logic [2:0] {
@@ -247,7 +247,7 @@ package ibex_pkg;
   } trit_e;
 
   /////////////////////////////
-  // MHX Ternary Parameters  //
+  // MHX™ Ternary Parameters  //
   /////////////////////////////
 
   // Ternary system configuration parameters

@@ -1,10 +1,10 @@
 // Copyright lowRISC contributors.
-// Copyright 2025 MHX Neural.
+// Copyright 2025 MHX™ Neural.
 // Licensed under the Apache License, Version 2.0, see LICENSE for details.
 // SPDX-License-Identifier: Apache-2.0
 
 /**
- * Testbench for MHX Ternary Extensions
+ * Testbench for MHX™ Ternary Extensions
  *
  * Tests basic functionality of:
  * - Ternary register file
@@ -297,7 +297,7 @@ module mhx_ternary_test;
 
   initial begin
     $display("=================================================");
-    $display("MHX Ternary Extension Test");
+    $display("MHX™ Ternary Extension Test");
     $display("=================================================");
 
     // Initialize
@@ -383,7 +383,7 @@ module mhx_ternary_test;
     $display("\n=================================================");
     $display("Test Summary: %d tests completed", test_count);
     if (test_count > 0) begin
-      $display("MHX Ternary Extension tests completed!");
+      $display("MHX™ Ternary Extension tests completed!");
     end
     $display("=================================================");
 

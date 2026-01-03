@@ -1,12 +1,12 @@
-# MHX Simple System
+# MHX™ Simple System
 
-A minimal but powerful SoC encapsulating the **MHX core** (Ibex RISC-V with ternary extensions) and essential peripherals for AI/ML workloads.
+A minimal but powerful SoC encapsulating the **MHX™ core** (Ibex RISC-V with ternary extensions) and essential peripherals for AI/ML workloads.
 
 ## Overview
 
-The MHX Simple System provides a complete development platform for exploring ternary neural networks and AI acceleration using the MHX core's native ternary processing capabilities. It includes:
+The MHX™ Simple System provides a complete development platform for exploring ternary neural networks and AI acceleration using the MHX™ core's native ternary processing capabilities. It includes:
 
-- **MHX Core**: Enhanced Ibex RISC-V with ternary extensions (T0-T15 registers, ternary ALU, neural processing unit)
+- **MHX™ Core**: Enhanced Ibex RISC-V with ternary extensions (T0-T15 registers, ternary ALU, neural processing unit)
 - **Memory**: 64KB ROM (bootloader) + 64KB RAM (runtime)
 - **UART**: Serial debug/console interface (115200 baud)
 - **GPIO**: 8-bit I/O for LEDs, buttons, and expansion
@@ -85,9 +85,9 @@ make build-synth-yosys BOARD=arty_a7_35t
 | Timer  | 0x4002_0000 | 4KB   | System timer |
 | SPI    | 0x4003_0000 | 4KB   | SPI master (optional) |
 
-### MHX Ternary Extensions
+### MHX™ Ternary Extensions
 
-The MHX core extends standard RISC-V with:
+The MHX™ core extends standard RISC-V with:
 
 - **16 Ternary Registers (T0-T15)**: Each holds 16 trits (32 bits total)
 - **Ternary ALU**: Native base-3 arithmetic (TADD, TSUB, TMUL, TAND, TOR, TXOR, TNOT)
@@ -264,7 +264,7 @@ mhx_simple_system/
 
 ## Performance Benefits
 
-The MHX Simple System demonstrates significant advantages for AI/ML workloads:
+The MHX™ Simple System demonstrates significant advantages for AI/ML workloads:
 
 - **3x Faster Neural Inference**: Native ternary processing vs software emulation
 - **75% Less Memory Usage**: Ternary encoding is more compact than binary
@@ -319,7 +319,7 @@ The MHX Simple System demonstrates significant advantages for AI/ML workloads:
 
 ## License
 
-Copyright 2025 MHX Neural. Licensed under the Apache License, Version 2.0.
+Copyright 2025 MHX™ Neural. Licensed under the Apache License, Version 2.0.
 See LICENSE for details.
 
 ## References
@@ -339,4 +339,4 @@ For questions and support:
 
 ---
 
-*The MHX Simple System provides a complete platform for exploring ternary AI acceleration on FPGA. Get started with the quick start guide above, or dive deeper into the examples and documentation.*
+*The MHX™ Simple System provides a complete platform for exploring ternary AI acceleration on FPGA. Get started with the quick start guide above, or dive deeper into the examples and documentation.*

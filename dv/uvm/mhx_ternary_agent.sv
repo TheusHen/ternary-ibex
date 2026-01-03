@@ -1,4 +1,4 @@
-// MHX Ternary UVM Agent
+// MHX™ Ternary UVM Agent
 // Contains driver, monitor, and sequencer for coordinated operation
 
 class mhx_ternary_agent extends uvm_agent;

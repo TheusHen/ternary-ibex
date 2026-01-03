@@ -7,9 +7,9 @@ seen multiple tape-outs. Ibex supports the Integer (I) or Embedded (E),
 Integer Multiplication and Division (M), Compressed (C), and B (Bit
 Manipulation) extensions.
 
-## MHX Core: Ternary Extensions
+## MHX™ Core: Ternary Extensions
 
-This repository now includes the **MHX Core**, an enhanced version of Ibex with native ternary (base-3) processing capabilities for accelerated AI workloads. The MHX Core provides:
+This repository now includes the **MHX™ Core**, an enhanced version of Ibex with native ternary (base-3) processing capabilities for accelerated AI workloads. The MHX™ Core provides:
 
 - **3x Performance Improvement** for neural network inference
 - **16 Ternary Registers (T0-T15)** with 16 trits each
@@ -21,9 +21,9 @@ For complete documentation, see [MHX_README.md](MHX_README.md).
 
 ### Floorplan Architecture
 
-The MHX Core integrates seamlessly into the Ibex pipeline with dedicated ternary processing units:
+The MHX™ Core integrates seamlessly into the Ibex pipeline with dedicated ternary processing units:
 
-![MHX Ternary Core Floorplan](https://raw.githubusercontent.com/TheusHen/ternary-ibex/7/merge/docs/images/mhx_floorplan.png)
+![MHX™ Ternary Core Floorplan](https://raw.githubusercontent.com/TheusHen/ternary-ibex/7/merge/docs/images/mhx_floorplan.png)
 
 Key architectural features:
 - **Ternary ALU**: Native 16-trit operations with overflow detection

@@ -1,12 +1,12 @@
 // Copyright lowRISC contributors.
-// Copyright 2025 MHX Neural.
+// Copyright 2025 MHX™ Neural.
 // Licensed under the Apache License, Version 2.0, see LICENSE for details.
 // SPDX-License-Identifier: Apache-2.0
 
 /**
- * MHX Cycle-Accurate Simulator Testbench
+ * MHX™ Cycle-Accurate Simulator Testbench
  *
- * This module provides comprehensive cycle-accurate simulation for MHX ternary
+ * This module provides comprehensive cycle-accurate simulation for MHX™ ternary
  * operations, measuring precise timing characteristics and performance metrics.
  *
  * Features:

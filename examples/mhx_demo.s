@@ -3,14 +3,14 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /**
- * MHX Ternary Extension - Assembly Example
+ * MHX™ Ternary Extension - Assembly Example
  *
  * This file shows how to use the new ternary instructions in assembly.
  * The actual assembly syntax would depend on toolchain support.
  */
 
 /*
-  MHX TERNARY INSTRUCTION SET REFERENCE
+  MHX™ TERNARY INSTRUCTION SET REFERENCE
   ====================================
 
   Ternary Arithmetic Instructions (Opcode: 0x0B)
@@ -158,7 +158,7 @@ binary_loop:
     addi x1, x1, -1
     bne  x1, x0, binary_loop
 
-    // Ternary neural network (using MHX extensions)
+    // Ternary neural network (using MHX™ extensions)
     addi x1, x0, 1000    // Same loop counter
 
 ternary_loop:
@@ -247,13 +247,13 @@ ternary_inputs:
   - Multiple load/store operations
   - Total: ~50+ cycles per neuron
 
-  MHX Ternary Neural Network (16 registers):
+  MHX™ Ternary Neural Network (16 registers):
   - 1 NEURON instruction
   - 1 ACTIVATE instruction
   - Some register spilling for complex networks
   - Total: ~2-5 cycles per neuron
 
-  MHX Ternary Neural Network (32 registers - ENHANCED!):
+  MHX™ Ternary Neural Network (32 registers - ENHANCED!):
   - 1 NEURON instruction
   - 1 ACTIVATE instruction
   - NO register spilling for most networks

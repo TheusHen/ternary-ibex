@@ -1,6 +1,6 @@
 #!/bin/bash
-# MHX Ternary Extension - Area Estimation Report Generator
-# Copyright 2025 MHX Neural
+# MHX™ Ternary Extension - Area Estimation Report Generator
+# Copyright 2025 MHX™ Neural
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 RTL_DIR="${SCRIPT_DIR}/../../rtl"
@@ -10,7 +10,7 @@ mkdir -p "${REPORTS_DIR}"
 
 echo ""
 echo "========================================"
-echo "MHX Ternary Area & Timing Estimation"
+echo "MHX™ Ternary Area & Timing Estimation"
 echo "========================================"
 echo ""
 
@@ -61,14 +61,14 @@ TOTAL_KGE=$((TOTAL_GE / 1000))
 REMAINDER=$((TOTAL_GE % 1000))
 
 echo ""
-echo "Total MHX Extension: ${TOTAL_GE} GE (~${TOTAL_KGE}.${REMAINDER:0:1} kGE)"
+echo "Total MHX™ Extension: ${TOTAL_GE} GE (~${TOTAL_KGE}.${REMAINDER:0:1} kGE)"
 echo ""
 
 # Generate detailed report
 REPORT="${REPORTS_DIR}/synthesis_summary.txt"
 cat > "${REPORT}" << EOF
 ================================================================================
-MHX Ternary Extension - ASIC Synthesis Summary
+MHX™ Ternary Extension - ASIC Synthesis Summary
 ================================================================================
 Date: $(date)
 Technology: Skywater 130nm (estimated)
@@ -80,7 +80,7 @@ Estimated Area:     ${TOTAL_GE} GE (~${TOTAL_KGE}.${REMAINDER:0:1} kGE)
 
 COMPARISON WITH IBEX CONFIGURATIONS
 ------------------------------------
-Configuration          Base (kGE)    + MHX (kGE)    Overhead
+Configuration          Base (kGE)    + MHX™ (kGE)    Overhead
 ------------------------------------
 Ibex 'micro'           16.85         ~$((16850 + TOTAL_GE))        ~$((TOTAL_GE * 100 / 16850))%
 Ibex 'small'           26.60         ~$((26600 + TOTAL_GE))        ~$((TOTAL_GE * 100 / 26600))%
@@ -94,7 +94,7 @@ Ternary ALU                ~400
 Neural Unit (pipelined)    ~250
 Register File              ~500
 Conv/Pool Unit             ~250
-Full Core + MHX            ~200
+Full Core + MHX™            ~200
 
 POWER ESTIMATES (@ 100 MHz)
 ---------------------------
@@ -105,7 +105,7 @@ Neural Unit (enhanced)     ~1.5
 Register File              ~0.5
 Other modules              ~2.0
 ------------------------------------------
-Total MHX Extension        ~4-6 mW
+Total MHX™ Extension        ~4-6 mW
 
 PHYSICAL DESIGN (130nm)
 -----------------------
@@ -128,6 +128,6 @@ echo "--------------------------------------------------------------------------
 echo "KEY METRICS"
 echo "--------------------------------------------------------------------------------"
 echo "  Area:     ~${TOTAL_KGE}.${REMAINDER:0:1} kGE (${TOTAL_GE} GE)"
-echo "  Timing:   ~200 MHz (full core with MHX)"
+echo "  Timing:   ~200 MHz (full core with MHX™)"
 echo "  Power:    ~5 mW @ 100 MHz"
 echo ""

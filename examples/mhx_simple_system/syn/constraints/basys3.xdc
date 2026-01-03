@@ -1,13 +1,13 @@
 # Copyright lowRISC contributors.
-# Copyright 2025 MHX Neural.
+# Copyright 2025 MHX™ Neural.
 # Licensed under the Apache License, Version 2.0, see LICENSE for details.
 # SPDX-License-Identifier: Apache-2.0
 
-# MHX Simple System Constraints for Digilent Basys3
+# MHX™ Simple System Constraints for Digilent Basys3
 # ==================================================
 #
 # This constraint file defines pin assignments, timing constraints,
-# and I/O standards for the MHX Simple System running on the
+# and I/O standards for the MHX™ Simple System running on the
 # Digilent Basys3 development board.
 #
 # Board Features:

@@ -1,4 +1,4 @@
-// MHX Ternary UVM Transaction
+// MHX™ Ternary UVM Transaction
 // Base transaction class for all ternary operations
 
 class mhx_ternary_transaction extends uvm_sequence_item;

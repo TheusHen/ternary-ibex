@@ -1,10 +1,10 @@
-# MHX Core: Ternary Extensions for Ibex RISC-V
+# MHX™ Core: Ternary Extensions for Ibex RISC-V
 
-This repository contains the MHX Core, an enhanced version of the Ibex RISC-V core with native ternary (base-3) processing capabilities for accelerated artificial intelligence and machine learning workloads.
+This repository contains the MHX™ Core, an enhanced version of the Ibex RISC-V core with native ternary (base-3) processing capabilities for accelerated artificial intelligence and machine learning workloads.
 
 ## Overview
 
-The MHX Core extends the standard Ibex RISC-V core (RV32IMC) with:
+The MHX™ Core extends the standard Ibex RISC-V core (RV32IMC) with:
 
 - **32 Ternary Registers** (T0-T31): Each holding 16 trits (32 bits total, 2 bits per trit)
 - **Ternary ALU**: Native base-3 arithmetic and logical operations
@@ -63,7 +63,7 @@ The MHX Core extends the standard Ibex RISC-V core (RV32IMC) with:
 ## Architecture
 
 ```
-MHX Core (RV32IMC + Ternary Extension):
+MHX™ Core (RV32IMC + Ternary Extension):
 ├── Standard RISC-V Pipeline (unchanged)
 │   ├── IF Stage: Instruction Fetch
 │   ├── ID Stage: Instruction Decode (extended for ternary ops)
@@ -305,7 +305,7 @@ binary_neuron:
     # ... add activation function ...
     # Total: ~50 instructions
 
-# MHX ternary approach (2 instructions)
+# MHX™ ternary approach (2 instructions)
 ternary_neuron:
     NEURON T0, T1, T2    # Compute full neuron in 1 instruction
     ACTIVATE T3, T0      # Apply activation
@@ -323,7 +323,7 @@ ternary_neuron:
 ### Build
 
 ```bash
-# Build the MHX core
+# Build the MHX™ core
 make build-simple-system IBEX_CONFIG=mhx
 
 # Run tests
@@ -437,7 +437,7 @@ ternary-ibex/
 
 ### Performance Benchmarks
 
-| Application | Binary Ibex | MHX Core | Improvement |
+| Application | Binary Ibex | MHX™ Core | Improvement |
 |-------------|-------------|----------|-------------|
 | MNIST Classification | 15ms | 5ms | 3.0x faster |
 | Image Convolution | 8ms | 2.5ms | 3.2x faster |
@@ -514,12 +514,12 @@ This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENS
 
 ## Citation
 
-If you use the MHX Core in your research, please cite:
+If you use the MHX™ Core in your research, please cite:
 
 ```bibtex
 @misc{mhx_core_2025,
-  title={MHX Core: Ternary Chips for Accelerated AI},
-  author={MHX Development Team},
+  title={MHX™ Core: Ternary Chips for Accelerated AI},
+  author={MHX™ Development Team},
   year={2025},
   howpublished={\url{https://github.com/TheusHen/ternary-ibex}}
 }
@@ -533,4 +533,4 @@ If you use the MHX Core in your research, please cite:
 
 ---
 
-**The MHX T1 Core: Where RISC-V meets Ternary AI**
+**The MHX™ T1 Core: Where RISC-V meets Ternary AI**

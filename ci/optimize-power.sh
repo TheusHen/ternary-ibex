@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 # Copyright lowRISC contributors.
-# Copyright 2025 MHX Neural.
+# Copyright 2025 MHX™ Neural.
 # Licensed under the Apache License, Version 2.0, see LICENSE for details.
 # SPDX-License-Identifier: Apache-2.0
 
 ################################################################################
-# Power Optimization Script for MHX Ternary Extensions
+# Power Optimization Script for MHX™ Ternary Extensions
 #
 # This script implements power optimization techniques:
 # - Clock gating insertion
@@ -50,7 +50,7 @@ done
 mkdir -p "$OUTPUT_DIR"
 
 log_info "============================================================"
-log_info "MHX Ternary Power Optimization"
+log_info "MHX™ Ternary Power Optimization"
 log_info "Target: $TARGET"
 log_info "Output: $OUTPUT_DIR"
 log_info "============================================================"
@@ -416,7 +416,7 @@ generate_power_report() {
     log_info "Generating power optimization report..."
     
     cat > "${OUTPUT_DIR}/power_optimization_report.md" <<'EOF'
-# MHX Ternary Power Optimization Report
+# MHX™ Ternary Power Optimization Report
 
 **Generated:** 2025-12-03  
 **Target:** ASIC/FPGA  

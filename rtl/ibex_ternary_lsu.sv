@@ -1,10 +1,10 @@
 // Copyright lowRISC contributors.
-// Copyright 2025 MHX Neural.
+// Copyright 2025 MHX™ Neural.
 // Licensed under the Apache License, Version 2.0, see LICENSE for details.
 // SPDX-License-Identifier: Apache-2.0
 
 /**
- * MHX Ternary Load/Store Unit Extension
+ * MHX™ Ternary Load/Store Unit Extension
  *
  * Extends the standard load/store unit with native ternary memory operations:
  * - TLW (Ternary Load Word): Load 16 trits from memory

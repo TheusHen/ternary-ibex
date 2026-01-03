@@ -1,10 +1,10 @@
 // Copyright lowRISC contributors.
-// Copyright 2025 MHX Neural.
+// Copyright 2025 MHX™ Neural.
 // Licensed under the Apache License, Version 2.0, see LICENSE for details.
 // SPDX-License-Identifier: Apache-2.0
 
 /**
- * MHX Simple System FPGA Top Level
+ * MHX™ Simple System FPGA Top Level
  *
  * This module provides the top-level interface for FPGA implementation,
  * including clock generation, reset handling, and I/O mapping for
@@ -92,7 +92,7 @@ module mhx_simple_system_top (
     // and doesn't need external connections for LED outputs
 
     // ========================================================================
-    // MHX Simple System Instantiation
+    // MHX™ Simple System Instantiation
     // ========================================================================
 
     mhx_simple_system #(

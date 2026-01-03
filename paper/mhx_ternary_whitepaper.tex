@@ -1,6 +1,6 @@
-%% MHX Ternary Extension White Paper
+%% MHX™ Ternary Extension White Paper
 %% A Novel Ternary Computing Extension for RISC-V Edge AI Applications
-%% Copyright 2025 MHX Neural. All rights reserved.
+%% Copyright 2025 MHX™ Neural. All rights reserved.
 
 \documentclass[conference,10pt]{IEEEtran}
 
@@ -30,7 +30,7 @@
 }
 
 % Custom commands
-\newcommand{\mhx}{\textsc{MHX}}
+\newcommand{\mhx}{\textsc{MHX™}}
 \newcommand{\ibex}{\textsc{Ibex}}
 \newcommand{\riscv}{RISC-V}
 
@@ -39,11 +39,11 @@
 
 \begin{document}
 
-\title{MHX: A Native Ternary Computing Extension for RISC-V\\
+\title{MHX™: A Native Ternary Computing Extension for RISC-V\\
 \large Enabling Efficient Edge AI Through Hardware-Accelerated Ternary Neural Networks}
 
 \author{
-\IEEEauthorblockN{MHX Neural Research Team}
+\IEEEauthorblockN{MHX™ Neural Research Team}
 \IEEEauthorblockA{
 \textit{Open-Source Hardware Initiative}\\
 São Paulo, Brazil\\
@@ -152,7 +152,7 @@ Several approaches to efficient neural network processing exist:
 To our knowledge, \mhx{} is the first native ternary computing extension for any mainstream ISA.
 
 %==============================================================================
-\section{MHX Architecture}
+\section{MHX™ Architecture}
 \label{sec:architecture}
 %==============================================================================
 
@@ -263,7 +263,7 @@ The neural unit provides hardware-accelerated inference:
     \node at (8.5, -0.3) {\tiny 11:7};
     \node at (10.75, -0.3) {\tiny 6:0};
 \end{tikzpicture}
-\caption{MHX R-type instruction format}
+\caption{MHX™ R-type instruction format}
 \label{fig:encoding}
 \end{figure}
 
@@ -428,11 +428,11 @@ We evaluate \mhx{} using the MLPerfTiny v1.0 benchmark suite \cite{banbury2021ml
 
 \begin{table}[h]
 \centering
-\caption{MLPerfTiny Benchmark Results (MHX vs Binary Baseline)}
+\caption{MLPerfTiny Benchmark Results (MHX™ vs Binary Baseline)}
 \label{tab:mlperftiny_results}
 \begin{tabular}{|l|r|r|c|}
 \hline
-\textbf{Benchmark} & \textbf{Binary Cycles} & \textbf{MHX Cycles} & \textbf{Speedup} \\
+\textbf{Benchmark} & \textbf{Binary Cycles} & \textbf{MHX™ Cycles} & \textbf{Speedup} \\
 \hline
 Anomaly Detection & 1,250,000 & 520,000 & 2.40$\times$ \\
 Keyword Spotting & 2,100,000 & 780,000 & 2.69$\times$ \\
@@ -484,7 +484,7 @@ Avg Neural Latency & 1.2 cycles \\
 \label{tab:performance}
 \begin{tabular}{|l|c|c|c|}
 \hline
-\textbf{Metric} & \textbf{Baseline} & \textbf{MHX} & \textbf{Improvement} \\
+\textbf{Metric} & \textbf{Baseline} & \textbf{MHX™} & \textbf{Improvement} \\
 \hline
 Neural Inference & 1.0$\times$ & 2.68$\times$ & 2.68$\times$ \\
 Memory Usage & 100\% & 6.25\% & 93.75\% reduction \\
@@ -518,7 +518,7 @@ ibex\_ternary\_regfile & 1,024 & 2,048 \\
 ibex\_neural\_unit & 286 & 572 \\
 Other modules & 892 & 1,784 \\
 \hline
-\textbf{Total MHX Extension} & 2,614 & $\sim$5,228 \\
+\textbf{Total MHX™ Extension} & 2,614 & $\sim$5,228 \\
 \hline
 \end{tabular}
 \end{table}
@@ -684,7 +684,7 @@ Complete \mhx{} instruction encoding:
 
 \begin{table}[h]
 \centering
-\caption{MHX Instruction Encoding}
+\caption{MHX™ Instruction Encoding}
 \begin{tabular}{|l|c|c|}
 \hline
 \textbf{Instruction} & \textbf{funct3} & \textbf{funct7} \\
@@ -712,7 +712,7 @@ All instructions use opcode \texttt{0x0B} (custom-0).
 
 \begin{table}[h]
 \centering
-\caption{MHX Performance Counter CSRs}
+\caption{MHX™ Performance Counter CSRs}
 \begin{tabular}{|c|l|}
 \hline
 \textbf{Address} & \textbf{Counter} \\

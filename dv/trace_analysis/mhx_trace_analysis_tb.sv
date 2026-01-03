@@ -1,10 +1,10 @@
 // Copyright lowRISC contributors.
-// Copyright 2025 MHX Neural.
+// Copyright 2025 MHX™ Neural.
 // Licensed under the Apache License, Version 2.0, see LICENSE for details.
 // SPDX-License-Identifier: Apache-2.0
 
 /**
- * MHX Trace-Based Analysis Testbench
+ * MHX™ Trace-Based Analysis Testbench
  *
  * Top-level testbench integrating cycle-accurate simulation and trace analysis.
  */
@@ -172,7 +172,7 @@ module mhx_trace_analysis_tb;
     repeat(10) @(posedge clk);
 
     $display("==============================================");
-    $display("MHX Trace-Based Analysis Test");
+    $display("MHX™ Trace-Based Analysis Test");
     $display("==============================================");
 
     // Clear and start trace capture

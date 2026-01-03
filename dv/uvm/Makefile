@@ -1,4 +1,4 @@
-# MHX Ternary UVM Testbench Makefile
+# MHX™ Ternary UVM Testbench Makefile
 # Comprehensive makefile for UVM simulation with different simulators
 
 # Default simulator
@@ -194,7 +194,7 @@ lint:
 
 # Help target
 help:
-	@echo "MHX Ternary UVM Testbench Makefile"
+	@echo "MHX™ Ternary UVM Testbench Makefile"
 	@echo "=================================="
 	@echo ""
 	@echo "Usage: make [target] [options]"

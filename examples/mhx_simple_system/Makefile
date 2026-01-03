@@ -1,9 +1,9 @@
 # Copyright lowRISC contributors.
-# Copyright 2025 MHX Neural.
+# Copyright 2025 MHX™ Neural.
 # Licensed under the Apache License, Version 2.0, see LICENSE for details.
 # SPDX-License-Identifier: Apache-2.0
 
-# MHX Simple System Build System
+# MHX™ Simple System Build System
 # ==============================
 
 # Default configuration
@@ -30,7 +30,7 @@ PART ?= xc7a35tcsg324-1
 TOOLCHAIN_PREFIX ?= riscv32-unknown-elf
 FIRMWARE_TARGET ?= hello_test
 
-# FuseSoC options for MHX
+# FuseSoC options for MHX™
 FUSESOC_CONFIG_OPTS = --RV32E=0 --RV32M=ibex_pkg::RV32MFast --RV32B=ibex_pkg::RV32BNone \
                       --RegFile=ibex_pkg::RegFileFF --BranchTargetALU=0 --WritebackStage=0 \
                       --ICache=0 --ICacheECC=0 --BranchPredictor=0 --DbgTriggerEn=0 \
@@ -41,7 +41,7 @@ FUSESOC_CONFIG_OPTS = --RV32E=0 --RV32M=ibex_pkg::RV32MFast --RV32B=ibex_pkg::RV
 .DEFAULT_GOAL := help
 
 help: ## Show this help message
-	@echo "MHX Simple System Build System"
+	@echo "MHX™ Simple System Build System"
 	@echo "==============================="
 	@echo ""
 	@echo "Targets:"
@@ -65,7 +65,7 @@ clean: ## Clean all build artifacts
 # ============================================================================
 
 build-sim: ## Build the Verilator simulation
-	@echo "Building MHX Simple System simulation..."
+	@echo "Building MHX™ Simple System simulation..."
 	@mkdir -p $(SIM_DIR)
 	fusesoc --cores-root=$(FUSESOC_CORES_ROOT) run --target=sim --setup --build \
 		lowrisc:ibex:mhx_simple_system $(FUSESOC_CONFIG_OPTS)
@@ -75,7 +75,7 @@ VSIM_BIN = $(MHX_ROOT)/build/lowrisc_ibex_mhx_simple_system_0/sim-verilator/Vmhx
 $(VSIM_BIN): build-sim
 
 run-sim: $(VSIM_BIN) ## Run the simulation
-	@echo "Running MHX Simple System simulation..."
+	@echo "Running MHX™ Simple System simulation..."
 	@TRACE_FLAGS=""; \
 	if [ "$(TRACE)" = "1" ]; then TRACE_FLAGS="--trace"; fi; \
 	INTERACTIVE_FLAGS=""; \
@@ -151,7 +151,7 @@ flash-yosys: ## Program FPGA with Yosys bitstream
 # ============================================================================
 
 test: ## Run all tests
-	@echo "Running MHX Simple System tests..."
+	@echo "Running MHX™ Simple System tests..."
 	@$(MAKE) build-firmware
 	@$(MAKE) run-sim FIRMWARE_TARGET=boot_test SIM_CYCLES=10000
 	@$(MAKE) run-sim FIRMWARE_TARGET=gpio_test SIM_CYCLES=50000
@@ -180,7 +180,7 @@ docs: ## Generate documentation
 # ============================================================================
 
 setup: ## Set up build environment
-	@echo "Setting up MHX Simple System build environment..."
+	@echo "Setting up MHX™ Simple System build environment..."
 	@echo "Checking dependencies..."
 	@which fusesoc > /dev/null || (echo "ERROR: fusesoc not found. Install with: pip3 install fusesoc"; exit 1)
 	@which verilator > /dev/null || (echo "ERROR: verilator not found. Install with: sudo apt-get install verilator"; exit 1)
@@ -188,7 +188,7 @@ setup: ## Set up build environment
 	@echo "Environment setup complete!"
 
 info: ## Show build information
-	@echo "MHX Simple System Build Information"
+	@echo "MHX™ Simple System Build Information"
 	@echo "===================================="
 	@echo "Configuration:"
 	@echo "  IBEX_CONFIG      = $(IBEX_CONFIG)"
@@ -208,11 +208,11 @@ info: ## Show build information
 # ============================================================================
 
 dev-shell: ## Start development shell with environment variables set
-	@echo "Starting MHX development shell..."
+	@echo "Starting MHX™ development shell..."
 	@echo "Environment variables:"
 	@echo "  MHX_ROOT=$(MHX_ROOT)"
 	@echo "  PATH=$(PATH):$(MHX_ROOT)/bin"
-	@bash --rcfile <(echo "PS1='[MHX] \u@\h:\w\$$ '")
+	@bash --rcfile <(echo "PS1='[MHX™] \u@\h:\w\$$ '")
 
 # Include board-specific makefiles if they exist
 -include syn/constraints/$(BOARD).mk

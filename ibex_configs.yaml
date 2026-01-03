@@ -192,7 +192,7 @@ experimental-branch-predictor:
   MHPMCounterNum           : 0
   MHPMCounterWidth         : 40
 
-# MHX Ternary Configuration
+# MHX™ Ternary Configuration
 # Three-stage pipeline with ternary extensions for AI acceleration
 mhx:
   RV32E                    : 0

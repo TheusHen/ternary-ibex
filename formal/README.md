@@ -1,6 +1,6 @@
-# MHX Ternary Extension - Formal Verification
+# MHX™ Ternary Extension - Formal Verification
 
-This directory contains formal verification infrastructure for the MHX Ternary Extension to the Ibex RISC-V core.
+This directory contains formal verification infrastructure for the MHX™ Ternary Extension to the Ibex RISC-V core.
 
 ## Overview
 

@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 # Copyright lowRISC contributors.
-# Copyright 2025 MHX Neural.
+# Copyright 2025 MHX™ Neural.
 # Licensed under the Apache License, Version 2.0, see LICENSE for details.
 # SPDX-License-Identifier: Apache-2.0
 
 ################################################################################
-# FPGA Synthesis Script for MHX Ternary Ibex Core
+# FPGA Synthesis Script for MHX™ Ternary Ibex Core
 #
 # Supports:
 # - Xilinx Vivado (default)
@@ -91,7 +91,7 @@ done
 mkdir -p "$SYN_RESULTS"
 
 log_info "=========================================="
-log_info "MHX Ternary Ibex FPGA Synthesis"
+log_info "MHX™ Ternary Ibex FPGA Synthesis"
 log_info "=========================================="
 log_info "Tool: ${FPGA_TOOL}"
 log_info "Board: ${FPGA_BOARD}"
@@ -102,7 +102,7 @@ log_info "=========================================="
 # Generate file list
 generate_file_list() {
     cat > "${SYN_RESULTS}/files.txt" <<EOF
-# RTL files for MHX Ternary Ibex synthesis
+# RTL files for MHX™ Ternary Ibex synthesis
 ${RTL_ROOT}/ibex_pkg.sv
 ${RTL_ROOT}/ibex_ternary_alu.sv
 ${RTL_ROOT}/ibex_ternary_regfile.sv
@@ -125,7 +125,7 @@ synthesize_vivado() {
     log_info "Generating Vivado TCL script..."
     
     cat > "${SYN_RESULTS}/vivado_synth.tcl" <<EOF
-# Vivado synthesis script for MHX Ternary Ibex
+# Vivado synthesis script for MHX™ Ternary Ibex
 # Auto-generated
 
 # Create project
@@ -199,7 +199,7 @@ synthesize_quartus() {
     log_info "Generating Quartus QSF file..."
     
     cat > "${SYN_RESULTS}/mhx_ternary_ibex.qsf" <<EOF
-# Quartus settings file for MHX Ternary Ibex
+# Quartus settings file for MHX™ Ternary Ibex
 # Auto-generated
 
 set_global_assignment -name FAMILY "Cyclone V"

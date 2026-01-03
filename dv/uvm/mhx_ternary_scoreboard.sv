@@ -1,4 +1,4 @@
-// MHX Ternary UVM Scoreboard
+// MHX™ Ternary UVM Scoreboard
 // Compares actual DUT behavior against expected results
 
 class mhx_ternary_scoreboard extends uvm_scoreboard;
@@ -397,7 +397,7 @@ class mhx_ternary_reference_model extends uvm_object;
   endfunction
 
 endclass : mhx_ternary_reference_model
-// MHX Ternary UVM Scoreboard
+// MHX™ Ternary UVM Scoreboard
 // Compares actual DUT behavior against expected results
 
 class mhx_ternary_scoreboard extends uvm_scoreboard;

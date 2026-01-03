@@ -1,13 +1,13 @@
 # Copyright lowRISC contributors.
-# Copyright 2025 MHX Neural.
+# Copyright 2025 MHX™ Neural.
 # Licensed under the Apache License, Version 2.0, see LICENSE for details.
 # SPDX-License-Identifier: Apache-2.0
 
 /**
- * MHX Simple System Memory Map Definitions
+ * MHX™ Simple System Memory Map Definitions
  * 
  * This file contains memory map constants and register definitions
- * for the MHX Simple System. Include this file in assembly programs
+ * for the MHX™ Simple System. Include this file in assembly programs
  * to access system peripherals.
  *
  * Usage:
@@ -172,13 +172,13 @@
 .equ IRQ_TIMER,        0x80000007  # Timer interrupt
 .equ IRQ_EXTERNAL,     0x8000000B  # External interrupt
 
-# MHX Simple System specific interrupts
+# MHX™ Simple System specific interrupts
 .equ IRQ_UART,         16   # UART interrupt
 .equ IRQ_GPIO,         17   # GPIO interrupt
 .equ IRQ_SPI,          18   # SPI interrupt
 
 # ============================================================================
-# MHX Ternary Extension Constants
+# MHX™ Ternary Extension Constants
 # ============================================================================
 
 # Ternary register file (T0-T15)
@@ -198,8 +198,8 @@
 .equ TERNARY_MIX1,     0xAAAA5555  # Mixed pattern 1
 .equ TERNARY_MIX2,     0x5555AAAA  # Mixed pattern 2
 
-# MHX instruction opcodes (custom extensions)
-# Note: These are hypothetical opcodes for the MHX ternary extensions
+# MHX™ instruction opcodes (custom extensions)
+# Note: These are hypothetical opcodes for the MHX™ ternary extensions
 .equ OP_TERNARY,       0x0B  # Ternary arithmetic operations
 .equ OP_NEURAL,        0x2B  # Neural processing operations
 
@@ -289,7 +289,7 @@
  * - sp: Stack pointer
  * - ra: Return address
  * 
- * MHX Ternary Extensions:
+ * MHX™ Ternary Extensions:
  * - T0-T15: Ternary registers (16 trits each)
  * - Custom instructions for ternary arithmetic
  * - Neural processing operations

@@ -4,7 +4,7 @@
 mkdir -p build/workflow_logs
 
 cat > build/workflow_logs/ternary_tests.log << 'EOF'
-MHX Ternary Extension Test Results
+MHX™ Ternary Extension Test Results
 
 === Code Quality Tests ===
 ✓ PASS: Verilator lint on ternary RTL

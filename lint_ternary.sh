@@ -1,12 +1,12 @@
 #!/bin/bash
-# MHX Ternary Extension Linting Script
-# Copyright 2025 MHX Neural
+# MHX™ Ternary Extension Linting Script
+# Copyright 2025 MHX™ Neural
 # SPDX-License-Identifier: Apache-2.0
 
 set -e
 
 echo "========================================"
-echo "MHX Ternary Extension Verilator Linting"
+echo "MHX™ Ternary Extension Verilator Linting"
 echo "========================================"
 
 # Define include paths for prim_assert and ibex_pkg

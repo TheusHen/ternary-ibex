@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 # Copyright lowRISC contributors.
-# Copyright 2025 MHX Neural.
+# Copyright 2025 MHX™ Neural.
 # Licensed under the Apache License, Version 2.0, see LICENSE for details.
 # SPDX-License-Identifier: Apache-2.0
 
 ################################################################################
-# Timing Closure Script for MHX Ternary Extensions
+# Timing Closure Script for MHX™ Ternary Extensions
 #
 # This script performs timing analysis and optimization:
 # - Critical path identification
@@ -56,7 +56,7 @@ mkdir -p "$OUTPUT_DIR"
 PERIOD=$(echo "scale=3; 1000 / $TARGET_FREQ" | bc)  # Period in ns
 
 log_info "============================================================"
-log_info "MHX Ternary Timing Optimization"
+log_info "MHX™ Ternary Timing Optimization"
 log_info "Target Frequency: $TARGET_FREQ MHz (${PERIOD}ns period)"
 log_info "Platform: $PLATFORM"
 log_info "============================================================"
@@ -69,7 +69,7 @@ identify_critical_paths() {
     log_info "Identifying critical paths..."
     
     cat > "${OUTPUT_DIR}/critical_paths.txt" <<EOF
-Critical Path Analysis for MHX Ternary Extensions
+Critical Path Analysis for MHX™ Ternary Extensions
 
 Target: $TARGET_FREQ MHz ($PERIOD ns)
 Platform: $PLATFORM
@@ -476,7 +476,7 @@ generate_timing_constraints() {
     log_info "Generating timing constraints..."
     
     cat > "${OUTPUT_DIR}/timing_constraints.sdc" <<EOF
-# SDC Timing Constraints for MHX Ternary Extensions
+# SDC Timing Constraints for MHX™ Ternary Extensions
 # Target: $TARGET_FREQ MHz ($PERIOD ns)
 
 # Create clock
@@ -534,7 +534,7 @@ generate_timing_report() {
     log_info "Generating timing report..."
     
     cat > "${OUTPUT_DIR}/timing_report.md" <<EOF
-# MHX Ternary Timing Optimization Report
+# MHX™ Ternary Timing Optimization Report
 
 **Generated:** $(date)  
 **Target Frequency:** $TARGET_FREQ MHz  
@@ -622,7 +622,7 @@ Pipeline additions have minimal power impact:
 
 **Status:** COMPLETE  
 **Timing Closure:** ACHIEVED  
-**Maintainer:** MHX Neural Timing Team
+**Maintainer:** MHX™ Neural Timing Team
 
 EOF
 

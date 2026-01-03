@@ -1,9 +1,9 @@
 # Copyright lowRISC contributors.
-# Copyright 2025 MHX Neural.
+# Copyright 2025 MHX™ Neural.
 # Licensed under the Apache License, Version 2.0, see LICENSE for details.
 # SPDX-License-Identifier: Apache-2.0
 
-# MHX Simple System Assembly Firmware Build System
+# MHX™ Simple System Assembly Firmware Build System
 # =================================================
 
 # Toolchain configuration
@@ -51,7 +51,7 @@ RAM_SIZE = 0x00010000
 .DEFAULT_GOAL := all
 
 help: ## Show this help message
-	@echo "MHX Simple System Assembly Firmware Build"
+	@echo "MHX™ Simple System Assembly Firmware Build"
 	@echo "=========================================="
 	@echo ""
 	@echo "Targets:"

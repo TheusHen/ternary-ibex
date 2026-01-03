@@ -14,7 +14,7 @@
               (((uint32_t)(funct3)&0x7) << 12) |       \
               (((uint32_t)(rd)&0x1f) << 7) | ((uint32_t)(opcode)&0x7f)))
 
-// MHX custom opcodes (see rtl/ibex_pkg.sv)
+// MHX™ custom opcodes (see rtl/ibex_pkg.sv)
 #define OPCODE_TERNARY 0x0B
 #define OPCODE_NEURAL 0x2B
 
@@ -23,7 +23,7 @@
 #define FUNCT3_NEURON 0x0
 
 // Fixed instruction encodings using ternary registers T1, T2, T3.
-// Note: These occupy the standard rs1/rs2/rd fields but are interpreted by MHX
+// Note: These occupy the standard rs1/rs2/rd fields but are interpreted by MHX™
 // as ternary register indices.
 #define INS_TADD_T3_T1_T2 ENCODE_R(0x00, 2, 1, FUNCT3_TADD, 3, OPCODE_TERNARY)
 #define INS_NEURON_T3_T1_T2 \
@@ -58,7 +58,7 @@ static uint32_t baseline_neuron_once(uint32_t w, uint32_t in) {
 }
 
 static uint32_t baseline_tadd_once(uint32_t a, uint32_t b) {
-  // A small, deterministic baseline workload (not semantically identical to MHX
+  // A small, deterministic baseline workload (not semantically identical to MHX™
   // TADD, but provides a stable integer-op reference).
   uint32_t x = a;
   uint32_t y = b;
@@ -100,7 +100,7 @@ int main(int argc, char **argv) {
   t1 = get_mcycle();
   uint64_t neural_mhx_cycles = t1 - t0;
 
-  // --- Matrix-ish benchmark (reference vs MHX TADD) ---
+  // --- Matrix-ish benchmark (reference vs MHX™ TADD) ---
   t0 = get_mcycle();
   for (uint32_t i = 0; i < iters; i++) {
     sink32 ^= baseline_tadd_once(0x12345678u + i, 0x9ABCDEF0u ^ i);

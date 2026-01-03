@@ -1,4 +1,4 @@
-# MHX Ternary Extension - FPGA Synthesis Configuration
+# MHX™ Ternary Extension - FPGA Synthesis Configuration
 # Target: Digilent Arty A7-35T / iCE40 HX8K
 
 # Design configuration

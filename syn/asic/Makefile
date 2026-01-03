@@ -1,4 +1,4 @@
-# MHX Ternary Extension - ASIC Synthesis Configuration
+# MHX™ Ternary Extension - ASIC Synthesis Configuration
 # Target: Skywater 130nm Open PDK
 # Tool: Yosys + OpenLane
 
@@ -85,7 +85,7 @@ timing: synth_yosys
 # Full report
 report: area timing
 	@echo ""
-	@echo "=== MHX Ternary ASIC Synthesis Summary ==="
+	@echo "=== MHX™ Ternary ASIC Synthesis Summary ==="
 	@cat $(REPORTS_DIR)/area_report.txt
 	@cat $(REPORTS_DIR)/timing_report.txt
 

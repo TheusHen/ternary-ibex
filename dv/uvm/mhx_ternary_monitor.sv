@@ -1,4 +1,4 @@
-// MHX Ternary UVM Monitor
+// MHX™ Ternary UVM Monitor
 // Monitors DUT behavior and collects transactions for analysis
 
 class mhx_ternary_monitor extends uvm_monitor;

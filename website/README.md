@@ -1,6 +1,6 @@
-# MHX Ternary Ibex Documentation Website
+# MHX™ Ternary Ibex Documentation Website
 
-This directory contains the Astro-based documentation website for the MHX Ternary RISC-V Core project.
+This directory contains the Astro-based documentation website for the MHX™ Ternary RISC-V Core project.
 
 ## 🚀 Features
 

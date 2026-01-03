@@ -1,4 +1,4 @@
-// MHX Ternary UVM Package
+// MHX™ Ternary UVM Package
 // Contains all UVM components and utilities for ternary extension verification
 
 package mhx_ternary_pkg;

@@ -1,4 +1,4 @@
-// MHX Ternary UVM Sequences
+// MHX™ Ternary UVM Sequences
 // Collection of test sequences for different verification scenarios
 
 // Base sequence class

@@ -1,6 +1,6 @@
-# MHX Ternary Core Floorplan
+# MHX™ Ternary Core Floorplan
 
-This directory contains the architectural floorplan visualization for the MHX Ternary RISC-V Core.
+This directory contains the architectural floorplan visualization for the MHX™ Ternary RISC-V Core.
 
 ## Files
 
@@ -22,7 +22,7 @@ The floorplan is automatically generated and updated by the GitHub Actions workf
 Use this URL format to embed the floorplan in markdown files:
 
 ```markdown
-![MHX Ternary Core Floorplan](https://raw.githubusercontent.com/TheusHen/ternary-ibex/main/docs/images/mhx_floorplan.png)
+![MHX™ Ternary Core Floorplan](https://raw.githubusercontent.com/TheusHen/ternary-ibex/main/docs/images/mhx_floorplan.png)
 ```
 
 This ensures the image is always up-to-date from the repository.
@@ -93,7 +93,7 @@ EOF
 
 ## Architecture Details
 
-The floorplan shows the physical organization and interconnections of the MHX Ternary Core components. Key architectural features:
+The floorplan shows the physical organization and interconnections of the MHX™ Ternary Core components. Key architectural features:
 
 1. **Unified Pipeline**: Ternary and binary operations share the same pipeline stages
 2. **Dual Register File**: Separate register files for binary and ternary data
@@ -113,7 +113,7 @@ The floorplan shows the physical organization and interconnections of the MHX Te
 
 ## Related Documentation
 
-- [MHX Core Overview](../../MHX_README.md)
+- [MHX™ Core Overview](../../MHX_README.md)
 - [Architecture Details](../../doc/03_reference/ternary_architecture.md)
 - [Implementation Guide](../../doc/04_developer/implementation.md)
 

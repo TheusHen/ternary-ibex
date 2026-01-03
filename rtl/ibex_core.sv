@@ -1,5 +1,5 @@
 // Copyright lowRISC contributors.
-// Copyright 2025 MHX Neural.
+// Copyright 2025 MHX™ Neural.
 // Copyright 2018 ETH Zurich and University of Bologna, see also CREDITS.md.
 // Licensed under the Apache License, Version 2.0, see LICENSE for details.
 // SPDX-License-Identifier: Apache-2.0
@@ -279,7 +279,7 @@ module ibex_core import ibex_pkg::*; #(
   logic [31:0] alu_adder_result_ex;    // Used to forward computed address to LSU
   logic [31:0] result_ex;
 
-  // MHX Ternary Extension Control Signals
+  // MHX™ Ternary Extension Control Signals
   logic        ternary_en_id;
   logic        neural_en_id;
   ternary_op_e ternary_op_id;
@@ -739,7 +739,7 @@ module ibex_core import ibex_pkg::*; #(
     .perf_div_wait_o  (perf_div_wait),
     .instr_id_done_o  (instr_id_done),
 
-    // MHX Ternary Extension
+    // MHX™ Ternary Extension
     .ternary_en_id_o      (ternary_en_id),
     .neural_en_id_o       (neural_en_id),
     .ternary_op_id_o      (ternary_op_id),
@@ -905,7 +905,7 @@ module ibex_core import ibex_pkg::*; #(
 
 
   ////////////////////////////////////////////////
-  // MHX Ternary Extension - Register File     //
+  // MHX™ Ternary Extension - Register File     //
   ////////////////////////////////////////////////
 
   ibex_ternary_regfile ternary_regfile_i (
@@ -921,7 +921,7 @@ module ibex_core import ibex_pkg::*; #(
   );
 
   ////////////////////////////////////////////////
-  // MHX Ternary Extension - Ternary ALU       //
+  // MHX™ Ternary Extension - Ternary ALU       //
   ////////////////////////////////////////////////
 
   ibex_ternary_alu ternary_alu_i (
@@ -935,7 +935,7 @@ module ibex_core import ibex_pkg::*; #(
   );
 
   ////////////////////////////////////////////////
-  // MHX Ternary Extension - Neural Unit       //
+  // MHX™ Ternary Extension - Neural Unit       //
   ////////////////////////////////////////////////
 
   ibex_neural_unit neural_unit_i (
@@ -952,7 +952,7 @@ module ibex_core import ibex_pkg::*; #(
     !ternary_alu_overflow || |ternary_alu_trit_overflow, ternary_alu_ready)
 
   ////////////////////////////////////////////////
-  // MHX Ternary Extension - Result Multiplexing //
+  // MHX™ Ternary Extension - Result Multiplexing //
   ////////////////////////////////////////////////
 
   // Select result between ternary ALU and neural unit

@@ -1,12 +1,12 @@
 # Copyright lowRISC contributors.
-# Copyright 2025 MHX Neural.
+# Copyright 2025 MHX™ Neural.
 # Licensed under the Apache License, Version 2.0, see LICENSE for details.
 # SPDX-License-Identifier: Apache-2.0
 
-# MHX Ternary Core CI Pipeline
+# MHX™ Ternary Core CI Pipeline
 # Comprehensive CI/CD pipeline for ternary extensions
 
-name: MHX Ternary CI
+name: MHX™ Ternary CI
 
 on:
   push:
@@ -356,7 +356,7 @@ jobs:
 
       - name: Generate Comprehensive Report
         run: |
-          echo "=== Generating MHX Ternary CI Report ==="
+          echo "=== Generating MHX™ Ternary CI Report ==="
           python3 util/generate_ternary_report.py \
             --test-results ci-artifacts \
             --output ternary_ci_report.md
@@ -374,7 +374,7 @@ jobs:
 
       - name: Display Summary
         run: |
-          echo "=== MHX Ternary CI Summary ==="
+          echo "=== MHX™ Ternary CI Summary ==="
           if [ -f "ternary_ci_report.md" ]; then
             echo "✅ All ternary CI checks completed"
             echo "📊 Comprehensive report available in artifacts"

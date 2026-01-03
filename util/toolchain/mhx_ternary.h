@@ -1,13 +1,13 @@
 /* Copyright lowRISC contributors.
- * Copyright 2025 MHX Neural.
+ * Copyright 2025 MHX™ Neural.
  * Licensed under the Apache License, Version 2.0, see LICENSE for details.
  * SPDX-License-Identifier: Apache-2.0
  */
 
 /**
- * MHX Ternary Compiler Intrinsics Header (STUB)
+ * MHX™ Ternary Compiler Intrinsics Header (STUB)
  *
- * This header provides intrinsic functions for MHX ternary and neural
+ * This header provides intrinsic functions for MHX™ ternary and neural
  * operations. These will be implemented by the compiler (GCC/LLVM) to
  * generate efficient ternary instruction sequences.
  *

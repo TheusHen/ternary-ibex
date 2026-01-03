@@ -4,7 +4,7 @@ Ternary Mathematical Validation Script
 =====================================
 
 This script performs comprehensive validation of ternary logic and math operations
-for the MHX Core, including encoding/decoding, arithmetic operations, and neural
+for the MHX™ Core, including encoding/decoding, arithmetic operations, and neural
 network functionality.
 """
 

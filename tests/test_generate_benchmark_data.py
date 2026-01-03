@@ -42,7 +42,7 @@ def test_benchmark_data_latex_contains_expected_tables() -> None:
 
 def test_benchmark_data_markdown_contains_expected_sections() -> None:
     md = generate_markdown_report(ComprehensiveBenchmarkData())
-    assert "# MHX Ternary Extension Benchmark Results" in md
+    assert "# MHX™ Ternary Extension Benchmark Results" in md
     assert "## MLPerfTiny Benchmark Results" in md
     assert "## Cycle-Accurate Operation Latencies" in md
     assert "## Trace-Based Analysis" in md

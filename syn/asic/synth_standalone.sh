@@ -1,7 +1,7 @@
 #!/bin/bash
-# MHX Ternary Extension - Standalone Module Synthesis
+# MHX™ Ternary Extension - Standalone Module Synthesis
 # Uses Yosys with simplified parameter definitions
-# Copyright 2025 MHX Neural
+# Copyright 2025 MHX™ Neural
 
 set -e
 
@@ -29,12 +29,12 @@ print_header() {
 # Create directories
 mkdir -p "${BUILD_DIR}" "${REPORTS_DIR}" "${NETLIST_DIR}"
 
-print_header "MHX Ternary Standalone Synthesis"
+print_header "MHX™ Ternary Standalone Synthesis"
 
 # Create a minimal parameter file for standalone synthesis
 PARAMS_FILE="${BUILD_DIR}/mhx_params.sv"
 cat > "${PARAMS_FILE}" << 'EOF'
-// MHX Parameters for Standalone Synthesis
+// MHX™ Parameters for Standalone Synthesis
 package ibex_pkg;
   // Ternary encoding constants
   localparam logic [1:0] TRIT_NEG  = 2'b00;  // -1
@@ -170,7 +170,7 @@ SUMMARY_FILE="${REPORTS_DIR}/synthesis_summary.txt"
 print_header "Synthesis Results"
 
 cat > "${SUMMARY_FILE}" << EOF
-=== MHX Ternary Extension - Yosys Synthesis Summary ===
+=== MHX™ Ternary Extension - Yosys Synthesis Summary ===
 Date: $(date)
 Tool: Yosys 0.33
 
@@ -215,7 +215,7 @@ Comparison with Ibex Configurations:
 Ibex 'micro':     16.85 kGE
 Ibex 'small':     26.60 kGE
 Ibex 'maxperf':   32.48 kGE
-MHX Extension:    ~5-7 kGE (additive)
+MHX™ Extension:    ~5-7 kGE (additive)
 
 Notes:
 ------

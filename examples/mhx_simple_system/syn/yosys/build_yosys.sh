@@ -1,10 +1,10 @@
 #!/bin/bash
 # Copyright lowRISC contributors.
-# Copyright 2025 MHX Neural.
+# Copyright 2025 MHX™ Neural.
 # Licensed under the Apache License, Version 2.0, see LICENSE for details.
 # SPDX-License-Identifier: Apache-2.0
 
-# MHX Simple System Yosys Build Script
+# MHX™ Simple System Yosys Build Script
 # ====================================
 #
 # This script performs FPGA synthesis using the open-source Yosys + nextpnr
@@ -33,12 +33,12 @@ PROJECT_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 MHX_ROOT="$(cd "$PROJECT_ROOT/../.." && pwd)"
 
 echo "========================================"
-echo "MHX Simple System Yosys Build"
+echo "MHX™ Simple System Yosys Build"
 echo "========================================"
 echo "Board: $BOARD"
 echo "Script Dir: $SCRIPT_DIR"
 echo "Project Root: $PROJECT_ROOT"
-echo "MHX Root: $MHX_ROOT"
+echo "MHX™ Root: $MHX_ROOT"
 echo "========================================"
 
 # Build configuration
@@ -92,12 +92,12 @@ if [ ! -f "$TOP_WRAPPER_FILE" ]; then
     echo "Creating FPGA top-level wrapper..."
     cat > "$TOP_WRAPPER_FILE" << 'EOF'
 // Copyright lowRISC contributors.
-// Copyright 2025 MHX Neural.
+// Copyright 2025 MHX™ Neural.
 // Licensed under the Apache License, Version 2.0, see LICENSE for details.
 // SPDX-License-Identifier: Apache-2.0
 
 /**
- * MHX Simple System FPGA Top Level
+ * MHX™ Simple System FPGA Top Level
  *
  * This module provides the top-level interface for FPGA implementation,
  * including clock generation, reset handling, and I/O mapping.
@@ -153,7 +153,7 @@ module mhx_simple_system_top (
     // Map GPIO outputs to LEDs
     assign led = gpio_out;
 
-    // Instantiate MHX Simple System
+    // Instantiate MHX™ Simple System
     mhx_simple_system u_mhx_simple_system (
         .IO_CLK     (clk_sys),
         .IO_RST_N   (rst_sys_n),
@@ -181,7 +181,7 @@ if [ ! -f "$PCF_FILE" ]; then
     case $BOARD in
         "arty_a7_35t")
             cat > "$PCF_FILE" << 'EOF'
-# MHX Simple System Pin Constraints for Arty A7-35T
+# MHX™ Simple System Pin Constraints for Arty A7-35T
 # Clock
 set_io clk_100mhz E3
 
@@ -223,7 +223,7 @@ EOF
             ;;
         "basys3")
             cat > "$PCF_FILE" << 'EOF'
-# MHX Simple System Pin Constraints for Basys3
+# MHX™ Simple System Pin Constraints for Basys3
 # Clock
 set_io clk_100mhz W5
 
@@ -271,13 +271,13 @@ YOSYS_SCRIPT="$OUTPUT_DIR/synth.ys"
 echo "Creating Yosys synthesis script: $YOSYS_SCRIPT"
 
 cat > "$YOSYS_SCRIPT" << EOF
-# MHX Simple System Yosys Synthesis Script
+# MHX™ Simple System Yosys Synthesis Script
 
 # Read SystemVerilog files
 read_verilog -sv $RTL_DIR/mhx_simple_system.sv
 read_verilog -sv $RTL_DIR/mhx_simple_system_top.sv
 
-# Add MHX core files
+# Add MHX™ core files
 read_verilog -sv $MHX_ROOT/rtl/ibex_pkg.sv
 read_verilog -sv $MHX_ROOT/rtl/ibex_top.sv
 read_verilog -sv $MHX_ROOT/rtl/ibex_core.sv
@@ -298,7 +298,7 @@ read_verilog -sv $MHX_ROOT/rtl/ibex_fetch_fifo.sv
 read_verilog -sv $MHX_ROOT/rtl/ibex_dummy_instr.sv
 read_verilog -sv $MHX_ROOT/rtl/ibex_counter.sv
 
-# Add MHX ternary extensions
+# Add MHX™ ternary extensions
 read_verilog -sv $MHX_ROOT/rtl/ibex_ternary_alu.sv
 read_verilog -sv $MHX_ROOT/rtl/ibex_ternary_regfile.sv
 read_verilog -sv $MHX_ROOT/rtl/ibex_neural_unit.sv
@@ -370,7 +370,7 @@ BUILD_REPORT="$OUTPUT_DIR/build_report.txt"
 echo "Generating build report: $BUILD_REPORT"
 
 cat > "$BUILD_REPORT" << EOF
-MHX Simple System Yosys Build Report
+MHX™ Simple System Yosys Build Report
 ====================================
 
 Build Configuration:

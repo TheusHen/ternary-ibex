@@ -1,11 +1,11 @@
-// Copyright 2025 MHX Neural.
+// Copyright 2025 MHX™ Neural.
 // Licensed under the Apache License, Version 2.0, see LICENSE for details.
 // SPDX-License-Identifier: Apache-2.0
 
 /**
- * MHX Ternary Extension - FPGA Demo Top Module
+ * MHX™ Ternary Extension - FPGA Demo Top Module
  *
- * Demonstrates the MHX ternary processing capabilities on FPGA.
+ * Demonstrates the MHX™ ternary processing capabilities on FPGA.
  * Target: Digilent Arty A7-35T
  *
  * Features:

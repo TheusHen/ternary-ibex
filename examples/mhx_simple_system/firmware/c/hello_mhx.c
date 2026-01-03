@@ -1,13 +1,13 @@
 // Copyright lowRISC contributors.
-// Copyright 2025 MHX Neural.
+// Copyright 2025 MHX™ Neural.
 // Licensed under the Apache License, Version 2.0, see LICENSE for details.
 // SPDX-License-Identifier: Apache-2.0
 
 /**
- * MHX Simple System - Hello World in C
+ * MHX™ Simple System - Hello World in C
  *
  * This is a simple C program demonstrating basic functionality of the
- * MHX Simple System, including UART output, GPIO control, and timer usage.
+ * MHX™ Simple System, including UART output, GPIO control, and timer usage.
  */
 
 #include <stdbool.h>
@@ -49,19 +49,19 @@ void demo_ternary_simulation(void);
  */
 int main(void) {
   // Initialize peripherals
-  uart_puts("Initializing MHX Simple System...\n");
+  uart_puts("Initializing MHX™ Simple System...\n");
   gpio_init();
   timer_init();
 
   // Print welcome message
   uart_puts("========================================\n");
-  uart_puts("MHX Simple System - Hello World in C\n");
-  uart_puts("Copyright 2025 MHX Neural\n");
+  uart_puts("MHX™ Simple System - Hello World in C\n");
+  uart_puts("Copyright 2025 MHX™ Neural\n");
   uart_puts("========================================\n");
 
   // Show system information
   uart_puts("System Information:\n");
-  uart_puts("  CPU: MHX Core (RISC-V + Ternary Extensions)\n");
+  uart_puts("  CPU: MHX™ Core (RISC-V + Ternary Extensions)\n");
   uart_puts("  ROM: 64KB at 0x00000000\n");
   uart_puts("  RAM: 64KB at 0x20000000\n");
   uart_puts("  Clock: 100 MHz\n\n");
@@ -204,7 +204,7 @@ void delay_ms(uint32_t ms) {
  * Simulate ternary processing operations
  */
 void demo_ternary_simulation(void) {
-  uart_puts("Simulating MHX Ternary Operations:\n");
+  uart_puts("Simulating MHX™ Ternary Operations:\n");
 
   // Ternary patterns (simulated with regular integers)
   uint32_t ternary_a = 0xAAAA5555;  // Pattern of +1, 0, -1, +1, ...
@@ -219,21 +219,21 @@ void demo_ternary_simulation(void) {
   uart_puts("\n");
 
   // Simulate ternary addition
-  // In real MHX hardware, this would use TADD instruction
+  // In real MHX™ hardware, this would use TADD instruction
   uint32_t ternary_sum = ternary_a + ternary_b;  // Simplified simulation
   uart_puts("TADD simulation: ");
   uart_puthex(ternary_sum);
   uart_puts("\n");
 
   // Simulate ternary multiplication
-  // In real MHX hardware, this would use TMUL instruction
+  // In real MHX™ hardware, this would use TMUL instruction
   uint32_t ternary_product = ternary_a ^ ternary_b;  // Simplified simulation
   uart_puts("TMUL simulation: ");
   uart_puthex(ternary_product);
   uart_puts("\n");
 
   // Simulate neural processing
-  // In real MHX hardware, this would use NEURON instruction
+  // In real MHX™ hardware, this would use NEURON instruction
   uint32_t weights = ternary_a;
   uint32_t inputs = ternary_b;
   uint32_t neuron_result = (weights & inputs) | ((~weights) & (~inputs));
@@ -242,14 +242,14 @@ void demo_ternary_simulation(void) {
   uart_puts("\n");
 
   // Simulate activation function
-  // In real MHX hardware, this would use ACTIVATE instruction
+  // In real MHX™ hardware, this would use ACTIVATE instruction
   uint32_t activated = (neuron_result > 0x80000000) ? 0xAAAAAAAA : 0x55555555;
   uart_puts("ACTIVATE simulation: ");
   uart_puthex(activated);
   uart_puts("\n");
 
   uart_puts("Note: These are software simulations.\n");
-  uart_puts("Real MHX hardware would execute these as single instructions!\n");
+  uart_puts("Real MHX™ hardware would execute these as single instructions!\n");
 }
 
 /**

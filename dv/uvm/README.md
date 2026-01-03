@@ -1,6 +1,6 @@
-# MHX Ternary Extensions UVM Testbench
+# MHX™ Ternary Extensions UVM Testbench
 
-This directory contains a comprehensive UVM (Universal Verification Methodology) testbench for verifying the MHX Ternary Extensions to the Ibex RISC-V core.
+This directory contains a comprehensive UVM (Universal Verification Methodology) testbench for verifying the MHX™ Ternary Extensions to the Ibex RISC-V core.
 
 ## Overview
 

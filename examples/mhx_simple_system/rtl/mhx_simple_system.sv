@@ -1,13 +1,13 @@
 // Copyright lowRISC contributors.
-// Copyright 2025 MHX Neural.
+// Copyright 2025 MHX™ Neural.
 // Licensed under the Apache License, Version 2.0, see LICENSE for details.
 // SPDX-License-Identifier: Apache-2.0
 
 /**
- * MHX Simple System
+ * MHX™ Simple System
  *
  * This is an enhanced system based on Ibex simple system, featuring:
- * - MHX core with ternary extensions
+ * - MHX™ core with ternary extensions
  * - RAM (runtime) + ROM (bootloader & tests)
  * - UART (tx/rx) for debug/console
  * - GPIOs (LEDs, buttons, expansion pins)
@@ -43,7 +43,7 @@ module mhx_simple_system (
   output spi_cs
 );
 
-  // Import MHX package for ternary extensions
+  // Import MHX™ package for ternary extensions
   import ibex_pkg::*;
 
   parameter bit                 SecureIbex               = 1'b0;
@@ -244,7 +244,7 @@ module mhx_simple_system (
     end
   end
 
-  // MHX Core (Enhanced Ibex with Ternary Extensions)
+  // MHX™ Core (Enhanced Ibex with Ternary Extensions)
   ibex_top #(
     .PMPEnable        ( PMPEnable        ),
     .PMPGranularity   ( PMPGranularity   ),

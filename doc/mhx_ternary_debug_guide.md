@@ -1,8 +1,8 @@
-# MHX Ternary Extension - Debug and Development Guide
+# MHX™ Ternary Extension - Debug and Development Guide
 
 **Version:** 1.0
 **Date:** September 29, 2025
-**Authors:** MHX Neural Development Team
+**Authors:** MHX™ Neural Development Team
 
 ## Table of Contents
 1. [Overview](#1-overview)
@@ -18,11 +18,11 @@
 
 ## 1. Overview
 
-This guide provides comprehensive debugging information for the MHX Ternary Extension to the Ibex RISC-V core. It covers debugging techniques, common issues, performance analysis, and troubleshooting procedures for all ternary components.
+This guide provides comprehensive debugging information for the MHX™ Ternary Extension to the Ibex RISC-V core. It covers debugging techniques, common issues, performance analysis, and troubleshooting procedures for all ternary components.
 
 ### 1.1 Debug Scope
 
-The MHX Ternary Extension includes:
+The MHX™ Ternary Extension includes:
 - **Ternary ALU**: 7 arithmetic/logic operations with overflow handling
 - **Neural Unit**: 4 neural operations with accumulator
 - **Ternary Register File**: 16 registers with dual-port access
@@ -157,7 +157,7 @@ module debug_ternary_alu_tb;
 
   // Test stimulus
   initial begin
-    $display("=== MHX Ternary ALU Debug Test ===");
+    $display("=== MHX™ Ternary ALU Debug Test ===");
 
     // Test each operation systematically
     test_operation(TERNARY_ADD, "Addition");
@@ -803,7 +803,7 @@ module ternary_instruction_tracer;
 
   initial begin
     trace_file = $fopen("ternary_execution_trace.log", "w");
-    $fdisplay(trace_file, "=== MHX Ternary Execution Trace ===");
+    $fdisplay(trace_file, "=== MHX™ Ternary Execution Trace ===");
     $fdisplay(trace_file, "Timestamp,PC,Instruction,Type,Operation,Details");
   end
 
@@ -1112,7 +1112,7 @@ log_error() { echo -e "${RED}[ERROR]${NC} $1"; }
 mkdir -p "${BUILD_DIR}" "${RESULTS_DIR}"
 cd "${BUILD_DIR}"
 
-log_info "Starting MHX Ternary Debug Test Suite..."
+log_info "Starting MHX™ Ternary Debug Test Suite..."
 
 # Test 1: Ternary ALU
 log_info "Running Ternary ALU debug tests..."
@@ -1179,7 +1179,7 @@ fi
 # Generate final report
 log_info "Generating debug test report..."
 cat > "${RESULTS_DIR}/debug_test_report.md" << EOF
-# MHX Ternary Debug Test Report
+# MHX™ Ternary Debug Test Report
 
 **Date:** $(date)
 **Build:** ${BUILD_DIR}
@@ -1292,7 +1292,7 @@ endmodule
 
 ## Summary
 
-This debug guide provides comprehensive tools and techniques for debugging the MHX Ternary Extension. Key debugging strategies include:
+This debug guide provides comprehensive tools and techniques for debugging the MHX™ Ternary Extension. Key debugging strategies include:
 
 1. **Systematic Module Testing**: Debug each component in isolation
 2. **Integration Verification**: Ensure proper signal connections
@@ -1312,4 +1312,4 @@ For additional support, refer to:
 
 **Document Status:** ACTIVE
 **Maintenance:** Update with new debug techniques as discovered
-**Support Contact:** MHX Neural Development Team
+**Support Contact:** MHX™ Neural Development Team

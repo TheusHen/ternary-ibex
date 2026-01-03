@@ -103,17 +103,17 @@ uint32_t software_ternary_mul(uint32_t a, uint32_t b) {
   return encode_ternary_value(result);
 }
 
-// Hardware ternary operations (using inline assembly for MHX extensions)
+// Hardware ternary operations (using inline assembly for MHX™ extensions)
 uint32_t hardware_ternary_add(uint32_t a, uint32_t b) {
   uint32_t result;
-  // This would use actual MHX ternary instructions in real hardware
+  // This would use actual MHX™ ternary instructions in real hardware
   // For simulation, we'll use software implementation
   return software_ternary_add(a, b);
 }
 
 uint32_t hardware_ternary_mul(uint32_t a, uint32_t b) {
   uint32_t result;
-  // This would use actual MHX ternary instructions in real hardware
+  // This would use actual MHX™ ternary instructions in real hardware
   // For simulation, we'll use software implementation
   return software_ternary_mul(a, b);
 }
@@ -386,7 +386,7 @@ int main(void) {
   pcount_enable(0);
   puts("\n");
   puts("========================================\n");
-  puts("MHX Ternary Math Validation Test\n");
+  puts("MHX™ Ternary Math Validation Test\n");
   puts("========================================\n");
   pcount_enable(1);
 

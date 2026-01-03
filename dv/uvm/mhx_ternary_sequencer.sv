@@ -1,4 +1,4 @@
-// MHX Ternary UVM Sequencer
+// MHX™ Ternary UVM Sequencer
 // Manages sequence execution and transaction flow
 
 class mhx_ternary_sequencer extends uvm_sequencer #(mhx_ternary_transaction);

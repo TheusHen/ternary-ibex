@@ -1,4 +1,4 @@
-// MHX Ternary UVM Driver
+// MHX™ Ternary UVM Driver
 // Drives transactions to the DUT through the virtual interface
 
 class mhx_ternary_driver extends uvm_driver #(mhx_ternary_transaction);

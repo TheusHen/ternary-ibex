@@ -1,12 +1,12 @@
 # Copyright lowRISC contributors.
-# Copyright 2025 MHX Neural.
+# Copyright 2025 MHX™ Neural.
 # Licensed under the Apache License, Version 2.0, see LICENSE for details.
 # SPDX-License-Identifier: Apache-2.0
 
 /**
- * MHX Simple System Boot Loader
+ * MHX™ Simple System Boot Loader
  *
- * This is the entry point for all programs running on the MHX Simple System.
+ * This is the entry point for all programs running on the MHX™ Simple System.
  * It performs basic system initialization and jumps to the main program.
  *
  * Memory Map:
@@ -143,7 +143,7 @@ _print_boot_message:
     addi sp, sp, -4
     sw ra, 0(sp)
 
-    # Print "MHX Simple System Boot\n"
+    # Print "MHX™ Simple System Boot\n"
     la t0, boot_message
     call _print_string
 
@@ -204,7 +204,7 @@ _main_program:
     # Run GPIO blink test
     call _gpio_blink_test
 
-    # Run ternary test if MHX extensions are available
+    # Run ternary test if MHX™ extensions are available
     call _ternary_demo
 
     # Restore return address
@@ -251,10 +251,10 @@ delay2:
 
 /**
  * Ternary extensions demo
- * This demonstrates the MHX ternary instructions
+ * This demonstrates the MHX™ ternary instructions
  */
 _ternary_demo:
-    # Note: These are pseudo-instructions for MHX ternary extensions
+    # Note: These are pseudo-instructions for MHX™ ternary extensions
     # In real implementation, these would be custom instruction encodings
 
     # For now, just demonstrate with regular RISC-V instructions
@@ -347,8 +347,8 @@ _hang:
 .section .rodata
 
 boot_message:
-    .ascii "MHX Simple System Boot v1.0\n"
-    .ascii "Copyright 2025 MHX Neural\n"
+    .ascii "MHX™ Simple System Boot v1.0\n"
+    .ascii "Copyright 2025 MHX™ Neural\n"
     .ascii "==========================\n\0"
 
 memory_info_msg:

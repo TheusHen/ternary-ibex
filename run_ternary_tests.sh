@@ -4,7 +4,7 @@
 # Licensed under the Apache License, Version 2.0, see LICENSE for details.
 # SPDX-License-Identifier: Apache-2.0
 
-# Simple test runner for MHX ternary extensions
+# Simple test runner for MHX™ ternary extensions
 # This script can be run manually to test the ternary functionality
 
 set -e
@@ -45,7 +45,7 @@ if [ "$JSON_OUTPUT" = true ]; then
 fi
 
 echo "========================================"
-echo "MHX Ternary Extension Test Runner"
+echo "MHX™ Ternary Extension Test Runner"
 echo "========================================"
 
 # Check if we're in the right directory
@@ -119,9 +119,9 @@ fi
 
 echo "2. Validating configuration..."
 if grep -q "mhx:" ibex_configs.yaml; then
-    echo "✅ MHX configuration found in ibex_configs.yaml"
+    echo "✅ MHX™ configuration found in ibex_configs.yaml"
 else
-    echo "❌ MHX configuration missing from ibex_configs.yaml"
+    echo "❌ MHX™ configuration missing from ibex_configs.yaml"
     exit 1
 fi
 
@@ -155,7 +155,7 @@ fi
 
 echo "6. Generating test report..."
 cat > build/manual_test/test_report.md << EOF
-# MHX Ternary Extension Test Report
+# MHX™ Ternary Extension Test Report
 
 **Test Date:** $(date)
 **Test Status:** PASSED (Basic Validation)
@@ -166,7 +166,7 @@ cat > build/manual_test/test_report.md << EOF
 - ✅ Ternary ALU: $(wc -l < rtl/ibex_ternary_alu.sv) lines implemented
 - ✅ Neural Unit: $(wc -l < rtl/ibex_neural_unit.sv) lines implemented
 - ✅ Register File: $(wc -l < rtl/ibex_ternary_regfile.sv) lines implemented
-- ✅ Configuration: MHX config integrated
+- ✅ Configuration: MHX™ config integrated
 
 ### Performance Analysis
 $(tail -10 build/manual_test/performance.log)

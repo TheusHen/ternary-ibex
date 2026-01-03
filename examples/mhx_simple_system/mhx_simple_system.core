@@ -1,10 +1,10 @@
 CAPI=2:
 # Copyright lowRISC contributors.
-# Copyright 2025 MHX Neural.
+# Copyright 2025 MHX™ Neural.
 # Licensed under the Apache License, Version 2.0, see LICENSE for details.
 # SPDX-License-Identifier: Apache-2.0
 name: "lowrisc:ibex:mhx_simple_system"
-description: "MHX Simple System - Enhanced Ibex with ternary extensions and minimal peripherals"
+description: "MHX™ Simple System - Enhanced Ibex with ternary extensions and minimal peripherals"
 
 filesets:
   files_mhx_simple_system:

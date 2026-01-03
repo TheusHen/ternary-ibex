@@ -1,9 +1,9 @@
-// Copyright 2025 MHX Neural.
+// Copyright 2025 MHX™ Neural.
 // Licensed under the Apache License, Version 2.0, see LICENSE for details.
 // SPDX-License-Identifier: Apache-2.0
 
 /**
- * Formal Verification Wrapper for MHX Neural Processing Unit
+ * Formal Verification Wrapper for MHX™ Neural Processing Unit
  *
  * This module wraps the Neural Unit with comprehensive formal verification
  * properties using SystemVerilog Assertions (SVA) compatible with SymbiYosys.

@@ -1,14 +1,14 @@
 /* Copyright lowRISC contributors.
- * Copyright 2025 MHX Neural.
+ * Copyright 2025 MHX™ Neural.
  * Licensed under the Apache License, Version 2.0, see LICENSE for details.
  * SPDX-License-Identifier: Apache-2.0
  */
 
 /**
- * MHX Simple System Linker Script
+ * MHX™ Simple System Linker Script
  *
  * This linker script defines the memory layout for programs running
- * on the MHX Simple System. It supports both ROM-based and RAM-based
+ * on the MHX™ Simple System. It supports both ROM-based and RAM-based
  * programs.
  *
  * Memory Map:

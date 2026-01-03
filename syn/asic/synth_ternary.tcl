@@ -1,9 +1,9 @@
-# MHX Ternary Extension - Yosys Synthesis Script
+# MHX™ Ternary Extension - Yosys Synthesis Script
 # Target: Generic (area estimation) and Skywater 130nm
-# Copyright 2025 MHX Neural
+# Copyright 2025 MHX™ Neural
 
 puts "========================================"
-puts "MHX Ternary Extension - Yosys Synthesis"
+puts "MHX™ Ternary Extension - Yosys Synthesis"
 puts "========================================"
 
 # Design parameters

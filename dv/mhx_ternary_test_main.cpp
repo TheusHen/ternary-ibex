@@ -3,7 +3,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /**
- * Main function for MHX Ternary Extension Verilator testbench
+ * Main function for MHX™ Ternary Extension Verilator testbench
  */
 
 #include <iostream>

@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 # Copyright lowRISC contributors.
-# Copyright 2025 MHX Neural.
+# Copyright 2025 MHX™ Neural.
 # Licensed under the Apache License, Version 2.0, see LICENSE for details.
 # SPDX-License-Identifier: Apache-2.0
 
 """
-MHX Trace-Based Analysis Tool
+MHX™ Trace-Based Analysis Tool
 
-This tool provides comprehensive trace analysis for MHX ternary operations,
+This tool provides comprehensive trace analysis for MHX™ ternary operations,
 including:
 - Instruction trace parsing and visualization
 - Performance hotspot detection
@@ -447,7 +447,7 @@ def print_report(results: TraceAnalysisResults) -> None:
     """Print human-readable analysis report."""
     print()
     print("=" * 70)
-    print("MHX Trace-Based Analysis Report")
+    print("MHX™ Trace-Based Analysis Report")
     print("=" * 70)
     print()
 
@@ -487,7 +487,7 @@ def print_report(results: TraceAnalysisResults) -> None:
 
 def main() -> int:
     parser = argparse.ArgumentParser(
-        description="MHX Trace-Based Analysis Tool"
+        description="MHX™ Trace-Based Analysis Tool"
     )
     parser.add_argument(
         "--input", "-i",

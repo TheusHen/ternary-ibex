@@ -1,5 +1,5 @@
-## MHX Ternary Demo - Arty A7-35T Constraints
-## Copyright 2025 MHX Neural
+## MHX™ Ternary Demo - Arty A7-35T Constraints
+## Copyright 2025 MHX™ Neural
 
 ## Clock
 set_property -dict {PACKAGE_PIN E3 IOSTANDARD LVCMOS33} [get_ports clk_100mhz_i]

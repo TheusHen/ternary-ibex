@@ -19,7 +19,7 @@ ibex_prefetch_buffer.sv
 ibex_fetch_fifo.sv
 ibex_register_file_ff.sv
 
-// MHX Ternary Extensions
+// MHX™ Ternary Extensions
 ibex_ternary_alu.sv
 ibex_ternary_advanced.sv
 ibex_ternary_regfile.sv

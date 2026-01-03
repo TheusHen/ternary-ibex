@@ -1,5 +1,5 @@
 // Copyright lowRISC contributors.
-// Copyright 2025 MHX Neural.
+// Copyright 2025 MHX™ Neural.
 // Copyright 2018 ETH Zurich and University of Bologna, see also CREDITS.md.
 // Licensed under the Apache License, Version 2.0, see LICENSE for details.
 // SPDX-License-Identifier: Apache-2.0
@@ -98,7 +98,7 @@ module ibex_decoder #(
   output logic                 jump_in_dec_o,         // jump is being calculated in ALU
   output logic                 branch_in_dec_o,
 
-  // MHX Ternary Operations
+  // MHX™ Ternary Operations
   output logic                 ternary_en_o,          // enable ternary operation
   output logic                 neural_en_o,           // enable neural operation
   output ibex_pkg::ternary_op_e ternary_op_o,         // ternary operation selection
@@ -246,7 +246,7 @@ module ibex_decoder #(
     ecall_insn_o          = 1'b0;
     wfi_insn_o            = 1'b0;
 
-    // MHX ternary extension signals initialization
+    // MHX™ ternary extension signals initialization
     ternary_en_o          = 1'b0;
     neural_en_o           = 1'b0;
     ternary_op_o          = TERNARY_ADD;
@@ -662,7 +662,7 @@ module ibex_decoder #(
 
       end
 
-      OPCODE_TERNARY: begin // MHX Ternary Operations
+      OPCODE_TERNARY: begin // MHX™ Ternary Operations
         ternary_en_o     = 1'b1;
         ternary_we_o     = 1'b1;
         rf_we            = 1'b0;  // Disable standard RF write
@@ -689,7 +689,7 @@ module ibex_decoder #(
         ternary_waddr_o   = instr[11:7];   // rd (ternary destination) - 5 bits
       end
 
-      OPCODE_NEURAL: begin // MHX Neural Operations
+      OPCODE_NEURAL: begin // MHX™ Neural Operations
         neural_en_o      = 1'b1;
         ternary_we_o     = 1'b1;  // Neural ops write to ternary registers
         rf_we            = 1'b0;  // Disable standard RF write
@@ -1258,7 +1258,7 @@ module ibex_decoder #(
       end
 
       ////////////////////////////////////////
-      // MHX Ternary Extension ALU Control  //
+      // MHX™ Ternary Extension ALU Control  //
       ////////////////////////////////////////
 
       default: ;

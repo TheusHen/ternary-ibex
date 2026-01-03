@@ -1,9 +1,9 @@
-// Copyright 2025 MHX Neural.
+// Copyright 2025 MHX™ Neural.
 // Licensed under the Apache License, Version 2.0, see LICENSE for details.
 // SPDX-License-Identifier: Apache-2.0
 
 /**
- * Formal Verification Wrapper for MHX Ternary Register File
+ * Formal Verification Wrapper for MHX™ Ternary Register File
  *
  * This module wraps the Ternary Register File with comprehensive formal
  * verification properties using SystemVerilog Assertions (SVA).

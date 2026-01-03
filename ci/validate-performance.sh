@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# MHX Ternary Ibex Performance Validation Script
+# MHX™ Ternary Ibex Performance Validation Script
 # Validates that ternary operations meet performance requirements
 
 set -euo pipefail
@@ -197,7 +197,7 @@ fi
 
 # Generate summary report
 cat > "${RESULTS_DIR}/performance_report.txt" << EOF
-MHX Ternary Ibex Performance Validation Report
+MHX™ Ternary Ibex Performance Validation Report
 Generated: $(date)
 
 Metrics Comparison:

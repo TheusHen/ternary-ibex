@@ -1,5 +1,5 @@
 // Copyright lowRISC contributors.
-// Copyright 2025 MHX Neural.
+// Copyright 2025 MHX™ Neural.
 // Licensed under the Apache License, Version 2.0, see LICENSE for details.
 // SPDX-License-Identifier: Apache-2.0
 
@@ -7,10 +7,10 @@
 #include "simple_system_common.h"
 
 /**
- * MLPerfTiny Benchmark Suite for MHX Ternary Extensions
+ * MLPerfTiny Benchmark Suite for MHX™ Ternary Extensions
  *
  * This benchmark implements the MLPerfTiny v1.0 benchmark suite adapted
- * for ternary neural networks on the MHX extension.
+ * for ternary neural networks on the MHX™ extension.
  *
  * Benchmarks:
  * 1. Anomaly Detection (AD) - ToyADMOS/DCASE2020
@@ -21,7 +21,7 @@
  * Reference: https://github.com/mlcommons/tiny
  */
 
-// MHX instruction encodings
+// MHX™ instruction encodings
 #define ENCODE_R(funct7, rs2, rs1, funct3, rd, opcode) \
   ((uint32_t)((((uint32_t)(funct7)&0x7f) << 25) |      \
               (((uint32_t)(rs2)&0x1f) << 20) |         \
@@ -154,13 +154,13 @@ static benchmark_metrics_t run_anomaly_detection_mhx(uint32_t iterations) {
     metrics.start_cycle = get_mcycle();
 
     for (uint32_t iter = 0; iter < iterations; iter++) {
-        // Use MHX neural operations for ternary autoencoder
+        // Use MHX™ neural operations for ternary autoencoder
         for (int layer = 0; layer < AD_LAYERS; layer++) {
             uint32_t layer_ops = (AD_FEATURE_SIZE >> 4) / (1 << (layer < 2 ? layer : AD_LAYERS - 1 - layer));
             layer_ops = (layer_ops > 0) ? layer_ops : 1;
 
             for (uint32_t i = 0; i < layer_ops; i++) {
-                // 16-element dot product using MHX NEURON instruction
+                // 16-element dot product using MHX™ NEURON instruction
                 asm volatile(".word %0" : : "i"(INS_NEURON_T3_T1_T2) : "memory");
                 // Activation
                 asm volatile(".word %0" : : "i"(INS_ACTIVATE_T4_T3) : "memory");
@@ -225,7 +225,7 @@ static benchmark_metrics_t run_keyword_spotting_mhx(uint32_t iterations) {
     metrics.start_cycle = get_mcycle();
 
     for (uint32_t iter = 0; iter < iterations; iter++) {
-        // Ternary DS-CNN using MHX
+        // Ternary DS-CNN using MHX™
         // Each neuron operation processes 16 trits
 
         // Depthwise separable layer
@@ -301,7 +301,7 @@ static benchmark_metrics_t run_image_classification_mhx(uint32_t iterations) {
     metrics.start_cycle = get_mcycle();
 
     for (uint32_t iter = 0; iter < iterations; iter++) {
-        // Ternary MobileNet using MHX
+        // Ternary MobileNet using MHX™
 
         // Conv layers
         for (int i = 0; i < (IC_HIDDEN_SIZE / 16); i++) {
@@ -374,7 +374,7 @@ static benchmark_metrics_t run_person_detection_mhx(uint32_t iterations) {
     metrics.start_cycle = get_mcycle();
 
     for (uint32_t iter = 0; iter < iterations; iter++) {
-        // Ternary person detection using MHX
+        // Ternary person detection using MHX™
 
         // Conv layers
         for (int i = 0; i < (PD_HIDDEN_SIZE / 16); i++) {
@@ -410,7 +410,7 @@ int main(int argc, char **argv) {
 
     puts("\n");
     puts("============================================================\n");
-    puts("MLPerfTiny Benchmark Suite for MHX Ternary Extensions\n");
+    puts("MLPerfTiny Benchmark Suite for MHX™ Ternary Extensions\n");
     puts("============================================================\n");
     puts("\n");
 
@@ -433,7 +433,7 @@ int main(int argc, char **argv) {
     uint64_t ad_binary = metrics.total_cycles;
 
     metrics = run_anomaly_detection_mhx(iterations);
-    puts("  MHX ternary cycles:     0x");
+    puts("  MHX™ ternary cycles:     0x");
     puthex64(metrics.total_cycles);
     puts("\n");
     uint64_t ad_mhx = metrics.total_cycles;
@@ -459,7 +459,7 @@ int main(int argc, char **argv) {
     uint64_t kws_binary = metrics.total_cycles;
 
     metrics = run_keyword_spotting_mhx(iterations);
-    puts("  MHX ternary cycles:     0x");
+    puts("  MHX™ ternary cycles:     0x");
     puthex64(metrics.total_cycles);
     puts("\n");
     uint64_t kws_mhx = metrics.total_cycles;
@@ -485,7 +485,7 @@ int main(int argc, char **argv) {
     uint64_t ic_binary = metrics.total_cycles;
 
     metrics = run_image_classification_mhx(iterations);
-    puts("  MHX ternary cycles:     0x");
+    puts("  MHX™ ternary cycles:     0x");
     puthex64(metrics.total_cycles);
     puts("\n");
     uint64_t ic_mhx = metrics.total_cycles;
@@ -511,7 +511,7 @@ int main(int argc, char **argv) {
     uint64_t pd_binary = metrics.total_cycles;
 
     metrics = run_person_detection_mhx(iterations);
-    puts("  MHX ternary cycles:     0x");
+    puts("  MHX™ ternary cycles:     0x");
     puthex64(metrics.total_cycles);
     puts("\n");
     uint64_t pd_mhx = metrics.total_cycles;

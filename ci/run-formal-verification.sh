@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 # Copyright lowRISC contributors.
-# Copyright 2025 MHX Neural.
+# Copyright 2025 MHX™ Neural.
 # Licensed under the Apache License, Version 2.0, see LICENSE for details.
 # SPDX-License-Identifier: Apache-2.0
 
 ################################################################################
-# Formal Verification Script for MHX Ternary Extensions
+# Formal Verification Script for MHX™ Ternary Extensions
 #
-# This script runs formal verification on the MHX ternary components using
+# This script runs formal verification on the MHX™ ternary components using
 # either JasperGold or VC Formal (Synopsys).
 #
 # Usage:
@@ -284,7 +284,7 @@ verify_module() {
 ################################################################################
 
 log_info "========================================"
-log_info "MHX Ternary Formal Verification Suite"
+log_info "MHX™ Ternary Formal Verification Suite"
 log_info "========================================"
 log_info "Tool: ${FORMAL_TOOL}"
 log_info "RTL Root: ${RTL_ROOT}"

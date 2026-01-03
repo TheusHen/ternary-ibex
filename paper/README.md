@@ -1,6 +1,6 @@
-# MHX Ternary White Paper
+# MHX™ Ternary White Paper
 
-This directory contains the white paper for the MHX Ternary Extension.
+This directory contains the white paper for the MHX™ Ternary Extension.
 
 ## Files
 
@@ -46,7 +46,7 @@ pdflatex mhx_ternary_whitepaper.tex
 
 1. **Introduction** - Motivation and contributions
 2. **Background** - Ternary networks, RISC-V extensions
-3. **Architecture** - MHX design and ISA
+3. **Architecture** - MHX™ design and ISA
 4. **Implementation** - RTL and pipeline integration
 5. **Verification** - Formal and simulation testing
 6. **Evaluation** - Performance, area, timing
@@ -64,8 +64,8 @@ pdflatex mhx_ternary_whitepaper.tex
 
 ```bibtex
 @article{mhx2025ternary,
-  title={MHX: A Native Ternary Computing Extension for RISC-V},
-  author={MHX Neural Research Team},
+  title={MHX™: A Native Ternary Computing Extension for RISC-V},
+  author={MHX™ Neural Research Team},
   journal={arXiv preprint},
   year={2025}
 }

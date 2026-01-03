@@ -209,7 +209,7 @@ jobs:
                          arrowprops=dict(arrowstyle='->', lw=2, color=color, alpha=0.6))
 
           # Add title and annotations
-          plt.title('MHX Ternary RISC-V Core - Floorplan Architecture',
+          plt.title('MHX™ Ternary RISC-V Core - Floorplan Architecture',
                    fontsize=20, fontweight='bold', pad=20, color='#263238')
 
           # Add legends
@@ -302,21 +302,21 @@ jobs:
         run: |
           # Check if floorplan section exists in README
           if ! grep -q "## Floorplan Architecture" README.md; then
-            # Add floorplan section after MHX Core section
+            # Add floorplan section after MHX™ Core section
             python3 << 'PYTHON_SCRIPT'
           import re
 
           with open('README.md', 'r') as f:
               content = f.read()
 
-          # Find the end of MHX Core section
+          # Find the end of MHX™ Core section
           floorplan_section = """
 
           ### Floorplan Architecture
 
-          The MHX Core integrates seamlessly into the Ibex pipeline with dedicated ternary processing units:
+          The MHX™ Core integrates seamlessly into the Ibex pipeline with dedicated ternary processing units:
 
-          ![MHX Ternary Core Floorplan](https://raw.githubusercontent.com/${{ github.repository }}/${{ github.ref_name }}/docs/images/mhx_floorplan.png)
+          ![MHX™ Ternary Core Floorplan](https://raw.githubusercontent.com/${{ github.repository }}/${{ github.ref_name }}/docs/images/mhx_floorplan.png)
 
           Key architectural features:
           - **Ternary ALU**: Native 16-trit operations with overflow detection
@@ -355,7 +355,7 @@ jobs:
         run: |
           mkdir -p build/floorplan/report
           cat > build/floorplan/report/floorplan_metrics.md << 'EOF'
-          # MHX Ternary Core Floorplan Report
+          # MHX™ Ternary Core Floorplan Report
 
           **Generated:** $(date -u +"%Y-%m-%d %H:%M:%S UTC")
           **Commit:** ${{ github.sha }}

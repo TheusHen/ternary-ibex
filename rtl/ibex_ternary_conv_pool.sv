@@ -1,10 +1,10 @@
 // Copyright lowRISC contributors.
-// Copyright 2025 MHX Neural.
+// Copyright 2025 MHX™ Neural.
 // Licensed under the Apache License, Version 2.0, see LICENSE for details.
 // SPDX-License-Identifier: Apache-2.0
 
 /**
- * MHX Ternary Convolution and Pooling Unit
+ * MHX™ Ternary Convolution and Pooling Unit
  *
  * Advanced neural network operations for ternary data:
  * - 1D/2D Convolution with ternary kernels

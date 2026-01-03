@@ -1,4 +1,4 @@
-// MHX Ternary UVM Testbench Top
+// MHX™ Ternary UVM Testbench Top
 // Top-level module for UVM-based ternary extension verification
 
 `timescale 1ns/1ps

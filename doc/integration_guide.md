@@ -1,4 +1,4 @@
-# MHX Ternary Integration Guide
+# MHX™ Ternary Integration Guide
 
 **Document Version:** 1.0  
 **Last Updated:** December 3, 2025  
@@ -8,7 +8,7 @@
 
 ## Overview
 
-This document provides comprehensive guidance for integrating the MHX Ternary Ibex core into System-on-Chip (SoC) designs. It covers hardware integration, software setup, verification, and validation procedures.
+This document provides comprehensive guidance for integrating the MHX™ Ternary Ibex core into System-on-Chip (SoC) designs. It covers hardware integration, software setup, verification, and validation procedures.
 
 ## Target Audience
 
@@ -36,11 +36,11 @@ This document provides comprehensive guidance for integrating the MHX Ternary Ib
 
 ## 1. Architecture Overview
 
-### 1.1 MHX Ternary Ibex Top-Level
+### 1.1 MHX™ Ternary Ibex Top-Level
 
 ```
 ┌─────────────────────────────────────────────────────┐
-│ ibex_top (with MHX Ternary Extensions)              │
+│ ibex_top (with MHX™ Ternary Extensions)              │
 │                                                      │
 │  ┌──────────┐  ┌──────────────┐  ┌──────────────┐  │
 │  │ IF Stage │→│ ID/EX Stage  │→│ WB Stage     │  │
@@ -85,7 +85,7 @@ module ibex_top #(
     parameter bit          DbgTriggerEn     = 1'b0,
     parameter int unsigned DbgHwBreakNum    = 1,
     parameter bit          SecureIbex       = 1'b0,
-    // MHX Ternary Extensions (always enabled)
+    // MHX™ Ternary Extensions (always enabled)
     parameter bit          TernaryExt       = 1'b1,
     parameter bit          NeuralExt        = 1'b1
 ) (
@@ -497,7 +497,7 @@ module mhx_debug_interface (
     logic [33:0] dmi_resp;
     
     dmi_jtag #(
-        .IdcodeValue (32'h4D485801)  // MHX-01
+        .IdcodeValue (32'h4D485801)  // MHX™-01
     ) u_dmi_jtag (
         .clk_i          (clk_i),
         .rst_ni         (rst_ni),
@@ -690,7 +690,7 @@ set_level_shifter LS_CORE -domain PD_CORE -applies_to outputs
 Location: `examples/mhx_simple_system/`
 
 Features:
-- Ibex core with MHX extensions
+- Ibex core with MHX™ extensions
 - 64KB SRAM
 - UART
 - GPIO
@@ -807,4 +807,4 @@ See [Control and Status Registers](../03_reference/cs_registers.rst) for complet
 
 **Document Status:** DRAFT  
 **Next Review:** After first tape-out  
-**Maintainer:** MHX Neural Team
+**Maintainer:** MHX™ Neural Team

@@ -1,5 +1,5 @@
 # Copyright lowRISC contributors.
-# Copyright 2025 MHX Neural.
+# Copyright 2025 MHX™ Neural.
 # Licensed under the Apache License, Version 2.0, see LICENSE for details.
 # SPDX-License-Identifier: Apache-2.0
 
@@ -7,13 +7,13 @@
  * GPIO Blink Test - Assembly Implementation
  *
  * This program demonstrates basic GPIO functionality by blinking LEDs
- * in various patterns. It's designed to run on the MHX Simple System.
+ * in various patterns. It's designed to run on the MHX™ Simple System.
  *
  * Features:
  * - Multiple LED blink patterns
  * - Timer-based delays
  * - GPIO input monitoring
- * - Simple demonstration of MHX system peripherals
+ * - Simple demonstration of MHX™ system peripherals
  */
 
 .section .text
@@ -477,7 +477,7 @@ hang:
 # ============================================================================
 
 startup_msg:
-    .ascii "MHX GPIO Blink Test Starting...\n\0"
+    .ascii "MHX™ GPIO Blink Test Starting...\n\0"
 
 test1_msg:
     .ascii "Test 1: Simple blink\n\0"

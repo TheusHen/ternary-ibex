@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 
 # Copyright lowRISC contributors.
-# Copyright 2025 MHX Neural.
+# Copyright 2025 MHX™ Neural.
 # Licensed under the Apache License, Version 2.0, see LICENSE for details.
 # SPDX-License-Identifier: Apache-2.0
 
 """
-MHX Ternary Test Report Generator
+MHX™ Ternary Test Report Generator
 
 This script generates a comprehensive test report from ternary test results.
 """
@@ -82,7 +82,7 @@ def generate_markdown_report(test_results):
 
     now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-    report = f"""# MHX Ternary Extension Test Report
+    report = f"""# MHX™ Ternary Extension Test Report
 
 Generated: {now}
 
@@ -178,7 +178,7 @@ Generated: {now}
 
     if total_failed == 0 and total_tests > 0:
         report += """
-The MHX Ternary Extensions have been successfully validated! All tests passed,
+The MHX™ Ternary Extensions have been successfully validated! All tests passed,
 demonstrating that:
 
 1. **Ternary arithmetic operations work correctly**
@@ -186,19 +186,19 @@ demonstrating that:
 3. **Performance improvements are measurable**
 4. **Full RISC-V compatibility is maintained**
 
-The MHX Core is ready for deployment and provides significant performance
+The MHX™ Core is ready for deployment and provides significant performance
 benefits for AI/ML workloads while maintaining full backward compatibility.
 """
     else:
         report += """
 Some tests failed or no tests were executed. Please review the individual
-test results above and address any issues before deploying the MHX Core.
+test results above and address any issues before deploying the MHX™ Core.
 """
 
     return report
 
 def main():
-    parser = argparse.ArgumentParser(description='Generate MHX ternary test report')
+    parser = argparse.ArgumentParser(description='Generate MHX™ ternary test report')
     parser.add_argument('--test-results', required=True,
                        help='Directory containing test results')
     parser.add_argument('--output', required=True,

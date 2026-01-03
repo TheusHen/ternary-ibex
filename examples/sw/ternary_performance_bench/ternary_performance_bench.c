@@ -120,7 +120,7 @@ void binary_matrix_multiply(uint32_t a[MATRIX_SIZE][MATRIX_SIZE],
   }
 }
 
-// Ternary mathematical operations (MHX extensions)
+// Ternary mathematical operations (MHX™ extensions)
 uint32_t ternary_multiply_accumulate(uint32_t *weights, uint32_t *inputs,
                                      int size) {
   uint32_t accumulator = 0;
@@ -396,7 +396,7 @@ int main(void) {
   pcount_enable(0);
   puts("\n");
   puts("============================================\n");
-  puts("MHX Ternary Performance Benchmark\n");
+  puts("MHX™ Ternary Performance Benchmark\n");
   puts("============================================\n");
   pcount_enable(1);
 
@@ -410,14 +410,14 @@ int main(void) {
   puts("\n============================================\n");
   puts("Benchmark Summary\n");
   puts("============================================\n");
-  puts("The MHX Ternary Extensions provide:\n");
+  puts("The MHX™ Ternary Extensions provide:\n");
   puts("• 3-10x faster neural network inference\n");
   puts("• 2-5x faster matrix operations\n");
   puts("• 75% memory efficiency for general data\n");
   puts("• 90% memory reduction for neural weights\n");
   puts("• Native ternary arithmetic operations\n");
   puts("• Hardware-accelerated neural primitives\n");
-  puts("\nMHX Core delivers significant performance\n");
+  puts("\nMHX™ Core delivers significant performance\n");
   puts("improvements for AI/ML workloads while\n");
   puts("maintaining full RISC-V compatibility!\n");
   puts("============================================\n");

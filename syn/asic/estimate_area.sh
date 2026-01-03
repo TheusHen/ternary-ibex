@@ -1,7 +1,7 @@
 #!/bin/bash
-# MHX Ternary Extension - Area Estimation from RTL Analysis
+# MHX™ Ternary Extension - Area Estimation from RTL Analysis
 # Provides synthesis-equivalent area estimates based on RTL complexity
-# Copyright 2025 MHX Neural
+# Copyright 2025 MHX™ Neural
 
 set -e
 
@@ -20,7 +20,7 @@ mkdir -p "${REPORTS_DIR}"
 
 echo ""
 echo -e "${BLUE}========================================${NC}"
-echo -e "${BLUE}MHX Ternary Area & Timing Estimation${NC}"
+echo -e "${BLUE}MHX™ Ternary Area & Timing Estimation${NC}"
 echo -e "${BLUE}========================================${NC}"
 echo ""
 
@@ -52,7 +52,7 @@ REPORT_FILE="${REPORTS_DIR}/area_timing_report.txt"
 
 cat > "${REPORT_FILE}" << EOF
 ================================================================================
-MHX Ternary Extension - ASIC Area and Timing Estimation Report
+MHX™ Ternary Extension - ASIC Area and Timing Estimation Report
 ================================================================================
 Date: $(date)
 Technology Target: Skywater 130nm (generic estimation)
@@ -110,7 +110,7 @@ printf "%-30s %8d %10d %10d\n" "TOTAL" "${TOTAL_LINES}" "${TOTAL_CELLS}" "${TOTA
 TOTAL_KGE=$(echo "scale=2; ${TOTAL_GE} / 1000" | bc)
 
 echo ""
-echo -e "${GREEN}Total MHX Extension: ${TOTAL_GE} GE (${TOTAL_KGE} kGE)${NC}"
+echo -e "${GREEN}Total MHX™ Extension: ${TOTAL_GE} GE (${TOTAL_KGE} kGE)${NC}"
 
 cat >> "${REPORT_FILE}" << EOF
 
@@ -124,7 +124,7 @@ Estimated Area:        ${TOTAL_GE} GE (${TOTAL_KGE} kGE)
 --------------------------------------------------------------------------------
 Comparison with Ibex Base Configurations:
 --------------------------------------------------------------------------------
-Configuration          Area (kGE)     With MHX (kGE)    Overhead
+Configuration          Area (kGE)     With MHX™ (kGE)    Overhead
 --------------------------------------------------------------------------------
 Ibex 'micro'           16.85          $((16850 + TOTAL_GE))/1000          +$(echo "scale=1; ${TOTAL_GE} * 100 / 16850" | bc)%
 Ibex 'small'           26.60          $((26600 + TOTAL_GE))/1000          +$(echo "scale=1; ${TOTAL_GE} * 100 / 26600" | bc)%
@@ -174,12 +174,12 @@ Conv/Pool Unit                 1.2             30              1.23
 DMA Controller                 0.4             20              0.42
 Other (LSU, Debug, Perf)       0.8             40              0.84
 --------------------------------------------------------------------------------
-Total MHX Extension            5.5             190             5.69
+Total MHX™ Extension            5.5             190             5.69
 
 Comparison:
 - Ibex 'small' core (typical):  ~8 mW @ 100 MHz
-- MHX Extension:                ~5.7 mW @ 100 MHz
-- Total with MHX:               ~13.7 mW @ 100 MHz
+- MHX™ Extension:                ~5.7 mW @ 100 MHz
+- Total with MHX™:               ~13.7 mW @ 100 MHz
 
 Power Efficiency:
 - Neural inference power:       ~2 mW (enhanced neural unit active)
@@ -191,8 +191,8 @@ PHYSICAL DESIGN ESTIMATES (Skywater 130nm)
 ================================================================================
 
 Die Area Estimation:
-- MHX Extension:    ~0.08 mm² (at 130nm)
-- Full core + MHX:  ~0.4 mm² (estimated)
+- MHX™ Extension:    ~0.08 mm² (at 130nm)
+- Full core + MHX™:  ~0.4 mm² (estimated)
 
 Metal Layer Usage:
 - Signal routing:   Layers 1-3
@@ -232,7 +232,7 @@ echo ""
 echo "--------------------------------------------------------------------------------"
 echo "POWER SUMMARY (@ 100 MHz)"
 echo "--------------------------------------------------------------------------------"
-echo "  MHX Extension total:   ~5.7 mW"
+echo "  MHX™ Extension total:   ~5.7 mW"
 echo "  Neural inference:      ~2.0 mW"
 echo "  Idle (clock gated):    ~0.2 mW"
 echo ""

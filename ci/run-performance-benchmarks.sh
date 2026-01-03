@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 # Copyright lowRISC contributors.
-# Copyright 2025 MHX Neural.
+# Copyright 2025 MHX™ Neural.
 # Licensed under the Apache License, Version 2.0, see LICENSE for details.
 # SPDX-License-Identifier: Apache-2.0
 
 ################################################################################
-# Performance Benchmark Suite for MHX Ternary Extensions
+# Performance Benchmark Suite for MHX™ Ternary Extensions
 #
 # This script runs comprehensive performance benchmarks comparing:
 # - Ternary vs Binary arithmetic operations
@@ -77,7 +77,7 @@ done
 mkdir -p "$OUTPUT_DIR"
 
 log_info "============================================================"
-log_info "MHX Ternary Performance Benchmark Suite"
+log_info "MHX™ Ternary Performance Benchmark Suite"
 log_info "============================================================"
 log_info "Start time: $(date)"
 log_info "Output directory: $OUTPUT_DIR"
@@ -493,7 +493,7 @@ generate_report() {
     local report_file="${OUTPUT_DIR}/performance_report.md"
     
     cat > "$report_file" <<EOF
-# MHX Ternary Performance Benchmark Report
+# MHX™ Ternary Performance Benchmark Report
 
 **Generated:** $(date)
 **Baseline:** $BASELINE_FILE
@@ -502,7 +502,7 @@ generate_report() {
 
 ## Executive Summary
 
-This report presents comprehensive performance benchmarks comparing MHX Ternary extensions against binary implementations.
+This report presents comprehensive performance benchmarks comparing MHX™ Ternary extensions against binary implementations.
 
 ### Key Findings
 
@@ -634,7 +634,7 @@ EOF
 ## 7. Methodology
 
 **Test Environment:**
-- Ibex RISC-V core with MHX Ternary extensions
+- Ibex RISC-V core with MHX™ Ternary extensions
 - Simulation: Verilator/VCS
 - Frequency: 100 MHz (simulated)
 - Iterations: 1000 per operation
@@ -647,12 +647,12 @@ EOF
 **Comparison:**
 - Binary: Standard RISC-V RV32IM instructions
 - Software: C implementation of neural operations
-- Hardware: MHX Ternary/Neural custom instructions
+- Hardware: MHX™ Ternary/Neural custom instructions
 
 ---
 
 **Report Status:** COMPLETE  
-**Maintainer:** MHX Neural Team
+**Maintainer:** MHX™ Neural Team
 EOF
 
     log_success "Performance report generated: $report_file"

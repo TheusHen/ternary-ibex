@@ -1,4 +1,4 @@
-// MHX Ternary UVM Configuration Object
+// MHX™ Ternary UVM Configuration Object
 // Contains all configuration parameters for the verification environment
 
 class mhx_ternary_config extends uvm_object;
@@ -114,7 +114,7 @@ class mhx_ternary_config extends uvm_object;
 
   // Print configuration
   function void print_config();
-    `uvm_info("CONFIG", "=== MHX Ternary Test Configuration ===", UVM_LOW);
+    `uvm_info("CONFIG", "=== MHX™ Ternary Test Configuration ===", UVM_LOW);
     `uvm_info("CONFIG", $sformatf("Transactions: %0d", num_transactions), UVM_LOW);
     `uvm_info("CONFIG", $sformatf("Coverage enabled: %b", enable_coverage), UVM_LOW);
     `uvm_info("CONFIG", $sformatf("Scoreboard enabled: %b", enable_scoreboard), UVM_LOW);

@@ -2,7 +2,7 @@
   "name": "ternary-ibex-docs",
   "type": "module",
   "version": "1.0.0",
-  "description": "MHX Ternary RISC-V Core Documentation Website",
+  "description": "MHX™ Ternary RISC-V Core Documentation Website",
   "scripts": {
     "dev": "astro dev --config astro.config.dev.mjs",
     "start": "astro dev --config astro.config.dev.mjs",

@@ -1,10 +1,10 @@
 // Copyright lowRISC contributors.
-// Copyright 2025 MHX Neural.
+// Copyright 2025 MHX™ Neural.
 // Licensed under the Apache License, Version 2.0, see LICENSE for details.
 // SPDX-License-Identifier: Apache-2.0
 
 /**
- * MHX Ternary Debug Module
+ * MHX™ Ternary Debug Module
  *
  * JTAG debug interface for ternary registers and operations:
  * - Read/Write access to all 32 ternary registers

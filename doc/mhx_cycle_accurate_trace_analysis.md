@@ -1,12 +1,12 @@
-# MHX Cycle-Accurate Simulation and Trace Analysis Guide
+# MHX™ Cycle-Accurate Simulation and Trace Analysis Guide
 
-This document describes the cycle-accurate simulation infrastructure and trace-based analysis tools for the MHX ternary extension.
+This document describes the cycle-accurate simulation infrastructure and trace-based analysis tools for the MHX™ ternary extension.
 
 ## Overview
 
-The MHX extension includes comprehensive performance analysis tools:
+The MHX™ extension includes comprehensive performance analysis tools:
 
-1. **Cycle-Accurate Simulator** - Precise timing measurements for all MHX operations
+1. **Cycle-Accurate Simulator** - Precise timing measurements for all MHX™ operations
 2. **Trace Analyzer** - Instruction-level profiling and hotspot detection
 3. **MLPerfTiny Benchmarks** - Industry-standard edge AI benchmarks
 4. **Performance Data Generator** - Automated benchmark report generation
@@ -19,7 +19,7 @@ The cycle-accurate simulator (`dv/cycle_accurate/mhx_cycle_accurate_sim.sv`) pro
 
 - Precise cycle counting for all ternary and neural operations
 - Pipeline stall detection and classification
-- Integration with MHX performance counters
+- Integration with MHX™ performance counters
 - Trace output generation for post-simulation analysis
 
 ### Running Cycle-Accurate Tests
@@ -47,7 +47,7 @@ cat build/cycle_accurate/results.json
 
 ### Operation Latencies
 
-All MHX operations complete in a single cycle:
+All MHX™ operations complete in a single cycle:
 
 | Operation | Cycles | Description |
 |-----------|--------|-------------|
@@ -140,7 +140,7 @@ python3 util/mlperftiny_benchmark.py --output results/
 
 ### Benchmark Results
 
-| Benchmark | Binary Cycles | MHX Cycles | Speedup |
+| Benchmark | Binary Cycles | MHX™ Cycles | Speedup |
 |-----------|--------------|------------|---------|
 | Anomaly Detection | 1,250,000 | 520,000 | 2.40x |
 | Keyword Spotting | 2,100,000 | 780,000 | 2.69x |
@@ -264,5 +264,5 @@ print(f"Hotspots: {results.hotspots[:5]}")
 ## References
 
 - [MLPerfTiny Benchmark Suite](https://github.com/mlcommons/tiny)
-- [MHX White Paper](../paper/mhx_ternary_whitepaper.tex)
-- [MHX Debug Guide](mhx_ternary_debug_guide.md)
+- [MHX™ White Paper](../paper/mhx_ternary_whitepaper.tex)
+- [MHX™ Debug Guide](mhx_ternary_debug_guide.md)

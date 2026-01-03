@@ -1,12 +1,12 @@
 # Copyright lowRISC contributors.
-# Copyright 2025 MHX Neural.
+# Copyright 2025 MHX™ Neural.
 # Licensed under the Apache License, Version 2.0, see LICENSE for details.
 # SPDX-License-Identifier: Apache-2.0
 
-# MHX Simple System Vivado Build Script
+# MHX™ Simple System Vivado Build Script
 # =====================================
 #
-# This script performs the complete FPGA synthesis flow for the MHX Simple System
+# This script performs the complete FPGA synthesis flow for the MHX™ Simple System
 # using Xilinx Vivado. It supports multiple target boards and configurations.
 #
 # Usage:
@@ -27,7 +27,7 @@ set BOARD [lindex $argv 0]
 set PART [lindex $argv 1]
 
 puts "========================================"
-puts "MHX Simple System Vivado Build"
+puts "MHX™ Simple System Vivado Build"
 puts "========================================"
 puts "Board: $BOARD"
 puts "Part:  $PART"
@@ -48,7 +48,7 @@ set origin_dir [file dirname [info script]]
 set mhx_root_dir [file normalize "$origin_dir/../../../.."]
 
 puts "Origin directory: $origin_dir"
-puts "MHX root directory: $mhx_root_dir"
+puts "MHX™ root directory: $mhx_root_dir"
 
 # Create project
 create_project $PROJECT_NAME $OUTPUT_DIR -part $PART -force
@@ -61,7 +61,7 @@ set_property simulator_language Verilog [current_project]
 # Add source files using FuseSoC approach
 puts "Adding source files..."
 
-# Add MHX Simple System RTL
+# Add MHX™ Simple System RTL
 add_files -norecurse [glob ${RTL_DIR}/*.sv]
 add_files -norecurse [glob ${mhx_root_dir}/rtl/*.sv]
 
@@ -79,12 +79,12 @@ if {![file exists $TOP_WRAPPER_FILE]} {
     puts "Creating FPGA top-level wrapper..."
     set fp [open $TOP_WRAPPER_FILE w]
     puts $fp {// Copyright lowRISC contributors.
-// Copyright 2025 MHX Neural.
+// Copyright 2025 MHX™ Neural.
 // Licensed under the Apache License, Version 2.0, see LICENSE for details.
 // SPDX-License-Identifier: Apache-2.0
 
 /**
- * MHX Simple System FPGA Top Level
+ * MHX™ Simple System FPGA Top Level
  *
  * This module provides the top-level interface for FPGA implementation,
  * including clock generation, reset handling, and I/O mapping.
@@ -140,7 +140,7 @@ module mhx_simple_system_top (
     // Map GPIO outputs to LEDs
     assign led = gpio_out;
 
-    // Instantiate MHX Simple System
+    // Instantiate MHX™ Simple System
     mhx_simple_system u_mhx_simple_system (
         .IO_CLK     (clk_sys),
         .IO_RST_N   (rst_sys_n),
@@ -174,7 +174,7 @@ if {[file exists $XDC_FILE]} {
 } else {
     puts "WARNING: Constraint file $XDC_FILE not found. Creating template..."
     set fp [open $XDC_FILE w]
-    puts $fp "# MHX Simple System Constraints for $BOARD"
+    puts $fp "# MHX™ Simple System Constraints for $BOARD"
     puts $fp "# Clock constraint"
     puts $fp "create_clock -period 10.000 -name sys_clk \[get_ports clk_100mhz\]"
     puts $fp ""
@@ -265,7 +265,7 @@ puts "========================================"
 # Generate build report
 set REPORT_FILE "${OUTPUT_DIR}/build_report.txt"
 set fp [open $REPORT_FILE w]
-puts $fp "MHX Simple System Build Report"
+puts $fp "MHX™ Simple System Build Report"
 puts $fp "=============================="
 puts $fp ""
 puts $fp "Build Configuration:"

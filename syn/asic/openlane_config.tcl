@@ -1,4 +1,4 @@
-# MHX Ternary Extension - OpenLane Configuration
+# MHX™ Ternary Extension - OpenLane Configuration
 # Target: Skywater 130nm HD Standard Cells
 
 # Design

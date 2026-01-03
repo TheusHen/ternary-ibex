@@ -1,7 +1,7 @@
 #!/bin/bash
-# MHX Ternary Extension - ASIC Synthesis Runner
+# MHX™ Ternary Extension - ASIC Synthesis Runner
 # Supports Yosys (standalone) and OpenLane (Sky130)
-# Copyright 2025 MHX Neural
+# Copyright 2025 MHX™ Neural
 
 set -e
 
@@ -29,7 +29,7 @@ print_header() {
 # Create directories
 mkdir -p "${BUILD_DIR}" "${REPORTS_DIR}" "${NETLIST_DIR}"
 
-print_header "MHX Ternary ASIC Synthesis"
+print_header "MHX™ Ternary ASIC Synthesis"
 
 # Check for Yosys
 if command -v yosys &> /dev/null; then
@@ -108,7 +108,7 @@ generate_area_report() {
     local report_file="${REPORTS_DIR}/area_summary.txt"
 
     echo ""
-    echo "=== MHX Ternary ASIC Area Estimation ===" | tee "${report_file}"
+    echo "=== MHX™ Ternary ASIC Area Estimation ===" | tee "${report_file}"
     echo "Technology: Generic / Skywater 130nm" | tee -a "${report_file}"
     echo "Date: $(date)" | tee -a "${report_file}"
     echo "" | tee -a "${report_file}"
@@ -149,7 +149,7 @@ generate_area_report() {
     echo "=== Comparison with Ibex Configurations ===" | tee -a "${report_file}"
     echo "Ibex 'small' config:   26.60 kGE" | tee -a "${report_file}"
     echo "Ibex 'maxperf' config: 32.48 kGE" | tee -a "${report_file}"
-    echo "MHX Ternary extension: ${total_area_kge} kGE (additive)" | tee -a "${report_file}"
+    echo "MHX™ Ternary extension: ${total_area_kge} kGE (additive)" | tee -a "${report_file}"
     echo "" | tee -a "${report_file}"
 }
 
@@ -181,7 +181,7 @@ print_header "Timing Estimation"
 
 TIMING_REPORT="${REPORTS_DIR}/timing_summary.txt"
 cat > "${TIMING_REPORT}" << EOF
-=== MHX Ternary Timing Estimation ===
+=== MHX™ Ternary Timing Estimation ===
 Technology: Skywater 130nm
 
 Target Frequencies:

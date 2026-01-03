@@ -2,10 +2,10 @@
 # Licensed under the Apache License, Version 2.0, see LICENSE for details.
 # SPDX-License-Identifier: Apache-2.0
 
-# MHX Ternary Math Testing Workflow
-# Comprehensive testing of ternary logic and math operations for the MHX Core
+# MHX™ Ternary Math Testing Workflow
+# Comprehensive testing of ternary logic and math operations for the MHX™ Core
 
-name: MHX Ternary Math Testing
+name: MHX™ Ternary Math Testing
 
 on:
   push:
@@ -93,7 +93,7 @@ jobs:
 
       - name: Build Ternary Testbench
         run: |
-          echo "=== Building MHX Ternary Testbench ==="
+          echo "=== Building MHX™ Ternary Testbench ==="
           fusesoc --cores-root . run --target=sim --tool=verilator --setup --build lowrisc:ibex:mhx_ternary_test
           echo "✓ Ternary testbench built successfully"
 
@@ -235,11 +235,11 @@ jobs:
 
       - name: Display Report Summary
         run: |
-          echo "=== MHX Ternary Test Report Summary ==="
+          echo "=== MHX™ Ternary Test Report Summary ==="
           if [ -f "ternary_test_report.md" ]; then
             echo "✅ All ternary math tests completed successfully"
             echo "📊 Comprehensive test report generated"
-            echo "🚀 MHX Core ready for deployment"
+            echo "🚀 MHX™ Core ready for deployment"
 
             # Show key metrics from report
             echo ""

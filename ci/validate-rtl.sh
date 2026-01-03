@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# MHX Ternary RTL Validation Script
+# MHX™ Ternary RTL Validation Script
 # Comprehensive validation of all ternary RTL modules
 
 set -euo pipefail
@@ -31,7 +31,7 @@ mkdir -p "${RESULTS_DIR}"
 
 cd "${WORKSPACE_ROOT}"
 
-log_info "Starting MHX Ternary RTL Validation..."
+log_info "Starting MHX™ Ternary RTL Validation..."
 
 # Check RTL file existence
 log_info "Checking RTL file existence..."
@@ -214,7 +214,7 @@ fi
 log_info "Generating RTL validation report..."
 
 cat > "${RESULTS_DIR}/rtl_validation_report.md" << EOF
-# MHX Ternary RTL Validation Report
+# MHX™ Ternary RTL Validation Report
 
 **Validation Date:** $(date)
 **Workspace:** ${WORKSPACE_ROOT}
@@ -254,6 +254,6 @@ Ready for synthesis and functional testing.
 EOF
 
 log_info "RTL validation report generated: ${RESULTS_DIR}/rtl_validation_report.md"
-log_info "✅ MHX Ternary RTL Validation completed successfully!"
+log_info "✅ MHX™ Ternary RTL Validation completed successfully!"
 
 exit 0

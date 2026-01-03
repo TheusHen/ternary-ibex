@@ -1,5 +1,5 @@
 ================================================================================
-MHX Ternary Extension - ASIC Area and Timing Estimation Report
+MHX™ Ternary Extension - ASIC Area and Timing Estimation Report
 ================================================================================
 Date: Fri Jan  2 18:19:08 UTC 2026
 Technology Target: Skywater 130nm (generic estimation)
@@ -20,7 +20,7 @@ Estimated Area:        0 GE (0 kGE)
 --------------------------------------------------------------------------------
 Comparison with Ibex Base Configurations:
 --------------------------------------------------------------------------------
-Configuration          Area (kGE)     With MHX (kGE)    Overhead
+Configuration          Area (kGE)     With MHX™ (kGE)    Overhead
 --------------------------------------------------------------------------------
 Ibex 'micro'           16.85          16850/1000          +0%
 Ibex 'small'           26.60          26600/1000          +0%
@@ -70,12 +70,12 @@ Conv/Pool Unit                 1.2             30              1.23
 DMA Controller                 0.4             20              0.42
 Other (LSU, Debug, Perf)       0.8             40              0.84
 --------------------------------------------------------------------------------
-Total MHX Extension            5.5             190             5.69
+Total MHX™ Extension            5.5             190             5.69
 
 Comparison:
 - Ibex 'small' core (typical):  ~8 mW @ 100 MHz
-- MHX Extension:                ~5.7 mW @ 100 MHz
-- Total with MHX:               ~13.7 mW @ 100 MHz
+- MHX™ Extension:                ~5.7 mW @ 100 MHz
+- Total with MHX™:               ~13.7 mW @ 100 MHz
 
 Power Efficiency:
 - Neural inference power:       ~2 mW (enhanced neural unit active)
@@ -87,8 +87,8 @@ PHYSICAL DESIGN ESTIMATES (Skywater 130nm)
 ================================================================================
 
 Die Area Estimation:
-- MHX Extension:    ~0.08 mm² (at 130nm)
-- Full core + MHX:  ~0.4 mm² (estimated)
+- MHX™ Extension:    ~0.08 mm² (at 130nm)
+- Full core + MHX™:  ~0.4 mm² (estimated)
 
 Metal Layer Usage:
 - Signal routing:   Layers 1-3

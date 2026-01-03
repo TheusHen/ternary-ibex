@@ -6,7 +6,7 @@ on:
   pull_request:
     branches: [main]
   workflow_run:
-    workflows: ["MHX Ternary CI", "Floorplan Generation and Update"]
+    workflows: ["MHX™ Ternary CI", "Floorplan Generation and Update"]
     types: [completed]
     branches: [main]
   workflow_dispatch:

@@ -4,7 +4,7 @@
 # Licensed under the Apache License, Version 2.0, see LICENSE for details.
 # SPDX-License-Identifier: Apache-2.0
 
-"""Run a small MHX cycle benchmark under Verilator and emit JSON metrics.
+"""Run a small MHX™ cycle benchmark under Verilator and emit JSON metrics.
 
 This is intended for CI/regression checks: it measures cycle counts *inside the
 simulated core* via `mcycle`, then parses the UART log (ibex_simple_system.log).
@@ -88,7 +88,7 @@ def main() -> int:
 
     repo_root = Path(__file__).resolve().parent.parent
 
-    # 1) Build simulator (simple system) with MHX config.
+    # 1) Build simulator (simple system) with MHX™ config.
     _run(["make", "build-simple-system", f"IBEX_CONFIG={args.ibex_config}"], cwd=repo_root)
 
     # 2) Build the benchmark program.
@@ -143,7 +143,7 @@ def main() -> int:
     if args.json:
         print(json.dumps(metrics, indent=2, sort_keys=True))
     else:
-        print("MHX Verilator cycle benchmark")
+        print("MHX™ Verilator cycle benchmark")
         print(f"neural speedup: {metrics['neural_inference_speedup']:.3f}x")
         print(f"matrix speedup: {metrics['matrix_operation_speedup']:.3f}x")
         print(f"log: {log_path}")

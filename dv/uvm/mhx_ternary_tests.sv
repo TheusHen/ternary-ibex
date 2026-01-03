@@ -1,4 +1,4 @@
-// MHX Ternary UVM Tests
+// MHX™ Ternary UVM Tests
 // Collection of test classes for different verification scenarios
 
 // Base test class
@@ -422,7 +422,7 @@ class mhx_ternary_regression_test extends mhx_ternary_base_test;
   endtask
 
 endclass : mhx_ternary_regression_test
-// MHX Ternary UVM Tests
+// MHX™ Ternary UVM Tests
 // Collection of test classes for different verification scenarios
 
 // Base test class

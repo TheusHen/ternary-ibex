@@ -1,10 +1,10 @@
 // Copyright lowRISC contributors.
-// Copyright 2025 MHX Neural.
+// Copyright 2025 MHX™ Neural.
 // Licensed under the Apache License, Version 2.0, see LICENSE for details.
 // SPDX-License-Identifier: Apache-2.0
 
 /**
- * Fault Injection Testbench for MHX Ternary Extensions
+ * Fault Injection Testbench for MHX™ Ternary Extensions
  *
  * This testbench verifies the robustness of ternary components
  * against single and multiple bit flip faults using:
@@ -418,7 +418,7 @@ module mhx_ternary_fault_injection_tb import ibex_pkg::*; ();
     repeat (5) @(posedge clk);
 
     $display("=======================================================");
-    $display("MHX Ternary Fault Injection Test Suite");
+    $display("MHX™ Ternary Fault Injection Test Suite");
     $display("=======================================================");
 
     // Run tests

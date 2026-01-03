@@ -1,10 +1,10 @@
 // Copyright lowRISC contributors.
-// Copyright 2025 MHX Neural.
+// Copyright 2025 MHX™ Neural.
 // Licensed under the Apache License, Version 2.0, see LICENSE for details.
 // SPDX-License-Identifier: Apache-2.0
 
 /**
- * Ternary Register File for MHX Core
+ * Ternary Register File for MHX™ Core
  *
  * Features:
  * - 32 ternary registers (T0-T31)

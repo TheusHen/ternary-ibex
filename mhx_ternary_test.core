@@ -5,7 +5,7 @@ CAPI=2:
 # SPDX-License-Identifier: Apache-2.0
 
 name: lowrisc:ibex:mhx_ternary_test:0.1
-description: MHX Ternary Extension Testbench
+description: MHX™ Ternary Extension Testbench
 
 filesets:
   files_rtl_only:

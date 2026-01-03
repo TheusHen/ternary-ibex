@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 # Copyright lowRISC contributors.
-# Copyright 2025 MHX Neural.
+# Copyright 2025 MHX™ Neural.
 # Licensed under the Apache License, Version 2.0, see LICENSE for details.
 # SPDX-License-Identifier: Apache-2.0
 
 """
-MHX Comprehensive Benchmark Data Generator
+MHX™ Comprehensive Benchmark Data Generator
 
-This script generates complete benchmark data for the MHX ternary extension,
+This script generates complete benchmark data for the MHX™ ternary extension,
 including:
 - Cycle-accurate simulation results
 - Trace-based analysis data
@@ -131,7 +131,7 @@ class TimingMetrics:
 
 @dataclass
 class ComprehensiveBenchmarkData:
-    """Complete benchmark data for MHX extension."""
+    """Complete benchmark data for MHX™ extension."""
     version: str = "2.0"
     generated_at: str = field(default_factory=lambda: datetime.now().isoformat())
     cycle_accurate: CycleAccurateMetrics = field(default_factory=CycleAccurateMetrics)
@@ -177,11 +177,11 @@ def generate_latex_tables(data: ComprehensiveBenchmarkData) -> str:
 % MLPerfTiny Benchmark Results
 \begin{table}[h]
 \centering
-\caption{MLPerfTiny Benchmark Results (MHX vs Binary Baseline)}
+\caption{MLPerfTiny Benchmark Results (MHX™ vs Binary Baseline)}
 \label{tab:mlperftiny_results}
 \begin{tabular}{|l|r|r|c|}
 \hline
-\textbf{Benchmark} & \textbf{Binary Cycles} & \textbf{MHX Cycles} & \textbf{Speedup} \\
+\textbf{Benchmark} & \textbf{Binary Cycles} & \textbf{MHX™ Cycles} & \textbf{Speedup} \\
 \hline
 """)
     latex.append(f"Anomaly Detection & {data.mlperftiny.ad_binary_cycles:,} & {data.mlperftiny.ad_mhx_cycles:,} & {data.mlperftiny.ad_speedup:.2f}$\\times$ \\\\\n")
@@ -250,7 +250,7 @@ def generate_markdown_report(data: ComprehensiveBenchmarkData) -> str:
     """Generate Markdown report for documentation."""
     md = []
 
-    md.append("# MHX Ternary Extension Benchmark Results\n\n")
+    md.append("# MHX™ Ternary Extension Benchmark Results\n\n")
     md.append(f"Generated: {data.generated_at}\n\n")
 
     md.append("## Executive Summary\n\n")
@@ -261,7 +261,7 @@ def generate_markdown_report(data: ComprehensiveBenchmarkData) -> str:
     md.append(f"- **Max Frequency**: {data.timing.max_frequency_mhz} MHz\n\n")
 
     md.append("## MLPerfTiny Benchmark Results\n\n")
-    md.append("| Benchmark | Binary Cycles | MHX Cycles | Speedup |\n")
+    md.append("| Benchmark | Binary Cycles | MHX™ Cycles | Speedup |\n")
     md.append("|-----------|--------------|------------|--------|\n")
     md.append(f"| Anomaly Detection | {data.mlperftiny.ad_binary_cycles:,} | {data.mlperftiny.ad_mhx_cycles:,} | {data.mlperftiny.ad_speedup:.2f}x |\n")
     md.append(f"| Keyword Spotting | {data.mlperftiny.kws_binary_cycles:,} | {data.mlperftiny.kws_mhx_cycles:,} | {data.mlperftiny.kws_speedup:.2f}x |\n")
@@ -294,7 +294,7 @@ def generate_markdown_report(data: ComprehensiveBenchmarkData) -> str:
     md.append(f"| Ternary Regfile | {data.area.ternary_regfile_cells} | {data.area.ternary_regfile_ge} |\n")
     md.append(f"| Neural Unit | {data.area.neural_unit_cells} | {data.area.neural_unit_ge} |\n")
     md.append(f"| Other Modules | {data.area.other_modules_cells} | {data.area.other_modules_ge} |\n")
-    md.append(f"| **Total MHX** | **{data.area.total_cells}** | **~{data.area.total_ge}** |\n\n")
+    md.append(f"| **Total MHX™** | **{data.area.total_cells}** | **~{data.area.total_ge}** |\n\n")
 
     md.append("## Timing Analysis\n\n")
     md.append(f"- Ternary ALU Critical Path: {data.timing.ternary_alu_critical_path_ns:.1f} ns\n")
@@ -307,7 +307,7 @@ def generate_markdown_report(data: ComprehensiveBenchmarkData) -> str:
 
 def main() -> int:
     parser = argparse.ArgumentParser(
-        description="Generate comprehensive MHX benchmark data"
+        description="Generate comprehensive MHX™ benchmark data"
     )
     parser.add_argument(
         "--output", "-o",

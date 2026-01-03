@@ -1,12 +1,12 @@
 // Copyright lowRISC contributors.
-// Copyright 2025 MHX Neural.
+// Copyright 2025 MHX™ Neural.
 // Licensed under the Apache License, Version 2.0, see LICENSE for details.
 // SPDX-License-Identifier: Apache-2.0
 
 /**
- * MHX Trace Analyzer Module
+ * MHX™ Trace Analyzer Module
  *
- * This module provides trace-based analysis capabilities for MHX ternary
+ * This module provides trace-based analysis capabilities for MHX™ ternary
  * operations, enabling detailed performance profiling and debugging.
  *
  * Features:
@@ -245,7 +245,7 @@ module mhx_trace_analyzer
 endmodule
 
 /**
- * MHX Performance Hotspot Detector
+ * MHX™ Performance Hotspot Detector
  *
  * Analyzes trace data to identify performance bottlenecks and hotspots.
  */

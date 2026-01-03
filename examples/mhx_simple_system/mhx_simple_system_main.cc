@@ -1,10 +1,10 @@
 // Copyright lowRISC contributors.
-// Copyright 2025 MHX Neural.
+// Copyright 2025 MHX™ Neural.
 // Licensed under the Apache License, Version 2.0, see LICENSE for details.
 // SPDX-License-Identifier: Apache-2.0
 
 /**
- * MHX Simple System Verilator Testbench
+ * MHX™ Simple System Verilator Testbench
  *
  * This testbench provides:
  * - Clock and reset generation
@@ -89,7 +89,7 @@ class MhxSimpleSystemSim {
   void set_ram_file(const std::string &file) { ram_file_ = file; }
 
   void reset() {
-    std::cout << "Resetting MHX Simple System..." << std::endl;
+    std::cout << "Resetting MHX™ Simple System..." << std::endl;
 
     // Hold reset for 10 cycles
     for (int i = 0; i < 10; i++) {
@@ -143,7 +143,7 @@ class MhxSimpleSystemSim {
   }
 
   void print_status() {
-    std::cout << "\n=== MHX Simple System Status ===" << std::endl;
+    std::cout << "\n=== MHX™ Simple System Status ===" << std::endl;
     std::cout << "Cycle: " << std::dec << tick_count_ << std::endl;
     std::cout << "GPIO Out: 0x" << std::hex << std::setw(2) << std::setfill('0')
               << (int)dut_->gpio_out << std::endl;
@@ -174,7 +174,7 @@ class MhxSimpleSystemSim {
   }
 
   void run() {
-    std::cout << "Starting MHX Simple System simulation..." << std::endl;
+    std::cout << "Starting MHX™ Simple System simulation..." << std::endl;
     std::cout << "Max cycles: " << max_cycles_ << std::endl;
     std::cout << "Tracing: " << (trace_enabled_ ? "enabled" : "disabled")
               << std::endl;

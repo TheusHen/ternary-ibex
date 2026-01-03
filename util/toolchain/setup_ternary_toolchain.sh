@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 # Copyright lowRISC contributors.
-# Copyright 2025 MHX Neural.
+# Copyright 2025 MHX™ Neural.
 # Licensed under the Apache License, Version 2.0, see LICENSE for details.
 # SPDX-License-Identifier: Apache-2.0
 
 ################################################################################
-# GCC/LLVM Toolchain Integration Stub for MHX Ternary Extensions
+# GCC/LLVM Toolchain Integration Stub for MHX™ Ternary Extensions
 #
 # This is a placeholder/stub for future compiler support development.
 # When implementing, this script will:
@@ -21,7 +21,7 @@
 set -e
 
 echo "=========================================="
-echo "MHX Ternary Toolchain Integration (STUB)"
+echo "MHX™ Ternary Toolchain Integration (STUB)"
 echo "=========================================="
 echo ""
 echo "STATUS: Not yet implemented"

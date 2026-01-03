@@ -21,7 +21,7 @@ ibex:
     rtl/ibex_prefetch_buffer.sv,
     rtl/ibex_fetch_fifo.sv,
     rtl/ibex_pmp.sv,
-    # MHX Ternary Extensions
+    # MHX™ Ternary Extensions
     rtl/ibex_ternary_regfile.sv,
     rtl/ibex_ternary_alu.sv,
     rtl/ibex_ternary_advanced.sv,

@@ -4,7 +4,7 @@ Ternary Performance Analysis Script
 ===================================
 
 This script performs comprehensive performance analysis of ternary operations
-vs binary operations for the MHX Core, including neural inference, matrix
+vs binary operations for the MHX™ Core, including neural inference, matrix
 operations, memory efficiency, and power consumption analysis.
 """
 
@@ -386,16 +386,16 @@ def generate_summary_report(neural_results, matrix_results, memory_results, powe
     print(f'\nOverall Efficiency Score:     {overall_score:.1f}/100')
 
     if overall_score >= 80:
-        print('🎉 EXCELLENT: MHX ternary extensions provide outstanding performance!')
+        print('🎉 EXCELLENT: MHX™ ternary extensions provide outstanding performance!')
         status = 'excellent'
     elif overall_score >= 60:
-        print('✅ GOOD: MHX ternary extensions provide solid performance improvements')
+        print('✅ GOOD: MHX™ ternary extensions provide solid performance improvements')
         status = 'good'
     elif overall_score >= 40:
-        print('⚠️  FAIR: MHX ternary extensions provide moderate improvements')
+        print('⚠️  FAIR: MHX™ ternary extensions provide moderate improvements')
         status = 'fair'
     else:
-        print('❌ POOR: MHX ternary extensions need optimization')
+        print('❌ POOR: MHX™ ternary extensions need optimization')
         status = 'poor'
 
     print('\n' + '='*60)
@@ -410,7 +410,7 @@ def main():
     # Stabilize benchmark randomness for consistent CI comparisons
     random.seed(1337)
 
-    parser = argparse.ArgumentParser(description="MHX Ternary Performance Analysis")
+    parser = argparse.ArgumentParser(description="MHX™ Ternary Performance Analysis")
     parser.add_argument("--json", action="store_true", help="Output results in JSON format")
     parser.add_argument(
         "--trials",
@@ -427,7 +427,7 @@ def main():
     args = parser.parse_args()
 
     if not args.json:
-        print('=== MHX Ternary Performance Analysis ===')
+        print('=== MHX™ Ternary Performance Analysis ===')
 
     try:
         # Run all benchmarks; if JSON mode, suppress stdout noise during computations

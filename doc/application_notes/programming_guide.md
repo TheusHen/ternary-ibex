@@ -1,4 +1,4 @@
-# MHX Ternary Extensions - Application Notes
+# MHX™ Ternary Extensions - Application Notes
 
 **Document Version:** 1.0  
 **Last Updated:** December 3, 2025  
@@ -8,7 +8,7 @@
 
 ## Overview
 
-This document provides practical guidance for developers implementing applications using the MHX Ternary Extensions for the Ibex RISC-V core. It covers programming patterns, optimization techniques, and best practices for leveraging ternary computing in real-world applications.
+This document provides practical guidance for developers implementing applications using the MHX™ Ternary Extensions for the Ibex RISC-V core. It covers programming patterns, optimization techniques, and best practices for leveraging ternary computing in real-world applications.
 
 ## Target Audience
 
@@ -30,7 +30,7 @@ This document provides practical guidance for developers implementing applicatio
 
 ### 1.1 Understanding Trit Encoding
 
-MHX uses 2-bit encoding for each trit (ternary digit):
+MHX™ uses 2-bit encoding for each trit (ternary digit):
 
 ```c
 // Trit encoding
@@ -425,9 +425,9 @@ float dequantize_ternary_to_float(ternary_t value) {
 
 ## 8. References
 
-- [MHX Ternary Formal Specification](mhx_ternary_formal_spec.md)
-- [MHX Debug Guide](mhx_ternary_debug_guide.md)
-- [MHX Security Analysis](mhx_ternary_security_analysis.md)
+- [MHX™ Ternary Formal Specification](mhx_ternary_formal_spec.md)
+- [MHX™ Debug Guide](mhx_ternary_debug_guide.md)
+- [MHX™ Security Analysis](mhx_ternary_security_analysis.md)
 - RISC-V ISA Specification v2.2
 - Ternary Computing: Theory and Applications (Academic Papers)
 
@@ -453,4 +453,4 @@ See [CONTRIBUTING.md](../CONTRIBUTING.md) for guidelines on:
 
 **Document Status:** DRAFT  
 **Next Review:** When toolchain is implemented  
-**Maintainer:** MHX Neural Team
+**Maintainer:** MHX™ Neural Team

@@ -1,4 +1,4 @@
-// MHX Ternary UVM Interface
+// MHX™ Ternary UVM Interface
 // Virtual interface for connecting testbench to DUT
 
 interface mhx_ternary_if (

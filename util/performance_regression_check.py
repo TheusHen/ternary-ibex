@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Performance Regression Check for MHX Ternary Extensions
+Performance Regression Check for MHX™ Ternary Extensions
 =======================================================
 
 This script compares performance metrics between baseline and current branches
@@ -383,7 +383,7 @@ def main() -> int:
 
     args = parser.parse_args()
 
-    print("MHX Ternary Performance Regression Check")
+    print("MHX™ Ternary Performance Regression Check")
     print("=" * 50)
 
     # Get baseline metrics

@@ -1,4 +1,4 @@
-// MHX Ternary UVM Environment
+// MHX™ Ternary UVM Environment
 // Top-level verification environment containing all components
 
 class mhx_ternary_env extends uvm_env;

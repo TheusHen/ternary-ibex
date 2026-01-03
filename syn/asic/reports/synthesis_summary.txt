@@ -1,5 +1,5 @@
 ================================================================================
-MHX Ternary Extension - ASIC Synthesis Summary
+MHX™ Ternary Extension - ASIC Synthesis Summary
 ================================================================================
 Date: Fri Jan  2 18:20:53 UTC 2026
 Technology: Skywater 130nm (estimated)
@@ -11,7 +11,7 @@ Estimated Area:     10000 GE (~10.0 kGE)
 
 COMPARISON WITH IBEX CONFIGURATIONS
 ------------------------------------
-Configuration          Base (kGE)    + MHX (kGE)    Overhead
+Configuration          Base (kGE)    + MHX™ (kGE)    Overhead
 ------------------------------------
 Ibex 'micro'           16.85         ~26850        ~59%
 Ibex 'small'           26.60         ~36600        ~37%
@@ -25,7 +25,7 @@ Ternary ALU                ~400
 Neural Unit (pipelined)    ~250
 Register File              ~500
 Conv/Pool Unit             ~250
-Full Core + MHX            ~200
+Full Core + MHX™            ~200
 
 POWER ESTIMATES (@ 100 MHz)
 ---------------------------
@@ -36,7 +36,7 @@ Neural Unit (enhanced)     ~1.5
 Register File              ~0.5
 Other modules              ~2.0
 ------------------------------------------
-Total MHX Extension        ~4-6 mW
+Total MHX™ Extension        ~4-6 mW
 
 PHYSICAL DESIGN (130nm)
 -----------------------
