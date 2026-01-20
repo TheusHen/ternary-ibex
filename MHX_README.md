@@ -529,6 +529,7 @@ If you use the MHX™ Core in your research, please cite:
 
 - Based on the excellent [Ibex RISC-V Core](https://github.com/lowRISC/ibex) by lowRISC
 - Inspired by ternary neural network research
+- Received positive technical feedback from an active RISC-V architecture researcher.
 - Special thanks to the RISC-V community for the open instruction set architecture
 
 ---

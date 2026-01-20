@@ -1,6 +1,6 @@
-%% MHX™ Ternary Extension White Paper
+%% MHX\texttrademark Ternary Extension White Paper
 %% A Novel Ternary Computing Extension for RISC-V Edge AI Applications
-%% Copyright 2025 MHX™ Neural. All rights reserved.
+%% Copyright 2025 MHX\texttrademark Neural. All rights reserved.
 
 \documentclass[conference,10pt]{IEEEtran}
 
@@ -30,7 +30,7 @@
 }
 
 % Custom commands
-\newcommand{\mhx}{\textsc{MHX™}}
+\newcommand{\mhx}{\textsc{MHX\texttrademark}}
 \newcommand{\ibex}{\textsc{Ibex}}
 \newcommand{\riscv}{RISC-V}
 
@@ -39,21 +39,21 @@
 
 \begin{document}
 
-\title{MHX™: A Native Ternary Computing Extension for RISC-V\\
+\title{MHX\texttrademark: A Native Ternary Computing Extension for RISC-V\\
 \large Enabling Efficient Edge AI Through Hardware-Accelerated Ternary Neural Networks}
 
 \author{
-\IEEEauthorblockN{MHX™ Neural Research Team}
+\IEEEauthorblockN{MHX\texttrademark Neural Research Team}
 \IEEEauthorblockA{
 \textit{Open-Source Hardware Initiative}\\
-São Paulo, Brazil\\
+S\~ao Paulo, Brazil\\
 mmmatheushenriqueee@gmail.com
 }
 }
 \maketitle
 
 \begin{abstract}
-We present \mhx{}, a novel instruction set extension for \riscv{} processors that introduces native ternary (base-3) computing capabilities optimized for edge AI applications. Our extension adds 32 ternary registers, a dedicated ternary ALU with 7 operations, and a hardware neural processing unit—all while maintaining full backward compatibility with existing \riscv{} code. Implemented on the lowRISC \ibex{} core and evaluated using the MLPerfTiny benchmark suite, \mhx{} achieves a 2.68$\times$ geometric mean speedup across industry-standard edge AI workloads (anomaly detection, keyword spotting, image classification, and person detection), 93.75\% memory reduction for neural weights, and an estimated 70\% power reduction compared to software-based ternary emulation. All operations complete in a single cycle with deterministic latency. The extension requires only 2,873 additional lines of SystemVerilog RTL and adds approximately 5 kGE ($\sim$17\% overhead) to the base \ibex{} area. We provide comprehensive formal verification, cycle-accurate simulation, trace-based analysis, synthesis results for Skywater 130nm, and an FPGA demonstration on the Arty A7 platform. All source code is available under the Apache 2.0 license.
+We present \mhx{}, a novel instruction set extension for \riscv{} processors that introduces native ternary (base-3) computing capabilities optimized for edge AI applications. Our extension adds 32 ternary registers, a dedicated ternary ALU with 7 operations, and a hardware neural processing unit---all while maintaining full backward compatibility with existing \riscv{} code. Implemented on the lowRISC \ibex{} core and evaluated using the MLPerfTiny benchmark suite, \mhx{} achieves a 2.68$\times$ geometric mean speedup across industry-standard edge AI workloads (anomaly detection, keyword spotting, image classification, and person detection), 93.75\% memory reduction for neural weights, and an estimated 70\% power reduction compared to software-based ternary emulation. All operations complete in a single cycle with deterministic latency. The extension requires only 2,873 additional lines of SystemVerilog RTL and adds approximately 5 kGE ($\sim$17\% overhead) to the base \ibex{} area. We provide comprehensive formal verification, cycle-accurate simulation, trace-based analysis, synthesis results for Skywater 130nm, and an FPGA demonstration on the Arty A7 platform. All source code is available under the Apache 2.0 license.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -152,7 +152,7 @@ Several approaches to efficient neural network processing exist:
 To our knowledge, \mhx{} is the first native ternary computing extension for any mainstream ISA.
 
 %==============================================================================
-\section{MHX™ Architecture}
+\section{MHX\texttrademark Architecture}
 \label{sec:architecture}
 %==============================================================================
 
@@ -263,7 +263,7 @@ The neural unit provides hardware-accelerated inference:
     \node at (8.5, -0.3) {\tiny 11:7};
     \node at (10.75, -0.3) {\tiny 6:0};
 \end{tikzpicture}
-\caption{MHX™ R-type instruction format}
+\caption{MHX\texttrademark R-type instruction format}
 \label{fig:encoding}
 \end{figure}
 
@@ -285,11 +285,11 @@ The \mhx{} extension comprises 10 SystemVerilog modules totaling 2,873 lines:
 \textbf{Module} & \textbf{Lines} & \textbf{Function} \\
 \hline
 ibex\_ternary\_alu & 261 & 7-operation ternary ALU \\
-ibex\_ternary\_regfile & 172 & 32×16-trit register file \\
+ibex\_ternary\_regfile & 172 & 32x16-trit register file \\
 ibex\_neural\_unit & 181 & Basic neural processing \\
 ibex\_neural\_unit\_enhanced & 322 & Pipelined neural unit \\
 ibex\_ternary\_advanced & 287 & Dot product, distance \\
-ibex\_ternary\_conv\_pool & 392 & 3×3 convolution, pooling \\
+ibex\_ternary\_conv\_pool & 392 & 3x3 convolution, pooling \\
 ibex\_ternary\_dma & 386 & 4-channel DMA controller \\
 ibex\_ternary\_lsu & 229 & Load/store unit \\
 ibex\_ternary\_perf\_counters & 278 & 12 CSR counters \\
@@ -428,11 +428,11 @@ We evaluate \mhx{} using the MLPerfTiny v1.0 benchmark suite \cite{banbury2021ml
 
 \begin{table}[h]
 \centering
-\caption{MLPerfTiny Benchmark Results (MHX™ vs Binary Baseline)}
+\caption{MLPerfTiny Benchmark Results (MHX\texttrademark vs Binary Baseline)}
 \label{tab:mlperftiny_results}
 \begin{tabular}{|l|r|r|c|}
 \hline
-\textbf{Benchmark} & \textbf{Binary Cycles} & \textbf{MHX™ Cycles} & \textbf{Speedup} \\
+\textbf{Benchmark} & \textbf{Binary Cycles} & \textbf{MHX\texttrademark Cycles} & \textbf{Speedup} \\
 \hline
 Anomaly Detection & 1,250,000 & 520,000 & 2.40$\times$ \\
 Keyword Spotting & 2,100,000 & 780,000 & 2.69$\times$ \\
@@ -452,6 +452,8 @@ The benchmarks demonstrate consistent 2.4--2.9$\times$ speedup across diverse wo
     \item \textbf{Image Classification}: MobileNet-style network for visual wake words
     \item \textbf{Person Detection}: Larger MobileNet variant for camera-based detection
 \end{itemize}
+
+These correspond to the MLPerf Tiny tasks AD, KWS, IC, and PD reported in Table~\ref{tab:mlperftiny_results}.
 
 \subsubsection{Trace-Based Performance Analysis}
 
@@ -484,7 +486,7 @@ Avg Neural Latency & 1.2 cycles \\
 \label{tab:performance}
 \begin{tabular}{|l|c|c|c|}
 \hline
-\textbf{Metric} & \textbf{Baseline} & \textbf{MHX™} & \textbf{Improvement} \\
+\textbf{Metric} & \textbf{Baseline} & \textbf{MHX\texttrademark} & \textbf{Improvement} \\
 \hline
 Neural Inference & 1.0$\times$ & 2.68$\times$ & 2.68$\times$ \\
 Memory Usage & 100\% & 6.25\% & 93.75\% reduction \\
@@ -518,7 +520,7 @@ ibex\_ternary\_regfile & 1,024 & 2,048 \\
 ibex\_neural\_unit & 286 & 572 \\
 Other modules & 892 & 1,784 \\
 \hline
-\textbf{Total MHX™ Extension} & 2,614 & $\sim$5,228 \\
+\textbf{Total MHX\texttrademark Extension} & 2,614 & $\sim$5,228 \\
 \hline
 \end{tabular}
 \end{table}
@@ -556,6 +558,13 @@ DSP Slices & 0 & 0\% \\
 \end{table}
 
 The demo runs at 50 MHz with ample timing margin.
+
+%==============================================================================
+\section{Reproducibility and Artifacts}
+\label{sec:reproducibility}
+%==============================================================================
+
+All results reported in this paper are reproducible using the open-source implementation available at: \url{https://github.com/TheusHen/ternary-ibex}. The exact version corresponding to the results in this paper is identified by the Git tag \texttt{paper-v1.1}. A detailed reproducibility guide, including toolchain versions, simulator configuration, FPGA setup, and MLPerf Tiny dataset information (synthetic; no external dataset), is provided in \texttt{REPRODUCIBILITY.md} at the repository root. Paper version: v1.1.
 
 %==============================================================================
 \section{Use Cases}
@@ -628,6 +637,12 @@ All source code, documentation, benchmarks, and verification infrastructure are 
 We believe \mhx{} represents an important step toward efficient edge AI, enabling the deployment of neural networks in environments where traditional approaches are impractical due to power or memory constraints.
 
 %==============================================================================
+\section*{Acknowledgments}
+%==============================================================================
+
+Received positive technical feedback from an active RISC-V architecture researcher.
+
+%==============================================================================
 % References
 %==============================================================================
 
@@ -646,7 +661,7 @@ M. Rastegari, V. Ordonez, J. Redmon, and A. Farhadi, ``XNOR-Net: ImageNet classi
 N. P. Jouppi et al., ``In-datacenter performance analysis of a tensor processing unit,'' in \textit{ISCA}, 2017, pp. 1--12.
 
 \bibitem{waterman2014risc}
-A. Waterman and K. Asanović, ``The RISC-V Instruction Set Manual, Volume I: User-Level ISA,'' \textit{EECS Department, UC Berkeley, Tech. Rep. UCB/EECS-2014-54}, 2014.
+A. Waterman and K. Asanovic, ``The RISC-V Instruction Set Manual, Volume I: User-Level ISA,'' \textit{EECS Department, UC Berkeley, Tech. Rep. UCB/EECS-2014-54}, 2014.
 
 \bibitem{ibex2020}
 lowRISC Contributors, ``Ibex: A small 32-bit RISC-V CPU core,'' \url{https://github.com/lowRISC/ibex}, 2020.
@@ -684,7 +699,7 @@ Complete \mhx{} instruction encoding:
 
 \begin{table}[h]
 \centering
-\caption{MHX™ Instruction Encoding}
+\caption{MHX\texttrademark Instruction Encoding}
 \begin{tabular}{|l|c|c|}
 \hline
 \textbf{Instruction} & \textbf{funct3} & \textbf{funct7} \\
@@ -712,7 +727,7 @@ All instructions use opcode \texttt{0x0B} (custom-0).
 
 \begin{table}[h]
 \centering
-\caption{MHX™ Performance Counter CSRs}
+\caption{MHX\texttrademark Performance Counter CSRs}
 \begin{tabular}{|c|l|}
 \hline
 \textbf{Address} & \textbf{Counter} \\

@@ -80,6 +80,8 @@ the `doc` folder of this repository.
 
 ## Reproducibility & Verification
 
+See `REPRODUCIBILITY.md` for the exact environment used for the paper results and step-by-step reproduction instructions (tag `paper-v1.1`).
+
 ### One-command verification (recommended)
 
 Run the same checks used by CI (tool version checks, RTL lint, core tests, mypy, benchmark data generation, and pytest):
