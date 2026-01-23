@@ -196,7 +196,7 @@ result = accumulator (as signed 8-bit value)
 ```systemverilog
 // Accumulator bounds: -17 ≤ accumulator ≤ +17
 property NEURAL_ACCUMULATOR_BOUNDS;
-  @(posedge clk) accumulator >= -17 && accumulator <= 17;
+  @(posedge clk) accumulator >= -16 && accumulator <= 16;
 endproperty
 
 // Linearity in weights
@@ -214,15 +214,15 @@ else                       result = 0
 ```
 
 #### 4.1.3 NEURAL_LEARN
-**Function:** Weight update (placeholder for future ML algorithms)
+**Function:** Reserved for future work; current implementations may pass through weights.
 ```
-result = weights (pass-through for now)
+result = weights (pass-through)
 ```
 
 ### 4.2 Neural Unit Constraints
 
 **Constraint NUR-001:** All neural operations must complete in one cycle
-**Constraint NUR-002:** Accumulator overflow is handled by saturation
+**Constraint NUR-002:** Accumulator bounds are guaranteed by design (sum of 16 trits)
 **Constraint NUR-003:** Invalid trit inputs are treated as zero
 
 ## 5. Edge Cases and Error Handling
@@ -271,7 +271,7 @@ result = weights (pass-through for now)
 ```
 31    25 24  20 19  15 14   12 11    7 6     0
  funct7   rs2    rs1   funct3   rd   opcode
-                               neural  0x2B
+                               mhx    0x0B
 ```
 
 **Encodings:**
@@ -290,7 +290,7 @@ result = weights (pass-through for now)
 
 ### 7.2 Area and Power
 
-**Target APW-001:** Ternary extensions add <10% area overhead
+**Target APW-001:** Ternary extensions add ~5 kGE (~10-17% area overhead)
 **Target APW-002:** Neural unit power scales with utilization
 **Target APW-003:** Ternary registers use standard flip-flops
 

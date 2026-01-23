@@ -1,6 +1,6 @@
-# Reproducibility Guide for MHX Core T1 (paper-v1.1)
+# Reproducibility Guide for MHX™ Core T1 (paper-v1.1)
 
-This document records the exact environment used for the MHX Core T1 paper results and provides step-by-step reproduction instructions.
+This document records the exact environment used for the MHX™ Core T1 paper results and provides step-by-step reproduction instructions.
 
 ## Commit and tag
 

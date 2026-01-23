@@ -441,6 +441,6 @@ The MHX™ Ternary Extension introduces novel security considerations due to its
 ---
 
 **Document Classification:** INTERNAL - Security Sensitive
-**Distribution:** Security Team, Engineering Leads, Management
+**Distribution:** TheusHen
 **Review Cycle:** Quarterly or after significant changes
 **Next Review Date:** December 29, 2025

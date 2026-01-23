@@ -9,13 +9,15 @@ Manipulation) extensions.
 
 ## MHX™ Core: Ternary Extensions
 
-This repository now includes the **MHX™ Core**, an enhanced version of Ibex with native ternary (base-3) processing capabilities for accelerated AI workloads. The MHX™ Core provides:
+This repository now includes the **MHX™ Core**, an enhanced version of Ibex with native ternary (base-3) processing capabilities for accelerated AI workloads.
 
-- **3x Performance Improvement** for neural network inference
-- **16 Ternary Registers (T0-T15)** with 16 trits each
+- **2.68x geometric mean speedup** on MLPerfTiny v1.0 (AD, KWS, IC, PD)
+- **32 ternary registers (T0-T31)** with 16 trits each (32-bit packed)
 - **Ternary ALU** with 7 native operations (TADD, TSUB, TMUL, TAND, TOR, TXOR, TNOT)
-- **Neural Processing Unit** for hardware-accelerated ternary neural networks
-- **Full Backward Compatibility** with existing RISC-V RV32IMC code
+- **Neural processing unit** for 16-element dot products and activations
+- **93.75% memory reduction** for ternary weights; **~70% estimated power reduction**
+- **Single-cycle operations** with ~5 kGE area overhead (~10-17%)
+- **Full backward compatibility** with RV32IMC software
 
 For complete documentation, see [MHX_README.md](MHX_README.md).
 
@@ -23,15 +25,14 @@ For complete documentation, see [MHX_README.md](MHX_README.md).
 
 The MHX™ Core integrates seamlessly into the Ibex pipeline with dedicated ternary processing units:
 
-![MHX™ Ternary Core Floorplan](https://raw.githubusercontent.com/TheusHen/ternary-ibex/7/merge/docs/images/mhx_floorplan.png)
+![MHX™ Ternary Core Floorplan](https://raw.githubusercontent.com/TheusHen/ternary-ibex/main/docs/images/mhx_floorplan.png)
 
 Key architectural features:
 - **Ternary ALU**: Native 16-trit operations with overflow detection
 - **Neural Processing Unit**: Hardware-accelerated ternary neural networks
-- **Dual Register File**: 32 binary registers (x0-x31) + 16 ternary registers (t0-t15)
+- **Dual Register File**: 32 binary registers (x0-x31) + 32 ternary registers (t0-t31)
 - **Unified Pipeline**: Full integration with standard RISC-V pipeline stages
 - **Memory Subsystem**: Optimized for ternary data access patterns
-
 
 
 Ibex was initially developed as part of the [PULP platform](https://www.pulp-platform.org)
@@ -48,18 +49,18 @@ These are configurations on which lowRISC is focusing for performance evaluation
 
 | Config | "micro" | "small" | "maxperf" | "maxperf-pmp-bmfull" | "mhx-ternary" |
 | ------ | ------- | --------| ----------| -------------------- | ------------- |
-| Features | RV32EC | RV32IMC, 3 cycle mult | RV32IMC, 1 cycle mult, Branch target ALU, Writeback stage | RV32IMCB, 1 cycle mult, Branch target ALU, Writeback stage, 16 PMP regions | RV32IMC + Enhanced Ternary (15 ops) + Pipelined Neural Unit + Weight Cache + 4 Activations |
-| Performance (CoreMark/MHz) | 0.904 | 2.47 | 3.13 | 3.13 | 3.13 (9.39 neural*) |
-| Area - Yosys (kGE) | 16.85 | 26.60 | 32.48 | 66.02 | ~35 |
-| Area - Commercial (estimated kGE) | ~15 | ~24 | ~30 | ~61 | ~32 |
-| Verification status | Red | Green | Green | Green | Green |
+| Features | RV32EC | RV32IMC, 3 cycle mult | RV32IMC, 1 cycle mult, Branch target ALU, Writeback stage | RV32IMCB, 1 cycle mult, Branch target ALU, Writeback stage, 16 PMP regions | RV32IMC + MHX™ ternary extension (paper-v1.1) |
+| Performance (CoreMark/MHz) | 0.904 | 2.47 | 3.13 | 3.13 | N/A (see MLPerfTiny results below) |
+| Area - Yosys (kGE) | 16.85 | 26.60 | 32.48 | 66.02 | Base + ~5 kGE (approx 10-17% overhead) |
+| Area - Commercial (estimated kGE) | ~15 | ~24 | ~30 | ~61 | Base + ~5 kGE (approx 10-17% overhead) |
+| Verification status | Red | Green | Green | Green | Research-grade (paper-v1.1) |
 
 Notes:
 
 * Performance numbers are based on CoreMark running on the Ibex Simple System [platform](examples/simple_system/README.md).
   Note that different ISAs (use of B and C extensions) give the best results for different configurations.
   See the [Benchmarks README](examples/sw/benchmarks/README.md) for more information.
-* **Neural performance** marked with (*) represents ternary neural network inference performance with 3x speedup over software emulation.
+* **Neural performance** for MHX™ is reported via MLPerfTiny v1.0: 2.68x geometric mean speedup vs software emulation.
 * Yosys synthesis area numbers are based on the Ibex basic synthesis [flow](syn/README.md) using the latch-based register file.
 * Commercial synthesis area numbers are a rough estimate of what might be achievable with a commercial synthesis flow and technology library.
 * For comparison, the original "Zero-riscy" core yields an area of 23.14kGE using our Yosys synthesis flow.
@@ -177,3 +178,4 @@ License, Version 2.0 (see LICENSE for full text).
 
 Many people have contributed to Ibex through the years. Please have a look at
 the [credits file](CREDITS.md) and the commit history for more information.
+
