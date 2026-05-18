@@ -20,9 +20,7 @@
 module ibex_neural_unit import ibex_pkg::*; (
   input  logic [TERNARY_REG_WIDTH-1:0] weights_i,   // Ternary weights
   input  logic [TERNARY_REG_WIDTH-1:0] inputs_i,    // Ternary inputs
-  /* verilator lint_off UNUSED */
-  input  logic [TERNARY_REG_WIDTH-1:0] bias_i,      // Bias value (only lower 2 bits used)
-  /* verilator lint_on UNUSED */
+  input  logic [TERNARY_REG_WIDTH-1:0] bias_i,      // Bias value (lower trit used)
   input  neural_op_e                   operation_i, // Neural operation
 
   output logic [TERNARY_REG_WIDTH-1:0] result_o,    // Neural result
@@ -30,7 +28,7 @@ module ibex_neural_unit import ibex_pkg::*; (
 );
 
   // Accumulator width for MAC operations
-  localparam int AccWidth = 8;
+  localparam int AccWidth = 10;
 
   // Internal signals
   logic signed [AccWidth-1:0] accumulator;
@@ -72,7 +70,7 @@ module ibex_neural_unit import ibex_pkg::*; (
     logic [1:0] bias_trit;
     logic signed [AccWidth-1:0] bias_int;
 
-    mac_result = 0;
+    mac_result = '0;
 
     // Perform dot product: sum(weights[i] * inputs[i])
     for (int i = 0; i < TERNARY_TRITS_PER_REG; i++) begin
@@ -80,8 +78,8 @@ module ibex_neural_unit import ibex_pkg::*; (
       logic signed [1:0] w_int, i_int;
       logic signed [AccWidth-1:0] product;
 
-      w_trit = weights_i[i*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT];
-      i_trit = inputs_i[i*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT];
+      w_trit = ternary_sanitize_trit(weights_i[i*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT]);
+      i_trit = ternary_sanitize_trit(inputs_i[i*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT]);
 
       w_int = trit_to_int(w_trit);
       i_int = trit_to_int(i_trit);
@@ -92,7 +90,7 @@ module ibex_neural_unit import ibex_pkg::*; (
     end
 
     // Add bias
-    bias_trit = bias_i[TERNARY_BITS_PER_TRIT-1:0];
+    bias_trit = ternary_sanitize_trit(bias_i[TERNARY_BITS_PER_TRIT-1:0]);
     begin
       logic signed [1:0] bias_trit_int;
       bias_trit_int = trit_to_int(bias_trit);
@@ -114,7 +112,7 @@ module ibex_neural_unit import ibex_pkg::*; (
 
   // Output generation based on operation
   always_comb begin
-    result_o = '0;
+    result_o = TERNARY_ZERO_PATTERN;
     valid_o = 1'b0;
 
     case (operation_i)
@@ -125,9 +123,9 @@ module ibex_neural_unit import ibex_pkg::*; (
       end
 
       NEURAL_ACCUMULATE: begin
-        // Return full accumulator value (for chaining)
-        result_o = {{(TERNARY_REG_WIDTH-AccWidth){accumulator[AccWidth-1]}},
-                    accumulator[AccWidth-1:0]};
+        // Return the saturated accumulator sign as a canonical ternary scalar. The remaining trits
+        // stay ternary zero so this result is always safe to write to the ternary register file.
+        result_o[TERNARY_BITS_PER_TRIT-1:0] = int_to_trit(accumulator);
         valid_o = 1'b1;
       end
 
@@ -143,8 +141,8 @@ module ibex_neural_unit import ibex_pkg::*; (
         valid_o = 1'b1;
         for (int i = 0; i < TERNARY_TRITS_PER_REG; i++) begin
           result_o[i*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT] = sat_trit_add(
-            weights_i[i*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT],
-            inputs_i[i*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT]
+            ternary_sanitize_trit(weights_i[i*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT]),
+            ternary_sanitize_trit(inputs_i[i*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT])
           );
         end
       end
@@ -165,9 +163,14 @@ module ibex_neural_unit import ibex_pkg::*; (
     valid_o |-> operation_i inside {NEURAL_MULTIPLY, NEURAL_ACCUMULATE,
                                     NEURAL_ACTIVATE, NEURAL_LEARN})
 
-  // Result is valid ternary encoding (when valid)
-  `ASSERT(ResultValidTernary,
-    valid_o |-> result_o[1:0] inside {TRIT_NEG, TRIT_ZERO, TRIT_POS})
+  // Result is valid ternary encoding (when valid) for every trit.
+  generate
+    for (genvar assert_trit = 0; assert_trit < TERNARY_TRITS_PER_REG; assert_trit++) begin : gen_result_valid
+      `ASSERT(ResultValidTernary,
+        valid_o |-> result_o[assert_trit*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT]
+            inside {TRIT_NEG, TRIT_ZERO, TRIT_POS})
+    end
+  endgenerate
 
   // Activation output is always ternary (-1, 0, +1)
   `ASSERT(ActivationOutputTernary,

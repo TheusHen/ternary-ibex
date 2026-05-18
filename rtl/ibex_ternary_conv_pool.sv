@@ -282,6 +282,9 @@ module ibex_ternary_conv_pool import ibex_pkg::*; #(
   endfunction
 
   // Main pipeline
+  logic start_accept;
+  assign start_accept = start_i && ready_o;
+
   always_ff @(posedge clk_i or negedge rst_ni) begin
     if (!rst_ni) begin
       valid_pipe <= '0;
@@ -292,10 +295,10 @@ module ibex_ternary_conv_pool import ibex_pkg::*; #(
       end
     end else begin
       // Shift valid pipeline
-      valid_pipe <= {valid_pipe[PipeDepth-2:0], start_i};
+      valid_pipe <= {valid_pipe[PipeDepth-2:0], start_accept};
 
       // Pipeline stage 1: Compute convolution/pooling partial results
-      if (start_i) begin
+      if (start_accept) begin
         case (conv_op_e'(operation_i))
           CONV_OP_CONV2D: begin
             // Compute 3x3 convolution at multiple positions
@@ -330,7 +333,7 @@ module ibex_ternary_conv_pool import ibex_pkg::*; #(
 
   // Output generation
   always_comb begin
-    result_o = '0;
+    result_o = TERNARY_ZERO_PATTERN;
     scalar_result_o = '0;
 
     case (conv_op_e'(operation_i))
@@ -369,14 +372,16 @@ module ibex_ternary_conv_pool import ibex_pkg::*; #(
 
   // Control signals
   assign ready_o = !valid_pipe[0] && !valid_pipe[1];
-  assign valid_o = valid_pipe[PipeDepth-1];
+  assign valid_o = valid_pipe[PipeDepth-1] &&
+                 (conv_op_e'(operation_i) inside {CONV_OP_CONV2D, CONV_OP_POOL_MAX,
+                                                   CONV_OP_POOL_MIN, CONV_OP_POOL_AVG});
 
   ///////////////////////////
   // Formal Verification   //
   ///////////////////////////
 
   // Valid only after pipeline delay
-  `ASSERT(ValidAfterPipeline, valid_o |-> $past(start_i, PipeDepth), clk_i, !rst_ni)
+  `ASSERT(ValidAfterPipeline, valid_o |-> $past(start_accept, PipeDepth), clk_i, !rst_ni)
 
   // Ready when pipeline empty
   `ASSERT(ReadyWhenEmpty, ready_o |-> !(|valid_pipe[1:0]), clk_i, !rst_ni)

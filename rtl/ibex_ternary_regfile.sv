@@ -19,6 +19,7 @@
 module ibex_ternary_regfile import ibex_pkg::*; (
   input  logic                            clk_i,
   input  logic                            rst_ni,
+  input  logic                            clear_i,    // Clear all architectural ternary state
 
   // Read ports
   input  logic [TERNARY_ADDR_WIDTH-1:0]  raddr_a_i,  // Ternary register address A
@@ -34,6 +35,9 @@ module ibex_ternary_regfile import ibex_pkg::*; (
 
   // Ternary register array
   logic [TERNARY_REG_WIDTH-1:0] ternary_regs [TERNARY_NUM_REGISTERS];
+  logic [TERNARY_REG_WIDTH-1:0] sanitized_wdata;
+
+  assign sanitized_wdata = ternary_sanitize_word(wdata_i);
 
   // Read logic (asynchronous) - T0 always reads as zero (RISC-V convention)
   assign rdata_a_o = (raddr_a_i == '0) ? TERNARY_RESET_VALUE : ternary_regs[raddr_a_i];
@@ -41,13 +45,14 @@ module ibex_ternary_regfile import ibex_pkg::*; (
 
   // Write logic (synchronous)
   always_ff @(posedge clk_i or negedge rst_ni) begin
-    if (!rst_ni) begin
-      // Initialize all ternary registers to zero (all trits = 0)
+    if (!rst_ni || clear_i) begin
+      // Initialize all ternary registers to zero (all trits = 0). clear_i is asserted by the core
+      // on trap/debug context transitions so t0-t31 do not leak across handlers or contexts.
       for (int i = 0; i < TERNARY_NUM_REGISTERS; i++) begin
         ternary_regs[i] <= TERNARY_RESET_VALUE;
       end
     end else if (we_i && waddr_i != '0) begin  // Prevent writes to T0
-      ternary_regs[waddr_i] <= wdata_i;
+      ternary_regs[waddr_i] <= sanitized_wdata;
     end
   end
 
@@ -74,8 +79,10 @@ module ibex_ternary_regfile import ibex_pkg::*; (
   `ASSERT(TernaryRegValidWrite, !we_i || waddr_i < TERNARY_NUM_REGISTERS, clk_i, !rst_ni)
 
   // Write behavior verification
-  `ASSERT(WriteWhenEnabled, we_i |=> ternary_regs[waddr_i] == $past(wdata_i), clk_i, !rst_ni)
-  `ASSERT(NoWriteWhenDisabled, !we_i |=> ternary_regs == $past(ternary_regs), clk_i, !rst_ni)
+  `ASSERT(WriteWhenEnabled, (we_i && waddr_i != '0 && !clear_i) |=>
+    ternary_regs[$past(waddr_i)] == ternary_sanitize_word($past(wdata_i)), clk_i, !rst_ni)
+  `ASSERT(NoWriteWhenDisabled, (!we_i && !clear_i) |=> ternary_regs == $past(ternary_regs),
+    clk_i, !rst_ni)
 
   // Reset behavior verification
   `ASSERT(ResetInitialization, !rst_ni |=>
@@ -96,12 +103,12 @@ module ibex_ternary_regfile import ibex_pkg::*; (
 
       // When writing to a register, the data should be properly stored
       `ASSERT(WriteDataIntegrity,
-        (we_i && waddr_i == reg_idx) |=>
-        (ternary_regs[reg_idx] == $past(wdata_i)), clk_i, !rst_ni)
+        (we_i && waddr_i == reg_idx && waddr_i != '0 && !clear_i) |=>
+        (ternary_regs[reg_idx] == ternary_sanitize_word($past(wdata_i))), clk_i, !rst_ni)
 
       // Register contents should remain stable when not being written to
       `ASSERT(RegisterStability,
-        (!we_i || waddr_i != reg_idx) |=>
+        ((!we_i || waddr_i != reg_idx) && !clear_i) |=>
         (ternary_regs[reg_idx] == $past(ternary_regs[reg_idx])),
         clk_i, !rst_ni)
     end
@@ -126,8 +133,9 @@ module ibex_ternary_regfile import ibex_pkg::*; (
     if (rst_ni) begin
       // Check that write data contains valid trits when writing
       if (we_i) begin
-        assert (all_trits_valid(wdata_i)) else
-          $warning("Writing invalid trit data to register T%0d: 0x%08x", waddr_i, wdata_i);
+        assert (all_trits_valid(sanitized_wdata)) else
+          $error("Internal ternary sanitizer emitted invalid data for T%0d: 0x%08x", waddr_i,
+                 sanitized_wdata);
       end
     end
   end
@@ -143,14 +151,14 @@ module ibex_ternary_regfile import ibex_pkg::*; (
 
   // Write operations have constant latency regardless of data
   `ASSERT(WriteConstantLatency_c,
-    (we_i && waddr_i != '0) |=>
-    ternary_regs[waddr_i] == $past(wdata_i),
+    (we_i && waddr_i != '0 && !clear_i) |=>
+    ternary_regs[waddr_i] == ternary_sanitize_word($past(wdata_i)),
     clk_i, !rst_ni)
 
   // Write enable doesn't depend on data values
   `ASSERT(WriteEnableDataIndependent_c,
-    (we_i == $past(we_i) && waddr_i != '0) |->
-    ##1 (we_i |-> ternary_regs[waddr_i] == $past(wdata_i)),
+    (we_i == $past(we_i) && waddr_i != '0 && !clear_i) |->
+    ##1 (we_i |-> ternary_regs[waddr_i] == ternary_sanitize_word($past(wdata_i))),
     clk_i, !rst_ni)
 
   // No power side-channel from T0 hardwired zero
@@ -164,9 +172,9 @@ module ibex_ternary_regfile import ibex_pkg::*; (
 
   // No early/late write completion based on data
   `ASSERT(UniformWriteTiming_c,
-    (we_i && waddr_i != '0 &&
+    (we_i && waddr_i != '0 && !clear_i &&
      wdata_i != $past(wdata_i)) |=>
-    ternary_regs[waddr_i] == $past(wdata_i),
+    ternary_regs[waddr_i] == ternary_sanitize_word($past(wdata_i)),
     clk_i, !rst_ni)
 
 endmodule

@@ -72,6 +72,7 @@ module mhx_comprehensive_test;
   ibex_ternary_regfile dut_regfile (
     .clk_i     (clk),
     .rst_ni    (rst_n),
+    .clear_i   (1'b0),
     .raddr_a_i (trf_raddr_a),
     .raddr_b_i (trf_raddr_b),
     .rdata_a_o (trf_rdata_a),
@@ -274,17 +275,17 @@ module mhx_comprehensive_test;
     $display("\n[TEST SUITE 4] Basic Neural Unit");
     $display("------------------------------------------------------------");
 
-    // NEURON: 16 * (+1 * +1) + 0 = 16
+    // NEURON: positive accumulator saturates to TRIT_POS
     neural_weights = 32'hAAAAAAAA;  // All +1
     neural_inputs  = 32'hAAAAAAAA;  // All +1
     neural_bias    = 32'h55555555;  // Bias = 0
     neural_op      = NEURAL_MULTIPLY;
     @(posedge clk);
-    if (neural_valid && neural_result[7:0] == 8'd16) begin
+    if (neural_valid && neural_result[1:0] == TRIT_POS) begin
       $display("✓ PASS: Neural MULTIPLY (16 MACs)");
       pass_count++;
     end else begin
-      $display("✗ FAIL: Neural MULTIPLY - got %d, expected 16", neural_result[7:0]);
+      $display("✗ FAIL: Neural MULTIPLY - got %b, expected TRIT_POS", neural_result[1:0]);
       fail_count++;
     end
     test_count++;

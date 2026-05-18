@@ -29,6 +29,7 @@ module ternary_regfile_formal import ibex_pkg::*; (
   ibex_ternary_regfile dut (
     .clk_i     (clk_i),
     .rst_ni    (rst_ni),
+    .clear_i   (1'b0),
     .raddr_a_i (raddr_a),
     .raddr_b_i (raddr_b),
     .rdata_a_o (rdata_a),
@@ -101,7 +102,7 @@ module ternary_regfile_formal import ibex_pkg::*; (
     if (!rst_ni) begin
       shadow_reg <= TERNARY_RESET_VALUE;
     end else if (we && waddr == track_addr) begin
-      shadow_reg <= wdata;
+      shadow_reg <= ternary_sanitize_word(wdata);
     end
   end
 
@@ -129,7 +130,7 @@ module ternary_regfile_formal import ibex_pkg::*; (
   // Property: Write occurs when WE is high (for non-T0)
   regfile_write_when_enabled: assert property (
     @(posedge clk_i) disable iff (!rst_ni)
-    (we && waddr == track_addr && track_addr != 0) |=> (shadow_reg == $past(wdata))
+    (we && waddr == track_addr && track_addr != 0) |=> (shadow_reg == ternary_sanitize_word($past(wdata)))
   );
 
   //////////////////////////////////////////////////////////////////////////////
@@ -176,7 +177,7 @@ module ternary_regfile_formal import ibex_pkg::*; (
   regfile_write_latency: assert property (
     @(posedge clk_i) disable iff (!rst_ni)
     (we && waddr == track_addr && track_addr != 0) |=>
-    (raddr_a == track_addr) |-> (rdata_a == $past(wdata))
+    (raddr_a == track_addr) |-> (rdata_a == ternary_sanitize_word($past(wdata)))
   );
 
   //////////////////////////////////////////////////////////////////////////////
@@ -190,7 +191,7 @@ module ternary_regfile_formal import ibex_pkg::*; (
   regfile_constant_time_write: assert property (
     @(posedge clk_i) disable iff (!rst_ni)
     (we && waddr == track_addr && track_addr != 0) |=>
-    (shadow_reg == $past(wdata))
+    (shadow_reg == ternary_sanitize_word($past(wdata)))
   );
 
   //////////////////////////////////////////////////////////////////////////////

@@ -23,6 +23,7 @@ module ibex_ternary_debug import ibex_pkg::*; #(
 ) (
   input  logic                         clk_i,
   input  logic                         rst_ni,
+  input  logic                         debug_allowed_i, // External auth/secure-debug gate
 
   // Debug Module Interface (DMI)
   input  logic                         dmi_req_valid_i,
@@ -117,6 +118,8 @@ module ibex_ternary_debug import ibex_pkg::*; #(
   logic [31:0] perf_data_q;
   logic [31:0] response_data_q;
   logic [1:0]  response_op_q;
+  logic [6:0]  req_addr_q;
+  logic [1:0]  req_op_q;
 
   // Breakpoint configuration
   logic [NumBreakpoints-1:0] bp_enabled_q;
@@ -148,8 +151,8 @@ module ibex_ternary_debug import ibex_pkg::*; #(
     halt_req_o = 1'b0;
     resume_req_o = 1'b0;
 
-    // Handle halt/resume control register writes
-    if (dmi_req_valid_i && dmi_req_op_i == DMI_OP_WRITE &&
+    // Handle halt/resume control register writes only after external secure-debug authorization.
+    if (debug_allowed_i && dmi_req_valid_i && dmi_req_op_i == DMI_OP_WRITE &&
         dmi_req_addr_i == DBG_TERNARY_CTRL) begin
       halt_req_o = dmi_req_data_i[0];
       resume_req_o = dmi_req_data_i[1];
@@ -159,7 +162,7 @@ module ibex_ternary_debug import ibex_pkg::*; #(
       DBG_IDLE: begin
         dmi_req_ready_o = 1'b1;
 
-        if (dmi_req_valid_i) begin
+        if (dmi_req_valid_i && debug_allowed_i) begin
           case (dmi_req_op_i)
             DMI_OP_READ: begin
               case (dmi_req_addr_i)
@@ -180,6 +183,8 @@ module ibex_ternary_debug import ibex_pkg::*; #(
 
             default: state_d = DBG_RESPOND;
           endcase
+        end else if (dmi_req_valid_i) begin
+          state_d = DBG_RESPOND;
         end
       end
 
@@ -190,13 +195,13 @@ module ibex_ternary_debug import ibex_pkg::*; #(
 
       DBG_WRITE_TREG: begin
         treg_waddr_o = treg_addr_q;
-        treg_wdata_o = treg_data_q;
-        treg_we_o = 1'b1;
+        treg_wdata_o = ternary_sanitize_word(treg_data_q);
+        treg_we_o = debug_allowed_i;
         state_d = DBG_RESPOND;
       end
 
       DBG_EXEC_ALU: begin
-        debug_alu_req_o = 1'b1;
+        debug_alu_req_o = debug_allowed_i;
         state_d = DBG_WAIT_ALU;
       end
 
@@ -239,6 +244,8 @@ module ibex_ternary_debug import ibex_pkg::*; #(
       response_op_q <= DMI_RESP_SUCCESS;
       bp_enabled_q <= '0;
       bp_select_q <= '0;
+      req_addr_q <= '0;
+      req_op_q <= DMI_OP_NOP;
       for (int i = 0; i < NumBreakpoints; i++) begin
         bp_addr_q[i] <= '0;
         bp_read_q[i] <= 1'b0;
@@ -247,8 +254,13 @@ module ibex_ternary_debug import ibex_pkg::*; #(
     end else begin
       state_q <= state_d;
 
-      // Handle DMI writes
-      if (dmi_req_valid_i && dmi_req_op_i == DMI_OP_WRITE) begin
+      if (dmi_req_valid_i && dmi_req_ready_o) begin
+        req_addr_q <= dmi_req_addr_i;
+        req_op_q   <= dmi_req_op_i;
+      end
+
+      // Handle DMI writes only after external secure-debug authorization.
+      if (debug_allowed_i && dmi_req_valid_i && dmi_req_op_i == DMI_OP_WRITE) begin
         case (dmi_req_addr_i)
           DBG_TERNARY_CTRL: begin
             // Control register: bit 0 = halt, bit 1 = resume
@@ -260,19 +272,22 @@ module ibex_ternary_debug import ibex_pkg::*; #(
           end
 
           DBG_TREG_DATA: begin
-            treg_data_q <= dmi_req_data_i;
+            treg_data_q <= ternary_sanitize_word(dmi_req_data_i);
           end
 
           DBG_ALU_OP: begin
-            alu_operator_q <= ternary_op_e'(dmi_req_data_i[2:0]);
+            if (dmi_req_data_i[2:0] inside {TERNARY_ADD, TERNARY_SUB, TERNARY_MUL, TERNARY_AND,
+                                      TERNARY_OR, TERNARY_XOR, TERNARY_NOT}) begin
+              alu_operator_q <= ternary_op_e'(dmi_req_data_i[2:0]);
+            end
           end
 
           DBG_ALU_OP_A: begin
-            alu_operand_a_q <= dmi_req_data_i;
+            alu_operand_a_q <= ternary_sanitize_word(dmi_req_data_i);
           end
 
           DBG_ALU_OP_B: begin
-            alu_operand_b_q <= dmi_req_data_i;
+            alu_operand_b_q <= ternary_sanitize_word(dmi_req_data_i);
           end
 
           DBG_PERF_ADDR: begin
@@ -299,15 +314,15 @@ module ibex_ternary_debug import ibex_pkg::*; #(
       // Update response data based on state
       case (state_q)
         DBG_READ_TREG: begin
-          response_data_q <= treg_rdata_i;
-          response_op_q <= DMI_RESP_SUCCESS;
+          response_data_q <= debug_allowed_i ? treg_rdata_i : 32'h0;
+          response_op_q <= debug_allowed_i ? DMI_RESP_SUCCESS : DMI_RESP_FAILED;
         end
 
         DBG_WAIT_ALU: begin
           if (debug_alu_ready_i) begin
-            alu_result_q <= debug_alu_result_i;
-            response_data_q <= debug_alu_result_i;
-            response_op_q <= DMI_RESP_SUCCESS;
+            alu_result_q <= ternary_sanitize_word(debug_alu_result_i);
+            response_data_q <= debug_allowed_i ? ternary_sanitize_word(debug_alu_result_i) : 32'h0;
+            response_op_q <= debug_allowed_i ? DMI_RESP_SUCCESS : DMI_RESP_FAILED;
           end
         end
 
@@ -320,11 +335,18 @@ module ibex_ternary_debug import ibex_pkg::*; #(
         end
 
         DBG_RESPOND: begin
-          // Prepare response for various read requests
-          if (dmi_req_addr_i == DBG_TERNARY_STATUS) begin
-            response_data_q <= {30'b0, running_i, halted_i};
-          end else if (dmi_req_addr_i == DBG_ALU_RESULT) begin
-            response_data_q <= alu_result_q;
+          if (!debug_allowed_i) begin
+            response_data_q <= 32'h0;
+            response_op_q <= DMI_RESP_FAILED;
+          end else begin
+            response_op_q <= DMI_RESP_SUCCESS;
+            // Prepare response for the latched request address so response data cannot be confused
+            // if the DMI master changes dmi_req_addr_i while the response is pending.
+            if (req_addr_q == DBG_TERNARY_STATUS) begin
+              response_data_q <= {30'b0, running_i, halted_i};
+            end else if (req_addr_q == DBG_ALU_RESULT) begin
+              response_data_q <= alu_result_q;
+            end
           end
         end
 
@@ -361,5 +383,6 @@ module ibex_ternary_debug import ibex_pkg::*; #(
 
   // ALU request only in exec state
   `ASSERT(AluReqOnlyInExec, debug_alu_req_o |-> (state_q == DBG_EXEC_ALU), clk_i, !rst_ni)
+  `ASSERT(NoAccessWhenLocked, !debug_allowed_i |-> !treg_we_o && !halt_req_o && !resume_req_o, clk_i, !rst_ni)
 
 endmodule

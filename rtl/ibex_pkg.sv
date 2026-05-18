@@ -30,9 +30,9 @@ package ibex_pkg;
   } core2rf_t;
 
   typedef struct packed {
-    logic [3:0]  raddr_a;      // ternary register read address A (16 registers)
-    logic [3:0]  raddr_b;      // ternary register read address B
-    logic [3:0]  waddr;        // ternary register write address
+    logic [4:0]  raddr_a;      // ternary register read address A (32 registers)
+    logic [4:0]  raddr_b;      // ternary register read address B
+    logic [4:0]  waddr;        // ternary register write address
     logic        we;           // ternary register write enable
     logic [31:0] wdata;        // ternary register write data (16 trits * 2 bits)
   } core2trf_t;
@@ -262,6 +262,41 @@ package ibex_pkg;
   parameter logic [TERNARY_REG_WIDTH-1:0] TERNARY_ZERO_PATTERN =
       32'h55555555; // All zeros in ternary
   parameter logic [TERNARY_REG_WIDTH-1:0] TERNARY_RESET_VALUE = TERNARY_ZERO_PATTERN;
+
+
+
+  // Return 1 when a 2-bit field is a canonical ternary trit. 2'b11 is reserved as a
+  // fault/error marker and must not be allowed to persist in architectural ternary state.
+  function automatic logic ternary_trit_valid(logic [TERNARY_BITS_PER_TRIT-1:0] trit);
+    return (trit == TRIT_NEG) || (trit == TRIT_ZERO) || (trit == TRIT_POS);
+  endfunction
+
+  // Canonicalize one trit in constant combinational latency. Invalid encodings are mapped to the
+  // neutral zero trit so downstream state never stores 2'b11 silently.
+  function automatic logic [TERNARY_BITS_PER_TRIT-1:0] ternary_sanitize_trit(
+      logic [TERNARY_BITS_PER_TRIT-1:0] trit);
+    unique case (trit)
+      TRIT_NEG:  return TRIT_NEG;
+      TRIT_ZERO: return TRIT_ZERO;
+      TRIT_POS:  return TRIT_POS;
+      default:   return TRIT_ZERO;
+    endcase
+  endfunction
+
+  function automatic logic ternary_word_valid(logic [TERNARY_REG_WIDTH-1:0] word);
+    ternary_word_valid = 1'b1;
+    for (int i = 0; i < TERNARY_TRITS_PER_REG; i++) begin
+      ternary_word_valid &= ternary_trit_valid(word[i*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT]);
+    end
+  endfunction
+
+  function automatic logic [TERNARY_REG_WIDTH-1:0] ternary_sanitize_word(
+      logic [TERNARY_REG_WIDTH-1:0] word);
+    for (int i = 0; i < TERNARY_TRITS_PER_REG; i++) begin
+      ternary_sanitize_word[i*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT] =
+          ternary_sanitize_trit(word[i*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT]);
+    end
+  endfunction
 
   // Neural unit configuration
   parameter int unsigned NEURAL_ACCUMULATOR_WIDTH = 8;  // Accumulator width for neural operations

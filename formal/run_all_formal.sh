@@ -47,10 +47,10 @@ run_verification() {
     if [ "$DRY_RUN" -eq 1 ]; then
         if [ -f "${dir}/${name}.sby" ] && [ -f "${dir}/${name}_formal.sv" ]; then
             echo -e "${YELLOW}SKIPPED (dry-run)${NC}"
-            ((SKIP_COUNT++))
+            (( SKIP_COUNT += 1 ))
         else
             echo -e "${RED}FAIL (missing files)${NC}"
-            ((FAIL_COUNT++))
+            (( FAIL_COUNT += 1 ))
         fi
         return
     fi
@@ -58,11 +58,11 @@ run_verification() {
     cd "${dir}"
     if sby -f "${name}.sby" "${task}" > "${RESULTS_DIR}/${name}_${task}.log" 2>&1; then
         echo -e "${GREEN}PASS${NC}"
-        ((PASS_COUNT++))
+        (( PASS_COUNT += 1 ))
     else
         echo -e "${RED}FAIL${NC}"
         echo "  See ${RESULTS_DIR}/${name}_${task}.log for details"
-        ((FAIL_COUNT++))
+        (( FAIL_COUNT += 1 ))
     fi
     cd "${SCRIPT_DIR}"
 }
@@ -118,8 +118,8 @@ if [ "$FAIL_COUNT" -eq 0 ] && [ "$DRY_RUN" -eq 0 ]; then
     echo -e "${GREEN}All formal verification tasks passed!${NC}"
     exit 0
 elif [ "$DRY_RUN" -eq 1 ]; then
-    echo -e "${YELLOW}Dry-run complete. Install SymbiYosys to run verification.${NC}"
-    exit 0
+    echo -e "${RED}Dry-run did not execute proofs. Install SymbiYosys before reporting success.${NC}"
+    exit 2
 else
     echo -e "${RED}Some verification tasks failed.${NC}"
     exit 1

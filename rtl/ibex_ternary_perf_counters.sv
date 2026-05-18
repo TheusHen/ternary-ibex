@@ -35,6 +35,7 @@ module ibex_ternary_perf_counters import ibex_pkg::*; #(
   // Control signals
   input  logic                    enable_i,          // Global enable
   input  logic                    clear_i,           // Clear all counters
+  input  logic                    csr_privileged_i,  // Machine/debug-mode gate for CSR writes
 
   // Ternary ALU events
   input  logic                    ternary_op_valid_i,    // Ternary operation executed
@@ -89,6 +90,7 @@ module ibex_ternary_perf_counters import ibex_pkg::*; #(
   // State tracking for cycle counting
   logic ternary_active;
   logic neural_active;
+  logic unused_csr_we_unpriv;
 
   // Main counter update logic
   always_ff @(posedge clk_i or negedge rst_ni) begin
@@ -174,7 +176,7 @@ module ibex_ternary_perf_counters import ibex_pkg::*; #(
       end
 
       // CSR write handling
-      if (csr_we_i) begin
+      if (csr_we_i && csr_privileged_i) begin
         unique case (csr_addr_i)
           CSR_TERNARY_OPS:    cnt_ternary_ops    <= csr_wdata_i[CounterWidth-1:0];
           CSR_NEURAL_OPS:     cnt_neural_ops     <= csr_wdata_i[CounterWidth-1:0];
@@ -193,6 +195,9 @@ module ibex_ternary_perf_counters import ibex_pkg::*; #(
       end
     end
   end
+
+  // CSR read logic. Reads remain available for observability; writes are gated by csr_privileged_i.
+  assign unused_csr_we_unpriv = csr_we_i & ~csr_privileged_i;
 
   // CSR read logic
   always_comb begin

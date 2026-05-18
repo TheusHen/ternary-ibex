@@ -70,6 +70,7 @@ module mhx_ternary_fault_injection_tb import ibex_pkg::*; ();
   ibex_ternary_regfile dut_regfile (
     .clk_i     (clk),
     .rst_ni    (rst_n),
+    .clear_i   (1'b0),
     .raddr_a_i (rf_raddr_a),
     .raddr_b_i (rf_raddr_b),
     .rdata_a_o (rf_rdata_a),

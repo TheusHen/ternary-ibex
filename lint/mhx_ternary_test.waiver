@@ -11,24 +11,9 @@ waive --rule=COMBO_LOGIC --location="*mhx_ternary_test*"
 waive --rule=HIER_NET_NOT_READ --location="*mhx_ternary_test*"
 
 # Ternary ALU waivers
-waive --rule=UNUSED --location="*ibex_ternary_alu*"
-waive --rule=WIDTH --location="*ibex_ternary_alu*"
 
 # Neural unit waivers
-waive --rule=UNUSED --location="*ibex_neural_unit*"
-waive --rule=WIDTH --location="*ibex_neural_unit*"
 
 # Ternary register file waivers
-waive --rule=UNUSED --location="*ibex_ternary_regfile*"
 
 # New MHX™ modules (December 2025)
-waive --rule=UNUSED --location="*ibex_ternary_perf_counters*"
-waive --rule=UNUSED --location="*ibex_ternary_dma*"
-waive --rule=UNUSED --location="*ibex_ternary_lsu*"
-waive --rule=UNUSED --location="*ibex_ternary_conv_pool*"
-waive --rule=UNUSED --location="*ibex_ternary_debug*"
-waive --rule=UNUSED --location="*ibex_ternary_advanced*"
-waive --rule=UNUSED --location="*ibex_neural_unit_enhanced*"
-
-waive --rule=WIDTH --location="*ibex_ternary_*"
-waive --rule=WIDTH --location="*ibex_neural_unit*"

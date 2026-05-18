@@ -86,12 +86,13 @@ failed_tests=0
 # Helper function to run a test
 run_test() {
     local test_name=$1
-    local test_cmd=$2
-    
+    shift
+    local -a test_cmd=("$@")
+
     log_info "Running: $test_name"
     ((total_tests++))
-    
-    if eval "$test_cmd" > "${RESULTS_DIR}/${test_name}.log" 2>&1; then
+
+    if "${test_cmd[@]}" > "${RESULTS_DIR}/${test_name}.log" 2>&1; then
         log_success "$test_name: PASSED"
         test_results["$test_name"]="PASSED"
         ((passed_tests++))
@@ -105,19 +106,19 @@ run_test() {
 }
 
 # Test 1: Lint checks
-run_test "lint_checks" "make -C ${REPO_ROOT} lint"
+run_test "lint_checks" make -C "${REPO_ROOT}" lint
 
 # Test 2: Basic simulation tests
-run_test "basic_sim" "make -C ${REPO_ROOT}/dv run TEST=mhx_ternary_test"
+run_test "basic_sim" make -C "${REPO_ROOT}/dv" run TEST=mhx_ternary_test
 
 # Test 3: UVM regression suite
-run_test "uvm_regression" "make -C ${REPO_ROOT}/dv/uvm regression"
+run_test "uvm_regression" make -C "${REPO_ROOT}/dv/uvm" regression
 
 # Test 4: Fault injection tests
-run_test "fault_injection" "make -C ${REPO_ROOT}/dv run TEST=mhx_ternary_fault_injection_tb"
+run_test "fault_injection" make -C "${REPO_ROOT}/dv" run TEST=mhx_ternary_fault_injection_tb
 
 # Test 5: Directed coverage tests
-run_test "directed_coverage" "make -C ${REPO_ROOT}/dv/uvm run TEST=mhx_coverage_closure_test"
+run_test "directed_coverage" make -C "${REPO_ROOT}/dv/uvm" run TEST=mhx_coverage_closure_test
 
 # Test 6: Formal verification
 run_test "formal_verification" "${SCRIPT_DIR}/run-formal-verification.sh"
@@ -126,11 +127,11 @@ run_test "formal_verification" "${SCRIPT_DIR}/run-formal-verification.sh"
 run_test "performance_bench" "${SCRIPT_DIR}/validate-performance.sh"
 
 # Test 8: Coverage analysis
-run_test "coverage_analysis" "make -C ${REPO_ROOT}/dv/uvm coverage_report"
+run_test "coverage_analysis" make -C "${REPO_ROOT}/dv/uvm" coverage_report
 
 # Test 9: Long-running stress tests (8 hours)
 log_info "Running extended stress tests (this will take several hours)..."
-run_test "stress_test_8hr" "timeout 8h make -C ${REPO_ROOT}/dv/uvm stress_test"
+run_test "stress_test_8hr" timeout 8h make -C "${REPO_ROOT}/dv/uvm" stress_test
 
 # Generate summary report
 END_TIME=$(date +%s)
