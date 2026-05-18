@@ -143,13 +143,13 @@ See:
 
 ## Instruction Encoding
 
-All MHX™ instructions use the RISC-V `custom-0` opcode (`0x0B`).
+MHX™ ternary ALU instructions use the RISC-V `custom-0` opcode (`0x0B`); neural instructions use `custom-1` (`0x2B`). Reserved `funct7` encodings are illegal and must not update ternary architectural state.
 
 R-type format (ternary registers):
 
 ```
 31        25 24    20 19    15 14    12 11     7 6     0
-[ funct7 ] [ ts2  ] [ ts1  ] [ fn3  ] [ td   ] [ 0x0B ]
+[ funct7 ] [ ts2  ] [ ts1  ] [ fn3  ] [ td   ] [ 0x0B/0x2B ]
 ```
 
 Instruction table (paper-v1.1):

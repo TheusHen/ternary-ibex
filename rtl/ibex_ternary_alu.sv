@@ -16,7 +16,7 @@
  * - 2'b00 = -1 (TRIT_NEG)
  * - 2'b01 =  0 (TRIT_ZERO)
  * - 2'b10 = +1 (TRIT_POS)
- * - 2'b11 = Invalid (treated as 0)
+ * - 2'b11 = Invalid (canonicalized to 0 and flagged in trit_overflow_o)
  */
 
 `include "prim_assert.sv"
@@ -42,7 +42,7 @@ module ibex_ternary_alu import ibex_pkg::*; (
       TRIT_NEG:  return -1;
       TRIT_ZERO: return 0;
       TRIT_POS:  return 1;
-      default:   return 0;  // Invalid encoding treated as zero
+      default:   return 0;  // Invalid encoding canonicalized as zero and flagged separately
     endcase
   endfunction
 
@@ -94,24 +94,22 @@ module ibex_ternary_alu import ibex_pkg::*; (
     return int_to_trit(result);  // Result always in [-1, 1]
   endfunction
 
-  // Ternary AND (minimum)
+  // Ternary AND (minimum). Return a canonical trit, never a raw invalid operand.
   function automatic logic [1:0] trit_and(logic [1:0] a, logic [1:0] b);
     logic signed [1:0] a_int, b_int;
     a_int = trit_to_int(a);
     b_int = trit_to_int(b);
 
-    if (a_int < b_int) return a;
-    else return b;
+    return int_to_trit((a_int < b_int) ? a_int : b_int);
   endfunction
 
-  // Ternary OR (maximum)
+  // Ternary OR (maximum). Return a canonical trit, never a raw invalid operand.
   function automatic logic [1:0] trit_or(logic [1:0] a, logic [1:0] b);
     logic signed [1:0] a_int, b_int;
     a_int = trit_to_int(a);
     b_int = trit_to_int(b);
 
-    if (a_int > b_int) return a;
-    else return b;
+    return int_to_trit((a_int > b_int) ? a_int : b_int);
   endfunction
 
   // Ternary XOR (addition mod 3)
@@ -142,7 +140,7 @@ module ibex_ternary_alu import ibex_pkg::*; (
     // Initialize outputs
     for (int i = 0; i < TERNARY_TRITS_PER_REG; i++) begin
       result_trits[i] = TRIT_ZERO;
-      overflow_trits[i] = 1'b0;
+      // Preserve invalid-input fault flag
     end
 
     // Process each trit position
@@ -153,48 +151,50 @@ module ibex_ternary_alu import ibex_pkg::*; (
       a_trit = operand_a_i[i*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT];
       b_trit = operand_b_i[i*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT];
       add_sub_result = 3'b000;  // Initialize to prevent latch
+      overflow_trits[i] = !ternary_trit_valid(a_trit) ||
+                          ((operator_i != TERNARY_NOT) && !ternary_trit_valid(b_trit));
 
-      case (operator_i)
+      unique case (operator_i)
         TERNARY_ADD: begin
           add_sub_result = trit_add(a_trit, b_trit);
           result_trits[i] = add_sub_result[1:0];
-          overflow_trits[i] = add_sub_result[2];
+          overflow_trits[i] |= add_sub_result[2];
         end
 
         TERNARY_SUB: begin
           add_sub_result = trit_sub(a_trit, b_trit);
           result_trits[i] = add_sub_result[1:0];
-          overflow_trits[i] = add_sub_result[2];
+          overflow_trits[i] |= add_sub_result[2];
         end
 
         TERNARY_MUL: begin
           result_trits[i] = trit_mul(a_trit, b_trit);
-          overflow_trits[i] = 1'b0;  // Multiplication never overflows
+          // Arithmetic multiplication never overflows; invalid input remains flagged above
         end
 
         TERNARY_AND: begin
           result_trits[i] = trit_and(a_trit, b_trit);
-          overflow_trits[i] = 1'b0;
+          // Preserve invalid-input fault flag
         end
 
         TERNARY_OR: begin
           result_trits[i] = trit_or(a_trit, b_trit);
-          overflow_trits[i] = 1'b0;
+          // Preserve invalid-input fault flag
         end
 
         TERNARY_XOR: begin
           result_trits[i] = trit_xor(a_trit, b_trit);
-          overflow_trits[i] = 1'b0;
+          // Preserve invalid-input fault flag
         end
 
         TERNARY_NOT: begin
           result_trits[i] = trit_not(a_trit);
-          overflow_trits[i] = 1'b0;
+          // Preserve invalid-input fault flag
         end
 
         default: begin
           result_trits[i] = TRIT_ZERO;
-          overflow_trits[i] = 1'b0;
+          // Preserve invalid-input fault flag
         end
       endcase
     end
@@ -202,7 +202,7 @@ module ibex_ternary_alu import ibex_pkg::*; (
 
   // Combine individual trit results into output
   always_comb begin
-    result_o = '0;
+    result_o = TERNARY_ZERO_PATTERN;
     for (int i = 0; i < TERNARY_TRITS_PER_REG; i++) begin
       result_o[i*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT] = result_trits[i];
       trit_overflow_o[i] = overflow_trits[i];
@@ -219,9 +219,14 @@ module ibex_ternary_alu import ibex_pkg::*; (
   // Formal Verification   //
   ///////////////////////////
 
-  // Result is valid ternary encoding (no 2'b11)
-  `ASSERT(ResultValidTernary,
-    result_o[1:0] inside {TRIT_NEG, TRIT_ZERO, TRIT_POS})
+  // Result is valid ternary encoding (no 2'b11) on every trit.
+  generate
+    for (genvar assert_trit = 0; assert_trit < TERNARY_TRITS_PER_REG; assert_trit++) begin : gen_result_valid
+      `ASSERT(ResultValidTernary,
+        result_o[assert_trit*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT]
+            inside {TRIT_NEG, TRIT_ZERO, TRIT_POS})
+    end
+  endgenerate
 
   // Multiplication never overflows
   `ASSERT(MulNoOverflow,

@@ -11,12 +11,12 @@ on:
   merge_group:
     types:
       - checks_requested
-  pull_request_target:
+  pull_request:
     branches:
       - "*"
 
 permissions:
-  contents: write # For repository dispatch
+  contents: read
 
 jobs:
   trigger:
@@ -26,7 +26,7 @@ jobs:
       - name: Trigger Private CI
         run: |
           PAYLOAD='"target":"${{ github.repository_owner }}/lowrisc-private-ci/master/ibex-private-ci.yml","sha":"${{ github.event.pull_request.head.sha || github.sha }}"'
-          if ${{ github.event_name == 'pull_request_target' }}; then
+          if ${{ github.event_name == 'pull_request' }}; then
             PAYLOAD+=',"pull_request":${{ github.event.pull_request.number }}'
           fi
           curl -fL \

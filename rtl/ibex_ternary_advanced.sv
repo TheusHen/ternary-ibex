@@ -61,6 +61,11 @@ module ibex_ternary_advanced import ibex_pkg::*; #(
     else return TRIT_ZERO;
   endfunction
 
+  function automatic logic [TernaryDataWidth-1:0] scalar_to_ternary_word(logic signed [7:0] value);
+    scalar_to_ternary_word = TERNARY_ZERO_PATTERN[TernaryDataWidth-1:0];
+    scalar_to_ternary_word[1:0] = int_to_trit(value);
+  endfunction
+
   // Saturating addition
   function automatic logic [1:0] trit_sat_add(logic [1:0] a, logic [1:0] b);
     logic signed [2:0] sum;
@@ -92,7 +97,7 @@ module ibex_ternary_advanced import ibex_pkg::*; #(
     logic found_nonzero;
 
     // Initialize outputs
-    result_o = '0;
+    result_o = TERNARY_ZERO_PATTERN[TernaryDataWidth-1:0];
     scalar_result_o = '0;
     ready_o = 1'b1;
     accumulator = '0;
@@ -109,14 +114,14 @@ module ibex_ternary_advanced import ibex_pkg::*; #(
           logic [1:0] a_trit, b_trit;
           logic signed [1:0] product;
 
-          a_trit = operand_a_i[i*2 +: 2];
-          b_trit = operand_b_i[i*2 +: 2];
+          a_trit = ternary_sanitize_trit(operand_a_i[i*2 +: 2]);
+          b_trit = ternary_sanitize_trit(operand_b_i[i*2 +: 2]);
 
           product = trit_to_int(a_trit) * trit_to_int(b_trit);
           accumulator = accumulator + product;
         end
         scalar_result_o = accumulator;
-        result_o = {{TernaryDataWidth-8{1'b0}}, accumulator};
+        result_o = scalar_to_ternary_word(accumulator);
       end
 
       TERNARY_ADV_MANHATTAN: begin
@@ -125,8 +130,8 @@ module ibex_ternary_advanced import ibex_pkg::*; #(
           logic [1:0] a_trit, b_trit;
           logic signed [2:0] diff;
 
-          a_trit = operand_a_i[i*2 +: 2];
-          b_trit = operand_b_i[i*2 +: 2];
+          a_trit = ternary_sanitize_trit(operand_a_i[i*2 +: 2]);
+          b_trit = ternary_sanitize_trit(operand_b_i[i*2 +: 2]);
 
           diff = trit_to_int(a_trit) - trit_to_int(b_trit);
           if (diff < 0) diff = -diff;
@@ -134,7 +139,7 @@ module ibex_ternary_advanced import ibex_pkg::*; #(
           counter = counter + diff[1:0];
         end
         scalar_result_o = counter;
-        result_o = {{TernaryDataWidth-8{1'b0}}, counter};
+        result_o = scalar_to_ternary_word({1'b0, counter[6:0]});
       end
 
       TERNARY_ADV_HAMMING: begin
@@ -142,15 +147,15 @@ module ibex_ternary_advanced import ibex_pkg::*; #(
         for (int i = 0; i < NumTrits; i++) begin
           logic [1:0] a_trit, b_trit;
 
-          a_trit = operand_a_i[i*2 +: 2];
-          b_trit = operand_b_i[i*2 +: 2];
+          a_trit = ternary_sanitize_trit(operand_a_i[i*2 +: 2]);
+          b_trit = ternary_sanitize_trit(operand_b_i[i*2 +: 2]);
 
           if (a_trit != b_trit) begin
             counter = counter + 1;
           end
         end
         scalar_result_o = counter;
-        result_o = {{TernaryDataWidth-8{1'b0}}, counter};
+        result_o = scalar_to_ternary_word({1'b0, counter[6:0]});
       end
 
       TERNARY_ADV_MAXRED: begin
@@ -159,7 +164,7 @@ module ibex_ternary_advanced import ibex_pkg::*; #(
           logic [1:0] a_trit;
           logic signed [1:0] a_int, max_int;
 
-          a_trit = operand_a_i[i*2 +: 2];
+          a_trit = ternary_sanitize_trit(operand_a_i[i*2 +: 2]);
           a_int = trit_to_int(a_trit);
           max_int = trit_to_int(max_trit);
 
@@ -181,7 +186,7 @@ module ibex_ternary_advanced import ibex_pkg::*; #(
           logic [1:0] a_trit;
           logic signed [1:0] a_int, min_int;
 
-          a_trit = operand_a_i[i*2 +: 2];
+          a_trit = ternary_sanitize_trit(operand_a_i[i*2 +: 2]);
           a_int = trit_to_int(a_trit);
           min_int = trit_to_int(min_trit);
 
@@ -206,7 +211,7 @@ module ibex_ternary_advanced import ibex_pkg::*; #(
 
         for (int i = 0; i < NumTrits; i++) begin
           logic [1:0] a_trit;
-          a_trit = operand_a_i[i*2 +: 2];
+          a_trit = ternary_sanitize_trit(operand_a_i[i*2 +: 2]);
 
           case (a_trit)
             TRIT_POS:  pos_count = pos_count + 1;
@@ -219,17 +224,18 @@ module ibex_ternary_advanced import ibex_pkg::*; #(
         // Return counts in different bytes
         // [7:6] = unused, [5:4] = pos_count, [3:2] = neg_count, [1:0] = zero_count
         scalar_result_o = {2'b00, pos_count[5:4], neg_count[3:2], zero_count[1:0]};
-        result_o = {{TernaryDataWidth-24{1'b0}}, pos_count, neg_count, zero_count};
+        counter = pos_count + neg_count;
+        result_o = scalar_to_ternary_word({1'b0, counter[6:0]});
       end
 
       TERNARY_ADV_CLZ: begin
         // Count leading zero trits
         for (int i = NumTrits-1; i >= 0; i--) begin
           logic [1:0] a_trit;
-          a_trit = operand_a_i[i*2 +: 2];
+          a_trit = ternary_sanitize_trit(operand_a_i[i*2 +: 2]);
 
           if (!found_nonzero) begin
-            if (a_trit == TRIT_ZERO) begin
+            if (ternary_sanitize_trit(a_trit) == TRIT_ZERO) begin
               leading_zeros = leading_zeros + 1;
             end else begin
               found_nonzero = 1'b1;
@@ -238,7 +244,7 @@ module ibex_ternary_advanced import ibex_pkg::*; #(
         end
 
         scalar_result_o = leading_zeros;
-        result_o = {{TernaryDataWidth-8{1'b0}}, leading_zeros};
+        result_o = scalar_to_ternary_word({1'b0, leading_zeros[6:0]});
       end
 
       TERNARY_ADV_SAT_ADD: begin
@@ -246,15 +252,15 @@ module ibex_ternary_advanced import ibex_pkg::*; #(
         for (int i = 0; i < NumTrits; i++) begin
           logic [1:0] a_trit, b_trit;
 
-          a_trit = operand_a_i[i*2 +: 2];
-          b_trit = operand_b_i[i*2 +: 2];
+          a_trit = ternary_sanitize_trit(operand_a_i[i*2 +: 2]);
+          b_trit = ternary_sanitize_trit(operand_b_i[i*2 +: 2]);
 
           result_o[i*2 +: 2] = trit_sat_add(a_trit, b_trit);
         end
       end
 
       default: begin
-        result_o = TERNARY_ZERO_PATTERN;
+        result_o = TERNARY_ZERO_PATTERN[TernaryDataWidth-1:0];
         scalar_result_o = '0;
       end
     endcase

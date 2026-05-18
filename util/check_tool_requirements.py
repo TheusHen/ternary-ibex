@@ -5,6 +5,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 import argparse
+import ast
 from importlib.metadata import version
 import logging as log
 import os
@@ -324,12 +325,18 @@ def read_tool_requirements(path=None):
         path = get_tool_requirements_path()
 
     with open(path, 'r') as pyfile:
-        globs = {}
-        exec(pyfile.read(), globs)
+        module = ast.parse(pyfile.read(), filename=path)
 
-        # We expect the exec call to have populated globs with a
-        # __TOOL_REQUIREMENTS__ dictionary.
-        raw = globs.get('__TOOL_REQUIREMENTS__')
+        raw = None
+        for node in module.body:
+            if not isinstance(node, ast.Assign):
+                continue
+            if any(isinstance(target, ast.Name) and target.id == '__TOOL_REQUIREMENTS__'
+                   for target in node.targets):
+                raw = ast.literal_eval(node.value)
+                break
+
+        # We expect the file to define a literal __TOOL_REQUIREMENTS__ dictionary.
         if raw is None:
             raise ReqErr(path,
                          'The Python file at did not define '

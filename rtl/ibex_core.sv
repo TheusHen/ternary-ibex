@@ -911,6 +911,7 @@ module ibex_core import ibex_pkg::*; #(
   ibex_ternary_regfile ternary_regfile_i (
     .clk_i     (clk_i),
     .rst_ni    (rst_ni),
+    .clear_i   (csr_save_cause | debug_csr_save),
     .raddr_a_i (ternary_raddr_a_id),
     .raddr_b_i (ternary_raddr_b_id),
     .rdata_a_o (ternary_rdata_a),
@@ -959,10 +960,10 @@ module ibex_core import ibex_pkg::*; #(
   always_comb begin
     if (neural_en_id) begin
       ternary_wdata = neural_result;
-      ternary_we_wb = neural_valid;
+      ternary_we_wb = neural_valid && ternary_word_valid(neural_result);
     end else if (ternary_en_id) begin
       ternary_wdata = ternary_alu_result;
-      ternary_we_wb = ternary_alu_ready;
+      ternary_we_wb = ternary_alu_ready && !ternary_alu_overflow && ternary_word_valid(ternary_alu_result);
     end else begin
       ternary_wdata = 32'h0;
       ternary_we_wb = 1'b0;

@@ -55,6 +55,7 @@ module mhx_ternary_test;
   ibex_ternary_regfile dut_regfile (
     .clk_i     (clk),
     .rst_ni    (rst_n),
+    .clear_i   (1'b0),
     .raddr_a_i (trf_raddr_a),
     .raddr_b_i (trf_raddr_b),
     .rdata_a_o (trf_rdata_a),
@@ -185,12 +186,12 @@ module mhx_ternary_test;
     neural_op = NEURAL_MULTIPLY;
     repeat(2) @(posedge clk);
 
-    // Check result (16 * (+1) * (+1) + 0 = 16)
-    if (neural_valid && (neural_result[7:0] == 8'd16)) begin
-      $display("✓ PASS: Neural MULTIPLY test - result = %d", neural_result[7:0]);
+    // Check saturated ternary scalar result (positive accumulator -> TRIT_POS)
+    if (neural_valid && (neural_result[1:0] == TRIT_POS)) begin
+      $display("✓ PASS: Neural MULTIPLY test - result trit = %b", neural_result[1:0]);
       test_passed = 1'b1;
     end else begin
-      $display("✗ FAIL: Neural MULTIPLY test - got %d, expected 16", neural_result[7:0]);
+      $display("✗ FAIL: Neural MULTIPLY test - got %b, expected TRIT_POS", neural_result[1:0]);
       test_passed = 1'b0;
     end
 
@@ -229,7 +230,7 @@ module mhx_ternary_test;
     all_passed = 1'b1;
 
     // Test T0 (lowest boundary)
-    test_data_t0 = 32'h12345678;
+    test_data_t0 = TERNARY_ZERO_PATTERN; // T0 is hardwired to ternary zero
     $display("  Testing T0 (address 0)...");
     write_ternary_reg(5'd0, test_data_t0);
     read_ternary_reg(5'd0, 5'd0);
@@ -242,9 +243,9 @@ module mhx_ternary_test;
     end
 
     // Test T15 (middle boundary)
-    test_data_t15 = 32'h9ABCDEF0;
+    test_data_t15 = 32'h9A945650; // sanitized 32'h9ABCDEF0
     $display("  Testing T15 (address 15)...");
-    write_ternary_reg(5'd15, test_data_t15);
+    write_ternary_reg(5'd15, 32'h9ABCDEF0);
     read_ternary_reg(5'd15, 5'd15);
 
     if (trf_rdata_a == test_data_t15) begin
@@ -255,9 +256,9 @@ module mhx_ternary_test;
     end
 
     // Test T31 (highest boundary)
-    test_data_t31 = 32'hFEDCBA98;
+    test_data_t31 = 32'h56549A98; // sanitized 32'hFEDCBA98
     $display("  Testing T31 (address 31)...");
-    write_ternary_reg(5'd31, test_data_t31);
+    write_ternary_reg(5'd31, 32'hFEDCBA98);
     read_ternary_reg(5'd31, 5'd31);
 
     if (trf_rdata_a == test_data_t31) begin
@@ -327,7 +328,7 @@ module mhx_ternary_test;
     write_ternary_reg(5'd5, 32'hDEADBEEF);
     read_ternary_reg(5'd5, 5'd0);
 
-    if (trf_rdata_a == 32'hDEADBEEF) begin
+    if (trf_rdata_a == 32'h56A59665) begin
       $display("✓ PASS: Register file write/read test");
     end else begin
       $display("✗ FAIL: Register file write/read test");
@@ -350,12 +351,12 @@ module mhx_ternary_test;
 
     // Test ALU operations with boundary registers (T0 and T31)
     $display("Testing ALU with boundary registers T0 and T31...");
-    write_ternary_reg(5'd0, 32'h12345678);   // T0 = test value
+    write_ternary_reg(5'd0, 32'h12345678);   // T0 remains hardwired zero
     write_ternary_reg(5'd31, 32'h87654321);  // T31 = test value
     read_ternary_reg(5'd0, 5'd31);
 
     // Verify registers were read correctly before ALU operation
-    if (trf_rdata_a == 32'h12345678 && trf_rdata_b == 32'h87654321) begin
+    if (trf_rdata_a == TERNARY_ZERO_PATTERN && trf_rdata_b == 32'h85654121) begin
       // Perform any ALU operation to verify boundary registers work with ALU
       talu_op = TERNARY_ADD;
       repeat(2) @(posedge clk);

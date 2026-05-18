@@ -467,8 +467,8 @@ jobs:
             rtl/ibex_ternary_alu.sv 2>&1 | tee lint_output.txt
 
           # Check for UNUSED warnings
-          if grep -q "UNUSED.*result_with_overflow" lint_output.txt; then
-            echo "❌ UNUSED warning still present!"
+          if grep -q "UNUSED.*trit_overflow" lint_output.txt; then
+            echo "❌ Unexpected ternary overflow UNUSED warning present!"
             exit 1
           else
             echo "✅ No UNUSED warnings found"

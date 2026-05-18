@@ -84,6 +84,7 @@ module mhx_fpga_top (
   ibex_ternary_regfile u_ternary_regfile (
     .clk_i     (clk_50mhz),
     .rst_ni    (rst_n_sync),
+    .clear_i   (1'b0),
     .raddr_a_i (ternary_raddr_a),
     .raddr_b_i (ternary_raddr_b),
     .rdata_a_o (ternary_rdata_a),

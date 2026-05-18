@@ -208,7 +208,7 @@ static inline ternary_t __builtin_ternary_set_trit(ternary_t value, int index,
  *    - T0 is hardwired to TERNARY_ALL_ZERO (like x0 in RISC-V)
  *
  * 2. Instruction Encoding:
- *    - Custom opcode: 0x5B (OPCODE_TERNARY)
+ *    - Custom opcodes: 0x0B (OPCODE_TERNARY), 0x2B (OPCODE_NEURAL)
  *    - funct3 field encodes operation type
  *    - rs1, rs2, rd fields encode ternary register addresses
  *

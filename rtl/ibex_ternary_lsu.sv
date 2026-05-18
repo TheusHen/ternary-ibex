@@ -21,7 +21,9 @@
 
 `include "prim_assert.sv"
 
-module ibex_ternary_lsu import ibex_pkg::*; (
+module ibex_ternary_lsu import ibex_pkg::*; #(
+  parameter int unsigned TimeoutCycles = 64
+) (
   input  logic                         clk_i,
   input  logic                         rst_ni,
 
@@ -68,6 +70,7 @@ module ibex_ternary_lsu import ibex_pkg::*; (
   } lsu_state_e;
 
   lsu_state_e state_q, state_d;
+  localparam logic [7:0] TimeoutLimit = 8'(TimeoutCycles);
 
   // Internal registers
   logic [31:0] addr_q, addr_d;
@@ -76,6 +79,13 @@ module ibex_ternary_lsu import ibex_pkg::*; (
   logic [3:0]  burst_len_q, burst_len_d;
   logic        we_q, we_d;
   logic [TERNARY_REG_WIDTH-1:0] wdata_q, wdata_d;
+  logic [7:0] timeout_cnt_q, timeout_cnt_d;
+
+  function automatic logic burst_registers_in_range(logic [4:0] base, logic [3:0] burst_len);
+    logic [5:0] last_reg;
+    last_reg = {1'b0, base} + {2'b00, burst_len};
+    return last_reg < TERNARY_NUM_REGISTERS;
+  endfunction
 
   // State machine
   always_comb begin
@@ -86,6 +96,7 @@ module ibex_ternary_lsu import ibex_pkg::*; (
     burst_len_d = burst_len_q;
     we_d        = we_q;
     wdata_d     = wdata_q;
+    timeout_cnt_d = timeout_cnt_q;
 
     mem_req_o   = 1'b0;
     mem_addr_o  = '0;
@@ -104,14 +115,19 @@ module ibex_ternary_lsu import ibex_pkg::*; (
 
     case (state_q)
       LSU_IDLE: begin
+        timeout_cnt_d = '0;
         if (ternary_req_i) begin
-          state_d     = LSU_REQUEST;
-          addr_d      = ternary_addr_i;
-          reg_idx_d   = ternary_reg_i;
-          burst_len_d = ternary_burst_i;
-          burst_cnt_d = '0;
-          we_d        = ternary_we_i;
-          wdata_d     = ternary_wdata_i;
+          if (ternary_addr_i[1:0] != 2'b00 || !burst_registers_in_range(ternary_reg_i, ternary_burst_i)) begin
+            state_d = LSU_ERROR;
+          end else begin
+            state_d     = LSU_REQUEST;
+            addr_d      = ternary_addr_i;
+            reg_idx_d   = ternary_reg_i;
+            burst_len_d = ternary_burst_i;
+            burst_cnt_d = '0;
+            we_d        = ternary_we_i;
+            wdata_d     = ternary_sanitize_word(ternary_wdata_i);
+          end
         end
       end
 
@@ -122,24 +138,30 @@ module ibex_ternary_lsu import ibex_pkg::*; (
 
         if (we_q) begin
           // Store: get data from ternary register
-          mem_wdata_o  = treg_rdata_i;
+          mem_wdata_o  = ternary_sanitize_word(treg_rdata_i);
           treg_raddr_o = reg_idx_q;
         end
 
         if (mem_gnt_i) begin
           state_d = LSU_WAIT;
+          timeout_cnt_d = '0;
+        end else if (timeout_cnt_q >= TimeoutLimit) begin
+          state_d = LSU_ERROR;
+        end else begin
+          timeout_cnt_d = timeout_cnt_q + 1'b1;
         end
       end
 
       LSU_WAIT: begin
         if (mem_rvalid_i) begin
+          timeout_cnt_d = '0;
           if (mem_err_i) begin
             state_d = LSU_ERROR;
           end else begin
             if (!we_q) begin
               // Load: write data to ternary register
               treg_waddr_o = reg_idx_q;
-              treg_wdata_o = mem_rdata_i;
+              treg_wdata_o = ternary_sanitize_word(mem_rdata_i);
               treg_we_o    = 1'b1;
             end
 
@@ -153,6 +175,10 @@ module ibex_ternary_lsu import ibex_pkg::*; (
               state_d = LSU_DONE;
             end
           end
+        end else if (timeout_cnt_q >= TimeoutLimit) begin
+          state_d = LSU_ERROR;
+        end else begin
+          timeout_cnt_d = timeout_cnt_q + 1'b1;
         end
       end
 
@@ -161,7 +187,7 @@ module ibex_ternary_lsu import ibex_pkg::*; (
         state_d = LSU_REQUEST;
         if (we_q) begin
           treg_raddr_o = reg_idx_q;
-          wdata_d      = treg_rdata_i;
+          wdata_d      = ternary_sanitize_word(treg_rdata_i);
         end
       end
 
@@ -191,6 +217,7 @@ module ibex_ternary_lsu import ibex_pkg::*; (
       burst_len_q <= '0;
       we_q        <= 1'b0;
       wdata_q     <= '0;
+      timeout_cnt_q <= '0;
     end else begin
       state_q     <= state_d;
       addr_q      <= addr_d;
@@ -199,6 +226,7 @@ module ibex_ternary_lsu import ibex_pkg::*; (
       burst_len_q <= burst_len_d;
       we_q        <= we_d;
       wdata_q     <= wdata_d;
+      timeout_cnt_q <= timeout_cnt_d;
     end
   end
 
@@ -217,7 +245,8 @@ module ibex_ternary_lsu import ibex_pkg::*; (
 
   // Register index valid (32 ternary registers: T0-T31)
   // Note: reg_idx_q is 5-bit, so values 0-31 are always valid by construction
-  `ASSERT(RegIdxValid, reg_idx_q < 6'd32, clk_i, !rst_ni)
+  `ASSERT(RegIdxValid, reg_idx_q < TERNARY_NUM_REGISTERS, clk_i, !rst_ni)
+  `ASSERT(AlignedAccess, mem_req_o |-> mem_addr_o[1:0] == 2'b00, clk_i, !rst_ni)
 
   // Done and error mutually exclusive
   `ASSERT(DoneErrorExclusive, !(done_o && error_o), clk_i, !rst_ni)

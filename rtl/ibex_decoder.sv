@@ -667,6 +667,12 @@ module ibex_decoder #(
         ternary_we_o     = 1'b1;
         rf_we            = 1'b0;  // Disable standard RF write
 
+        // Only funct7=0 is currently allocated; all other encodings are reserved and must be
+        // rejected before they can create ternary register side effects.
+        if (instr[31:25] != 7'b0000000) begin
+          illegal_insn = 1'b1;
+        end
+
         // Decode ternary operation from funct3
         unique case (instr[14:12])
           3'b000: ternary_op_o = TERNARY_ADD;
@@ -693,6 +699,12 @@ module ibex_decoder #(
         neural_en_o      = 1'b1;
         ternary_we_o     = 1'b1;  // Neural ops write to ternary registers
         rf_we            = 1'b0;  // Disable standard RF write
+
+        // Only funct7=0 is currently allocated; all other encodings are reserved and must be
+        // rejected before they can create ternary register side effects.
+        if (instr[31:25] != 7'b0000000) begin
+          illegal_insn = 1'b1;
+        end
 
         // Decode neural operation from funct3
         unique case (instr[14:12])
@@ -735,6 +747,9 @@ module ibex_decoder #(
       jump_set_o      = 1'b0;
       branch_in_dec_o = 1'b0;
       csr_access_o    = 1'b0;
+      ternary_en_o    = 1'b0;
+      neural_en_o     = 1'b0;
+      ternary_we_o    = 1'b0;
     end
   end
 

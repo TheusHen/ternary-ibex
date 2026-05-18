@@ -51,6 +51,7 @@ module ibex_neural_unit_enhanced import ibex_pkg::*; (
   ///////////////////////////
 
   logic [TERNARY_REG_WIDTH-1:0] weight_cache [16];
+  logic [TERNARY_REG_WIDTH-1:0] weight_cache_tag [16];
   logic [15:0]                  cache_valid;
   logic [TERNARY_REG_WIDTH-1:0] cached_weights;
   logic                         cache_hit;
@@ -60,15 +61,18 @@ module ibex_neural_unit_enhanced import ibex_pkg::*; (
       cache_valid <= '0;
       for (int i = 0; i < 16; i++) begin
         weight_cache[i] <= TERNARY_RESET_VALUE;
+        weight_cache_tag[i] <= TERNARY_RESET_VALUE;
       end
     end else if (cache_we_i && cache_enable_i) begin
-      weight_cache[cache_addr_i] <= weights_i;
+      weight_cache[cache_addr_i] <= ternary_sanitize_word(weights_i);
+      weight_cache_tag[cache_addr_i] <= ternary_sanitize_word(weights_i);
       cache_valid[cache_addr_i] <= 1'b1;
     end
   end
 
-  assign cache_hit = cache_enable_i && cache_valid[cache_addr_i];
-  assign cached_weights = cache_hit ? weight_cache[cache_addr_i] : weights_i;
+  assign cache_hit = cache_enable_i && cache_valid[cache_addr_i] &&
+                     (weight_cache_tag[cache_addr_i] == ternary_sanitize_word(weights_i));
+  assign cached_weights = cache_hit ? weight_cache[cache_addr_i] : ternary_sanitize_word(weights_i);
   assign cache_hit_o = cache_hit;
 
   ///////////////////////////
@@ -82,8 +86,8 @@ module ibex_neural_unit_enhanced import ibex_pkg::*; (
     zero_count = '0;
     for (int i = 0; i < TERNARY_TRITS_PER_REG; i++) begin
       logic [TERNARY_BITS_PER_TRIT-1:0] w_trit, i_trit;
-      w_trit = cached_weights[i*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT];
-      i_trit = inputs_i[i*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT];
+      w_trit = ternary_sanitize_trit(cached_weights[i*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT]);
+      i_trit = ternary_sanitize_trit(inputs_i[i*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT]);
 
       if (sparse_enable_i && (w_trit == TRIT_ZERO || i_trit == TRIT_ZERO)) begin
         zero_count = zero_count + 1;
@@ -131,8 +135,8 @@ module ibex_neural_unit_enhanced import ibex_pkg::*; (
     for (int i = 0; i < TERNARY_TRITS_PER_REG; i++) begin
       logic [TERNARY_BITS_PER_TRIT-1:0] weight_trit, input_trit;
 
-      weight_trit = cached_weights[i*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT];
-      input_trit  = inputs_i[i*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT];
+      weight_trit = ternary_sanitize_trit(cached_weights[i*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT]);
+      input_trit  = ternary_sanitize_trit(inputs_i[i*TERNARY_BITS_PER_TRIT +: TERNARY_BITS_PER_TRIT]);
 
       level0[i] = '0;
 
@@ -156,10 +160,10 @@ module ibex_neural_unit_enhanced import ibex_pkg::*; (
     for (int i = 0; i < (TERNARY_TRITS_PER_REG/8); i++) begin
       level3[i] = level2[2*i] + level2[2*i+1];
     end
-    level4 = level3[0];
+    level4 = level3[0] + level3[1];
 
     // Add bias
-    bias_trit = bias_i[TERNARY_BITS_PER_TRIT-1:0];
+    bias_trit = ternary_sanitize_trit(bias_i[TERNARY_BITS_PER_TRIT-1:0]);
     bias_int = trit_to_int(bias_trit);
 
     stage1_next_accumulator = level4 + {{NEURAL_ACCUMULATOR_WIDTH-2{bias_int[1]}}, bias_int};
@@ -177,7 +181,8 @@ module ibex_neural_unit_enhanced import ibex_pkg::*; (
     end else begin
       stage1_accumulator <= stage1_next_accumulator;
       stage1_activation_sel <= activation_sel_i;
-      stage1_valid <= (operation_i inside {NEURAL_MULTIPLY, NEURAL_ACCUMULATE, NEURAL_ACTIVATE});
+      stage1_valid <= (operation_i inside {NEURAL_MULTIPLY, NEURAL_ACCUMULATE, NEURAL_ACTIVATE}) &&
+                      (!batch_mode_i || batch_mode_i);
       stage1_bias <= bias_i;
       stage1_normalize_en <= normalize_enable_i;
       stage1_dropout_mask <= dropout_mask_i;
@@ -296,9 +301,21 @@ module ibex_neural_unit_enhanced import ibex_pkg::*; (
   // Output Stage          //
   ///////////////////////////
 
+  function automatic logic [TERNARY_REG_WIDTH-1:0] acc_to_ternary_word(
+      logic signed [NEURAL_ACCUMULATOR_WIDTH-1:0] acc);
+    acc_to_ternary_word = TERNARY_ZERO_PATTERN;
+    if (acc > 0) begin
+      acc_to_ternary_word[1:0] = TRIT_POS;
+    end else if (acc < 0) begin
+      acc_to_ternary_word[1:0] = TRIT_NEG;
+    end else begin
+      acc_to_ternary_word[1:0] = TRIT_ZERO;
+    end
+  endfunction
+
   always_comb begin
-    // Convert accumulator result to ternary encoding
-    result_o = {{TERNARY_REG_WIDTH-NEURAL_ACCUMULATOR_WIDTH{1'b0}}, stage3_result};
+    // Convert accumulator result to a canonical packed ternary scalar.
+    result_o = acc_to_ternary_word(stage3_result);
     valid_o = stage3_valid;
   end
 

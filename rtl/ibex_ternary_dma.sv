@@ -24,7 +24,10 @@
 
 module ibex_ternary_dma import ibex_pkg::*; #(
   parameter int unsigned NumChannels = 4,
-  parameter int unsigned MaxBurstLen = 16
+  parameter int unsigned MaxBurstLen = 16,
+  parameter logic [31:0] AllowedBase = 32'h0000_0000,
+  parameter logic [31:0] AllowedLimit = 32'hFFFF_FFFF,
+  parameter int unsigned TimeoutCycles = 64
 ) (
   input  logic                    clk_i,
   input  logic                    rst_ni,
@@ -45,6 +48,7 @@ module ibex_ternary_dma import ibex_pkg::*; #(
   input  logic                    mem_gnt_i,
   input  logic                    mem_rvalid_i,
   input  logic [31:0]             mem_rdata_i,
+  input  logic                    mem_err_i,
 
   // Ternary register file interface
   output logic [4:0]              treg_waddr_o,
@@ -88,6 +92,10 @@ module ibex_ternary_dma import ibex_pkg::*; #(
   logic [15:0]      transfer_cnt  [NumChannels];
   logic [31:0]      current_addr  [NumChannels];
   logic [31:0]      data_buffer   [NumChannels];
+  logic [7:0]       timeout_cnt   [NumChannels];
+
+  localparam logic [7:0] TimeoutLimit = 8'(TimeoutCycles);
+  localparam logic [15:0] MaxBurstLimit = 16'(MaxBurstLen);
 
   // Active channel selection (round-robin)
   logic [$clog2(NumChannels)-1:0] active_channel;
@@ -114,6 +122,22 @@ module ibex_ternary_dma import ibex_pkg::*; #(
   localparam logic [7:0] REG_CH0_LEN     = 8'h18;  // Channel 0 length
   localparam logic [7:0] REG_CH0_CFG     = 8'h1C;  // Channel 0 config
   // Channels 1-3 follow same pattern at +0x10 offsets
+
+
+
+  function automatic logic address_range_valid(logic [31:0] addr, logic [15:0] len);
+    logic [31:0] last_addr;
+    logic [31:0] bytes_minus_one;
+    bytes_minus_one = ({16'b0, len} << 2) - 1'b1;
+    last_addr = addr + bytes_minus_one;
+    return (len != 16'h0000) && (len <= MaxBurstLimit) && (addr[1:0] == 2'b00) &&
+           (addr >= AllowedBase) && (last_addr >= addr) && (last_addr < AllowedLimit);
+  endfunction
+
+  function automatic logic channel_cfg_valid(dma_channel_cfg_t cfg);
+    return address_range_valid(cfg.src_addr, cfg.transfer_len) &&
+           address_range_valid(cfg.dst_addr, cfg.transfer_len);
+  endfunction
 
   // Binary to ternary conversion
   function automatic logic [31:0] binary_to_ternary(logic [31:0] binary);
@@ -158,6 +182,7 @@ module ibex_ternary_dma import ibex_pkg::*; #(
         transfer_cnt[i]  <= '0;
         current_addr[i]  <= '0;
         data_buffer[i]   <= '0;
+        timeout_cnt[i]   <= '0;
       end
       active_channel <= '0;
       irq_done_o     <= 1'b0;
@@ -170,22 +195,38 @@ module ibex_ternary_dma import ibex_pkg::*; #(
       if (any_active) begin
         case (channel_state[active_channel])
           DMA_IDLE: begin
+            timeout_cnt[active_channel] <= '0;
             if (channel_cfg[active_channel].enable) begin
-              channel_state[active_channel] <= DMA_LOAD_SRC;
-              current_addr[active_channel]  <= channel_cfg[active_channel].src_addr;
-              transfer_cnt[active_channel]  <= '0;
+              if (!channel_cfg_valid(channel_cfg[active_channel])) begin
+                channel_state[active_channel] <= DMA_ERROR;
+              end else begin
+                channel_state[active_channel] <= DMA_LOAD_SRC;
+                current_addr[active_channel]  <= channel_cfg[active_channel].src_addr;
+                transfer_cnt[active_channel]  <= '0;
+              end
             end
           end
 
           DMA_LOAD_SRC: begin
-            if (mem_gnt_i) begin
+            if (mem_err_i) begin
+              channel_state[active_channel] <= DMA_ERROR;
+            end else if (mem_gnt_i) begin
               channel_state[active_channel] <= DMA_WAIT_SRC;
+              timeout_cnt[active_channel] <= '0;
+            end else if (timeout_cnt[active_channel] >= TimeoutLimit) begin
+              channel_state[active_channel] <= DMA_ERROR;
+            end else begin
+              timeout_cnt[active_channel] <= timeout_cnt[active_channel] + 1'b1;
             end
           end
 
           DMA_WAIT_SRC: begin
-            if (mem_rvalid_i) begin
-              data_buffer[active_channel] <= mem_rdata_i;
+            if (mem_err_i) begin
+              channel_state[active_channel] <= DMA_ERROR;
+            end else if (mem_rvalid_i) begin
+              timeout_cnt[active_channel] <= '0;
+              data_buffer[active_channel] <= channel_cfg[active_channel].src_is_ternary ?
+                                             ternary_sanitize_word(mem_rdata_i) : mem_rdata_i;
               if (channel_cfg[active_channel].auto_convert &&
                   !channel_cfg[active_channel].src_is_ternary &&
                   channel_cfg[active_channel].dst_is_ternary) begin
@@ -193,13 +234,17 @@ module ibex_ternary_dma import ibex_pkg::*; #(
               end else begin
                 channel_state[active_channel] <= DMA_STORE_DST;
               end
+            end else if (timeout_cnt[active_channel] >= TimeoutLimit) begin
+              channel_state[active_channel] <= DMA_ERROR;
+            end else begin
+              timeout_cnt[active_channel] <= timeout_cnt[active_channel] + 1'b1;
             end
           end
 
           DMA_CONVERT: begin
             // Convert data format
             if (channel_cfg[active_channel].dst_is_ternary) begin
-              data_buffer[active_channel] <= binary_to_ternary(data_buffer[active_channel]);
+              data_buffer[active_channel] <= ternary_sanitize_word(binary_to_ternary(data_buffer[active_channel]));
             end else begin
               data_buffer[active_channel] <= ternary_to_binary(data_buffer[active_channel]);
             end
@@ -207,20 +252,30 @@ module ibex_ternary_dma import ibex_pkg::*; #(
           end
 
           DMA_STORE_DST: begin
-            if (mem_gnt_i) begin
+            if (mem_err_i) begin
+              channel_state[active_channel] <= DMA_ERROR;
+            end else if (mem_gnt_i) begin
               channel_state[active_channel] <= DMA_WAIT_DST;
+              timeout_cnt[active_channel] <= '0;
+            end else if (timeout_cnt[active_channel] >= TimeoutLimit) begin
+              channel_state[active_channel] <= DMA_ERROR;
+            end else begin
+              timeout_cnt[active_channel] <= timeout_cnt[active_channel] + 1'b1;
             end
           end
 
           DMA_WAIT_DST: begin
-            // Assume write completes immediately for simplicity
-            transfer_cnt[active_channel] <= transfer_cnt[active_channel] + 1;
-            current_addr[active_channel] <= current_addr[active_channel] + 4;
-
-            if (transfer_cnt[active_channel] >= channel_cfg[active_channel].transfer_len - 1) begin
-              channel_state[active_channel] <= DMA_DONE;
+            if (mem_err_i) begin
+              channel_state[active_channel] <= DMA_ERROR;
             end else begin
-              channel_state[active_channel] <= DMA_LOAD_SRC;
+              transfer_cnt[active_channel] <= transfer_cnt[active_channel] + 1'b1;
+              current_addr[active_channel] <= current_addr[active_channel] + 4;
+
+              if (transfer_cnt[active_channel] + 1'b1 >= channel_cfg[active_channel].transfer_len) begin
+                channel_state[active_channel] <= DMA_DONE;
+              end else begin
+                channel_state[active_channel] <= DMA_LOAD_SRC;
+              end
             end
           end
 
@@ -263,6 +318,7 @@ module ibex_ternary_dma import ibex_pkg::*; #(
               for (int i = 0; i < NumChannels; i++) begin
                 channel_state[i] <= DMA_IDLE;
                 channel_cfg[i].enable <= 1'b0;
+                timeout_cnt[i] <= '0;
               end
             end
           end
@@ -291,6 +347,9 @@ module ibex_ternary_dma import ibex_pkg::*; #(
               channel_cfg[ch_idx].src_is_ternary <= cfg_wdata_i[1];
               channel_cfg[ch_idx].dst_is_ternary <= cfg_wdata_i[2];
               channel_cfg[ch_idx].auto_convert   <= cfg_wdata_i[3];
+              if (cfg_wdata_i[0]) begin
+                timeout_cnt[ch_idx] <= '0;
+              end
             end
           end
 
@@ -319,7 +378,8 @@ module ibex_ternary_dma import ibex_pkg::*; #(
           mem_req_o   = 1'b1;
           mem_addr_o  = channel_cfg[active_channel].dst_addr +
                         {16'b0, transfer_cnt[active_channel]} * 4;
-          mem_wdata_o = data_buffer[active_channel];
+          mem_wdata_o = channel_cfg[active_channel].dst_is_ternary ?
+                        ternary_sanitize_word(data_buffer[active_channel]) : data_buffer[active_channel];
           mem_we_o    = 1'b1;
         end
 
@@ -332,7 +392,7 @@ module ibex_ternary_dma import ibex_pkg::*; #(
   // Use channel index as base register address (simplified mapping)
   // Pad active_channel to 5 bits using conditional assignment based on NumChannels
   assign treg_waddr_o = 5'(active_channel);  // Type cast to 5 bits (zero-extends automatically)
-  assign treg_wdata_o = data_buffer[active_channel];
+  assign treg_wdata_o = ternary_sanitize_word(data_buffer[active_channel]);
   assign treg_we_o    = any_active &&
                         channel_state[active_channel] == DMA_STORE_DST &&
                         channel_cfg[active_channel].dst_is_ternary;
@@ -357,7 +417,7 @@ module ibex_ternary_dma import ibex_pkg::*; #(
     any_active = 1'b0;
     for (int i = 0; i < NumChannels; i++) begin
       channel_busy_o[i] = (channel_state[i] != DMA_IDLE);
-      if (channel_state[i] != DMA_IDLE) begin
+      if (channel_state[i] != DMA_IDLE || channel_cfg[i].enable) begin
         any_active = 1'b1;
       end
     end
