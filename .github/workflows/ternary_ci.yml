@@ -120,9 +120,10 @@ jobs:
       - name: Run Formal Assertions Check
         run: |
           echo "=== Running Formal Assertions Verification ==="
-          # Build with formal verification flags
-          fusesoc --cores-root . run --target=formal --tool=symbiyosys lowrisc:ibex:mhx_ternary_test || {
-            echo "Warning: Formal verification not available, checking assertion syntax"
+          if command -v sby >/dev/null 2>&1; then
+            formal/run_all_formal.sh
+          else
+            echo "Warning: SymbiYosys not available, checking assertion syntax"
             # Fallback: check assertion syntax with Verilator (split to avoid MULTITOP)
             echo "-- Verifying ibex_ternary_alu"
             verilator --lint-only \
@@ -163,7 +164,7 @@ jobs:
               rtl/ibex_pkg.sv \
               rtl/ibex_neural_unit.sv
             echo "✅ Assertion syntax verified"
-          }
+          fi
 
   ternary_unit_tests:
     name: Unit Tests

@@ -33,6 +33,9 @@ module ibex_neural_unit import ibex_pkg::*; (
   // Internal signals
   logic signed [AccWidth-1:0] accumulator;
   logic signed [AccWidth-1:0] activated;
+  logic unused_bias_bits;
+
+  assign unused_bias_bits = ^bias_i[TERNARY_REG_WIDTH-1:TERNARY_BITS_PER_TRIT];
 
   // Convert trit encoding to signed integer
   function automatic logic signed [1:0] trit_to_int(logic [1:0] trit);

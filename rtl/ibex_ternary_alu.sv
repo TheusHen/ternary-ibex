@@ -96,18 +96,18 @@ module ibex_ternary_alu import ibex_pkg::*; (
 
   // Ternary AND (minimum). Return a canonical trit, never a raw invalid operand.
   function automatic logic [1:0] trit_and(logic [1:0] a, logic [1:0] b);
-    logic signed [1:0] a_int, b_int;
-    a_int = trit_to_int(a);
-    b_int = trit_to_int(b);
+    logic signed [2:0] a_int, b_int;
+    a_int = 3'(signed'(trit_to_int(a)));
+    b_int = 3'(signed'(trit_to_int(b)));
 
     return int_to_trit((a_int < b_int) ? a_int : b_int);
   endfunction
 
   // Ternary OR (maximum). Return a canonical trit, never a raw invalid operand.
   function automatic logic [1:0] trit_or(logic [1:0] a, logic [1:0] b);
-    logic signed [1:0] a_int, b_int;
-    a_int = trit_to_int(a);
-    b_int = trit_to_int(b);
+    logic signed [2:0] a_int, b_int;
+    a_int = 3'(signed'(trit_to_int(a)));
+    b_int = 3'(signed'(trit_to_int(b)));
 
     return int_to_trit((a_int > b_int) ? a_int : b_int);
   endfunction

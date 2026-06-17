@@ -125,13 +125,23 @@ module ibex_ternary_dma import ibex_pkg::*; #(
 
 
 
+  function automatic logic unsigned_gte_32(logic [31:0] lhs, logic [31:0] rhs);
+    logic signed [31:0] lhs_biased;
+    logic signed [31:0] rhs_biased;
+
+    lhs_biased = signed'({~lhs[31], lhs[30:0]});
+    rhs_biased = signed'({~rhs[31], rhs[30:0]});
+    return lhs_biased >= rhs_biased;
+  endfunction
+
   function automatic logic address_range_valid(logic [31:0] addr, logic [15:0] len);
     logic [31:0] last_addr;
     logic [31:0] bytes_minus_one;
     bytes_minus_one = ({16'b0, len} << 2) - 1'b1;
     last_addr = addr + bytes_minus_one;
     return (len != 16'h0000) && (len <= MaxBurstLimit) && (addr[1:0] == 2'b00) &&
-           (addr >= AllowedBase) && (last_addr >= addr) && (last_addr < AllowedLimit);
+           unsigned_gte_32(addr, AllowedBase) &&
+           (last_addr >= addr) && (last_addr < AllowedLimit);
   endfunction
 
   function automatic logic channel_cfg_valid(dma_channel_cfg_t cfg);
